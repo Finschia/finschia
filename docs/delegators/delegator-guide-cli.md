@@ -4,7 +4,7 @@ order: 1
 
 # Delegator Guide (CLI)
 
-This document contains all the necessary information for delegators to interact with the LFB through the Command-Line Interface (CLI).
+This document contains all the necessary information for delegators to interact with the LBM through the Command-Line Interface (CLI).
 
 It also contains instructions on how to manage accounts, restore accounts from the fundraiser and use a ledger nano device.
 
@@ -14,7 +14,7 @@ carefully, as negligence in this significant process could lead to an indefinite
 loss of your base coin. Therefore, read through the following instructions in their 
 entirety prior to proceeding and reach out to us in case you need support.
 
-Please also note that you are about to interact with the LFB, a
+Please also note that you are about to interact with the LBM, a
 blockchain technology containing highly experimental software. While the
 blockchain has been developed in accordance to the state of the art and audited
 with utmost care, we can nevertheless expect to have issues, updates and bugs.
@@ -32,14 +32,14 @@ Please exercise extreme caution!
 
 ## Table of Contents
 
-- [Installing `lfb`](#installing-lfb)
-- [LFB Accounts](#lfb-accounts)
+- [Installing `lbm`](#installing-lbm)
+- [LBM Accounts](#lbm-accounts)
     + [Restoring an Account from the Fundraiser](#restoring-an-account-from-the-fundraiser)
     + [Creating an Account](#creating-an-account)
-- [Accessing a LINE Financial Blockchain](#accessing-a-line-blockchain-mainnet)
+- [Accessing a LINE Blockchain Mainnet](#accessing-a-line-blockchain-mainnet)
     + [Running Your Own Full-Node](#running-your-own-full-node)
     + [Connecting to a Remote Full-Node](#connecting-to-a-remote-full-node)
-- [Setting Up `lfb`](#setting-up-lfb)
+- [Setting Up `lbm`](#setting-up-lbm)
 - [Querying the State](#querying-the-state)
 - [Sending Transactions](#sending-transactions)
     + [A Note on Gas and Fees](#a-note-on-gas-and-fees)
@@ -47,29 +47,29 @@ Please exercise extreme caution!
     + [Participating in Governance](#participating-in-governance)
     + [Signing Transactions from an Offline Computer](#signing-transactions-from-an-offline-computer)
 
-## Installing `lfb` 
+## Installing `lbm` 
 
-`lfb`: This is the command-line interface to interact with a `lfb` full-node. 
+`lbm`: This is the command-line interface to interact with a `lbm` full-node. 
 
 ::: warning
-**Please check that you download the latest stable release of `lfb` that is available**
+**Please check that you download the latest stable release of `lbm` that is available**
 :::
 
 [**Download the binaries**]
 Not available yet.
 
-[**Install from source**](../lfb-tutorials/installation.md)
+[**Install from source**](../lbm-tutorials/installation.md)
 
 ::: tip
-`lfb` is used from a terminal. To open the terminal, follow these steps:
+`lbm` is used from a terminal. To open the terminal, follow these steps:
 - **Windows**: `Start` > `All Programs` > `Accessories` > `Command Prompt`
 - **MacOS**: `Finder` > `Applications` > `Utilities` > `Terminal`
 - **Linux**: `Ctrl` + `Alt` + `T`
 :::
 
-## LFB Accounts
+## LBM Accounts
 
-At the core of every LFB account, there is a seed, which takes the form of a 12 or 24-words mnemonic. From this mnemonic, it is possible to create any number of LFB accounts, i.e. pairs of private key/public key. This is called an HD wallet (see [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) for more information on the HD wallet specification).
+At the core of every LBM account, there is a seed, which takes the form of a 12 or 24-words mnemonic. From this mnemonic, it is possible to create any number of LBM accounts, i.e. pairs of private key/public key. This is called an HD wallet (see [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) for more information on the HD wallet specification).
 
 ```
      Account 0                         Account 1                         Account 2
@@ -118,11 +118,11 @@ The address is a public string with a human-readable prefix (e.g. `link1twsfmuj2
 *NOTE: This section only concerns fundraiser participants*
 :::
 
-If you participated in the fundraiser, you should be in possession of a 12-words mnemonic. Newly generated mnemonics use 24 words, but 12-word mnemonics are also compatible with all the LFB tools. 
+If you participated in the fundraiser, you should be in possession of a 12-words mnemonic. Newly generated mnemonics use 24 words, but 12-word mnemonics are also compatible with all the LBM tools. 
 
 #### On a Ledger Device
 
-At the core of a ledger device, there is a mnemonic used to generate accounts on multiple blockchains (including a LINE Financial Blockchain). Usually, you will create a new mnemonic when you initialize your ledger device. However, it is possible to tell the ledger device to use a mnemonic provided by the user instead. Let us go ahead and see how you can input the mnemonic you obtained during the fundraiser as the seed of your ledger device. 
+At the core of a ledger device, there is a mnemonic used to generate accounts on multiple blockchains (including a LINE Blockchain Mainnet). Usually, you will create a new mnemonic when you initialize your ledger device. However, it is possible to tell the ledger device to use a mnemonic provided by the user instead. Let us go ahead and see how you can input the mnemonic you obtained during the fundraiser as the seed of your ledger device. 
 
 ::: warning
 *NOTE: To do this, **it is preferable to use a brand new ledger device.**. Indeed, there can be only one mnemonic per ledger device. If, however, you want to use a ledger that is already initialized with a seed, you can reset it by going in `Settings`>`Device`>`Reset All`. **Please note that this will wipe out the seed currently stored on the device. If you have not properly secured the associated mnemonic, you could lose your funds!!!***
@@ -150,7 +150,7 @@ Next, click [here](#using-a-ledger-device) to learn how to generate an account.
 To restore an account using a fundraiser mnemonic and store the associated encrypted private key on a computer, use the following command:
 
 ```bash
-lfb keys add <yourKeyName> --recover
+lbm keys add <yourKeyName> --recover
 ```
 
 - `<yourKeyName>` is the name of the account. It is a reference to the account number used to derive the key pair from the mnemonic. You will use this name to identify your account when you want to send a transaction.
@@ -169,7 +169,7 @@ store security policies please refer to your operating system manual.**
 
 ### Creating an Account
 
-To create an account, you just need to have `lfb` installed. Before creating it, you need to know where you intend to store and interact with your private keys. The best options are to store them in an offline dedicated computer or a ledger device. Storing them on your regular online computer involves more risk, since anyone who infiltrates your computer through the internet could exfiltrate your private keys and steal your funds.
+To create an account, you just need to have `lbm` installed. Before creating it, you need to know where you intend to store and interact with your private keys. The best options are to store them in an offline dedicated computer or a ledger device. Storing them on your regular online computer involves more risk, since anyone who infiltrates your computer through the internet could exfiltrate your private keys and steal your funds.
 
 #### Using a Ledger Device
 
@@ -177,17 +177,17 @@ To create an account, you just need to have `lfb` installed. Before creating it,
 **Only use Ledger devices that you bought factory new or trust fully**
 :::
 
-When you initialize your ledger, a 24-word mnemonic is generated and stored in the device. This mnemonic is compatible with LFB and LFB accounts can be derived from it. Therefore, all you have to do is make your ledger compatible with `lfb`. To do so, you need to go through the following steps:
+When you initialize your ledger, a 24-word mnemonic is generated and stored in the device. This mnemonic is compatible with LBM and LBM accounts can be derived from it. Therefore, all you have to do is make your ledger compatible with `lbm`. To do so, you need to go through the following steps:
 
 1. Download the Ledger Live app [here](https://www.ledger.com/pages/ledger-live). 
 2. Connect your ledger via USB and update to the latest firmware
-3. Go to the ledger live app store, and download the "LFB" application (this can take a while). **Note: You may have to enable `Dev Mode` in the `Settings` of Ledger Live to be able to download the "LFB" application**. 
-4. Navigate to the LFB app on your ledger device
+3. Go to the ledger live app store, and download the "LBM" application (this can take a while). **Note: You may have to enable `Dev Mode` in the `Settings` of Ledger Live to be able to download the "LBM" application**. 
+4. Navigate to the LBM app on your ledger device
 
 Then, to create an account, use the following command:
 
 ```bash
-lfb keys add <yourAccountName> --ledger 
+lbm keys add <yourAccountName> --ledger 
 ```
 
 ::: warning
@@ -206,7 +206,7 @@ lfb keys add <yourAccountName> --ledger
 To generate an account, just use the following command:
 
 ```bash
-lfb keys add <yourKeyName>
+lbm keys add <yourKeyName>
 ```
 
 The command will generate a 24-words mnemonic and save the private and public keys for account `0`
@@ -241,13 +241,13 @@ rm ~/.bash_history
 You can generate more accounts from the same mnemonic using the following command:
 
 ```bash
-lfb keys add <yourKeyName> --recover --account 1
+lbm keys add <yourKeyName> --recover --account 1
 ```
 
 This command will prompt you to input a passphrase as well as your mnemonic. Change the account number to generate a different account. 
 
 
-## Accessing a LINE Financial Blockchain
+## Accessing a LINE Blockchain Mainnet
 
 In order to query the state and send transactions, you need a way to access the network. To do so, you can either run your own full-node, or connect to someone else's.
 
@@ -259,30 +259,30 @@ In order to query the state and send transactions, you need a way to access the 
 
 This is the most secure option, but comes with relatively high resource requirements. In order to run your own full-node, you need good bandwidth and at least 1TB of disk space. 
 
-You will find the tutorial on how to install `lfb` [here](../lfb-tutorials/installation.md), and the guide to run a full-node [here](../lfb-tutorials/join-mainnet.md).
+You will find the tutorial on how to install `lbm` [here](../lbm-tutorials/installation.md), and the guide to run a full-node [here](../lbm-tutorials/join-mainnet.md).
 
 ### Connecting to a Remote Full-Node
 
 If you do not want or cannot run your own node, you can connect to someone else's full-node. You should pick an operator you trust, because a malicious operator could return  incorrect query results or censor your transactions. However, they will never be able to steal your funds, as your private keys are stored locally on your computer or ledger device. Possible options of full-node operators include validators, wallet providers or exchanges. 
 
-In order to connect to the full-node, you will need an address of the following form: `https://77.87.106.33:26657` (*Note: This is a placeholder*). This address has to be communicated by the full-node operator you choose to trust. You will use this address in the [following section](#setting-up-lfb).
+In order to connect to the full-node, you will need an address of the following form: `https://77.87.106.33:26657` (*Note: This is a placeholder*). This address has to be communicated by the full-node operator you choose to trust. You will use this address in the [following section](#setting-up-lbm).
 
-## Setting Up `lfb`
+## Setting Up `lbm`
 
 ::: tip
-**Before setting up `lfb`, make sure you have set up a way to [access a LINE Financial Blockchain](#accessing-a-line-blockchain-mainnet)**
+**Before setting up `lbm`, make sure you have set up a way to [access a LINE Blockchain Mainnet](#accessing-a-line-blockchain-mainnet)**
 :::
 
 ::: warning
-**Please check that you are always using the latest stable release of `lfb`**
+**Please check that you are always using the latest stable release of `lbm`**
 :::
 
-`lfb` is the tool that enables you to interact with the node that runs on a LINE Financial Blockchain, whether you run it yourself or not. Let us set it up properly.
+`lbm` is the tool that enables you to interact with the node that runs on a LINE Blockchain Mainnet, whether you run it yourself or not. Let us set it up properly.
 
-In order to set up `lfb`, use the following command:
+In order to set up `lbm`, use the following command:
 
 ```bash
-lfb config <flag> <value>
+lbm config <flag> <value>
 ```
 
 It allows you to set a default value for each given flag. 
@@ -290,9 +290,9 @@ It allows you to set a default value for each given flag.
 First, set up the address of the full-node you want to connect to:
 
 ```bash
-lfb config node <host>:<port
+lbm config node <host>:<port
 
-// example: lfb config node https://77.87.106.33:26657
+// example: lbm config node https://77.87.106.33:26657
 ```
 
 If you run your own full-node, just use `tcp://localhost:26657` as the address. 
@@ -300,7 +300,7 @@ If you run your own full-node, just use `tcp://localhost:26657` as the address.
 Then, let us set the default value of the `--trust-node` flag:
 
 ```bash
-lfb config trust-node false
+lbm config trust-node false
 
 // Set to true if you run a light-client node, false otherwise
 ```
@@ -308,50 +308,50 @@ lfb config trust-node false
 Finally, let us set the `chain-id` of the blockchain we want to interact with:
 
 ```bash
-lfb config chain-id lfb-2
+lbm config chain-id lbm-2
 ```
 
 ## Querying the State
 
 ::: tip
-**Before you can bond base coins and withdraw rewards, you need to [set up `lfb`](#setting-up-lfb)**
+**Before you can bond base coins and withdraw rewards, you need to [set up `lbm`](#setting-up-lbm)**
 :::
 
-`lfb` lets you query all relevant information from the blockchain, like account balances, amount of bonded tokens, outstanding rewards, governance proposals and more. Next is a list of the most useful commands for delegator. 
+`lbm` lets you query all relevant information from the blockchain, like account balances, amount of bonded tokens, outstanding rewards, governance proposals and more. Next is a list of the most useful commands for delegator. 
 
 ```bash
 // query account balances and other account-related information
-lfb query account <yourAddress>
+lbm query account <yourAddress>
 
 // query the list of validators
-lfb query staking validators
+lbm query staking validators
 
 // query the information of a validator given their address (e.g. linkvaloper1ghekyjucln7y67ntx7cf27m9dpuxxemnjz9hqc)
-lfb query staking validator <validatorAddress>
+lbm query staking validator <validatorAddress>
 
 // query all delegations made from a delegator given their address (e.g. link1qyqszqgpqyqszqgpqyqszqgpqyqszqgp8apuk5)
-lfb query staking delegations <delegatorAddress>
+lbm query staking delegations <delegatorAddress>
 
 // query a specific delegation made from a delegator (e.g. link1qyqszqgpqyqszqgpqyqszqgpqyqszqgp8apuk5) to a validator (e.g. linkvaloper1ghekyjucln7y67ntx7cf27m9dpuxxemnjz9hqc) given their addresses
-lfb query staking delegation <delegatorAddress> <validatorAddress>
+lbm query staking delegation <delegatorAddress> <validatorAddress>
 
 // query the rewards of a delegator given a delegator address (e.g. link1qyqszqgpqyqszqgpqyqszqgpqyqszqgp8apuk5)
-lfb query distribution rewards <delegatorAddress> 
+lbm query distribution rewards <delegatorAddress> 
 
 // query all proposals currently open for depositing
-lfb query gov proposals --status deposit_period
+lbm query gov proposals --status deposit_period
 
 // query all proposals currently open for voting
-lfb query gov proposals --status voting_period
+lbm query gov proposals --status voting_period
 
 // query a proposal given its proposalID
-lfb query gov proposal <proposalID>
+lbm query gov proposal <proposalID>
 ```
 
 For more commands, just type:
 
 ```bash
-lfb query
+lbm query
 ```
 
 For each command, you can use the `-h` or `--help` flag to get more information.
@@ -359,12 +359,12 @@ For each command, you can use the `-h` or `--help` flag to get more information.
 ## Sending Transactions
 
 ::: warning
-On a LINE Financial Blockchain, the accepted denom is `ulink`, where `1link = 1,000,000ulink`
+On a LINE Blockchain Mainnet, the accepted denom is `ulink`, where `1link = 1,000,000ulink`
 :::
 
 ### A Note on Gas and Fees
 
-Transactions on a LINE Financial Blockchain need to include a transaction fee in order to be processed. This fee pays for the gas required to run the transaction. The formula is the following:
+Transactions on a LINE Blockchain Mainnet need to include a transaction fee in order to be processed. This fee pays for the gas required to run the transaction. The formula is the following:
 
 ```
 fees = ceil(gas * gasPrices)
@@ -383,7 +383,7 @@ For mainnet, the recommended `gas-prices` is `0.025ulink`.
 ### Sending Tokens
 
 ::: tip
-**Before you can bond atbase coins and withdraw rewards, you need to [set up `lfb`](#setting-up-lfb) and [create an account](#creating-an-account)**
+**Before you can bond atbase coins and withdraw rewards, you need to [set up `lbm`](#setting-up-lbm) and [create an account](#creating-an-account)**
 :::
 
 ::: warning
@@ -395,13 +395,13 @@ For mainnet, the recommended `gas-prices` is `0.025ulink`.
 // Ex value for parameters (do not actually use these values in your tx!!): <to_address>=link1ghekyjucln7y67ntx7cf27m9dpuxxemnqk82wt <amount>=1000000ulink 
 // Ex value for flags: <gasPrice>=0.025ulink
 
-lfb tx send <to_address> <amount> --from <yourKeyName> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice>
+lbm tx send <to_address> <amount> --from <yourKeyName> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice>
 ```
 
 ### Bonding base coin and Withdrawing Rewards
 
 ::: tip
-**Before you can bond base coins and withdraw rewards, you need to [set up `lfb`](#setting-up-lfb) and [create an account](#creating-an-account)**
+**Before you can bond base coins and withdraw rewards, you need to [set up `lbm`](#setting-up-lbm) and [create an account](#creating-an-account)**
 :::
 
 ::: warning
@@ -416,7 +416,7 @@ lfb tx send <to_address> <amount> --from <yourKeyName> --gas auto --gas-adjustme
 // Bond a certain amount of base coin to a given validator
 // ex value for flags: <validatorAddress>=linkvaloper1ghekyjucln7y67ntx7cf27m9dpuxxemnjz9hqc, <amountToBound>=10000000ulink, <gasPrice>=0.025ulink
 
-lfb tx staking delegate <validatorAddress> <amountToBond> --from <delegatorKeyName> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice>
+lbm tx staking delegate <validatorAddress> <amountToBond> --from <delegatorKeyName> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice>
 
 
 // Redelegate a certain amount of base coin from a validator to another
@@ -425,19 +425,19 @@ lfb tx staking delegate <validatorAddress> <amountToBond> --from <delegatorKeyNa
 // After a redelegation, no other redelegation can be made from the account for the next 3 weeks
 // ex value for flags: <stcValidatorAddress>=linkvaloper1ghekyjucln7y67ntx7cf27m9dpuxxemnjz9hqc, <amountToRedelegate>=100000000ulink, <gasPrice>=0.025ulink
 
-lfb tx staking redelegate <srcValidatorAddress> <destValidatorAddress> <amountToRedelegate> --from <delegatorKeyName> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice>
+lbm tx staking redelegate <srcValidatorAddress> <destValidatorAddress> <amountToRedelegate> --from <delegatorKeyName> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice>
 
 // Withdraw all rewards
 // ex value for flag: <gasPrice>=0.025ulink
 
-lfb tx distribution withdraw-all-rewards --from <delegatorKeyName> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice>
+lbm tx distribution withdraw-all-rewards --from <delegatorKeyName> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice>
 
 
 // Unbond a certain amount of base coin from a given validator 
 // You will have to wait 3 weeks before your base coin are fully unbonded and transferrable 
 // ex value for flags: <validatorAddress>=linkvaloper1ghekyjucln7y67ntx7cf27m9dpuxxemnjz9hqc, <amountToUnbound>=10000000ulink, <gasPrice>=0.025ulink
 
-lfb tx staking unbond <validatorAddress> <amountToUnbond> --from <delegatorKeyName> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice>
+lbm tx staking unbond <validatorAddress> <amountToUnbond> --from <delegatorKeyName> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice>
 ```
 
 ::: warning
@@ -448,14 +448,14 @@ To confirm that your transaction went through, you can use the following queries
 
 ```bash
 // your balance should change after you bond base coin or withdraw rewards
-lfb query account
+lbm query account
 
 // you should have delegations after you bond base coin
-lfb query staking delegations <delegatorAddress>
+lbm query staking delegations <delegatorAddress>
 
 // this returns your tx if it has been included
 // use the tx hash that was displayed when you created the tx
-lfb query tx <txHash>
+lbm query tx <txHash>
 
 ```
 
@@ -465,7 +465,7 @@ Double check with a block explorer if you interact with the network through a tr
 
 #### Primer on Governance
 
-A LINE Financial Blockchain has a built-in governance system that lets bonded base coin holders vote on proposals. There are three types of proposal:
+A LINE Blockchain Mainnet has a built-in governance system that lets bonded base coin holders vote on proposals. There are three types of proposal:
 
 - `Text Proposals`: These are the most basic type of proposals. They can be used to get the opinion of the network on a given topic. 
 - `Parameter Proposals`: These are used to update the value of an existing parameter.
@@ -492,19 +492,19 @@ At the end of the voting period, the proposal is accepted if there are more than
 // <type>=text/parameter_change/software_upgrade
 // ex value for flag: <gasPrice>=0.025ulink
 
-lfb tx gov submit-proposal --title "Test Proposal" --description "My awesome proposal" --type <type> --deposit=10000000ulink --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice> --from <delegatorKeyName>
+lbm tx gov submit-proposal --title "Test Proposal" --description "My awesome proposal" --type <type> --deposit=10000000ulink --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice> --from <delegatorKeyName>
 
 // Increase deposit of a proposal
-// Retrieve proposalID from lfb query gov proposals --status deposit_period
+// Retrieve proposalID from lbm query gov proposals --status deposit_period
 // ex value for parameter: <deposit>=10000000ulink
 
-lfb tx gov deposit <proposalID> <deposit> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice> --from <delegatorKeyName>
+lbm tx gov deposit <proposalID> <deposit> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice> --from <delegatorKeyName>
 
 // Vote on a proposal
-// Retrieve proposalID from lfb query gov proposals --status voting_period 
+// Retrieve proposalID from lbm query gov proposals --status voting_period 
 // <option>=yes/no/no_with_veto/abstain
 
-lfb tx gov vote <proposalID> <option> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice> --from <delegatorKeyName>
+lbm tx gov vote <proposalID> <option> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice> --from <delegatorKeyName>
 ```
 
 ### Signing Transactions From an Offline Computer
@@ -515,15 +515,15 @@ If you do not have a ledger device and want to interact with your private key on
 // Bond base coin 
 // ex value for flags: <amountToBound>=10000000ulink, <bech32AddressOfValidator>=linkvaloper1ghekyjucln7y67ntx7cf27m9dpuxxemnjz9hqc, <gasPrice>=0.025ulink, <delegatorAddress>=link1qyqszqgpqyqszqgpqyqszqgpqyqszqgp8apuk5
 
-lfb tx staking delegate <validatorAddress> <amountToBond> --from <delegatorAddress> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice> --generate-only > unsignedTX.json
+lbm tx staking delegate <validatorAddress> <amountToBond> --from <delegatorAddress> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice> --generate-only > unsignedTX.json
 ```
 
 In order to sign, you will also need the `chain-id`, `account-number` and `sequence`. The `chain-id` is a unique identifier for the blockchain on which you are submitting the transaction. The `account-number` is an identifier generated when your account first receives funds. The `sequence` number is used to keep track of the number of transactions you have sent and prevent replay attacks.
 
-Get the chain-id from the genesis file (`lfb-2`), and the two other fields using the account query:
+Get the chain-id from the genesis file (`lbm-2`), and the two other fields using the account query:
 
 ```bash
-lfb query account <yourAddress> --chain-id lfb-2
+lbm query account <yourAddress> --chain-id lbm-2
 ```
 
 Then, copy `unsignedTx.json` and transfer it (e.g. via USB) to the offline computer. If it is not done already, [create an account on the offline computer](#using-a-computer). For additional security, you can double check the parameters of your transaction before signing it using the following command:
@@ -535,11 +535,11 @@ cat unsignedTx.json
 Now, sign the transaction using the following command. You will need the `chain-id`, `sequence` and `account-number` obtained earlier:
 
 ```bash
-lfb tx sign unsignedTx.json --from <delegatorKeyName> --offline --chain-id lfb-2 --sequence <sequence> --account-number <account-number> > signedTx.json
+lbm tx sign unsignedTx.json --from <delegatorKeyName> --offline --chain-id lbm-2 --sequence <sequence> --account-number <account-number> > signedTx.json
 ```
 
 Copy `signedTx.json` and transfer it back to the online computer. Finally, use the following command to broadcast the transaction:
 
 ```bash
-lfb tx broadcast signedTx.json
+lbm tx broadcast signedTx.json
 ```

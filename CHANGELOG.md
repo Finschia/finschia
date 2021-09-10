@@ -49,9 +49,10 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Breaking Changes
 * (sdk) (auth) [\#16](https://github.com/line/lfb/pull/16) Introduce sig block height for the new replay protection
 * (ostracon/sdk) [\#26](https://github.com/line/lfb/pull/26) Use vrf-based consensus, address string treatment
+* (global) [\#1](https://github.com/line/lbm/pull/1) Re-brand lfb to lbm
 
 ## [gaia v4.0.4] - 2021-03-15
-Initial lfb is based on the tendermint v0.34.9+, cosmos-sdk v0.42.0+, gaia v4.0.4
+Initial lbm is based on the tendermint v0.34.9+, cosmos-sdk v0.42.0+, gaia v4.0.4
 
 * (tendermint) [v0.34.9](https://github.com/tendermint/tendermint/releases/tag/v0.34.9).
 * (cosmos-sdk) [v0.42.0](https://github.com/cosmos/cosmos-sdk/releases/tag/v0.42.0).

@@ -1,7 +1,7 @@
 {
-  "name": "lfb-docs",
+  "name": "lbm-docs",
   "version": "1.0.0",
-  "description": "LFB Documentation",
+  "description": "LBM Documentation",
   "main": "index.js",
   "dependencies": {
     "vuepress-theme-cosmos": "^1.0.180"
@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "keywords": [
-    "lfb",
+    "lbm",
     "line blockchain mainnet",
     "link"
   ]

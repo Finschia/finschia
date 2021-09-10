@@ -11,7 +11,7 @@ endif
 
 PACKAGES_SIMTEST=$(shell go list ./... | grep '/simulation')
 LEDGER_ENABLED ?= false
-SDK_PACK := $(shell go list -m github.com/line/lfb-sdk | sed  's/ /\@/g')
+SDK_PACK := $(shell go list -m github.com/line/lbm-sdk | sed  's/ /\@/g')
 OST_VERSION := $(shell go list -m github.com/line/ostracon | sed 's:.* ::') # grab everything after the space in "github.com/line/ostracon v0.34.7"
 DOCKER := $(shell which docker)
 BUILDDIR ?= $(CURDIR)/build
@@ -47,11 +47,11 @@ ifeq ($(LEDGER_ENABLED),true)
 endif
 
 # DB backend selection; use default for testing; use rocksdb or cleveldb for performance; build automation is not ready for boltdb and badgerdb yet.
-ifeq (,$(filter $(LFB_BUILD_OPTIONS), cleveldb rocksdb boltdb badgerdb))
+ifeq (,$(filter $(LBM_BUILD_OPTIONS), cleveldb rocksdb boltdb badgerdb))
   BUILD_TAGS += goleveldb
   DB_BACKEND = goleveldb
 else
-  ifeq (cleveldb,$(findstring cleveldb,$(LFB_BUILD_OPTIONS)))
+  ifeq (cleveldb,$(findstring cleveldb,$(LBM_BUILD_OPTIONS)))
     CGO_ENABLED=1
     BUILD_TAGS += gcc cleveldb
     DB_BACKEND = cleveldb
@@ -59,11 +59,11 @@ else
     CGO_CFLAGS=-I$(shell pwd)/$(CLEVELDB_DIR)/include
     CGO_LDFLAGS="-L$(shell pwd)/$(CLEVELDB_DIR)/build -L$(shell pwd)/snappy/build -lleveldb -lm -lstdc++ -lsnappy"
   endif
-  ifeq (badgerdb,$(findstring badgerdb,$(LFB_BUILD_OPTIONS)))
+  ifeq (badgerdb,$(findstring badgerdb,$(LBM_BUILD_OPTIONS)))
     BUILD_TAGS += badgerdb
     DB_BACKEND = badgerdb
   endif
-  ifeq (rocksdb,$(findstring rocksdb,$(LFB_BUILD_OPTIONS)))
+  ifeq (rocksdb,$(findstring rocksdb,$(LBM_BUILD_OPTIONS)))
     CGO_ENABLED=1
     BUILD_TAGS += gcc rocksdb
     DB_BACKEND = rocksdb
@@ -71,14 +71,14 @@ else
     CGO_CFLAGS=-I$(ROCKSDB_DIR)/include
     CGO_LDFLAGS="-L$(ROCKSDB_DIR) -lrocksdb -lm -lstdc++ $(shell awk '/PLATFORM_LDFLAGS/ {sub("PLATFORM_LDFLAGS=", ""); print}' < $(ROCKSDB_DIR)/make_config.mk)"
   endif
-  ifeq (boltdb,$(findstring boltdb,$(LFB_BUILD_OPTIONS)))
+  ifeq (boltdb,$(findstring boltdb,$(LBM_BUILD_OPTIONS)))
     BUILD_TAGS += boltdb
     DB_BACKEND = boltdb
   endif
 endif
 
 # secp256k1 implementation selection
-ifeq (libsecp256k1,$(findstring libsecp256k1,$(LFB_BUILD_OPTIONS)))
+ifeq (libsecp256k1,$(findstring libsecp256k1,$(LBM_BUILD_OPTIONS)))
   CGO_ENABLED=1
   BUILD_TAGS += libsecp256k1
 endif
@@ -93,15 +93,15 @@ build_tags_comma_sep := $(subst $(whitespace),$(comma),$(build_tags))
 
 # process linker flags
 
-ldflags = -X github.com/line/lfb-sdk/version.Name=lfb \
-		  -X github.com/line/lfb-sdk/version.AppName=lfb \
-		  -X github.com/line/lfb-sdk/version.Version=$(VERSION) \
-		  -X github.com/line/lfb-sdk/version.Commit=$(COMMIT) \
-		  -X github.com/line/lfb-sdk/types.DBBackend=$(DB_BACKEND) \
-		  -X "github.com/line/lfb-sdk/version.BuildTags=$(build_tags_comma_sep)" \
+ldflags = -X github.com/line/lbm-sdk/version.Name=lbm \
+		  -X github.com/line/lbm-sdk/version.AppName=lbm \
+		  -X github.com/line/lbm-sdk/version.Version=$(VERSION) \
+		  -X github.com/line/lbm-sdk/version.Commit=$(COMMIT) \
+		  -X github.com/line/lbm-sdk/types.DBBackend=$(DB_BACKEND) \
+		  -X "github.com/line/lbm-sdk/version.BuildTags=$(build_tags_comma_sep)" \
 		  -X github.com/line/ostracon/version.TMCoreSemVer=$(OST_VERSION)
 
-ifeq (,$(findstring nostrip,$(LFB_BUILD_OPTIONS)))
+ifeq (,$(findstring nostrip,$(LBM_BUILD_OPTIONS)))
   ldflags += -w -s
 endif
 ldflags += $(LDFLAGS)
@@ -111,7 +111,7 @@ BUILD_FLAGS := -tags "$(build_tags)" -ldflags '$(ldflags)'
 CLI_TEST_BUILD_FLAGS := -tags "cli_test $(build_tags)"
 CLI_MULTI_BUILD_FLAGS := -tags "cli_multi_node_test $(build_tags)"
 # check for nostrip option
-ifeq (,$(findstring nostrip,$(LFB_BUILD_OPTIONS)))
+ifeq (,$(findstring nostrip,$(LBM_BUILD_OPTIONS)))
   BUILD_FLAGS += -trimpath
 endif
 
@@ -132,7 +132,7 @@ build: go.sum $(BUILDDIR)/ dbbackend
 	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go build -mod=readonly $(BUILD_FLAGS) $(BUILD_ARGS) ./...
 
 install: go.sum $(BUILDDIR)/ dbbackend
-	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go install $(BUILD_FLAGS) $(BUILD_ARGS) ./cmd/lfb
+	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go install $(BUILD_FLAGS) $(BUILD_ARGS) ./cmd/lbm
 
 $(BUILDDIR)/:
 	mkdir -p $(BUILDDIR)/
@@ -177,7 +177,7 @@ build-reproducible: go.sum
 	$(DOCKER) rm latest-build || true
 	$(DOCKER) run --volume=$(CURDIR):/sources:ro \
         --env TARGET_PLATFORMS='linux/amd64 darwin/amd64 linux/arm64 windows/amd64' \
-        --env APP=lfb \
+        --env APP=lbm \
         --env VERSION=$(VERSION) \
         --env COMMIT=$(COMMIT) \
         --env LEDGER_ENABLED=$(LEDGER_ENABLED) \
@@ -188,7 +188,7 @@ build-linux: go.sum
 	LEDGER_ENABLED=false GOOS=linux GOARCH=amd64 $(MAKE) build
 
 build-docker:
-	docker build --build-arg LFB_BUILD_OPTIONS="$(LFB_BUILD_OPTIONS)" -t line/lfb .
+	docker build --build-arg LBM_BUILD_OPTIONS="$(LBM_BUILD_OPTIONS)" -t line/lbm .
 
 build-contract-tests-hooks:
 	mkdir -p $(BUILDDIR)
@@ -205,7 +205,7 @@ go.sum: go.mod
 draw-deps:
 	@# requires brew install graphviz or apt-get install graphviz
 	go get github.com/RobotsAndPencils/goviz
-	@goviz -i ./cmd/lfb -d 2 | dot -Tpng -o dependency-graph.png
+	@goviz -i ./cmd/lbm -d 2 | dot -Tpng -o dependency-graph.png
 
 clean:
 	rm -rf $(BUILDDIR)/ artifacts/
@@ -281,18 +281,18 @@ lint:
 format:
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/lcd/statik/statik.go" | xargs gofmt -w -s
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/lcd/statik/statik.go" | xargs misspell -w
-	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/lcd/statik/statik.go" | xargs goimports -w -local github.com/line/lfb-sdk
+	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/lcd/statik/statik.go" | xargs goimports -w -local github.com/line/lbm-sdk
 
 ###############################################################################
 ###                                Localnet                                 ###
 ###############################################################################
 
-build-docker-lfbnode:
+build-docker-lbmnode:
 	$(MAKE) -C networks/local
 
 # Run a 4-node testnet locally
 localnet-start: build-linux localnet-stop
-	@if ! [ -f build/node0/lfb/config/genesis.json ]; then docker run --rm -v $(CURDIR)/build:/lfb:Z line/lfbnode testnet --v 4 -o . --starting-ip-address 192.168.10.2 --keyring-backend=test ; fi
+	@if ! [ -f build/node0/lbm/config/genesis.json ]; then docker run --rm -v $(CURDIR)/build:/lbm:Z line/lbmnode testnet --v 4 -o . --starting-ip-address 192.168.10.2 --keyring-backend=test ; fi
 	docker-compose up -d
 
 # Stop testnet
@@ -314,5 +314,5 @@ test-docker-push: test-docker
 	setup-transactions setup-contract-tests-data start-link run-lcd-contract-tests contract-tests \
 	test test-all test-build test-cover test-unit test-race \
 	benchmark \
-	build-docker-lfbnode localnet-start localnet-stop \
+	build-docker-lbmnode localnet-start localnet-stop \
 	docker-single-node

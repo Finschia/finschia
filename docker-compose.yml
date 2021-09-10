@@ -1,58 +1,58 @@
 version: '3'
 
 services:
-  lfbnode0:
-    container_name: lfbnode0
-    image: "line/lfbnode"
+  lbmnode0:
+    container_name: lbmnode0
+    image: "line/lbmnode"
     ports:
       - "26656-26657:26656-26657"
     environment:
       - ID=0
-      - LOG=${LOG:-lfb.log}
+      - LOG=${LOG:-lbm.log}
     volumes:
-      - ./build:/lfb:Z
+      - ./build:/lbm:Z
     networks:
       localnet:
         ipv4_address: 192.168.10.2
 
-  lfbnode1:
-    container_name: lfbnode1
-    image: "line/lfbnode"
+  lbmnode1:
+    container_name: lbmnode1
+    image: "line/lbmnode"
     ports:
       - "26659-26660:26656-26657"
     environment:
       - ID=1
-      - LOG=${LOG:-lfb.log}
+      - LOG=${LOG:-lbm.log}
     volumes:
-      - ./build:/lfb:Z
+      - ./build:/lbm:Z
     networks:
       localnet:
         ipv4_address: 192.168.10.3
 
-  lfbnode2:
-    container_name: lfbnode2
-    image: "line/lfbnode"
+  lbmnode2:
+    container_name: lbmnode2
+    image: "line/lbmnode"
     environment:
       - ID=2
-      - LOG=${LOG:-lfb.log}
+      - LOG=${LOG:-lbm.log}
     ports:
       - "26661-26662:26656-26657"
     volumes:
-      - ./build:/lfb:Z
+      - ./build:/lbm:Z
     networks:
       localnet:
         ipv4_address: 192.168.10.4
 
-  lfbnode3:
-    container_name: lfbnode3
-    image: "line/lfbnode"
+  lbmnode3:
+    container_name: lbmnode3
+    image: "line/lbmnode"
     environment:
       - ID=3
-      - LOG=${LOG:-lfb.log}
+      - LOG=${LOG:-lbm.log}
     ports:
       - "26663-26664:26656-26657"
     volumes:
-      - ./build:/lfb:Z
+      - ./build:/lbm:Z
     networks:
       localnet:
         ipv4_address: 192.168.10.5

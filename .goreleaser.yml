@@ -6,23 +6,23 @@ before:
     - go generate ./...
 builds:
 -
-  id: "lfb"
-  main: ./cmd/lfb
-  binary: build/lfb
+  id: "lbm"
+  main: ./cmd/lbm
+  binary: build/lbm
   env:
     - CGO_ENABLED=0
   flags:
     - -mod=readonly
     - -tags=netgo ledger
   ldflags:
-    - -X github.com/line/lfb-sdk/version.Name=lfb
-    - -X github.com/line/lfb-sdk/version.ServerName=lfb
-    - -X github.com/line/lfb-sdk/version.Version={{ .Version }}
-    - -X github.com/line/lfb-sdk/version.Commit={{ .FullCommit }}
-    - -X "github.com/line/lfb-sdk/version.BuildTags=netgo,ledger"
+    - -X github.com/line/lbm-sdk/version.Name=lbm
+    - -X github.com/line/lbm-sdk/version.ServerName=lbm
+    - -X github.com/line/lbm-sdk/version.Version={{ .Version }}
+    - -X github.com/line/lbm-sdk/version.Commit={{ .FullCommit }}
+    - -X "github.com/line/lbm-sdk/version.BuildTags=netgo,ledger"
 archives:
 -
-  builds: ['lfb']
+  builds: ['lbm']
   replacements:
     darwin: Darwin
     linux: Linux

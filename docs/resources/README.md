@@ -6,11 +6,11 @@ parent:
 
 # Resources
 
-This folder contains resources on the `lfb` software.
+This folder contains resources on the `lbm` software.
 
-- [`lfb` documentation](./lfb.md)
-- [`lfb` genesis file](./genesis.md)
-- [HD Wallets for `lfb`](./hd-wallets.md)
-- [Ledger Integration for `lfb`](./ledger.md)
+- [`lbm` documentation](./lbm.md)
+- [`lbm` genesis file](./genesis.md)
+- [HD Wallets for `lbm`](./hd-wallets.md)
+- [Ledger Integration for `lbm`](./ledger.md)
 - [Service Providers Documentation](./service-providers.md)
 - [Reproducible Builds](./reproducible-builds.md)

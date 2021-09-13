@@ -2,9 +2,9 @@
 order: 2
 -->
 
-# Install lfb
+# Install lbm
 
-This guide will explain how to install the `lfb` entrypoint
+This guide will explain how to install the `lbm` entrypoint
 onto your system. With these installed on a server, you can participate in the
 mainnet as either a [Full Node](./join-mainnet.md) or a
 [Validator](../validators/validator-setup.md).
@@ -27,17 +27,17 @@ source ~/.bash_profile
 ## Install the binaries
 
 Next, let's install the latest version of Gaia. Make sure you `git checkout` the
-correct [released version](https://github.com/line/lfb/releases).
+correct [released version](https://github.com/line/lbm/releases).
 
 ```bash
-git clone -b <latest-release-tag> https://github.com/line/lfb
-cd lfb && make install
+git clone -b <latest-release-tag> https://github.com/line/lbm
+cd lbm && make install
 ```
 
 If this command fails due to the following error message, you might have already set `LDFLAGS` prior to running this step.
 
 ```
-# github.com/lfb/lfb/cmd/lfb
+# github.com/lbm/lbm/cmd/lbm
 flag provided but not defined: -L
 usage: link [options] main.o
 ...
@@ -52,17 +52,17 @@ LDFLAGS="" make install
 
 > _NOTE_: If you still have issues at this step, please check that you have the latest stable version of GO installed.
 
-That will install the `lfb` binary. Verify that everything is OK:
+That will install the `lbm` binary. Verify that everything is OK:
 
 ```bash
-lfb version --long
+lbm version --long
 ```
 
-`lfb` for instance should output something similar to:
+`lbm` for instance should output something similar to:
 
 ```bash
-name: lfb
-server_name: lfb
+name: lbm
+server_name: lbm
 version: 1.0.0
 commit: 8692310a5361006f8c02d44cd7df2d41f130089b
 build_tags: netgo,goleveldb
@@ -92,6 +92,6 @@ Build tags indicate special features that have been enabled in the binary.
 To test any changes made in the SDK or Ostracon, a `replace` clause needs to be added to `go.mod` providing the correct import path.
 
 - Make appropriate changes
-- Add `replace github.com/line/lfb-sdk => /path/to/clone/lfb-sdk` to `go.mod`
+- Add `replace github.com/line/lbm-sdk => /path/to/clone/lbm-sdk` to `go.mod`
 - Run `make clean install` or `make clean build`
 - Test changes

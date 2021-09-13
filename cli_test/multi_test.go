@@ -7,8 +7,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	cryptocodec "github.com/line/lfb-sdk/crypto/codec"
-	sdk "github.com/line/lfb-sdk/types"
+	cryptocodec "github.com/line/lbm-sdk/crypto/codec"
+	sdk "github.com/line/lbm-sdk/types"
 
 	"github.com/line/ostracon/privval"
 )
@@ -18,7 +18,7 @@ func TestMultiValidatorAndSendTokens(t *testing.T) {
 
 	fg := InitFixturesGroup(t)
 
-	fg.LFBStartCluster()
+	fg.LBMStartCluster()
 	defer fg.Cleanup()
 
 	f := fg.Fixture(0)
@@ -98,7 +98,7 @@ func TestMultiValidatorAddNodeAndPromoteValidator(t *testing.T) {
 	t.Parallel()
 
 	fg := InitFixturesGroup(t)
-	fg.LFBStartCluster()
+	fg.LBMStartCluster()
 	defer fg.Cleanup()
 
 	f1 := fg.Fixture(0)

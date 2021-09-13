@@ -1,6 +1,6 @@
 name: Build & Push
 # Build & Push builds the simapp docker image on every push to master and
-# and pushes the image to https://docker-registry.linecorp.com/link-network/v2/lfb
+# and pushes the image to https://docker-registry.linecorp.com/link-network/v2/lbm
 on:
   pull_request:
   push:
@@ -21,7 +21,7 @@ jobs:
       - name: Prepare
         id: prep
         run: |
-          DOCKER_IMAGE=line/lfb
+          DOCKER_IMAGE=line/lbm
           VERSION=noop
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF#refs/tags/}

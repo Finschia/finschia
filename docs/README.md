@@ -4,30 +4,30 @@ parent:
 layout: home
 -->
 
-# LFB(LINE Financial Blockchain) Documentation
+# LBM(LINE Blockchain Mainnet) Documentation
 
-Welcome to the documentation of the **LINE Financial Blockchain: `lfb`**.
+Welcome to the documentation of the **LINE Blockchain Mainnet: `lbm`**.
 
-## What is LFB?
+## What is LBM?
 
-- [Intro to the `lfb` software](lfb-tutorials/what-is-lfb.md)
+- [Intro to the `lbm` software](lbm-tutorials/what-is-lbm.md)
 
-## Join the LINE Financial Blockchain
+## Join the LINE Blockchain Mainnet
 
-- [Install the `lfb` application](./lfb-tutorials/installation.md)
-- [Set up a full node and join the mainnet](./lfb-tutorials/join-mainnet.md)
+- [Install the `lbm` application](./lbm-tutorials/installation.md)
+- [Set up a full node and join the mainnet](./lbm-tutorials/join-mainnet.md)
 - [Upgrade to a validator node](./validators/validator-setup.md)
 
-## Setup Your Own `lfb` Testnet
+## Setup Your Own `lbm` Testnet
 
-- [Setup your own `lfb` testnet](./lfb-tutorials/deploy-testnet.md)
+- [Setup your own `lbm` testnet](./lbm-tutorials/deploy-testnet.md)
 
 ## Additional Resources
 
-- [Validator Resources](./validators/README.md): Contains documentation for `lfb` validators.
+- [Validator Resources](./validators/README.md): Contains documentation for `lbm` validators.
 - [Delegator Resources](./delegators/README.md): Contains documentation for delegators.
-- [Other Resources](./resources/README.md): Contains documentation on `lfb`, genesis file, service providers, ledger wallets, ...
-- [LFB Archives](./resources/archives.md): State archives of past iteration of the LINE Financial Blockchain.
+- [Other Resources](./resources/README.md): Contains documentation on `lbm`, genesis file, service providers, ledger wallets, ...
+- [LBM Archives](./resources/archives.md): State archives of past iteration of the LINE Blockchain Mainnet.
 
 # Contribute
 

@@ -20,43 +20,43 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/require"
 
-	"github.com/line/lfb/app"
-	lfbcmd "github.com/line/lfb/cmd/lfb/cmd"
-	lfbtypes "github.com/line/lfb/types"
+	"github.com/line/lbm/app"
+	lbmcmd "github.com/line/lbm/cmd/lbm/cmd"
+	lbmtypes "github.com/line/lbm/types"
 
-	"github.com/line/lfb-sdk/baseapp"
-	"github.com/line/lfb-sdk/client"
-	clientkeys "github.com/line/lfb-sdk/client/keys"
-	"github.com/line/lfb-sdk/client/rpc"
-	"github.com/line/lfb-sdk/codec/legacy"
-	"github.com/line/lfb-sdk/crypto/hd"
-	"github.com/line/lfb-sdk/crypto/keyring"
-	"github.com/line/lfb-sdk/server"
-	srvconfig "github.com/line/lfb-sdk/server/config"
-	servertypes "github.com/line/lfb-sdk/server/types"
-	storetypes "github.com/line/lfb-sdk/store/types"
-	"github.com/line/lfb-sdk/testutil"
-	testcli "github.com/line/lfb-sdk/testutil/cli"
-	testnet "github.com/line/lfb-sdk/testutil/network"
-	sdk "github.com/line/lfb-sdk/types"
-	"github.com/line/lfb-sdk/types/tx"
-	authcli "github.com/line/lfb-sdk/x/auth/client/cli"
-	authtypes "github.com/line/lfb-sdk/x/auth/types"
-	bankcli "github.com/line/lfb-sdk/x/bank/client/cli"
-	banktypes "github.com/line/lfb-sdk/x/bank/types"
-	distcli "github.com/line/lfb-sdk/x/distribution/client/cli"
-	disttypes "github.com/line/lfb-sdk/x/distribution/types"
-	"github.com/line/lfb-sdk/x/genutil"
-	genutilcli "github.com/line/lfb-sdk/x/genutil/client/cli"
-	govcli "github.com/line/lfb-sdk/x/gov/client/cli"
-	gov "github.com/line/lfb-sdk/x/gov/types"
-	slashingcli "github.com/line/lfb-sdk/x/slashing/client/cli"
-	slashing "github.com/line/lfb-sdk/x/slashing/types"
-	stakingcli "github.com/line/lfb-sdk/x/staking/client/cli"
-	staking "github.com/line/lfb-sdk/x/staking/types"
-	wasmcli "github.com/line/lfb-sdk/x/wasm/client/cli"
+	"github.com/line/lbm-sdk/baseapp"
+	"github.com/line/lbm-sdk/client"
+	clientkeys "github.com/line/lbm-sdk/client/keys"
+	"github.com/line/lbm-sdk/client/rpc"
+	"github.com/line/lbm-sdk/codec/legacy"
+	"github.com/line/lbm-sdk/crypto/hd"
+	"github.com/line/lbm-sdk/crypto/keyring"
+	"github.com/line/lbm-sdk/server"
+	srvconfig "github.com/line/lbm-sdk/server/config"
+	servertypes "github.com/line/lbm-sdk/server/types"
+	storetypes "github.com/line/lbm-sdk/store/types"
+	"github.com/line/lbm-sdk/testutil"
+	testcli "github.com/line/lbm-sdk/testutil/cli"
+	testnet "github.com/line/lbm-sdk/testutil/network"
+	sdk "github.com/line/lbm-sdk/types"
+	"github.com/line/lbm-sdk/types/tx"
+	authcli "github.com/line/lbm-sdk/x/auth/client/cli"
+	authtypes "github.com/line/lbm-sdk/x/auth/types"
+	bankcli "github.com/line/lbm-sdk/x/bank/client/cli"
+	banktypes "github.com/line/lbm-sdk/x/bank/types"
+	distcli "github.com/line/lbm-sdk/x/distribution/client/cli"
+	disttypes "github.com/line/lbm-sdk/x/distribution/types"
+	"github.com/line/lbm-sdk/x/genutil"
+	genutilcli "github.com/line/lbm-sdk/x/genutil/client/cli"
+	govcli "github.com/line/lbm-sdk/x/gov/client/cli"
+	gov "github.com/line/lbm-sdk/x/gov/types"
+	slashingcli "github.com/line/lbm-sdk/x/slashing/client/cli"
+	slashing "github.com/line/lbm-sdk/x/slashing/types"
+	stakingcli "github.com/line/lbm-sdk/x/staking/client/cli"
+	staking "github.com/line/lbm-sdk/x/staking/types"
+	wasmcli "github.com/line/lbm-sdk/x/wasm/client/cli"
 
-	wasmtypes "github.com/line/lfb-sdk/x/wasm/types"
+	wasmtypes "github.com/line/lbm-sdk/x/wasm/types"
 	ostcfg "github.com/line/ostracon/config"
 	ostflags "github.com/line/ostracon/libs/cli/flags"
 	"github.com/line/ostracon/libs/log"
@@ -88,7 +88,7 @@ const (
 
 const (
 	namePrefix        = "node"
-	networkNamePrefix = "line-lfbnode-testnet-"
+	networkNamePrefix = "line-lbmnode-testnet-"
 )
 
 var curPort int32 = 26656
@@ -130,11 +130,11 @@ var (
 func init() {
 	testnet := false
 	config := sdk.GetConfig()
-	config.SetBech32PrefixForAccount(lfbtypes.Bech32PrefixAcc(testnet), lfbtypes.Bech32PrefixAccPub(testnet))
-	config.SetBech32PrefixForValidator(lfbtypes.Bech32PrefixValAddr(testnet), lfbtypes.Bech32PrefixValPub(testnet))
-	config.SetBech32PrefixForConsensusNode(lfbtypes.Bech32PrefixConsAddr(testnet), lfbtypes.Bech32PrefixConsPub(testnet))
-	config.SetCoinType(lfbtypes.CoinType)
-	config.SetFullFundraiserPath(lfbtypes.FullFundraiserPath)
+	config.SetBech32PrefixForAccount(lbmtypes.Bech32PrefixAcc(testnet), lbmtypes.Bech32PrefixAccPub(testnet))
+	config.SetBech32PrefixForValidator(lbmtypes.Bech32PrefixValAddr(testnet), lbmtypes.Bech32PrefixValPub(testnet))
+	config.SetBech32PrefixForConsensusNode(lbmtypes.Bech32PrefixConsAddr(testnet), lbmtypes.Bech32PrefixConsPub(testnet))
+	config.SetCoinType(lbmtypes.CoinType)
+	config.SetFullFundraiserPath(lbmtypes.FullFundraiserPath)
 	config.Seal()
 
 	ostraconCmd.AddCommand(
@@ -165,7 +165,7 @@ type Fixtures struct {
 }
 
 func getHomeDir(t *testing.T) string {
-	tmpDir := path.Join(os.ExpandEnv("$HOME"), ".lfbtest")
+	tmpDir := path.Join(os.ExpandEnv("$HOME"), ".lbmtest")
 	err := os.MkdirAll(tmpDir, os.ModePerm)
 	require.NoError(t, err)
 	tmpDir, err = ioutil.TempDir(tmpDir, "link_integration_"+strings.Split(t.Name(), "/")[0]+"_")
@@ -192,7 +192,7 @@ func NewFixtures(t *testing.T, homeDir string) *Fixtures {
 		P2PPort:  p2pPort,
 		GRPCAddr: grpcAddr,
 		GRPCPort: grpcPort,
-		Moniker:  "", // initialized by LFBInit
+		Moniker:  "", // initialized by LBMInit
 	}
 }
 
@@ -290,8 +290,8 @@ func InitFixtures(t *testing.T) (f *Fixtures) {
 	f.KeysAdd(UserEvelyn)
 	f.KeysAdd(UserSam)
 
-	// NOTE: LFBInit sets the ChainID
-	f.LFBInit(keyFoo)
+	// NOTE: LBMInit sets the ChainID
+	f.LBMInit(keyFoo)
 
 	// start an account with tokens
 	f.AddGenesisAccount(f.KeyAddress(keyFoo), startCoins)
@@ -349,9 +349,9 @@ func getCliCtx(f *Fixtures) client.Context {
 }
 
 // ___________________________________________________________________________________
-// lfb
+// lbm
 
-// UnsafeResetAll is lfb unsafe-reset-all
+// UnsafeResetAll is lbm unsafe-reset-all
 func (f *Fixtures) UnsafeResetAll(flags ...string) {
 	cmd := server.UnsafeResetAllCmd()
 	_, err := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags("", flags...))
@@ -361,9 +361,9 @@ func (f *Fixtures) UnsafeResetAll(flags ...string) {
 	require.NoError(f.T, err)
 }
 
-// LFBInit is lfb init
-// NOTE: LFBInit sets the ChainID for the Fixtures instance
-func (f *Fixtures) LFBInit(moniker string, flags ...string) {
+// LBMInit is lbm init
+// NOTE: LBMInit sets the ChainID for the Fixtures instance
+func (f *Fixtures) LBMInit(moniker string, flags ...string) {
 	f.Moniker = moniker
 	args := fmt.Sprintf("-o %s", moniker)
 	cmd := genutilcli.InitCmd(app.ModuleBasics, f.Home)
@@ -377,15 +377,15 @@ func (f *Fixtures) LFBInit(moniker string, flags ...string) {
 	f.ChainID = genDoc.ChainID
 }
 
-// AddGenesisAccount is lfb add-genesis-account
+// AddGenesisAccount is lbm add-genesis-account
 func (f *Fixtures) AddGenesisAccount(address sdk.AccAddress, coins sdk.Coins, flags ...string) {
 	args := fmt.Sprintf("%s %s --keyring-backend=test", address, coins)
-	cmd := lfbcmd.AddGenesisAccountCmd(f.Home)
+	cmd := lbmcmd.AddGenesisAccountCmd(f.Home)
 	_, err := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
 	require.NoError(f.T, err)
 }
 
-// GenTx is lfb gentx
+// GenTx is lbm gentx
 func (f *Fixtures) GenTx(name string, flags ...string) {
 	args := fmt.Sprintf("%s 100000000stake --chain-id=%s", name, f.ChainID)
 	encodingConfig := app.MakeEncodingConfig()
@@ -394,14 +394,14 @@ func (f *Fixtures) GenTx(name string, flags ...string) {
 	require.NoError(f.T, err)
 }
 
-// CollectGenTxs is lfb collect-gentxs
+// CollectGenTxs is lbm collect-gentxs
 func (f *Fixtures) CollectGenTxs(flags ...string) {
 	cmd := genutilcli.CollectGenTxsCmd(banktypes.GenesisBalancesIterator{}, f.Home)
 	_, err := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags("", flags...))
 	require.NoError(f.T, err)
 }
 
-func (f *Fixtures) LFBStart(minGasPrices string) *testnet.Network {
+func (f *Fixtures) LBMStart(minGasPrices string) *testnet.Network {
 	cfg := newTestnetConfig(f.T, f.GenesisState(), f.ChainID, minGasPrices)
 	n := testnet.NewWithoutInit(f.T, cfg, f.Home, []*testnet.Validator{newValidator(f, cfg, srvconfig.DefaultConfig(), server.NewDefaultContext())})
 	err := n.WaitForNextBlock()
@@ -409,15 +409,15 @@ func (f *Fixtures) LFBStart(minGasPrices string) *testnet.Network {
 	return n
 }
 
-// LFBOstracon returns the results of lfb ostracon [query]
-func (f *Fixtures) LFBOstracon(query string) string {
+// LBMOstracon returns the results of lbm ostracon [query]
+func (f *Fixtures) LBMOstracon(query string) string {
 	out, err := testcli.ExecTestCLICmd(getCliCtx(f), ostraconCmd, strings.Split(query, " "))
 	require.NoError(f.T, err)
 
 	return out.String()
 }
 
-// ValidateGenesis runs lfb validate-genesis
+// ValidateGenesis runs lbm validate-genesis
 func (f *Fixtures) ValidateGenesis(genFile string, flags ...string) {
 	cmd := genutilcli.ValidateGenesisCmd(app.ModuleBasics)
 	_, err := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(genFile, flags...))
@@ -425,9 +425,9 @@ func (f *Fixtures) ValidateGenesis(genFile string, flags ...string) {
 }
 
 // ___________________________________________________________________________________
-// lfb keys
+// lbm keys
 
-// KeysDelete is lfb keys delete
+// KeysDelete is lbm keys delete
 func (f *Fixtures) KeysDelete(name string, flags ...string) {
 	args := fmt.Sprintf("delete --keyring-backend=test -f -y %s", name)
 	cmd := clientkeys.Commands(f.Home)
@@ -439,7 +439,7 @@ func (f *Fixtures) KeysDelete(name string, flags ...string) {
 	require.NoError(f.T, err)
 }
 
-// KeysAdd is lfb keys add
+// KeysAdd is lbm keys add
 func (f *Fixtures) KeysAdd(name string, flags ...string) {
 	args := fmt.Sprintf("add --keyring-backend=test --output=json %s", name)
 	cmd := clientkeys.Commands(f.Home)
@@ -448,14 +448,14 @@ func (f *Fixtures) KeysAdd(name string, flags ...string) {
 	require.NotNil(f.T, stdout)
 }
 
-// KeysAddRecover prepares lfb keys add --recover
+// KeysAddRecover prepares lbm keys add --recover
 func (f *Fixtures) KeysAddRecover(name, mnemonic string, flags ...string) (testutil.BufferWriter, error) {
 	args := fmt.Sprintf("add --keyring-backend=test --recover %s", name)
 	cmd := clientkeys.Commands(f.Home)
 	return testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
 }
 
-// KeysAddRecoverHDPath prepares lfb keys add --recover --account --index
+// KeysAddRecoverHDPath prepares lbm keys add --recover --account --index
 func (f *Fixtures) KeysAddRecoverHDPath(name, mnemonic string, account uint32, index uint32, flags ...string) {
 	args := fmt.Sprintf("add --keyring-backend=test --recover %s --account=%d --index=%d", name, account, index)
 	cmd := clientkeys.Commands(f.Home)
@@ -463,7 +463,7 @@ func (f *Fixtures) KeysAddRecoverHDPath(name, mnemonic string, account uint32, i
 	require.NoError(f.T, err)
 }
 
-// KeysShow is lfb keys show
+// KeysShow is lbm keys show
 func (f *Fixtures) KeysShow(name string, flags ...string) keyring.KeyOutput {
 	args := fmt.Sprintf("show --keyring-backend=test --keyring-dir=%s --output json %s", f.Home, name)
 	cmd := clientkeys.Commands(f.Home)
@@ -485,9 +485,9 @@ func (f *Fixtures) KeyAddress(name string) sdk.AccAddress {
 }
 
 // ___________________________________________________________________________________
-// lfb tx send/sign/broadcast
+// lbm tx send/sign/broadcast
 
-// TxSend is lfb tx send
+// TxSend is lbm tx send
 func (f *Fixtures) TxSend(from string, to sdk.AccAddress, amount sdk.Coin, flags ...string) (testutil.BufferWriter, error) {
 	node := f.RPCAddr
 	for i, flag := range flags {
@@ -502,14 +502,14 @@ func (f *Fixtures) TxSend(from string, to sdk.AccAddress, amount sdk.Coin, flags
 	return testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
 }
 
-// TxSign is lfb tx sign
+// TxSign is lbm tx sign
 func (f *Fixtures) TxSign(signer, fileName string, flags ...string) (testutil.BufferWriter, error) {
 	args := fmt.Sprintf("--keyring-backend=test --from=%s --chain-id=%s %v --node=%s", signer, f.ChainID, fileName, f.RPCAddr)
 	cmd := authcli.GetSignCommand()
 	return testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
 }
 
-// TxBroadcast is lfb tx broadcast
+// TxBroadcast is lbm tx broadcast
 func (f *Fixtures) TxBroadcast(fileName string, flags ...string) (testutil.BufferWriter, error) {
 	args := fmt.Sprintf("%v --node=%s", fileName, f.RPCAddr)
 	arr := addFlags(args, flags...)
@@ -518,14 +518,14 @@ func (f *Fixtures) TxBroadcast(fileName string, flags ...string) (testutil.Buffe
 	return testcli.ExecTestCLICmd(getCliCtx(f), cmd, arr)
 }
 
-// TxEncode is lfb tx encode
+// TxEncode is lbm tx encode
 func (f *Fixtures) TxEncode(fileName string, flags ...string) (testutil.BufferWriter, error) {
 	args := fmt.Sprintf("%v --node=%s", fileName, f.RPCAddr)
 	cmd := authcli.GetEncodeCommand()
 	return testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
 }
 
-// TxMultisign is lfb tx multisign
+// TxMultisign is lbm tx multisign
 func (f *Fixtures) TxMultisign(fileName, name string, signaturesFiles []string,
 	flags ...string) (testutil.BufferWriter, error) {
 	args := fmt.Sprintf("--keyring-backend=test %s %s %s --node=%s", fileName, name, strings.Join(signaturesFiles, " "), f.RPCAddr)
@@ -534,9 +534,9 @@ func (f *Fixtures) TxMultisign(fileName, name string, signaturesFiles []string,
 }
 
 // ___________________________________________________________________________________
-// lfb tx staking
+// lbm tx staking
 
-// TxStakingCreateValidator is lfb tx staking create-validator
+// TxStakingCreateValidator is lbm tx staking create-validator
 func (f *Fixtures) TxStakingCreateValidator(from, consPubKey string, amount sdk.Coin, flags ...string) (testutil.BufferWriter, error) {
 	args := fmt.Sprintf("--keyring-backend=test --from=%s --pubkey=%s", from, consPubKey)
 	args += fmt.Sprintf(" --amount=%v --moniker=%v --commission-rate=%v", amount, from, "0.05")
@@ -547,7 +547,7 @@ func (f *Fixtures) TxStakingCreateValidator(from, consPubKey string, amount sdk.
 	return testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
 }
 
-// TxStakingUnbond is lfb tx staking unbond
+// TxStakingUnbond is lbm tx staking unbond
 func (f *Fixtures) TxStakingUnbond(from, shares string, validator sdk.ValAddress, flags ...string) (testutil.BufferWriter, error) {
 	args := fmt.Sprintf("--keyring-backend=test %s %v --from=%s --node=%s", validator, shares, from, f.RPCAddr)
 	cmd := stakingcli.NewUnbondCmd()
@@ -555,9 +555,9 @@ func (f *Fixtures) TxStakingUnbond(from, shares string, validator sdk.ValAddress
 }
 
 // ___________________________________________________________________________________
-// lfb tx gov
+// lbm tx gov
 
-// TxGovSubmitProposal is lfb tx gov submit-proposal
+// TxGovSubmitProposal is lbm tx gov submit-proposal
 func (f *Fixtures) TxGovSubmitProposal(from, typ, title, description string, deposit sdk.Coin, flags ...string) (testutil.BufferWriter, error) {
 	args := fmt.Sprintf("--keyring-backend=test --from=%s --type=%s", from, typ)
 	args += fmt.Sprintf(" --title=%s --description=%s --deposit=%s", title, description, deposit)
@@ -566,14 +566,14 @@ func (f *Fixtures) TxGovSubmitProposal(from, typ, title, description string, dep
 	return testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
 }
 
-// TxGovDeposit is lfb tx gov deposit
+// TxGovDeposit is lbm tx gov deposit
 func (f *Fixtures) TxGovDeposit(proposalID int, from string, amount sdk.Coin, flags ...string) (testutil.BufferWriter, error) {
 	args := fmt.Sprintf("%d %s --keyring-backend=test --from=%s --node=%s", proposalID, amount, from, f.RPCAddr)
 	cmd := govcli.NewCmdDeposit()
 	return testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
 }
 
-// TxGovVote is lfb tx gov vote
+// TxGovVote is lbm tx gov vote
 func (f *Fixtures) TxGovVote(proposalID int, option gov.VoteOption, from string, flags ...string) (testutil.BufferWriter, error) {
 	args := fmt.Sprintf("%d %s --keyring-backend=test --from=%s --node=%s", proposalID, option, from, f.RPCAddr)
 	cmd := govcli.NewCmdVote()
@@ -601,9 +601,9 @@ func (f *Fixtures) TxGovSubmitCommunityPoolSpendProposal(
 }
 
 // ___________________________________________________________________________________
-// lfb query account
+// lbm query account
 
-// QueryAccount is lfb query account
+// QueryAccount is lbm query account
 func (f *Fixtures) QueryAccount(address sdk.AccAddress, flags ...string) authtypes.BaseAccount {
 	args := fmt.Sprintf("%s -o=json", address)
 	cmd := authcli.GetAccountCmd()
@@ -618,9 +618,9 @@ func (f *Fixtures) QueryAccount(address sdk.AccAddress, flags ...string) authtyp
 }
 
 // ___________________________________________________________________________________
-// lfb query bank
+// lbm query bank
 
-// QueryBalances is lfb query bank balances
+// QueryBalances is lbm query bank balances
 func (f *Fixtures) QueryBalances(address sdk.AccAddress, flags ...string) banktypes.QueryAllBalancesResponse {
 	args := fmt.Sprintf("%s -o=json", address)
 	cmd := bankcli.GetBalancesCmd()
@@ -637,9 +637,9 @@ func (f *Fixtures) QueryBalances(address sdk.AccAddress, flags ...string) bankty
 }
 
 // ___________________________________________________________________________________
-// lfb query tx
+// lbm query tx
 
-// QueryTx is lfb query tx
+// QueryTx is lbm query tx
 func (f *Fixtures) QueryTx(hash string, flags ...string) *sdk.TxResponse {
 	args := fmt.Sprintf("%s -o=json --node=%s", hash, f.RPCAddr)
 	cmd := authcli.QueryTxCmd()
@@ -666,9 +666,9 @@ func (f *Fixtures) QueryTxInvalid(expectedErr error, hash string, flags ...strin
 }
 
 // ___________________________________________________________________________________
-// lfb query txs
+// lbm query txs
 
-// QueryTxs is lfb query txs
+// QueryTxs is lbm query txs
 func (f *Fixtures) QueryTxs(page, limit int, flags ...string) *sdk.SearchTxsResult {
 	args := fmt.Sprintf("--page=%d --limit=%d --node=%s", page, limit, f.RPCAddr)
 	cmd := authcli.QueryTxsByEventsCmd()
@@ -695,7 +695,7 @@ func (f *Fixtures) QueryTxsInvalid(expectedErr error, page, limit int, flags ...
 }
 
 // ___________________________________________________________________________________
-// lfb query block
+// lbm query block
 
 func (f *Fixtures) QueryLatestBlock(flags ...string) *ostctypes.ResultBlock {
 	args := fmt.Sprintf("--node=%s", f.RPCAddr)
@@ -722,9 +722,9 @@ func (f *Fixtures) QueryBlockWithHeight(height int, flags ...string) *ostctypes.
 }
 
 // ___________________________________________________________________________________
-// lfb query staking
+// lbm query staking
 
-// QueryStakingValidator is lfb query staking validator
+// QueryStakingValidator is lbm query staking validator
 func (f *Fixtures) QueryStakingValidator(valAddr sdk.ValAddress, flags ...string) staking.Validator {
 	args := fmt.Sprintf("%s --node=%s -o=json", valAddr, f.RPCAddr)
 	cmd := stakingcli.GetCmdQueryValidator()
@@ -738,7 +738,7 @@ func (f *Fixtures) QueryStakingValidator(valAddr sdk.ValAddress, flags ...string
 	return validator
 }
 
-// QueryStakingUnbondingDelegationsFrom is lfb query staking unbonding-delegations-from
+// QueryStakingUnbondingDelegationsFrom is lbm query staking unbonding-delegations-from
 func (f *Fixtures) QueryStakingUnbondingDelegationsFrom(valAddr sdk.ValAddress, flags ...string) staking.QueryValidatorUnbondingDelegationsResponse {
 	args := fmt.Sprintf("%s --node=%s -o=json", valAddr, f.RPCAddr)
 	cmd := stakingcli.GetCmdQueryValidatorUnbondingDelegations()
@@ -752,7 +752,7 @@ func (f *Fixtures) QueryStakingUnbondingDelegationsFrom(valAddr sdk.ValAddress, 
 	return ubds
 }
 
-// QueryStakingDelegationsTo is lfb query staking delegations-to
+// QueryStakingDelegationsTo is lbm query staking delegations-to
 func (f *Fixtures) QueryStakingDelegationsTo(valAddr sdk.ValAddress, flags ...string) staking.QueryValidatorDelegationsResponse {
 	args := fmt.Sprintf("%s --node=%s -o=json", valAddr, f.RPCAddr)
 	cmd := stakingcli.GetCmdQueryValidatorDelegations()
@@ -766,7 +766,7 @@ func (f *Fixtures) QueryStakingDelegationsTo(valAddr sdk.ValAddress, flags ...st
 	return delegations
 }
 
-// QueryStakingPool is lfb query staking pool
+// QueryStakingPool is lbm query staking pool
 func (f *Fixtures) QueryStakingPool(flags ...string) staking.Pool {
 	args := fmt.Sprintf("--node=%s", f.RPCAddr)
 	cmd := stakingcli.GetCmdQueryPool()
@@ -780,7 +780,7 @@ func (f *Fixtures) QueryStakingPool(flags ...string) staking.Pool {
 	return pool
 }
 
-// QueryStakingParameters is lfb query staking parameters
+// QueryStakingParameters is lbm query staking parameters
 func (f *Fixtures) QueryStakingParameters(flags ...string) staking.Params {
 	args := fmt.Sprintf("--node=%s", f.RPCAddr)
 	cmd := stakingcli.GetCmdQueryParams()
@@ -795,9 +795,9 @@ func (f *Fixtures) QueryStakingParameters(flags ...string) staking.Params {
 }
 
 // ___________________________________________________________________________________
-// lfb query gov
+// lbm query gov
 
-// QueryGovParamDeposit is lfb query gov param deposit
+// QueryGovParamDeposit is lbm query gov param deposit
 func (f *Fixtures) QueryGovParamDeposit(flags ...string) gov.DepositParams {
 	args := fmt.Sprintf("deposit --node=%s -o=json", f.RPCAddr)
 	cmd := govcli.GetCmdQueryParam()
@@ -810,7 +810,7 @@ func (f *Fixtures) QueryGovParamDeposit(flags ...string) gov.DepositParams {
 	return depositParam
 }
 
-// QueryGovParamVoting is lfb query gov param voting
+// QueryGovParamVoting is lbm query gov param voting
 func (f *Fixtures) QueryGovParamVoting(flags ...string) gov.VotingParams {
 	args := fmt.Sprintf("voting --node=%s -o=json", f.RPCAddr)
 	cmd := govcli.GetCmdQueryParam()
@@ -823,7 +823,7 @@ func (f *Fixtures) QueryGovParamVoting(flags ...string) gov.VotingParams {
 	return votingParam
 }
 
-// QueryGovParamTallying is lfb query gov param tallying
+// QueryGovParamTallying is lbm query gov param tallying
 func (f *Fixtures) QueryGovParamTallying(flags ...string) gov.TallyParams {
 	args := fmt.Sprintf("tallying --node=%s -o=json", f.RPCAddr)
 	cmd := govcli.GetCmdQueryParam()
@@ -836,7 +836,7 @@ func (f *Fixtures) QueryGovParamTallying(flags ...string) gov.TallyParams {
 	return tallyingParam
 }
 
-// QueryGovProposals is lfb query gov proposals
+// QueryGovProposals is lbm query gov proposals
 func (f *Fixtures) QueryGovProposals(flags ...string) gov.QueryProposalsResponse {
 	cmd := govcli.GetCmdQueryProposals()
 	out, err := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags("-o=json", flags...))
@@ -852,7 +852,7 @@ func (f *Fixtures) QueryGovProposals(flags ...string) gov.QueryProposalsResponse
 	return proposals
 }
 
-// QueryGovProposal is lfb query gov proposal
+// QueryGovProposal is lbm query gov proposal
 func (f *Fixtures) QueryGovProposal(proposalID int, flags ...string) gov.Proposal {
 	args := fmt.Sprintf("%d --node=%s -o=json", proposalID, f.RPCAddr)
 	cmd := govcli.GetCmdQueryProposal()
@@ -866,7 +866,7 @@ func (f *Fixtures) QueryGovProposal(proposalID int, flags ...string) gov.Proposa
 	return proposal
 }
 
-// QueryGovVote is lfb query gov vote
+// QueryGovVote is lbm query gov vote
 func (f *Fixtures) QueryGovVote(proposalID int, voter sdk.AccAddress, flags ...string) gov.Vote {
 	args := fmt.Sprintf("%d %s --node=%s -o=json", proposalID, voter, f.RPCAddr)
 	cmd := govcli.GetCmdQueryVote()
@@ -880,7 +880,7 @@ func (f *Fixtures) QueryGovVote(proposalID int, voter sdk.AccAddress, flags ...s
 	return vote
 }
 
-// QueryGovVotes is lfb query gov votes
+// QueryGovVotes is lbm query gov votes
 func (f *Fixtures) QueryGovVotes(proposalID int, flags ...string) gov.QueryVotesResponse {
 	args := fmt.Sprintf("%d -o=json", proposalID)
 	cmd := govcli.GetCmdQueryVotes()
@@ -894,7 +894,7 @@ func (f *Fixtures) QueryGovVotes(proposalID int, flags ...string) gov.QueryVotes
 	return votes
 }
 
-// QueryGovDeposit is lfb query gov deposit
+// QueryGovDeposit is lbm query gov deposit
 func (f *Fixtures) QueryGovDeposit(proposalID int, depositor sdk.AccAddress, flags ...string) gov.Deposit {
 	args := fmt.Sprintf("%d %s --node=%s -o=json", proposalID, depositor, f.RPCAddr)
 	cmd := govcli.GetCmdQueryDeposit()
@@ -908,7 +908,7 @@ func (f *Fixtures) QueryGovDeposit(proposalID int, depositor sdk.AccAddress, fla
 	return deposit
 }
 
-// QueryGovDeposits is lfb query gov deposits
+// QueryGovDeposits is lbm query gov deposits
 func (f *Fixtures) QueryGovDeposits(propsalID int, flags ...string) gov.QueryDepositsResponse {
 	args := fmt.Sprintf("%d -o=json", propsalID)
 	cmd := govcli.GetCmdQueryDeposits()
@@ -939,7 +939,7 @@ func (f *Fixtures) QuerySigningInfo(val string, flags ...string) slashing.Valida
 	return sinfo
 }
 
-// QuerySlashingParams is lfb query slashing params
+// QuerySlashingParams is lbm query slashing params
 func (f *Fixtures) QuerySlashingParams(flags ...string) slashing.Params {
 	args := fmt.Sprintf("--node=%s -o=json", f.RPCAddr)
 	cmd := slashingcli.GetCmdQueryParams()
@@ -1106,7 +1106,7 @@ func (fg *FixtureGroup) initNodes(numberOfNodes int) {
 	for idx := 0; idx < numberOfNodes; idx++ {
 		name := fmt.Sprintf("%s-%s%d", t.Name(), namePrefix, idx)
 		f := NewFixtures(t, filepath.Join(fg.BaseDir, name))
-		f.LFBInit(name, fmt.Sprintf("--chain-id=%s", fg.T.Name()))
+		f.LBMInit(name, fmt.Sprintf("--chain-id=%s", fg.T.Name()))
 		fg.fixturesMap[name] = f
 		require.NoError(fg.T, err)
 	}
@@ -1140,7 +1140,7 @@ func (fg *FixtureGroup) initNodes(numberOfNodes int) {
 		require.NoError(t, err)
 	}
 }
-func (fg *FixtureGroup) LFBStartCluster(flags ...string) {
+func (fg *FixtureGroup) LBMStartCluster(flags ...string) {
 	genDoc, err := osttypes.GenesisDocFromJSON(fg.genesisFileContent)
 	require.NoError(fg.T, err)
 
@@ -1171,9 +1171,9 @@ func (fg *FixtureGroup) AddFullNode(flags ...string) *Fixtures {
 
 	f := NewFixtures(t, tmpDir)
 
-	// Initialize lfb
+	// Initialize lbm
 	{
-		f.LFBInit(name, fmt.Sprintf("--chain-id=%s", chainID))
+		f.LBMInit(name, fmt.Sprintf("--chain-id=%s", chainID))
 		f.KeysDelete(name)
 		f.KeysAdd(name)
 	}
@@ -1214,7 +1214,7 @@ func (fg *FixtureGroup) AddFullNode(flags ...string) *Fixtures {
 	// Add fixture to the group
 	fg.fixturesMap[name] = f
 
-	// Start lfb
+	// Start lbm
 	validator := newValidator(f, fg.Network.Config, appCfg, ctx)
 	testnet.AddNewValidator(t, fg.Network, validator)
 	WaitForTMStart(f.Port)

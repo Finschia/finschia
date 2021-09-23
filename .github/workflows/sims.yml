@@ -10,7 +10,7 @@ on:
 
 jobs:
   cleanup-runs:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     if: "!startsWith(github.ref, 'refs/tags/') && github.ref != 'refs/heads/master'"
     steps:
       - uses: rokroskar/workflow-run-cleanup-action@master
@@ -18,7 +18,7 @@ jobs:
           GITHUB_TOKEN: "${{ secrets.TOKEN }}"
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     if: "!contains(github.event.head_commit.message, 'skip-sims')"
     steps:
       - uses: actions/checkout@v2
@@ -30,7 +30,7 @@ jobs:
       - run: make build
 
   install-runsim:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build
     steps:
       - uses: actions/setup-go@v2.1.3
@@ -46,7 +46,7 @@ jobs:
           key: ${{ runner.os }}-go-runsim-binary
 
   test-sim-nondeterminism:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [build, install-runsim]
     steps:
       - uses: actions/checkout@v2
@@ -72,7 +72,7 @@ jobs:
         if: env.GIT_DIFF
 
   test-sim-import-export:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [build, install-runsim]
     steps:
       - uses: actions/checkout@v2
@@ -100,7 +100,7 @@ jobs:
         if: env.GIT_DIFF
 
   test-sim-after-import:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [build, install-runsim]
     steps:
       - uses: actions/checkout@v2
@@ -128,7 +128,7 @@ jobs:
         if: env.GIT_DIFF
 
   test-sim-multi-seed-short:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [build, install-runsim]
     steps:
       - uses: actions/checkout@v2

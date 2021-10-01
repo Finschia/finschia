@@ -34,14 +34,14 @@ RUN ./rustup-init -y --no-modify-path --default-toolchain 1.53.0; rm rustup-init
 RUN chmod -R a+w $RUSTUP_HOME $CARGO_HOME
 RUN cd $(go list -f "{{ .Dir }}" -m github.com/line/wasmvm) && \
     RUSTFLAGS='-C target-feature=-crt-static' cargo build --release --example staticlib && \
-    mv -f arget/release/examples/listaticlib.a /usr/lib/libwasmvm_muslc.a && \
+    mv -f arget/release/examples/listaticlib.a /usr/lib/libwasmvm_static.a && \
     rm -rf target
 
 # Add source files
 COPY . .
 
 # Make install
-RUN BUILD_TAGS=muslc make install CGO_ENABLED=1 LBM_BUILD_OPTIONS="$LBM_BUILD_OPTIONS"
+RUN BUILD_TAGS=static make install CGO_ENABLED=1 LBM_BUILD_OPTIONS="$LBM_BUILD_OPTIONS"
 
 # Final image
 FROM alpine:edge

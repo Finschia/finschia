@@ -55,11 +55,11 @@ make install
 
 **Configure**
 ```
-./.initialize.sh
+sh init_single.sh
 ```
 or
 ```
-./.initialize.sh testnet  # for testnet
+sh init_single.sh testnet  # for testnet
 ```
 
 **Run**

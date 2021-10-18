@@ -295,7 +295,7 @@ build-docker-lbmnode:
 	$(MAKE) -C networks/local
 
 # Run a 4-node testnet locally
-localnet-start: build-linux localnet-stop
+localnet-start: build-docker-lbmnode build-static localnet-stop
 	@if ! [ -f build/node0/lbm/config/genesis.json ]; then docker run --rm -v $(CURDIR)/build:/lbm:Z line/lbmnode testnet --v 4 -o . --starting-ip-address 192.168.10.2 --keyring-backend=test ; fi
 	docker-compose up -d
 

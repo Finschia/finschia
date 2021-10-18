@@ -131,7 +131,7 @@ build: BUILD_ARGS=-o $(BUILDDIR)/
 build: go.sum $(BUILDDIR)/ dbbackend
 	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go build -mod=readonly $(BUILD_FLAGS) $(BUILD_ARGS) ./...
 
-build-static: go.sum $(BUILDDIR)/ dbbackend
+build-static: go.sum $(BUILDDIR)/
 	docker build -t line/lbm-builder:static -f builders/Dockerfile.static .
 	docker run -it --rm -v $(shell pwd):/code -e LBM_BUILD_OPTIONS="$(LBM_BUILD_OPTIONS)" line/lbm-builder:static
 

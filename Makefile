@@ -188,9 +188,6 @@ build-reproducible: go.sum
         --name latest-build cosmossdk/rbuilder:latest
 	$(DOCKER) cp -a latest-build:/home/builder/artifacts/ $(CURDIR)/
 
-build-linux: go.sum
-	LEDGER_ENABLED=false GOOS=linux GOARCH=amd64 $(MAKE) build
-
 build-docker:
 	docker build --build-arg LBM_BUILD_OPTIONS="$(LBM_BUILD_OPTIONS)" -t line/lbm .
 
@@ -313,7 +310,7 @@ test-docker-push: test-docker
 	@docker push ${TEST_DOCKER_REPO}:$(shell git rev-parse --abbrev-ref HEAD | sed 's#/#_#g')
 	@docker push ${TEST_DOCKER_REPO}:latest
 
-.PHONY: all build-linux install format lint \
+.PHONY: all install format lint \
 	go-mod-cache draw-deps clean build \
 	setup-transactions setup-contract-tests-data start-link run-lcd-contract-tests contract-tests \
 	test test-all test-build test-cover test-unit test-race \

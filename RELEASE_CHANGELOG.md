@@ -34,12 +34,33 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 # Changelog
 
-## [Unreleased]
+## [v0.1.0]
 
 ### Features
+* (app) Revise bech32 prefix cosmos to link and tlink
 
 ### Improvements
+* (sdk) Use fastcache for inter block cache and iavl cache
+* (sdk) Enable signature verification cache
+* (ostracon) Apply asynchronous receiving reactor
+* (sdk) [\#21](https://github.com/line/lbm/pull/21) Use lbm-sdk v0.43.0
 
 ### Bug Fixes
 
 ### Breaking Changes
+* (sdk) (auth) [\#16](https://github.com/line/lfb/pull/16) Introduce sig block height for the new replay protection
+* (ostracon/sdk) [\#26](https://github.com/line/lfb/pull/26) Use vrf-based consensus, address string treatment
+* (global) [\#10](https://github.com/line/lbm/pull/10) Re-brand lfb to lbm
+
+### Build, CI
+* (build) [\#25](https://github.com/line/lbm/pull/25) Fix localnet-start
+
+## [gaia v4.0.4] - 2021-03-15
+Initial lbm is based on the tendermint v0.34.9+, cosmos-sdk v0.42.0+, gaia v4.0.4
+
+* (tendermint) [v0.34.9](https://github.com/tendermint/tendermint/releases/tag/v0.34.9).
+* (cosmos-sdk) [v0.42.0](https://github.com/cosmos/cosmos-sdk/releases/tag/v0.42.0).
+* (gaia) [v4.0.4](https://github.com/cosmos/gaia/releases/tag/v4.0.4).
+
+Please refer [CHANGELOG_OF_GAIA_v4.0.4](https://github.com/cosmos/gaia/blob/v4.0.4/CHANGELOG.md)
+<!-- Release links -->

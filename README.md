@@ -9,6 +9,7 @@ This repository hosts `LBM(LINE Blockchain Mainnet)`. This repository is forked 
 **Warnings**: Initial development is in progress, but there has not yet been a stable.
 
 # Quick Start
+
 ## Docker
 **Build Docker Image**
 ```
@@ -21,21 +22,17 @@ make build-docker WITH_CLEVELDB=yes GITHUB_TOKEN=${YOUR_GITHUB_TOKEN}  # build d
 
 **Configure**
 ```
-./.initialize.sh docker          # prepare keys, validators, initial state, etc.
+sh init_single.sh docker          # prepare keys, validators, initial state, etc.
 ```
 or
 ```
-./.initialize.sh docker testnet  # prepare keys, validators, initial state, etc. for testnet
+sh init_single.sh docker testnet  # prepare keys, validators, initial state, etc. for testnet
 ```
 
 **Run**
 ```
-docker-compose up                # Run a node
+docker run -i -p 26656:26656 -p 26657:26657 -v ${HOME}/.lbm:/root/.lbm line/lbm lbm start
 ```
-
-**visit with your browser**
-* Node: http://localhost:26657/
-* REST: http://localhost:1317/swagger-ui/
 
 ## Local
 **Set up permissions**
@@ -69,11 +66,11 @@ make install
 
 **Configure**
 ```
-./.initialize.sh
+sh init_single.sh
 ```
 or
 ```
-./.initialize.sh testnet  # for testnet
+sh init_single.sh testnet  # for testnet
 ```
 
 **Run**
@@ -83,4 +80,16 @@ lbm start                # Run a node
 
 **visit with your browser**
 * Node: http://localhost:26657/
-* REST: http://localhost:1317/swagger-ui/
+
+## Localnet with 4 nodes
+
+**Run**
+```
+make localnet-start
+```
+
+**Stop**
+```
+make localnet-stop
+```
+

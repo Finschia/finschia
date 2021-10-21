@@ -298,3 +298,25 @@ jobs:
       - name: Generate multi node integration test report
         run: cat ./*-integration-multi-node-output.txt | ~/go/bin/tparse
         if: env.GIT_DIFF
+
+  test-localnet-blocks:
+    runs-on: self-hosted
+    needs: [build, tests]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2.1.3
+        with:
+          go-version: 1.15
+      - name: Start localnet
+        run: |
+          make localnet-start
+      - name: Test blocks
+        id: test-blocks
+        continue-on-error: true
+        run: ./networks/localnet-blocks-test.sh 40 5 10 localhost
+      - name: Stop localnet
+        run: |
+          make localnet-stop
+          if [ ${{ steps.test-blocks.outcome }} == 'failure' ] ; then
+            exit 1
+          fi

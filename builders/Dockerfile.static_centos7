@@ -2,7 +2,7 @@
 # > docker build -t line/lbm-builder:static -f builders/Dockerfile.static_centos7 .
 #
 # run build
-# > docker run -it --rm -v $(pwd):/code line/lbm-builder:static
+# > docker run -it --rm -v $(pwd):/code line/lbm-builder:static_centos7
 #
 # make image and run build
 # > docker run -it --rm -v $(pwd):/code -e LBM_BUILD_OPTIONS=rocksdb $(docker build -f builders/Dockerfile.static -q .)

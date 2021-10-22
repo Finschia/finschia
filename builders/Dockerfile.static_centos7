@@ -1,5 +1,5 @@
 # make image
-# > docker build -t line/lbm-builder:static -f builders/Dockerfile.static .
+# > docker build -t line/lbm-builder:static -f builders/Dockerfile.static_centos7 .
 #
 # run build
 # > docker run -it --rm -v $(pwd):/code line/lbm-builder:static

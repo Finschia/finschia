@@ -94,6 +94,8 @@ import (
 	_ "github.com/line/lbm-sdk/client/docs/statik"
 )
 
+// sample code fix
+
 const appName = "LBM"
 
 var (

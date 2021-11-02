@@ -34,6 +34,11 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 # Changelog
 
+## [v0.1.1]
+
+### Bug Fixes
+* (sdk) [\#30](https://github.com/line/lbm/pull/30) Bump up lbm-sdk to v0.1.1
+
 ## [v0.1.0]
 
 ### Features

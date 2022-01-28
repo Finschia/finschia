@@ -37,6 +37,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ## [Unreleased]
 
 ### Features
+* (x/upgrade) [\#32] (https://github.com/line/lbm/pull/32) To smoothen the update to the latest stable release, the SDK includes vesion map for managing migrations between SDK versions.
 
 ### Improvements
 * (slashing) [\#31] (https://github.com/line/lbm/pull/31) Apply VoterSetCounter

@@ -39,6 +39,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Features
 
 ### Improvements
+* (slashing) [\#31] (https://github.com/line/lbm/pull/31) Apply VoterSetCounter
 
 ### Bug Fixes
 

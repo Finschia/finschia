@@ -44,6 +44,10 @@ import (
 	"github.com/line/lbm-sdk/x/capability"
 	capabilitykeeper "github.com/line/lbm-sdk/x/capability/keeper"
 	capabilitytypes "github.com/line/lbm-sdk/x/capability/types"
+	"github.com/line/lbm-sdk/x/consortium"
+	consortiumclient "github.com/line/lbm-sdk/x/consortium/client"
+	consortiumkeeper "github.com/line/lbm-sdk/x/consortium/keeper"
+	consortiumtypes "github.com/line/lbm-sdk/x/consortium/types"
 	"github.com/line/lbm-sdk/x/crisis"
 	crisiskeeper "github.com/line/lbm-sdk/x/crisis/keeper"
 	crisistypes "github.com/line/lbm-sdk/x/crisis/types"
@@ -84,6 +88,7 @@ import (
 	"github.com/line/lbm-sdk/x/staking"
 	stakingkeeper "github.com/line/lbm-sdk/x/staking/keeper"
 	stakingtypes "github.com/line/lbm-sdk/x/staking/types"
+	"github.com/line/lbm-sdk/x/stakingplus"
 	"github.com/line/lbm-sdk/x/upgrade"
 	upgradeclient "github.com/line/lbm-sdk/x/upgrade/client"
 	upgradekeeper "github.com/line/lbm-sdk/x/upgrade/keeper"
@@ -114,9 +119,18 @@ var (
 		staking.AppModuleBasic{},
 		mint.AppModuleBasic{},
 		distr.AppModuleBasic{},
+		consortium.AppModuleBasic{},
 		gov.NewAppModuleBasic(
-			append(wasmclient.ProposalHandlers, paramsclient.ProposalHandler, distrclient.ProposalHandler, upgradeclient.ProposalHandler, upgradeclient.CancelProposalHandler)...,
-		),
+			append(
+				wasmclient.ProposalHandlers,
+				consortiumclient.UpdateConsortiumParamsProposalHandler,
+				consortiumclient.UpdateValidatorAuthsProposalHandler,
+				paramsclient.ProposalHandler,
+				distrclient.ProposalHandler,
+				upgradeclient.ProposalHandler,
+				upgradeclient.CancelProposalHandler,
+			)...
+			),
 		params.AppModuleBasic{},
 		crisis.AppModuleBasic{},
 		slashing.AppModuleBasic{},
@@ -174,6 +188,7 @@ type LinkApp struct { // nolint: golint
 	SlashingKeeper   slashingkeeper.Keeper
 	MintKeeper       mintkeeper.Keeper
 	DistrKeeper      distrkeeper.Keeper
+	ConsortiumKeeper consortiumkeeper.Keeper
 	GovKeeper        govkeeper.Keeper
 	CrisisKeeper     crisiskeeper.Keeper
 	UpgradeKeeper    upgradekeeper.Keeper
@@ -234,6 +249,7 @@ func NewLinkApp(
 		ibctransfertypes.StoreKey,
 		capabilitytypes.StoreKey,
 		feegranttypes.StoreKey,
+		consortiumtypes.StoreKey,
 		wasm.StoreKey,
 	)
 	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey)
@@ -284,6 +300,7 @@ func NewLinkApp(
 	)
 	app.FeeGrantKeeper = feegrantkeeper.NewKeeper(appCodec, keys[feegranttypes.StoreKey], app.AccountKeeper)
 	app.UpgradeKeeper = upgradekeeper.NewKeeper(skipUpgradeHeights, keys[upgradetypes.StoreKey], appCodec, homePath)
+	app.ConsortiumKeeper = consortiumkeeper.NewKeeper(appCodec, keys[consortiumtypes.StoreKey], stakingKeeper)
 
 	// register the staking hooks
 	// NOTE: stakingKeeper above is passed by reference, so that it will contain these hooks
@@ -356,6 +373,7 @@ func NewLinkApp(
 		AddRoute(distrtypes.RouterKey, distr.NewCommunityPoolSpendProposalHandler(app.DistrKeeper)).
 		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
 		AddRoute(ibchost.RouterKey, ibcclient.NewClientUpdateProposalHandler(app.IBCKeeper.ClientKeeper)).
+		AddRoute(consortiumtypes.RouterKey, consortium.NewProposalHandler(app.ConsortiumKeeper)).
 		AddRoute(wasm.RouterKey, wasm.NewWasmProposalHandler(app.WasmKeeper, wasm.EnableAllProposals))
 
 	app.GovKeeper = govkeeper.NewKeeper(
@@ -388,11 +406,12 @@ func NewLinkApp(
 		capability.NewAppModule(appCodec, *app.CapabilityKeeper),
 		crisis.NewAppModule(&app.CrisisKeeper, skipGenesisInvariants),
 		feegrant.NewAppModule(appCodec, app.AccountKeeper, app.BankKeeper, app.FeeGrantKeeper, app.interfaceRegistry),
+		consortium.NewAppModule(appCodec, app.ConsortiumKeeper, app.StakingKeeper),
 		gov.NewAppModule(appCodec, app.GovKeeper, app.AccountKeeper, app.BankKeeper),
 		mint.NewAppModule(appCodec, app.MintKeeper, app.AccountKeeper),
 		slashing.NewAppModule(appCodec, app.SlashingKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),
 		distr.NewAppModule(appCodec, app.DistrKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),
-		staking.NewAppModule(appCodec, app.StakingKeeper, app.AccountKeeper, app.BankKeeper),
+		stakingplus.NewAppModule(appCodec, app.StakingKeeper, app.AccountKeeper, app.BankKeeper, app.ConsortiumKeeper),
 		upgrade.NewAppModule(app.UpgradeKeeper),
 		wasm.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper),
 		evidence.NewAppModule(app.EvidenceKeeper),
@@ -433,6 +452,7 @@ func NewLinkApp(
 		evidencetypes.ModuleName,
 		ibctransfertypes.ModuleName,
 		feegranttypes.ModuleName,
+		consortiumtypes.ModuleName,
 		// wasm after ibc transfer
 		wasm.ModuleName,
 	)

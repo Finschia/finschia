@@ -39,8 +39,9 @@ import (
 	authtypes "github.com/line/lbm-sdk/x/auth/types"
 	"github.com/line/lbm-sdk/x/auth/vesting"
 	"github.com/line/lbm-sdk/x/bank"
-	bankkeeper "github.com/line/lbm-sdk/x/bank/keeper"
 	banktypes "github.com/line/lbm-sdk/x/bank/types"
+	"github.com/line/lbm-sdk/x/bankplus"
+	bankpluskeeper "github.com/line/lbm-sdk/x/bankplus/keeper"
 	"github.com/line/lbm-sdk/x/capability"
 	capabilitykeeper "github.com/line/lbm-sdk/x/capability/keeper"
 	capabilitytypes "github.com/line/lbm-sdk/x/capability/types"
@@ -129,8 +130,8 @@ var (
 				distrclient.ProposalHandler,
 				upgradeclient.ProposalHandler,
 				upgradeclient.CancelProposalHandler,
-			)...
-			),
+			)...,
+		),
 		params.AppModuleBasic{},
 		crisis.AppModuleBasic{},
 		slashing.AppModuleBasic{},
@@ -182,7 +183,7 @@ type LinkApp struct { // nolint: golint
 
 	// keepers
 	AccountKeeper    authkeeper.AccountKeeper
-	BankKeeper       bankkeeper.Keeper
+	BankKeeper       bankpluskeeper.Keeper
 	CapabilityKeeper *capabilitykeeper.Keeper
 	StakingKeeper    stakingkeeper.Keeper
 	SlashingKeeper   slashingkeeper.Keeper
@@ -278,7 +279,7 @@ func NewLinkApp(
 	app.AccountKeeper = authkeeper.NewAccountKeeper(
 		appCodec, keys[authtypes.StoreKey], app.GetSubspace(authtypes.ModuleName), authtypes.ProtoBaseAccount, maccPerms,
 	)
-	app.BankKeeper = bankkeeper.NewBaseKeeper(
+	app.BankKeeper = bankpluskeeper.NewBaseKeeper(
 		appCodec, keys[banktypes.StoreKey], app.AccountKeeper, app.GetSubspace(banktypes.ModuleName), app.BlockedAddrs(),
 	)
 	stakingKeeper := stakingkeeper.NewKeeper(
@@ -402,7 +403,7 @@ func NewLinkApp(
 		),
 		auth.NewAppModule(appCodec, app.AccountKeeper, nil),
 		vesting.NewAppModule(app.AccountKeeper, app.BankKeeper),
-		bank.NewAppModule(appCodec, app.BankKeeper, app.AccountKeeper),
+		bankplus.NewAppModule(appCodec, app.BankKeeper, app.AccountKeeper),
 		capability.NewAppModule(appCodec, *app.CapabilityKeeper),
 		crisis.NewAppModule(&app.CrisisKeeper, skipGenesisInvariants),
 		feegrant.NewAppModule(appCodec, app.AccountKeeper, app.BankKeeper, app.FeeGrantKeeper, app.interfaceRegistry),
@@ -467,7 +468,7 @@ func NewLinkApp(
 	// transactions
 	app.sm = module.NewSimulationManager(
 		auth.NewAppModule(appCodec, app.AccountKeeper, authsims.RandomGenesisAccounts),
-		bank.NewAppModule(appCodec, app.BankKeeper, app.AccountKeeper),
+		bankplus.NewAppModule(appCodec, app.BankKeeper, app.AccountKeeper),
 		capability.NewAppModule(appCodec, *app.CapabilityKeeper),
 		feegrant.NewAppModule(appCodec, app.AccountKeeper, app.BankKeeper, app.FeeGrantKeeper, app.interfaceRegistry),
 		gov.NewAppModule(appCodec, app.GovKeeper, app.AccountKeeper, app.BankKeeper),
@@ -519,6 +520,9 @@ func NewLinkApp(
 		if err := app.WasmKeeper.InitializePinnedCodes(ctx); err != nil {
 			panic(err)
 		}
+
+		// Initialize the keeper of bankkeeper
+		app.BankKeeper.InitializeBankPlus(ctx)
 	}
 	app.ScopedIBCKeeper = scopedIBCKeeper
 	app.ScopedTransferKeeper = scopedTransferKeeper

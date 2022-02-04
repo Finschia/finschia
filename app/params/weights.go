@@ -20,4 +20,7 @@ const (
 	DefaultWeightCommunitySpendProposal int = 5
 	DefaultWeightTextProposal           int = 5
 	DefaultWeightParamChangeProposal    int = 5
+
+	DefaultWeightGrantAllowance  int = 100
+	DefaultWeightRevokeAllowance int = 100
 )

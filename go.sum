@@ -480,12 +480,15 @@ github.com/line/lbm-sdk v1.0.0-init.1.0.20211112024221-e9ec7d238d4b h1:z2cQpgaGl
 github.com/line/lbm-sdk v1.0.0-init.1.0.20211112024221-e9ec7d238d4b/go.mod h1:Oy3OrlcombX1f7KBfdvgCqPqW60IfsT5BeGKNQ2HlI0=
 github.com/line/lbm-sdk v1.0.0-init.1.0.20211116103923-bc28e496b710 h1:XQ+pG83lNPrC5JdM5/eSJy5VCUMtB34wwJMA+/b0Boo=
 github.com/line/lbm-sdk v1.0.0-init.1.0.20211116103923-bc28e496b710/go.mod h1:Oy3OrlcombX1f7KBfdvgCqPqW60IfsT5BeGKNQ2HlI0=
+github.com/line/lbm-sdk v1.0.0-init.1.0.20211223043226-0e7b3cfe190c h1:Uq9bDv/Fq5t+NXQpGzzvWpFH5rqHl20xvvacP36Vf7M=
+github.com/line/lbm-sdk v1.0.0-init.1.0.20211223043226-0e7b3cfe190c/go.mod h1:LR7hb3yC8JT5mnzCIiHw19ukfNwL5E5EMsGYc0G7F58=
 github.com/line/ostracon v0.34.9-0.20210429084710-ef4fe0a40c7d/go.mod h1:ttnbq+yQJMQ9a2MT5SEisOoa/+pOgh2KenTiK/rVdiw=
 github.com/line/ostracon v1.0.2 h1:sbZtNrLYFKDP74tXYgMVkrzKJKk2Sqn1Oczl1+f7sgI=
 github.com/line/ostracon v1.0.2/go.mod h1:elTiUFLvBz6Yaze+ZZLlbUnhqKWLJ7cMy/P9rSabafQ=
 github.com/line/tm-db/v2 v2.0.0-init.1.0.20210413083915-5bb60e117524/go.mod h1:wmkyPabXjtVZ1dvRofmurjaceghywtCSYGqFuFS+TbI=
 github.com/line/tm-db/v2 v2.0.0-init.1.0.20210824011847-fcfa67dd3c70 h1:Izv/u19P8salnSZGAgNHFugNlzWLgREiL+AmWK8C/lE=
 github.com/line/tm-db/v2 v2.0.0-init.1.0.20210824011847-fcfa67dd3c70/go.mod h1:wmkyPabXjtVZ1dvRofmurjaceghywtCSYGqFuFS+TbI=
+github.com/line/tm-db/v2 v2.0.0-init.1.0.20211202001648-945e88fd2edf/go.mod h1:wmkyPabXjtVZ1dvRofmurjaceghywtCSYGqFuFS+TbI=
 github.com/line/wasmvm v0.14.0-0.8.0 h1:zWzyFLB3xRFSP3j9JWeTjzRHpLXNyTP7g1mmt3srKDw=
 github.com/line/wasmvm v0.14.0-0.8.0/go.mod h1:cgsILoCDigfQ2XplFI4rOo2ImOLEZH/OM8sulxGoKUA=
 github.com/magiconair/properties v1.8.0/go.mod h1:PppfXfuXeibc/6YijjN8zIbojt8czPbwD3XqdrwzmxQ=
@@ -703,6 +706,7 @@ github.com/spf13/cobra v0.0.5/go.mod h1:3K3wKZymM7VvHMDS9+Akkh4K60UwM26emMESw8tL
 github.com/spf13/cobra v1.1.1/go.mod h1:WnodtKOvamDL/PwE2M4iKs8aMDBZ5Q5klgD3qfVJQMI=
 github.com/spf13/cobra v1.1.3 h1:xghbfqPkxzxP3C/f3n5DdpAbdKLj4ZE4BWQI362l53M=
 github.com/spf13/cobra v1.1.3/go.mod h1:pGADOWyqRD/YMrPZigI/zbliZ2wVD/23d+is3pSWzOo=
+github.com/spf13/cobra v1.3.0/go.mod h1:BrRVncBjOJa/eUcVVm9CE+oC6as8k+VYr4NY7WCi9V4=
 github.com/spf13/jwalterweatherman v1.0.0/go.mod h1:cQK4TGJAtQXfYWX+Ddv3mKDzgVb68N+wFjFa4jdeBTo=
 github.com/spf13/jwalterweatherman v1.1.0 h1:ue6voC5bR5F8YxI5S67j9i582FU4Qvo2bmqnqMYADFk=
 github.com/spf13/jwalterweatherman v1.1.0/go.mod h1:aNWZUN0dPAAO/Ljvb5BEdw96iTZ0EXowPYD95IqWIGo=
@@ -715,6 +719,7 @@ github.com/spf13/viper v1.7.0/go.mod h1:8WkrPz2fc9jxqZNCJI/76HCieCp4Q8HaLFoCha5q
 github.com/spf13/viper v1.7.1/go.mod h1:8WkrPz2fc9jxqZNCJI/76HCieCp4Q8HaLFoCha5qpdg=
 github.com/spf13/viper v1.9.0 h1:yR6EXjTp0y0cLN8OZg1CRZmOBdI88UcGkhgyJhu6nZk=
 github.com/spf13/viper v1.9.0/go.mod h1:+i6ajR7OX2XaiBkrcZJFK21htRk7eDeLg7+O6bhUPP4=
+github.com/spf13/viper v1.10.1/go.mod h1:IGlFPqhNAPKRxohIzWpI5QEy4kuI7tcl5WvR+8qy1rU=
 github.com/streadway/amqp v0.0.0-20190404075320-75d898a42a94/go.mod h1:AZpEONHx3DKn8O/DFsRAY58/XVQiIPMTMB1SddzLXVw=
 github.com/streadway/amqp v0.0.0-20190827072141-edfb9018d271/go.mod h1:AZpEONHx3DKn8O/DFsRAY58/XVQiIPMTMB1SddzLXVw=
 github.com/streadway/amqp v1.0.0/go.mod h1:AZpEONHx3DKn8O/DFsRAY58/XVQiIPMTMB1SddzLXVw=

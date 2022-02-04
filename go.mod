@@ -4,7 +4,7 @@ go 1.15
 
 require (
 	github.com/gorilla/mux v1.8.0
-	github.com/line/lbm-sdk v1.0.0-init.1.0.20211112024221-e9ec7d238d4b
+	github.com/line/lbm-sdk v1.0.0-init.1.0.20211116103923-bc28e496b710
 	github.com/line/ostracon v1.0.2
 	github.com/line/tm-db/v2 v2.0.0-init.1.0.20210824011847-fcfa67dd3c70
 	github.com/prometheus/client_golang v1.11.0

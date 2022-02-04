@@ -478,6 +478,8 @@ github.com/line/iavl/v2 v2.0.0-init.1.0.20211019080724-001e2272a25d h1:mXlamMU/u
 github.com/line/iavl/v2 v2.0.0-init.1.0.20211019080724-001e2272a25d/go.mod h1:0Xz+0i1nlB9lrjUDEwpDRhcmjfEAkOjd20dRb40FBso=
 github.com/line/lbm-sdk v1.0.0-init.1.0.20211112024221-e9ec7d238d4b h1:z2cQpgaGl7kL8Mk9ZGooJ9YW2Mw40XOJfoGTWI04YEg=
 github.com/line/lbm-sdk v1.0.0-init.1.0.20211112024221-e9ec7d238d4b/go.mod h1:Oy3OrlcombX1f7KBfdvgCqPqW60IfsT5BeGKNQ2HlI0=
+github.com/line/lbm-sdk v1.0.0-init.1.0.20211116103923-bc28e496b710 h1:XQ+pG83lNPrC5JdM5/eSJy5VCUMtB34wwJMA+/b0Boo=
+github.com/line/lbm-sdk v1.0.0-init.1.0.20211116103923-bc28e496b710/go.mod h1:Oy3OrlcombX1f7KBfdvgCqPqW60IfsT5BeGKNQ2HlI0=
 github.com/line/ostracon v0.34.9-0.20210429084710-ef4fe0a40c7d/go.mod h1:ttnbq+yQJMQ9a2MT5SEisOoa/+pOgh2KenTiK/rVdiw=
 github.com/line/ostracon v1.0.2 h1:sbZtNrLYFKDP74tXYgMVkrzKJKk2Sqn1Oczl1+f7sgI=
 github.com/line/ostracon v1.0.2/go.mod h1:elTiUFLvBz6Yaze+ZZLlbUnhqKWLJ7cMy/P9rSabafQ=

@@ -37,7 +37,8 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ## [Unreleased]
 
 ### Features
-* (x/upgrade) [\#33] (https://github.com/line/lbm/pull/33) To smoothen the update to the latest stable release, the SDK includes vesion map for managing migrations between SDK versions.
+* (x/upgrade) [\#33](https://github.com/line/lbm/pull/33) To smoothen the update to the latest stable release, the SDK includes version map for managing migrations between SDK versions.
+* (x/bank) [\#35](https://github.com/line/lbm/pull/35) apply a feature that preventing sending coins to inactive contract (related to [lbm-sdk #400](https://github.com/line/lbm-sdk/pull/400))
 
 ### Improvements
 * (slashing) [\#31] (https://github.com/line/lbm/pull/31) Apply VoterSetCounter

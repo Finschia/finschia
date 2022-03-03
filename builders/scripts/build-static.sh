@@ -7,6 +7,7 @@ go mod download
 
 # build wasmvm static
 cd "$(go list -f "{{ .Dir }}" -m github.com/line/wasmvm)" || exit 1
+cd ./libwasmvm
 RUSTFLAGS='-C target-feature=-crt-static' cargo build --release --example staticlib
 mv -f target/release/examples/libstaticlib.a /usr/lib/libwasmvm_static.a
 rm -rf target

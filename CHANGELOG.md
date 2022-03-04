@@ -37,6 +37,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ## [Unreleased]
 
 ### Features
+* (x/upgrade) [\#42](https://github.com/line/lbm/pull/42) add token module and bump cosmos-sdk v0.42.11
 
 ### Improvements
 

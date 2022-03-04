@@ -48,26 +48,26 @@ contain valid denominations. Accounts may optionally be supplied with vesting pa
 
 			config.SetRoot(clientCtx.HomeDir)
 
-			var addr sdk.AccAddress
+			var kr keyring.Keyring
+			addr := sdk.AccAddress(args[0])
 			err := sdk.ValidateAccAddress(args[0])
 			if err != nil {
 				inBuf := bufio.NewReader(cmd.InOrStdin())
-				keyringBackend, err := cmd.Flags().GetString(flags.FlagKeyringBackend)
-				if err != nil {
-					return err
+				keyringBackend, _ := cmd.Flags().GetString(flags.FlagKeyringBackend)
+				if keyringBackend != "" && clientCtx.Keyring == nil {
+					var err error
+					kr, err = keyring.New(sdk.KeyringServiceName(), keyringBackend, clientCtx.HomeDir, inBuf)
+					if err != nil {
+						return err
+					}
+				} else {
+					kr = clientCtx.Keyring
 				}
 
-				// attempt to lookup address from Keybase if no address was provided
-				kb, err := keyring.New(sdk.KeyringServiceName(), keyringBackend, clientCtx.HomeDir, inBuf)
+				info, err := kr.Key(args[0])
 				if err != nil {
-					return err
+					return fmt.Errorf("failed to get address from Keyring: %w", err)
 				}
-
-				info, err := kb.Key(args[0])
-				if err != nil {
-					return fmt.Errorf("failed to get address from Keybase: %w", err)
-				}
-
 				addr = info.GetAddress()
 			} else {
 				addr = sdk.AccAddress(args[0])
@@ -163,7 +163,7 @@ contain valid denominations. Accounts may optionally be supplied with vesting pa
 
 			appState[authtypes.ModuleName] = authGenStateBz
 
-			bankGenState := banktypes.GetGenesisStateFromAppState(depCdc, appState)
+			bankGenState := banktypes.GetGenesisStateFromAppState(cdc, appState)
 			bankGenState.Balances = append(bankGenState.Balances, balances)
 			bankGenState.Balances = banktypes.SanitizeGenesisBalances(bankGenState.Balances)
 			bankGenState.Supply = bankGenState.Supply.Add(balances.Coins...)

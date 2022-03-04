@@ -499,8 +499,8 @@ github.com/line/gorocksdb v0.0.0-20210406043732-d4bea34b6d55 h1:cXVtMiJkvQ4kn0px
 github.com/line/gorocksdb v0.0.0-20210406043732-d4bea34b6d55/go.mod h1:DHRJroSL7NaRkpvocRx3OtRsleXVsYSxBI9SfHFlTQ0=
 github.com/line/iavl/v2 v2.0.0-init.1.0.20220215225951-cb11c91d8857 h1:8kWqbLNeb37357e4U/7uLMVCRF3K9bxwTGb6JmRUKpI=
 github.com/line/iavl/v2 v2.0.0-init.1.0.20220215225951-cb11c91d8857/go.mod h1:uK2CYRdukSVRGhc5Q8zoDUnm/zAbfnZATbFXrfCrQKA=
-github.com/line/lbm-sdk v1.0.0-init.1.0.20220224083451-4bb7b33c5e6e h1:tcSsPZNNoQKRLSSf8P9XOq31/+e+9yljfTyNEreYcHw=
-github.com/line/lbm-sdk v1.0.0-init.1.0.20220224083451-4bb7b33c5e6e/go.mod h1:hHnrlkiZH5cTjudEUDhLYuZhPFaCRN2wmDxQOdk3GaI=
+github.com/line/lbm-sdk v0.45.0-rc0 h1:teOanJ9ha6rv42BWzmUOkgJSFVZsINFnUpCFGKHeGnI=
+github.com/line/lbm-sdk v0.45.0-rc0/go.mod h1:xPvb5pYKhWoKbCKwXc59fPqjuMzJTu6JDk2IX8Y59Wc=
 github.com/line/ostracon v0.34.9-0.20210429084710-ef4fe0a40c7d/go.mod h1:ttnbq+yQJMQ9a2MT5SEisOoa/+pOgh2KenTiK/rVdiw=
 github.com/line/ostracon v1.0.3 h1:9HJ27BZJUcGCJgKPtuqLPDoZ2Ytty2lT/fEWq2ckAFI=
 github.com/line/ostracon v1.0.3/go.mod h1:txHQ97UdyUMSfuNGZYpRfuxLPCvHA0h/Y+0kbc9s2H4=
@@ -508,8 +508,8 @@ github.com/line/tm-db/v2 v2.0.0-init.1.0.20210413083915-5bb60e117524/go.mod h1:w
 github.com/line/tm-db/v2 v2.0.0-init.1.0.20210824011847-fcfa67dd3c70/go.mod h1:wmkyPabXjtVZ1dvRofmurjaceghywtCSYGqFuFS+TbI=
 github.com/line/tm-db/v2 v2.0.0-init.1.0.20220121012851-61d2bc1d9486 h1:uvXQdcWaUyNsgkXBz375FpQ285WEJaLXhQ5HtoNK/GU=
 github.com/line/tm-db/v2 v2.0.0-init.1.0.20220121012851-61d2bc1d9486/go.mod h1:wmkyPabXjtVZ1dvRofmurjaceghywtCSYGqFuFS+TbI=
-github.com/line/wasmvm v0.14.0-0.8.0 h1:zWzyFLB3xRFSP3j9JWeTjzRHpLXNyTP7g1mmt3srKDw=
-github.com/line/wasmvm v0.14.0-0.8.0/go.mod h1:cgsILoCDigfQ2XplFI4rOo2ImOLEZH/OM8sulxGoKUA=
+github.com/line/wasmvm v0.16.3-0.9.0 h1:snRk3T3mJV+7HTjCIhHKmeYUEN9uRbyRVhmuhele/jM=
+github.com/line/wasmvm v0.16.3-0.9.0/go.mod h1:cgsILoCDigfQ2XplFI4rOo2ImOLEZH/OM8sulxGoKUA=
 github.com/lyft/protoc-gen-star v0.5.3/go.mod h1:V0xaHgaf5oCCqmcxYcWiDfTiKsZsRc87/1qhoTACD8w=
 github.com/magiconair/properties v1.8.0/go.mod h1:PppfXfuXeibc/6YijjN8zIbojt8czPbwD3XqdrwzmxQ=
 github.com/magiconair/properties v1.8.1/go.mod h1:PppfXfuXeibc/6YijjN8zIbojt8czPbwD3XqdrwzmxQ=
@@ -871,8 +871,9 @@ golang.org/x/exp v0.0.0-20191129062945-2f5052295587/go.mod h1:2RIsYlXP63K8oxa1u0
 golang.org/x/exp v0.0.0-20191227195350-da58074b4299/go.mod h1:2RIsYlXP63K8oxa1u096TMicItID8zy7Y6sNkU49FU4=
 golang.org/x/exp v0.0.0-20200119233911-0405dc783f0a/go.mod h1:2RIsYlXP63K8oxa1u096TMicItID8zy7Y6sNkU49FU4=
 golang.org/x/exp v0.0.0-20200207192155-f17229e696bd/go.mod h1:J/WKrq2StrnmMY6+EHIKF9dgMWnmCNThgcyBT1FY9mM=
-golang.org/x/exp v0.0.0-20200224162631-6cc2880d07d6 h1:QE6XYQK6naiK1EPAe1g/ILLxN5RBoH5xkJk3CqlMI/Y=
 golang.org/x/exp v0.0.0-20200224162631-6cc2880d07d6/go.mod h1:3jZMyOhIsHpP37uCMkUooju7aAi5cS1Q23tOzKc+0MU=
+golang.org/x/exp v0.0.0-20200331195152-e8c3332aa8e5 h1:FR+oGxGfbQu1d+jglI3rCkjAjUnhRSZcUxr+DqlDLNo=
+golang.org/x/exp v0.0.0-20200331195152-e8c3332aa8e5/go.mod h1:4M0jN8W1tt0AVLNr8HDosyJCDCDuyL9N9+3m7wDWgKw=
 golang.org/x/image v0.0.0-20180708004352-c73c2afc3b81/go.mod h1:ux5Hcp/YLpHSI86hEcLt0YII63i6oz57MZXIpbrjZUs=
 golang.org/x/image v0.0.0-20190227222117-0694c2d4d067/go.mod h1:kZ7UVZpmo3dzQBMxlp+ypCbDeSB+sBbTgSJuh5dn5js=
 golang.org/x/image v0.0.0-20190802002840-cff245a6509b/go.mod h1:FeLwcggjj3mMvU+oOTbSwawSJRM1uh48EjtB4UJZlP0=

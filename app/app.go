@@ -369,7 +369,6 @@ func NewLinkApp(
 		scopedWasmKeeper,
 		app.TransferKeeper,
 		app.Router(),
-		nil,
 		app.GRPCQueryRouter(),
 		wasmDir,
 		wasmConfig,

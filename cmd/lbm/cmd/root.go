@@ -93,8 +93,10 @@ func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 
 func initRootCmd(rootCmd *cobra.Command, encodingConfig params.EncodingConfig) {
 	authclient.Codec = encodingConfig.Marshaler
-	cfg := sdk.GetConfig()
-	cfg.Seal()
+	// Todo This is applied to https://github.com/cosmos/cosmos-sdk/pull/9299.
+	// But it is failed in `make localnet-start`. Let's check it later.
+	//cfg := sdk.GetConfig()
+	//cfg.Seal()
 
 	rootCmd.AddCommand(
 		genutilcli.InitCmd(app.ModuleBasics, app.DefaultNodeHome),

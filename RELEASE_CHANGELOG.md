@@ -34,13 +34,6 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 # Changelog
 
-## [v0.3.0]
-
-### Features
-* (x/wasm) [\#41](https://github.com/line/lbm/pull/41) upgrade x/wasm (merged original 0.19.0)
-* (x/upgrade) [\#42](https://github.com/line/lbm/pull/42) add token module and bump cosmos-sdk v0.42.11
-
-
 ## [v0.2.0]
 
 ### Features

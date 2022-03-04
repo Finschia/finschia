@@ -3,11 +3,12 @@ module github.com/line/lbm
 go 1.15
 
 require (
+	github.com/go-kit/kit v0.12.0 // indirect
 	github.com/gorilla/mux v1.8.0
-	github.com/line/lbm-sdk v0.44.0-rc0
-	github.com/line/ostracon v1.0.2
-	github.com/line/tm-db/v2 v2.0.0-init.1.0.20211202001648-945e88fd2edf
-	github.com/prometheus/client_golang v1.11.0
+	github.com/line/lbm-sdk v1.0.0-init.1.0.20220224083451-4bb7b33c5e6e
+	github.com/line/ostracon v1.0.3
+	github.com/line/tm-db/v2 v2.0.0-init.1.0.20220121012851-61d2bc1d9486
+	github.com/prometheus/client_golang v1.12.1
 	github.com/rakyll/statik v0.1.7
 	github.com/spf13/cast v1.4.1
 	github.com/spf13/cobra v1.3.0

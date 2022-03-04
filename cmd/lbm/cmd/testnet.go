@@ -46,7 +46,7 @@ var (
 func testnetCmd(mbm module.BasicManager, genBalIterator banktypes.GenesisBalancesIterator) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "testnet",
-		Short: "Initialize files for a simapp testnet",
+		Short: "Initialize files for a lbm testnet",
 		Long: `testnet will create "v" number of directories and populate each with
 necessary files (private validator, genesis, config, etc.).
 
@@ -119,13 +119,13 @@ func InitTestnet(
 	nodeIDs := make([]string, numValidators)
 	valPubKeys := make([]cryptotypes.PubKey, numValidators)
 
-	simappConfig := srvconfig.DefaultConfig()
-	simappConfig.MinGasPrices = minGasPrices
-	simappConfig.API.Enable = true
-	simappConfig.Telemetry.Enabled = true
-	simappConfig.Telemetry.PrometheusRetentionTime = 60
-	simappConfig.Telemetry.EnableHostnameLabel = false
-	simappConfig.Telemetry.GlobalLabels = [][]string{{"chain_id", chainID}}
+	appConfig := srvconfig.DefaultConfig()
+	appConfig.MinGasPrices = minGasPrices
+	appConfig.API.Enable = true
+	appConfig.Telemetry.Enabled = true
+	appConfig.Telemetry.PrometheusRetentionTime = 60
+	appConfig.Telemetry.EnableHostnameLabel = false
+	appConfig.Telemetry.GlobalLabels = [][]string{{"chain_id", chainID}}
 
 	// nolint: prealloc
 	var (
@@ -203,7 +203,7 @@ func InitTestnet(
 		}
 
 		genBalances = append(genBalances, banktypes.Balance{Address: addr.String(), Coins: coins.Sort()})
-		genAccounts = append(genAccounts, authtypes.NewBaseAccount(addr, nil, 0))
+		genAccounts = append(genAccounts, authtypes.NewBaseAccount(addr, nil, 0, 0))
 
 		valTokens := sdk.TokensFromConsensusPower(100)
 		createValMsg, err := stakingtypes.NewMsgCreateValidator(
@@ -245,7 +245,7 @@ func InitTestnet(
 			return err
 		}
 
-		srvconfig.WriteConfigFile(filepath.Join(nodeDir, "config/app.toml"), simappConfig)
+		srvconfig.WriteConfigFile(filepath.Join(nodeDir, "config/app.toml"), appConfig)
 	}
 
 	if err := initGenFiles(clientCtx, mbm, chainID, genAccounts, genBalances, genFiles, numValidators); err != nil {
@@ -287,7 +287,10 @@ func initGenFiles(
 	var bankGenState banktypes.GenesisState
 	clientCtx.JSONMarshaler.MustUnmarshalJSON(appGenState[banktypes.ModuleName], &bankGenState)
 
-	bankGenState.Balances = genBalances
+	bankGenState.Balances = banktypes.SanitizeGenesisBalances(genBalances)
+	for _, bal := range bankGenState.Balances {
+		bankGenState.Supply = bankGenState.Supply.Add(bal.Coins...)
+	}
 	appGenState[banktypes.ModuleName] = clientCtx.JSONMarshaler.MustMarshalJSON(&bankGenState)
 
 	appGenStateJSON, err := json.MarshalIndent(appGenState, "", "  ")

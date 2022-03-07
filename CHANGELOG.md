@@ -41,6 +41,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Improvements
 
 ### Bug Fixes
+* (build) [\#47](https://github.com/line/lbm/pull/47) fix Docker build error
 
 ### Breaking Changes
 

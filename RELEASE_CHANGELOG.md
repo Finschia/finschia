@@ -87,3 +87,6 @@ Please refer [CHANGELOG_OF_GAIA_v4.0.4](https://github.com/cosmos/gaia/blob/v4.0
 
 <!-- Release links -->
 [v0.3.0]: https://github.com/line/lbm/compare/v0.2.0-rc0...v0.3.0
+[v0.2.0]: https://github.com/line/lbm/compare/v0.1.0-rc0...v0.2.0-rc0
+[v0.1.0]: https://github.com/line/lbm/commits/v0.1.0
+[gaia v4.0.4]: https://github.com/cosmos/gaia/releases/tag/v4.0.4

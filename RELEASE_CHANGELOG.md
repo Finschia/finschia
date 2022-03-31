@@ -34,6 +34,16 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 # Changelog
 
+## [v0.3.0]
+
+### Bug Fixes
+* (build) [\#47](https://github.com/line/lbm/pull/47) fix Docker build error
+
+### Features
+* (x/wasm) [\#41](https://github.com/line/lbm/pull/41) upgrade x/wasm (merged original 0.19.0)
+* (x/upgrade) [\#42](https://github.com/line/lbm/pull/42) add token module and bump cosmos-sdk v0.42.11
+
+
 ## [v0.2.0]
 
 ### Features
@@ -73,4 +83,7 @@ Initial lbm is based on the tendermint v0.34.9+, cosmos-sdk v0.42.0+, gaia v4.0.
 * (gaia) [v4.0.4](https://github.com/cosmos/gaia/releases/tag/v4.0.4).
 
 Please refer [CHANGELOG_OF_GAIA_v4.0.4](https://github.com/cosmos/gaia/blob/v4.0.4/CHANGELOG.md)
+
+
 <!-- Release links -->
+[v0.3.0]: https://github.com/line/lbm/compare/v0.2.0-rc0...v0.3.0

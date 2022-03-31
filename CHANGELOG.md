@@ -41,13 +41,9 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Improvements
 
 ### Bug Fixes
-* (build) [\#47](https://github.com/line/lbm/pull/47) fix Docker build error
 
 ### Breaking Changes
 
-## [v0.3.0-rc0]
 
-### Features
-* (x/wasm) [\#41](https://github.com/line/lbm/pull/41) upgrade x/wasm (merged original 0.19.0)
-* (x/upgrade) [\#42](https://github.com/line/lbm/pull/42) add token module and bump cosmos-sdk v0.42.11
-
+<!-- Release links -->
+[Unreleased]: https://github.com/line/lbm/compare/v0.3.0...HEAD

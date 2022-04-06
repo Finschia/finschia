@@ -3,7 +3,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"github.com/line/lbm/app"
 	"testing"
 
 	"github.com/line/lbm-sdk/client"
@@ -12,6 +11,7 @@ import (
 	banktypes "github.com/line/lbm-sdk/x/bank/types"
 	genutiltest "github.com/line/lbm-sdk/x/genutil/client/testutil"
 	genutiltypes "github.com/line/lbm-sdk/x/genutil/types"
+	"github.com/line/lbm/app"
 	"github.com/line/ostracon/libs/log"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/require"
@@ -29,7 +29,7 @@ func Test_TestnetCmd(t *testing.T) {
 
 	serverCtx := server.NewContext(viper.New(), cfg, logger)
 	clientCtx := client.Context{}.
-		WithJSONMarshaler(encodingConfig.Marshaler).
+		WithCodec(encodingConfig.Marshaler).
 		WithHomeDir(home).
 		WithTxConfig(encodingConfig.TxConfig)
 

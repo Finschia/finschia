@@ -325,7 +325,6 @@ func createSimappAndExport(
 func initConfig(testnet bool) {
 	config := sdk.GetConfig()
 	config.SetCoinType(lbmtypes.CoinType)
-	config.SetFullFundraiserPath(lbmtypes.FullFundraiserPath)
 	config.SetBech32PrefixForAccount(lbmtypes.Bech32PrefixAcc(testnet), lbmtypes.Bech32PrefixAccPub(testnet))
 	config.SetBech32PrefixForConsensusNode(lbmtypes.Bech32PrefixConsAddr(testnet), lbmtypes.Bech32PrefixConsPub(testnet))
 	config.SetBech32PrefixForValidator(lbmtypes.Bech32PrefixValAddr(testnet), lbmtypes.Bech32PrefixValPub(testnet))

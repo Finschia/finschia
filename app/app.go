@@ -270,7 +270,6 @@ func NewLinkApp(
 		consortiumtypes.StoreKey,
 		class.StoreKey,
 		token.StoreKey,
-		token.StoreKey,
 		wasm.StoreKey,
 	)
 
@@ -466,10 +465,51 @@ func NewLinkApp(
 	// CanWithdrawInvariant invariant.
 	// NOTE: staking module is required if HistoricalEntries param > 0
 	app.mm.SetOrderBeginBlockers(
-		upgradetypes.ModuleName, capabilitytypes.ModuleName, minttypes.ModuleName, distrtypes.ModuleName, slashingtypes.ModuleName,
-		evidencetypes.ModuleName, stakingtypes.ModuleName, ibchost.ModuleName,
+		upgradetypes.ModuleName,
+		capabilitytypes.ModuleName,
+		minttypes.ModuleName,
+		distrtypes.ModuleName,
+		slashingtypes.ModuleName,
+		evidencetypes.ModuleName,
+		stakingtypes.ModuleName,
+		authtypes.ModuleName,
+		banktypes.ModuleName,
+		govtypes.ModuleName,
+		crisistypes.ModuleName,
+		genutiltypes.ModuleName,
+		authz.ModuleName,
+		feegrant.ModuleName,
+		paramstypes.ModuleName,
+		vestingtypes.ModuleName,
+		ibchost.ModuleName,
+		ibctransfertypes.ModuleName,
+		consortiumtypes.ModuleName,
+		token.ModuleName,
+		wasm.ModuleName,
 	)
-	app.mm.SetOrderEndBlockers(crisistypes.ModuleName, govtypes.ModuleName, stakingtypes.ModuleName)
+	app.mm.SetOrderEndBlockers(
+		crisistypes.ModuleName,
+		govtypes.ModuleName,
+		stakingtypes.ModuleName,
+		capabilitytypes.ModuleName,
+		authtypes.ModuleName,
+		banktypes.ModuleName,
+		distrtypes.ModuleName,
+		slashingtypes.ModuleName,
+		minttypes.ModuleName,
+		genutiltypes.ModuleName,
+		evidencetypes.ModuleName,
+		authz.ModuleName,
+		feegrant.ModuleName,
+		paramstypes.ModuleName,
+		upgradetypes.ModuleName,
+		vestingtypes.ModuleName,
+		ibchost.ModuleName,
+		ibctransfertypes.ModuleName,
+		consortiumtypes.ModuleName,
+		token.ModuleName,
+		wasm.ModuleName,
+	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
 	// properly initialized with tokens from genesis accounts.
@@ -502,30 +542,6 @@ func NewLinkApp(
 		consortiumtypes.ModuleName,
 		token.ModuleName,
 		// wasm after ibc transfer
-		wasm.ModuleName,
-	)
-
-	app.mm.SetOrderEndBlockers(
-		crisistypes.ModuleName,
-		govtypes.ModuleName,
-		stakingtypes.ModuleName,
-		capabilitytypes.ModuleName,
-		authtypes.ModuleName,
-		banktypes.ModuleName,
-		distrtypes.ModuleName,
-		slashingtypes.ModuleName,
-		minttypes.ModuleName,
-		genutiltypes.ModuleName,
-		evidencetypes.ModuleName,
-		authz.ModuleName,
-		feegrant.ModuleName,
-		paramstypes.ModuleName,
-		upgradetypes.ModuleName,
-		vestingtypes.ModuleName,
-		ibchost.ModuleName,
-		ibctransfertypes.ModuleName,
-		consortiumtypes.ModuleName,
-		token.ModuleName,
 		wasm.ModuleName,
 	)
 
@@ -600,6 +616,14 @@ func NewLinkApp(
 	app.ScopedWasmKeeper = scopedWasmKeeper
 
 	return app
+}
+
+// MakeCodecs constructs the *std.Codec and *codec.LegacyAmino instances used by
+// Link. It is useful for tests and clients who do not want to construct the
+// full lbm application
+func MakeCodecs() (codec.Codec, *codec.LegacyAmino) {
+	cf := MakeEncodingConfig()
+	return cf.Marshaler, cf.Amino
 }
 
 // Name returns the name of the App

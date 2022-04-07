@@ -95,30 +95,30 @@ var curPort int32 = 26656
 
 var (
 	TotalCoins = sdk.NewCoins(
-		sdk.NewCoin(DenomLink, sdk.TokensFromConsensusPower(6000)),
-		sdk.NewCoin(DenomStake, sdk.TokensFromConsensusPower(600000000)),
-		sdk.NewCoin(fee2Denom, sdk.TokensFromConsensusPower(2000000)),
-		sdk.NewCoin(feeDenom, sdk.TokensFromConsensusPower(2000000)),
-		sdk.NewCoin(fooDenom, sdk.TokensFromConsensusPower(2000)),
-		sdk.NewCoin(denom, sdk.TokensFromConsensusPower(300)), // We don't use inflation
+		sdk.NewCoin(DenomLink, sdk.TokensFromConsensusPower(6000, sdk.DefaultPowerReduction)),
+		sdk.NewCoin(DenomStake, sdk.TokensFromConsensusPower(600000000, sdk.DefaultPowerReduction)),
+		sdk.NewCoin(fee2Denom, sdk.TokensFromConsensusPower(2000000, sdk.DefaultPowerReduction)),
+		sdk.NewCoin(feeDenom, sdk.TokensFromConsensusPower(2000000, sdk.DefaultPowerReduction)),
+		sdk.NewCoin(fooDenom, sdk.TokensFromConsensusPower(2000, sdk.DefaultPowerReduction)),
+		sdk.NewCoin(denom, sdk.TokensFromConsensusPower(300, sdk.DefaultPowerReduction)), // We don't use inflation
 		// sdk.NewCoin(denom, sdk.TokensFromConsensusPower(300).Add(sdk.NewInt(12))), // add coins from inflation
 	)
 
 	startCoins = sdk.NewCoins(
-		sdk.NewCoin(fee2Denom, sdk.TokensFromConsensusPower(1000000)),
-		sdk.NewCoin(feeDenom, sdk.TokensFromConsensusPower(1000000)),
-		sdk.NewCoin(fooDenom, sdk.TokensFromConsensusPower(1000)),
-		sdk.NewCoin(denom, sdk.TokensFromConsensusPower(150)),
+		sdk.NewCoin(fee2Denom, sdk.TokensFromConsensusPower(1000000, sdk.DefaultPowerReduction)),
+		sdk.NewCoin(feeDenom, sdk.TokensFromConsensusPower(1000000, sdk.DefaultPowerReduction)),
+		sdk.NewCoin(fooDenom, sdk.TokensFromConsensusPower(1000, sdk.DefaultPowerReduction)),
+		sdk.NewCoin(denom, sdk.TokensFromConsensusPower(150, sdk.DefaultPowerReduction)),
 	)
 
 	vestingCoins = sdk.NewCoins(
-		sdk.NewCoin(feeDenom, sdk.TokensFromConsensusPower(500000)),
+		sdk.NewCoin(feeDenom, sdk.TokensFromConsensusPower(500000, sdk.DefaultPowerReduction)),
 	)
 
 	// coins we set during ./.initialize.sh
 	defaultCoins = sdk.NewCoins(
-		sdk.NewCoin(DenomLink, sdk.TokensFromConsensusPower(1000)),
-		sdk.NewCoin(DenomStake, sdk.TokensFromConsensusPower(100000000)),
+		sdk.NewCoin(DenomLink, sdk.TokensFromConsensusPower(1000, sdk.DefaultPowerReduction)),
+		sdk.NewCoin(DenomStake, sdk.TokensFromConsensusPower(100000000, sdk.DefaultPowerReduction)),
 	)
 
 	ostraconCmd = &cobra.Command{
@@ -134,7 +134,6 @@ func init() {
 	config.SetBech32PrefixForValidator(lbmtypes.Bech32PrefixValAddr(testnet), lbmtypes.Bech32PrefixValPub(testnet))
 	config.SetBech32PrefixForConsensusNode(lbmtypes.Bech32PrefixConsAddr(testnet), lbmtypes.Bech32PrefixConsPub(testnet))
 	config.SetCoinType(lbmtypes.CoinType)
-	config.SetFullFundraiserPath(lbmtypes.FullFundraiserPath)
 	config.Seal()
 
 	ostraconCmd.AddCommand(
@@ -333,7 +332,7 @@ func getCliCtx(f *Fixtures) client.Context {
 	require.NoError(f.T, err)
 	encodingConfig := app.MakeEncodingConfig()
 	return client.Context{}.
-		WithJSONMarshaler(encodingConfig.Marshaler).
+		WithCodec(encodingConfig.Marshaler).
 		WithInterfaceRegistry(encodingConfig.InterfaceRegistry).
 		WithTxConfig(encodingConfig.TxConfig).
 		WithLegacyAmino(encodingConfig.Amino).
@@ -1297,7 +1296,7 @@ func WriteToNewTempFile(t *testing.T, s string) *os.File {
 
 func MarshalTx(t *testing.T, stdTx tx.Tx) []byte {
 	cdc, _ := app.MakeCodecs()
-	bz, err := cdc.MarshalBinaryBare(&stdTx)
+	bz, err := cdc.MarshalJSON(&stdTx)
 	require.NoError(t, err)
 	return bz
 }
@@ -1328,9 +1327,9 @@ func newTestnetConfig(t *testing.T, genesisState map[string]json.RawMessage, cha
 		NumValidators:     1,
 		BondDenom:         sdk.DefaultBondDenom,
 		MinGasPrices:      minGasPrices,
-		AccountTokens:     sdk.TokensFromConsensusPower(1000),
-		StakingTokens:     sdk.TokensFromConsensusPower(500),
-		BondedTokens:      sdk.TokensFromConsensusPower(100),
+		AccountTokens:     sdk.TokensFromConsensusPower(1000, sdk.DefaultPowerReduction),
+		StakingTokens:     sdk.TokensFromConsensusPower(500, sdk.DefaultPowerReduction),
+		BondedTokens:      sdk.TokensFromConsensusPower(100, sdk.DefaultPowerReduction),
 		PruningStrategy:   storetypes.PruningOptionNothing,
 		EnableLogging:     true,
 		CleanupDir:        true,
@@ -1402,7 +1401,7 @@ func newValidator(f *Fixtures, cfg testnet.Config, appCfg *srvconfig.Config, ctx
 		WithHomeDir(tmCfg.RootDir).
 		WithChainID(cfg.ChainID).
 		WithInterfaceRegistry(cfg.InterfaceRegistry).
-		WithJSONMarshaler(cfg.Codec).
+		WithCodec(cfg.Codec).
 		WithLegacyAmino(cfg.LegacyAmino).
 		WithTxConfig(cfg.TxConfig).
 		WithAccountRetriever(cfg.AccountRetriever)

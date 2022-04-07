@@ -37,6 +37,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ## [Unreleased]
 
 ### Features
+* (cosmos-sdk) [\#56](https://github.com/line/lbm/pull/56) bump up cosmos-sdk v0.45.1 
 
 ### Improvements
 

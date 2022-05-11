@@ -42,6 +42,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Improvements
 
 ### Bug Fixes
+* (app) [\#60](https://github.com/line/lbm/pull/60) register authz module store key
 
 ### Breaking Changes
 

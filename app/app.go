@@ -254,6 +254,7 @@ func NewLinkApp(
 
 	keys := sdk.NewKVStoreKeys(
 		authtypes.StoreKey,
+		authzkeeper.StoreKey,
 		banktypes.StoreKey,
 		stakingtypes.StoreKey,
 		minttypes.StoreKey,

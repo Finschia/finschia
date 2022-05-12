@@ -52,7 +52,7 @@ import (
 	"github.com/line/lbm-sdk/x/consortium"
 	consortiumclient "github.com/line/lbm-sdk/x/consortium/client"
 	consortiumkeeper "github.com/line/lbm-sdk/x/consortium/keeper"
-	consortiumtypes "github.com/line/lbm-sdk/x/consortium/types"
+	consortiummodule "github.com/line/lbm-sdk/x/consortium/module"
 	"github.com/line/lbm-sdk/x/crisis"
 	crisiskeeper "github.com/line/lbm-sdk/x/crisis/keeper"
 	crisistypes "github.com/line/lbm-sdk/x/crisis/types"
@@ -131,7 +131,7 @@ var (
 		staking.AppModuleBasic{},
 		mint.AppModuleBasic{},
 		distr.AppModuleBasic{},
-		consortium.AppModuleBasic{},
+		consortiummodule.AppModuleBasic{},
 		gov.NewAppModuleBasic(
 			append(
 				wasmclient.ProposalHandlers,
@@ -268,7 +268,7 @@ func NewLinkApp(
 		ibctransfertypes.StoreKey,
 		capabilitytypes.StoreKey,
 		feegrant.StoreKey,
-		consortiumtypes.StoreKey,
+		consortium.StoreKey,
 		class.StoreKey,
 		token.StoreKey,
 		wasm.StoreKey,
@@ -329,7 +329,7 @@ func NewLinkApp(
 	)
 	app.FeeGrantKeeper = feegrantkeeper.NewKeeper(appCodec, keys[feegrant.StoreKey], app.AccountKeeper)
 	app.UpgradeKeeper = upgradekeeper.NewKeeper(skipUpgradeHeights, keys[upgradetypes.StoreKey], appCodec, homePath, app.BaseApp)
-	app.ConsortiumKeeper = consortiumkeeper.NewKeeper(appCodec, keys[consortiumtypes.StoreKey], stakingKeeper)
+	app.ConsortiumKeeper = consortiumkeeper.NewKeeper(appCodec, keys[consortium.StoreKey], stakingKeeper)
 
 	classKeeper := classkeeper.NewKeeper(appCodec, keys[class.StoreKey])
 	app.TokenKeeper = tokenkeeper.NewKeeper(appCodec, keys[token.StoreKey], app.AccountKeeper, classKeeper)
@@ -407,7 +407,7 @@ func NewLinkApp(
 		AddRoute(distrtypes.RouterKey, distr.NewCommunityPoolSpendProposalHandler(app.DistrKeeper)).
 		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
 		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper)).
-		AddRoute(consortiumtypes.RouterKey, consortium.NewProposalHandler(app.ConsortiumKeeper)).
+		AddRoute(consortium.RouterKey, consortiumkeeper.NewProposalHandler(app.ConsortiumKeeper)).
 		AddRoute(wasm.RouterKey, wasm.NewWasmProposalHandler(app.WasmKeeper, wasm.EnableAllProposals))
 
 	govKeeper := govkeeper.NewKeeper(
@@ -445,7 +445,7 @@ func NewLinkApp(
 		capability.NewAppModule(appCodec, *app.CapabilityKeeper),
 		crisis.NewAppModule(&app.CrisisKeeper, skipGenesisInvariants),
 		feegrantmodule.NewAppModule(appCodec, app.AccountKeeper, app.BankKeeper, app.FeeGrantKeeper, app.interfaceRegistry),
-		consortium.NewAppModule(appCodec, app.ConsortiumKeeper, app.StakingKeeper),
+		consortiummodule.NewAppModule(appCodec, app.ConsortiumKeeper, app.StakingKeeper),
 		gov.NewAppModule(appCodec, app.GovKeeper, app.AccountKeeper, app.BankKeeper),
 		mint.NewAppModule(appCodec, app.MintKeeper, app.AccountKeeper),
 		slashing.NewAppModule(appCodec, app.SlashingKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),
@@ -484,7 +484,7 @@ func NewLinkApp(
 		vestingtypes.ModuleName,
 		ibchost.ModuleName,
 		ibctransfertypes.ModuleName,
-		consortiumtypes.ModuleName,
+		consortium.ModuleName,
 		token.ModuleName,
 		wasm.ModuleName,
 	)
@@ -507,7 +507,7 @@ func NewLinkApp(
 		vestingtypes.ModuleName,
 		ibchost.ModuleName,
 		ibctransfertypes.ModuleName,
-		consortiumtypes.ModuleName,
+		consortium.ModuleName,
 		token.ModuleName,
 		wasm.ModuleName,
 	)
@@ -540,7 +540,7 @@ func NewLinkApp(
 		vestingtypes.ModuleName,
 		ibchost.ModuleName,
 		ibctransfertypes.ModuleName,
-		consortiumtypes.ModuleName,
+		consortium.ModuleName,
 		token.ModuleName,
 		// wasm after ibc transfer
 		wasm.ModuleName,

@@ -355,7 +355,6 @@ func getCliCtx(f *Fixtures) client.Context {
 
 // UnsafeResetAll is lbm unsafe-reset-all
 func (f *Fixtures) UnsafeResetAll(flags ...string) {
-	//cmd := server.UnsafeResetAllCmd()
 	cmd := ostcmd.ResetAllCmd
 	_, err := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags("", flags...))
 	require.NoError(f.T, err)

@@ -36,8 +36,11 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ## [Unreleased]
 
+This version based on lbm-sdk v0.46.0
+
 ### Features
-* (cosmos-sdk) [\#56](https://github.com/line/lbm/pull/56) bump up cosmos-sdk v0.45.1 
+* (cosmos-sdk) [\#56](https://github.com/line/lbm/pull/56) bump up cosmos-sdk v0.45.1
+* (x/foundation) [\#62](https://github.com/line/lbm/pull/62) add `x/foundation` module of lbm-sdk
 
 ### Improvements
 

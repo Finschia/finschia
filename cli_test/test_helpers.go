@@ -57,6 +57,7 @@ import (
 	wasmcli "github.com/line/lbm-sdk/x/wasm/client/cli"
 
 	wasmtypes "github.com/line/lbm-sdk/x/wasm/types"
+	ostcmd "github.com/line/ostracon/cmd/ostracon/commands"
 	ostcfg "github.com/line/ostracon/config"
 	ostflags "github.com/line/ostracon/libs/cli/flags"
 	"github.com/line/ostracon/libs/log"
@@ -141,6 +142,8 @@ func init() {
 		server.ShowValidatorCmd(),
 		server.ShowAddressCmd(),
 		server.VersionCmd(),
+		ostcmd.ResetAllCmd,
+		ostcmd.ResetStateCmd,
 	)
 }
 
@@ -352,7 +355,7 @@ func getCliCtx(f *Fixtures) client.Context {
 
 // UnsafeResetAll is lbm unsafe-reset-all
 func (f *Fixtures) UnsafeResetAll(flags ...string) {
-	cmd := server.UnsafeResetAllCmd()
+	cmd := ostcmd.ResetAllCmd
 	_, err := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags("", flags...))
 	require.NoError(f.T, err)
 

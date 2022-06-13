@@ -36,19 +36,14 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ## [Unreleased]
 
-This version based on lbm-sdk v0.46.0-rc2
-
 ### Features
-* (cosmos-sdk) [\#56](https://github.com/line/lbm/pull/56) bump up cosmos-sdk v0.45.1
-* (x/foundation) [\#62](https://github.com/line/lbm/pull/62) add `x/foundation` module of lbm-sdk
 
 ### Improvements
 
 ### Bug Fixes
-* (app) [\#60](https://github.com/line/lbm/pull/60) register authz module store key
 
 ### Breaking Changes
 
 
 <!-- Release links -->
-[Unreleased]: https://github.com/line/lbm/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/line/lbm/compare/v0.4.0...HEAD

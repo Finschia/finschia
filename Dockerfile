@@ -30,7 +30,7 @@ ENV PATH=$CARGO_HOME/bin:$PATH
 
 RUN wget "https://static.rust-lang.org/rustup/dist/x86_64-unknown-linux-musl/rustup-init"
 RUN chmod +x rustup-init
-RUN ./rustup-init -y --no-modify-path --default-toolchain 1.53.0; rm rustup-init
+RUN ./rustup-init -y --no-modify-path --default-toolchain 1.57.0; rm rustup-init
 RUN chmod -R a+w $RUSTUP_HOME $CARGO_HOME
 RUN cd $(go list -f "{{ .Dir }}" -m github.com/line/wasmvm) && \
     cd ./libwasmvm && \

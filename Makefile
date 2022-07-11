@@ -101,6 +101,10 @@ ldflags = -X github.com/line/lbm-sdk/version.Name=lbm \
 		  -X "github.com/line/lbm-sdk/version.BuildTags=$(build_tags_comma_sep)" \
 		  -X github.com/line/ostracon/version.TMCoreSemVer=$(OST_VERSION)
 
+ifeq ($(LINK_STATICALLY),true)
+	ldflags += -linkmode=external -extldflags "-Wl,-z,muldefs -static"
+endif
+
 ifeq (,$(findstring nostrip,$(LBM_BUILD_OPTIONS)))
   ldflags += -w -s
 endif
@@ -132,8 +136,7 @@ build: go.sum $(BUILDDIR)/ dbbackend
 	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go build -mod=readonly $(BUILD_FLAGS) $(BUILD_ARGS) ./...
 
 build-static: go.sum $(BUILDDIR)/
-	docker build -t line/lbm-builder:static -f builders/Dockerfile.static .
-	docker run -t --rm -v $(shell pwd):/code -e LBM_BUILD_OPTIONS="$(LBM_BUILD_OPTIONS)" line/lbm-builder:static
+	docker build -t line/lbmnode:latest -f builders/Dockerfile.static .
 
 build-static-centos7: go.sum $(BUILDDIR)/
 	docker build -t line/lbm-builder:static_centos7 -f builders/Dockerfile.static_centos7 .
@@ -296,8 +299,11 @@ build-docker-lbmnode:
 	$(MAKE) -C networks/local
 
 # Run a 4-node testnet locally
-localnet-start: build-docker-lbmnode build-static localnet-stop
-	@if ! [ -f build/node0/lbm/config/genesis.json ]; then docker run --rm -v $(CURDIR)/build:/lbm:Z line/lbmnode testnet --v 4 -o . --starting-ip-address 192.168.10.2 --keyring-backend=test ; fi
+localnet-start: localnet-stop build-static localnet-build-nodes
+
+localnet-build-nodes:
+	docker run --rm -v $(CURDIR)/mytestnet:/data line/lbmnode \
+			testnet init-files --v 4 -o /data --starting-ip-address 192.168.10.2 --keyring-backend=test
 	docker-compose up -d
 
 # Stop testnet

@@ -1,5 +1,5 @@
 # Simple usage with a mounted data directory:
-# > docker build -t line/lbm .
+# > docker build --platform="linux/amd64" -t line/lbm .
 # > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.lbm:/root/.lbm -v line/lbm lbm init
 # > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.lbm:/root/.lbm -v line/lbm lbm start --rpc.laddr=tcp://0.0.0.0:26657 --p2p.laddr=tcp://0.0.0.0:26656
 FROM golang:1.15-alpine3.13 AS build-env
@@ -30,7 +30,7 @@ ENV PATH=$CARGO_HOME/bin:$PATH
 
 RUN wget "https://static.rust-lang.org/rustup/dist/x86_64-unknown-linux-musl/rustup-init"
 RUN chmod +x rustup-init
-RUN ./rustup-init -y --no-modify-path --default-toolchain 1.53.0; rm rustup-init
+RUN ./rustup-init -y --no-modify-path --default-toolchain 1.57.0; rm rustup-init
 RUN chmod -R a+w $RUSTUP_HOME $CARGO_HOME
 RUN cd $(go list -f "{{ .Dir }}" -m github.com/line/wasmvm) && \
     cd ./libwasmvm && \

@@ -5,7 +5,7 @@ go 1.15
 require (
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/gorilla/mux v1.8.0
-	github.com/line/lbm-sdk v0.46.0-rc4
+	github.com/line/lbm-sdk v0.46.0-rc4.0.20220719023402-cb6ec969257d
 	github.com/line/ostracon v1.0.6
 	github.com/line/tm-db/v2 v2.0.0-init.1.0.20220121012851-61d2bc1d9486
 	github.com/prometheus/client_golang v1.12.2

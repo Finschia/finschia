@@ -49,6 +49,9 @@ import (
 	"github.com/line/lbm-sdk/x/capability"
 	capabilitykeeper "github.com/line/lbm-sdk/x/capability/keeper"
 	capabilitytypes "github.com/line/lbm-sdk/x/capability/types"
+	"github.com/line/lbm-sdk/x/collection"
+	collectionkeeper "github.com/line/lbm-sdk/x/collection/keeper"
+	collectionmodule "github.com/line/lbm-sdk/x/collection/module"
 	"github.com/line/lbm-sdk/x/crisis"
 	crisiskeeper "github.com/line/lbm-sdk/x/crisis/keeper"
 	crisistypes "github.com/line/lbm-sdk/x/crisis/types"
@@ -156,6 +159,7 @@ var (
 		authzmodule.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		tokenmodule.AppModuleBasic{},
+		collectionmodule.AppModuleBasic{},
 		wasm.AppModuleBasic{},
 	)
 
@@ -217,6 +221,7 @@ type LinkApp struct { // nolint: golint
 	TransferKeeper   ibctransferkeeper.Keeper
 	FeeGrantKeeper   feegrantkeeper.Keeper
 	TokenKeeper      tokenkeeper.Keeper
+	CollectionKeeper collectionkeeper.Keeper
 	WasmKeeper       wasm.Keeper
 
 	// make scoped keepers public for test purposes
@@ -273,6 +278,7 @@ func NewLinkApp(
 		foundation.StoreKey,
 		class.StoreKey,
 		token.StoreKey,
+		collection.StoreKey,
 		wasm.StoreKey,
 	)
 
@@ -336,6 +342,7 @@ func NewLinkApp(
 
 	classKeeper := classkeeper.NewKeeper(appCodec, keys[class.StoreKey])
 	app.TokenKeeper = tokenkeeper.NewKeeper(appCodec, keys[token.StoreKey], app.AccountKeeper, classKeeper)
+	app.CollectionKeeper = collectionkeeper.NewKeeper(appCodec, keys[collection.StoreKey], app.AccountKeeper, classKeeper)
 
 	// register the staking hooks
 	// NOTE: stakingKeeper above is passed by reference, so that it will contain these hooks
@@ -460,6 +467,7 @@ func NewLinkApp(
 		ibc.NewAppModule(app.IBCKeeper),
 		params.NewAppModule(app.ParamsKeeper),
 		tokenmodule.NewAppModule(appCodec, app.TokenKeeper),
+		collectionmodule.NewAppModule(appCodec, app.CollectionKeeper),
 		authzmodule.NewAppModule(appCodec, app.AuthzKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
 		transferModule,
 	)
@@ -489,6 +497,7 @@ func NewLinkApp(
 		ibchost.ModuleName,
 		ibctransfertypes.ModuleName,
 		token.ModuleName,
+		collection.ModuleName,
 		wasm.ModuleName,
 	)
 	app.mm.SetOrderEndBlockers(
@@ -512,6 +521,7 @@ func NewLinkApp(
 		ibctransfertypes.ModuleName,
 		foundation.ModuleName,
 		token.ModuleName,
+		collection.ModuleName,
 		wasm.ModuleName,
 	)
 
@@ -545,6 +555,7 @@ func NewLinkApp(
 		ibctransfertypes.ModuleName,
 		foundation.ModuleName,
 		token.ModuleName,
+		collection.ModuleName,
 		// wasm after ibc transfer
 		wasm.ModuleName,
 	)

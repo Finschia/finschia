@@ -37,6 +37,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ## [Unreleased]
 
 ### Features
+* (x/collection) [\#72](https://github.com/line/lbm/pull/72) add x/collection
 
 ### Improvements
 

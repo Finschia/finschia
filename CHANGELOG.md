@@ -36,6 +36,8 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ## [Unreleased]
 
+This version based on [lbm-sdk v0.46.0-rc5](https://github.com/line/lbm-sdk/releases/tag/v0.46.0-rc5)
+
 ### Features
 * (x/collection) [\#72](https://github.com/line/lbm/pull/72) add x/collection
 

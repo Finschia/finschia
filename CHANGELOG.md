@@ -40,6 +40,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (x/collection) [\#72](https://github.com/line/lbm/pull/72) add x/collection
 
 ### Improvements
+[\#76](https://github.com/line/lbm/pull/76) fix Dockerfile.static to build lbm instead of building wasmvm in the Dockerfile
 
 ### Bug Fixes
 

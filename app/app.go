@@ -15,7 +15,7 @@ import (
 	"github.com/line/ostracon/libs/log"
 	ostos "github.com/line/ostracon/libs/os"
 	ostproto "github.com/line/ostracon/proto/ostracon/types"
-	dbm "github.com/line/tm-db/v2"
+	dbm "github.com/tendermint/tm-db"
 
 	"github.com/line/lbm-sdk/baseapp"
 	"github.com/line/lbm-sdk/client"

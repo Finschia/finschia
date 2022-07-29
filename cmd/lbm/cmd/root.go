@@ -30,11 +30,11 @@ import (
 	lbmtypes "github.com/line/lbm/types"
 	ostcli "github.com/line/ostracon/libs/cli"
 	"github.com/line/ostracon/libs/log"
-	dbm "github.com/line/tm-db/v2"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	dbm "github.com/tendermint/tm-db"
 
 	wasmkeeper "github.com/line/lbm-sdk/x/wasm/keeper"
 	"github.com/line/lbm/app"
@@ -238,16 +238,10 @@ func NewApp(logger log.Logger, db dbm.DB, traceStore io.Writer, appOpts serverty
 func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer, appOpts servertypes.AppOptions) servertypes.Application {
 	var cache sdk.MultiStorePersistentCache
 
-	ibCacheMetricsProvider, iavlCacheMetricsProvider :=
-		baseapp.MetricsProvider(cast.ToBool(viper.GetBool(server.FlagPrometheus)))
+	ibCacheMetricsProvider := baseapp.MetricsProvider(cast.ToBool(viper.GetBool(server.FlagPrometheus)))
 	if cast.ToBool(appOpts.Get(server.FlagInterBlockCache)) {
 		cache = store.NewCommitKVStoreCacheManager(
 			cast.ToInt(appOpts.Get(server.FlagInterBlockCacheSize)), ibCacheMetricsProvider)
-	}
-
-	bech32CacheSize := cast.ToInt(appOpts.Get(server.FlagBech32CacheSize))
-	if bech32CacheSize > 0 {
-		sdk.SetBech32Cache(int64(bech32CacheSize))
 	}
 
 	skipUpgradeHeights := make(map[int64]bool)
@@ -290,8 +284,6 @@ func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer, appOpts serverty
 		baseapp.SetHaltTime(cast.ToUint64(appOpts.Get(server.FlagHaltTime))),
 		baseapp.SetMinRetainBlocks(cast.ToUint64(appOpts.Get(server.FlagMinRetainBlocks))),
 		baseapp.SetInterBlockCache(cache),
-		baseapp.SetIAVLCacheManager(
-			cast.ToInt(appOpts.Get(server.FlagIAVLCacheSize)), iavlCacheMetricsProvider),
 		baseapp.SetIndexEvents(cast.ToStringSlice(appOpts.Get(server.FlagIndexEvents))),
 		baseapp.SetSnapshotStore(snapshotStore),
 		baseapp.SetSnapshotInterval(cast.ToUint64(appOpts.Get(server.FlagStateSyncSnapshotInterval))),

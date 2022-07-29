@@ -481,9 +481,9 @@ func (f *Fixtures) KeysShow(name string, flags ...string) keyring.KeyOutput {
 // KeyAddress returns the SDK account address from the key
 func (f *Fixtures) KeyAddress(name string) sdk.AccAddress {
 	ko := f.KeysShow(name)
-	err := sdk.ValidateAccAddress(ko.Address)
+	addr, err := sdk.AccAddressFromBech32(ko.Address)
 	require.NoError(f.T, err)
-	return sdk.AccAddress(ko.Address)
+	return addr
 }
 
 // ___________________________________________________________________________________

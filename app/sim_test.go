@@ -12,8 +12,8 @@ import (
 	"github.com/line/lbm/app/helpers"
 	"github.com/line/ostracon/libs/log"
 	"github.com/line/ostracon/libs/rand"
-	"github.com/line/tm-db/v2/memdb"
 	"github.com/stretchr/testify/require"
+	dbm "github.com/tendermint/tm-db"
 
 	"github.com/line/lbm-sdk/baseapp"
 	"github.com/line/lbm-sdk/simapp"
@@ -107,7 +107,7 @@ func TestAppStateDeterminism(t *testing.T) {
 				logger = log.NewNopLogger()
 			}
 
-			db := memdb.NewDB()
+			db := dbm.NewMemDB()
 			app := link.NewLinkApp(logger, db, nil, true, map[int64]bool{}, link.DefaultNodeHome, simapp.FlagPeriodValue, link.MakeEncodingConfig(), simapp.EmptyAppOptions{}, nil, interBlockCacheOpt())
 
 			fmt.Printf(

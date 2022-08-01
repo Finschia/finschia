@@ -17,6 +17,7 @@ DOCKER := $(shell which docker)
 BUILDDIR ?= $(CURDIR)/build
 TEST_DOCKER_REPO=jackzampolin/linktest
 CGO_ENABLED ?= 1
+ARCH ?= x86_64
 
 export GO111MODULE = on
 
@@ -136,7 +137,7 @@ build: go.sum $(BUILDDIR)/ dbbackend
 	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go build -mod=readonly $(BUILD_FLAGS) $(BUILD_ARGS) ./...
 
 build-static: go.sum $(BUILDDIR)/
-	docker build -t line/lbmnode:latest -f builders/Dockerfile.static .
+	docker build -t line/lbmnode:latest -f builders/Dockerfile.static . --build-arg ARCH=$(ARCH)
 
 build-static-centos7: go.sum $(BUILDDIR)/
 	docker build -t line/lbm-builder:static_centos7 -f builders/Dockerfile.static_centos7 .

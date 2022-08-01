@@ -1,10 +1,10 @@
 # Simple usage with a mounted data directory:
-# > docker build --platform="linux/amd64" -t line/lbm .
+# > docker build --platform="linux/amd64" -t line/lbm -f builders/Dockerfile.static . --build-arg ARCH=x86_64
 # > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.lbm:/root/.lbm -v line/lbm lbm init
 # > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.lbm:/root/.lbm -v line/lbm lbm start --rpc.laddr=tcp://0.0.0.0:26657 --p2p.laddr=tcp://0.0.0.0:26656
 FROM golang:1.15-alpine3.13 AS build-env
 ARG LBM_BUILD_OPTIONS=""
-ARG arch=x86_64
+ARG ARCH=$ARCH
 
 # Set up OS dependencies
 ENV PACKAGES curl wget make cmake git libc-dev bash gcc g++ linux-headers eudev-dev python3 perl
@@ -30,7 +30,7 @@ ADD https://github.com/line/wasmvm/releases/download/v1.0.0-0.10.0/libwasmvm_sta
 RUN sha256sum /lib/libwasmvm_static.aarch64.a | grep bc3db72ba32f34ad88ceb1d20479411bd7f50ccd6a5ca50cc8ca462a561e6189
 RUN sha256sum /lib/libwasmvm_static.x86_64.a | grep 352fa5de5f9dba66f0a38082541d3e63e21394fee3e577ea35e0906294c61276
 
-RUN ln -s /lib/libwasmvm_static.${arch}.a /usr/lib/libwasmvm_static.a
+RUN ln -s /lib/libwasmvm_static.${ARCH}.a /usr/lib/libwasmvm_static.a
 
 # Add source files
 COPY . .

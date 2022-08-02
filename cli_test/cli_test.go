@@ -1,3 +1,4 @@
+//go:build cli_test
 // +build cli_test
 
 package clitest
@@ -339,7 +340,7 @@ func TestLBMCreateValidator(t *testing.T) {
 	defer n.Cleanup()
 
 	barAddr := f.KeyAddress(keyBar)
-	barVal := barAddr.ToValAddress()
+	barVal := sdk.ValAddress(barAddr)
 
 	consPubKey := sdk.MustBech32ifyPubKey(sdk.Bech32PubKeyTypeConsPub, ed25519.GenPrivKey().PubKey())
 

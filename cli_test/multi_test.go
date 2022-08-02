@@ -1,3 +1,4 @@
+//go:build cli_multi_node_test
 // +build cli_multi_node_test
 
 package clitest
@@ -111,7 +112,7 @@ func TestMultiValidatorAddNodeAndPromoteValidator(t *testing.T) {
 	}
 
 	barAddr := f2.KeyAddress(keyBar)
-	barVal := barAddr.ToValAddress()
+	barVal := sdk.ValAddress(barAddr)
 
 	sendTokens := sdk.TokensFromConsensusPower(10)
 	{

@@ -40,6 +40,7 @@ This version based on [lbm-sdk v0.46.0-rc6](https://github.com/line/lbm-sdk/rele
 
 ### Features
 * (x/collection) [\#72](https://github.com/line/lbm/pull/72) add x/collection
+* (x/wasm) [\#79](https://github.com/line/lbm/pull/79) chore: add iterator feature for wasm module
 
 ### Improvements
 

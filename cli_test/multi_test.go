@@ -28,7 +28,6 @@ func TestMultiValidatorAndSendTokens(t *testing.T) {
 	)
 
 	fooAddr := f.KeyAddress(keyFoo)
-	f.KeysDelete(keyBaz)
 	f.KeysAdd(keyBaz)
 	bazAddr := f.KeyAddress(keyBaz)
 
@@ -106,7 +105,6 @@ func TestMultiValidatorAddNodeAndPromoteValidator(t *testing.T) {
 	f2 := fg.AddFullNode()
 
 	{
-		f2.KeysDelete(keyBar)
 		f2.KeysAdd(keyBar)
 	}
 

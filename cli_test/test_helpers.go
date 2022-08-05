@@ -265,12 +265,7 @@ func (f Fixtures) GenesisState() app.GenesisState {
 func InitFixtures(t *testing.T) (f *Fixtures) {
 	f = NewFixtures(t, getHomeDir(t))
 
-	// ensure keystore has foo and bar keys
-	f.KeysDelete(keyFoo)
-	f.KeysDelete(keyBar)
-	f.KeysDelete(keyBaz)
-	f.KeysDelete(keyVesting)
-	f.KeysDelete(keyFooBarBaz)
+	// add foo and bar keys to the keystore
 	f.KeysAdd(keyFoo)
 	f.KeysAdd(keyBar)
 	f.KeysAdd(keyBaz)
@@ -278,13 +273,7 @@ func InitFixtures(t *testing.T) (f *Fixtures) {
 	f.KeysAdd(keyFooBarBaz, "--multisig-threshold=2", fmt.Sprintf(
 		"--multisig=%s,%s,%s", keyFoo, keyBar, keyBaz))
 
-	// ensure keystore to have user keys
-	f.KeysDelete(UserTina)
-	f.KeysDelete(UserKevin)
-	f.KeysDelete(UserRinah)
-	f.KeysDelete(UserBrian)
-	f.KeysDelete(UserEvelyn)
-	f.KeysDelete(UserSam)
+	// add user keys to the keystore
 	f.KeysAdd(UserTina)
 	f.KeysAdd(UserKevin)
 	f.KeysAdd(UserRinah)
@@ -431,7 +420,7 @@ func (f *Fixtures) ValidateGenesis(genFile string, flags ...string) {
 
 // KeysDelete is lbm keys delete
 func (f *Fixtures) KeysDelete(name string, flags ...string) {
-	args := fmt.Sprintf("delete --keyring-backend=test -f -y %s", name)
+	args := fmt.Sprintf("delete --keyring-backend=test -y %s", name)
 	cmd := clientkeys.Commands(f.Home)
 	_, err := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
 
@@ -1113,7 +1102,6 @@ func (fg *FixtureGroup) initNodes(numberOfNodes int) {
 		require.NoError(fg.T, err)
 	}
 	for name, f := range fg.fixturesMap {
-		f.KeysDelete(name)
 		f.KeysAdd(name)
 	}
 
@@ -1176,7 +1164,6 @@ func (fg *FixtureGroup) AddFullNode(flags ...string) *Fixtures {
 	// Initialize lbm
 	{
 		f.LBMInit(name, fmt.Sprintf("--chain-id=%s", chainID))
-		f.KeysDelete(name)
 		f.KeysAdd(name)
 	}
 

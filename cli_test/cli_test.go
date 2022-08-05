@@ -339,12 +339,15 @@ func TestLBMCreateValidator(t *testing.T) {
 	defer n.Cleanup()
 
 	barAddr := f.KeyAddress(keyBar)
-	barVal := barAddr.ToValAddress()
+	barVal := sdk.ValAddress(barAddr)
 
-	consPubKey := sdk.MustBech32ifyPubKey(sdk.Bech32PubKeyTypeConsPub, ed25519.GenPrivKey().PubKey())
+	cdc, _ := app.MakeCodecs()
+	pubKeyJSON, err := cdc.MarshalInterfaceJSON(ed25519.GenPrivKey().PubKey())
+	require.NoError(t, err)
+	consPubKey := string(pubKeyJSON)
 
 	sendTokens := sdk.TokensFromConsensusPower(10, sdk.DefaultPowerReduction)
-	_, err := f.TxSend(keyFoo, barAddr, sdk.NewCoin(denom, sendTokens), "-y")
+	_, err = f.TxSend(keyFoo, barAddr, sdk.NewCoin(denom, sendTokens), "-y")
 	require.NoError(t, err)
 
 	err = n.WaitForNextBlock()

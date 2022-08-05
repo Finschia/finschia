@@ -7,10 +7,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	cryptocodec "github.com/line/lbm-sdk/crypto/codec"
+	"github.com/line/lbm-sdk/crypto/keys/ed25519"
 	sdk "github.com/line/lbm-sdk/types"
-
-	"github.com/line/ostracon/privval"
+	"github.com/line/lbm/app"
 )
 
 func TestMultiValidatorAndSendTokens(t *testing.T) {
@@ -109,7 +108,7 @@ func TestMultiValidatorAddNodeAndPromoteValidator(t *testing.T) {
 	}
 
 	barAddr := f2.KeyAddress(keyBar)
-	barVal := barAddr.ToValAddress()
+	barVal := sdk.ValAddress(barAddr)
 
 	sendTokens := sdk.TokensFromConsensusPower(10, sdk.DefaultPowerReduction)
 	{
@@ -123,13 +122,10 @@ func TestMultiValidatorAddNodeAndPromoteValidator(t *testing.T) {
 
 	newValTokens := sdk.TokensFromConsensusPower(2, sdk.DefaultPowerReduction)
 	{
-		privVal := privval.LoadFilePVEmptyState(f2.PrivValidatorKeyFile(), "")
-		pubkey, err := privVal.GetPubKey()
+		cdc, _ := app.MakeCodecs()
+		pubKeyJSON, err := cdc.MarshalInterfaceJSON(ed25519.GenPrivKey().PubKey())
 		require.NoError(t, err)
-
-		tmValPubKey, err := cryptocodec.FromOcPubKeyInterface(pubkey)
-		require.NoError(t, err)
-		consPubKey := sdk.MustBech32ifyPubKey(sdk.Bech32PubKeyTypeConsPub, tmValPubKey)
+		consPubKey := string(pubKeyJSON)
 
 		_, err = f2.TxStakingCreateValidator(keyBar, consPubKey, sdk.NewCoin(denom, newValTokens), "-y")
 		require.NoError(t, err)

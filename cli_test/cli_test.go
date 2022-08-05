@@ -195,7 +195,7 @@ func TestLBMSend(t *testing.T) {
 	defer f.Cleanup()
 
 	// start lbm server
-	n := f.LBMStart("")
+	n := f.LBMStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	// Save key addresses for later use
@@ -275,7 +275,7 @@ func TestLBMGasAuto(t *testing.T) {
 	defer f.Cleanup()
 
 	// start lbm server
-	n := f.LBMStart("")
+	n := f.LBMStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	fooAddr := f.KeyAddress(keyFoo)
@@ -335,7 +335,7 @@ func TestLBMCreateValidator(t *testing.T) {
 	defer f.Cleanup()
 
 	// start lbm server
-	n := f.LBMStart("")
+	n := f.LBMStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	barAddr := f.KeyAddress(keyBar)
@@ -418,7 +418,7 @@ func TestLBMQuerySupply(t *testing.T) {
 	defer f.Cleanup()
 
 	// start lbm server
-	n := f.LBMStart("")
+	n := f.LBMStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	totalSupplyOf := f.QueryTotalSupplyOf(fooDenom)
@@ -432,7 +432,7 @@ func TestLBMSubmitProposal(t *testing.T) {
 	defer f.Cleanup()
 
 	// start lbm server
-	n := f.LBMStart("")
+	n := f.LBMStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	f.QueryGovParamDeposit()
@@ -583,7 +583,7 @@ func TestLBMSubmitParamChangeProposal(t *testing.T) {
 	f := InitFixtures(t)
 	defer f.Cleanup()
 
-	n := f.LBMStart("")
+	n := f.LBMStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	fooAddr := f.KeyAddress(keyFoo)
@@ -720,7 +720,7 @@ func TestLBMQueryTxPagination(t *testing.T) {
 	defer f.Cleanup()
 
 	// start lbm server
-	n := f.LBMStart("")
+	n := f.LBMStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	fooAddr := f.KeyAddress(keyFoo)
@@ -819,7 +819,7 @@ func TestLBMSendGenerateSignAndBroadcast(t *testing.T) {
 	defer f.Cleanup()
 
 	// start lbm server
-	n := f.LBMStart("")
+	n := f.LBMStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	fooAddr := f.KeyAddress(keyFoo)
@@ -890,7 +890,7 @@ func TestLBMMultisignInsufficientCosigners(t *testing.T) {
 	defer f.Cleanup()
 
 	// start lbm server with minimum fees
-	n := f.LBMStart("")
+	n := f.LBMStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	fooBarBazAddr := f.KeyAddress(keyFooBarBaz)
@@ -944,7 +944,7 @@ func TestLBMEncode(t *testing.T) {
 	defer f.Cleanup()
 
 	// start lbm server
-	n := f.LBMStart("")
+	n := f.LBMStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	cdc, _ := app.MakeCodecs()
@@ -981,7 +981,7 @@ func TestLBMMultisignSortSignatures(t *testing.T) {
 	defer f.Cleanup()
 
 	// start lbm server with minimum fees
-	n := f.LBMStart("")
+	n := f.LBMStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	fooBarBazAddr := f.KeyAddress(keyFooBarBaz)
@@ -1042,7 +1042,7 @@ func TestLBMMultisign(t *testing.T) {
 	defer f.Cleanup()
 
 	// start lbm server with minimum fees
-	n := f.LBMStart("")
+	n := f.LBMStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	fooBarBazAddr := f.KeyAddress(keyFooBarBaz)
@@ -1145,7 +1145,7 @@ func TestValidateGenesis(t *testing.T) {
 	defer f.Cleanup()
 
 	// start lbm server
-	n := f.LBMStart("")
+	n := f.LBMStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	f.ValidateGenesis(filepath.Join(f.Home, "config", "genesis.json"))
@@ -1157,7 +1157,7 @@ func TestLBMIncrementSequenceDecorator(t *testing.T) {
 	defer f.Cleanup()
 
 	// start lbm server
-	n := f.LBMStart("")
+	n := f.LBMStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	fooAddr := f.KeyAddress(keyFoo)
@@ -1220,7 +1220,7 @@ func TestLBMWasmContract(t *testing.T) {
 	defer f.Cleanup()
 
 	// start lbm server with minimum fees
-	n := f.LBMStart("")
+	n := f.LBMStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	fooAddr := f.KeyAddress(keyFoo)

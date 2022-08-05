@@ -128,6 +128,10 @@ var (
 	}
 )
 
+var (
+	minGasPrice = sdk.NewCoin(feeDenom, sdk.ZeroInt())
+)
+
 func init() {
 	testnet := false
 	config := sdk.GetConfig()
@@ -1130,14 +1134,14 @@ func (fg *FixtureGroup) initNodes(numberOfNodes int) {
 		require.NoError(t, err)
 	}
 }
-func (fg *FixtureGroup) LBMStartCluster(flags ...string) {
+func (fg *FixtureGroup) LBMStartCluster(minGasPrices string, flags ...string) {
 	genDoc, err := osttypes.GenesisDocFromJSON(fg.genesisFileContent)
 	require.NoError(fg.T, err)
 
 	var appState app.GenesisState
 	require.NoError(fg.T, legacy.Cdc.UnmarshalJSON(genDoc.AppState, &appState))
 
-	cfg := newTestnetConfig(fg.T, appState, fg.T.Name(), "")
+	cfg := newTestnetConfig(fg.T, appState, fg.T.Name(), minGasPrices)
 
 	validators := make([]*testnet.Validator, 0)
 	for _, f := range fg.fixturesMap {

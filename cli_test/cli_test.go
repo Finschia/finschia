@@ -1181,7 +1181,7 @@ func TestLBMIncrementSequenceDecorator(t *testing.T) {
 		defer os.Remove(unsignedTxFile.Name())
 
 		// Test sign
-		out, err = f.TxSign(keyFoo, unsignedTxFile.Name(), "--offline", "--sig-block-height", strconv.Itoa(1), "--sequence", strconv.Itoa(int(fooAcc.Sequence)+idx))
+		out, err = f.TxSign(keyFoo, unsignedTxFile.Name(), "--offline", fmt.Sprintf("--%s=%d", flags.FlagAccountNumber, fooAcc.AccountNumber), "--sequence", strconv.Itoa(int(fooAcc.Sequence)+idx))
 		require.NoError(t, err)
 
 		// Write the output to disk

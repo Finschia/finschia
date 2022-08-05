@@ -36,11 +36,11 @@ func TestMultiValidatorAndSendTokens(t *testing.T) {
 	require.NoError(t, fg.Network.WaitForNextBlock())
 	{
 		fooBal := f.QueryBalances(fooAddr)
-		startTokens := sdk.TokensFromConsensusPower(50)
+		startTokens := sdk.TokensFromConsensusPower(50, sdk.DefaultPowerReduction)
 		require.Equal(t, startTokens, fooBal.GetBalances().AmountOf(denom))
 
 		// Send some tokens from one account to the other
-		sendTokens := sdk.TokensFromConsensusPower(10)
+		sendTokens := sdk.TokensFromConsensusPower(10, sdk.DefaultPowerReduction)
 		_, err := f.TxSend(keyFoo, bazAddr, sdk.NewCoin(denom, sendTokens), "-y")
 		require.NoError(t, err)
 		require.NoError(t, fg.Network.WaitForNextBlock())
@@ -111,7 +111,7 @@ func TestMultiValidatorAddNodeAndPromoteValidator(t *testing.T) {
 	barAddr := f2.KeyAddress(keyBar)
 	barVal := barAddr.ToValAddress()
 
-	sendTokens := sdk.TokensFromConsensusPower(10)
+	sendTokens := sdk.TokensFromConsensusPower(10, sdk.DefaultPowerReduction)
 	{
 		_, err := f1.TxSend(f1.Moniker, barAddr, sdk.NewCoin(denom, sendTokens), "-y")
 		require.NoError(t, err)
@@ -121,7 +121,7 @@ func TestMultiValidatorAddNodeAndPromoteValidator(t *testing.T) {
 		require.Equal(t, sendTokens, barBal.GetBalances().AmountOf(denom))
 	}
 
-	newValTokens := sdk.TokensFromConsensusPower(2)
+	newValTokens := sdk.TokensFromConsensusPower(2, sdk.DefaultPowerReduction)
 	{
 		privVal := privval.LoadFilePVEmptyState(f2.PrivValidatorKeyFile(), "")
 		pubkey, err := privVal.GetPubKey()

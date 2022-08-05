@@ -167,7 +167,7 @@ func TestLBMFeesDeduction(t *testing.T) {
 	require.Equal(t, fooAmt.Int64(), fooBal.GetBalances().AmountOf(fooDenom).Int64())
 
 	// insufficient funds (coins + fees) tx fails
-	largeCoins := sdk.TokensFromConsensusPower(10000000)
+	largeCoins := sdk.TokensFromConsensusPower(10000000, sdk.DefaultPowerReduction)
 	out, err := f.TxSend(
 		keyFoo, barAddr, sdk.NewCoin(fooDenom, largeCoins),
 		fmt.Sprintf("--fees=%s", sdk.NewInt64Coin(feeDenom, 2)), "-y")
@@ -206,12 +206,12 @@ func TestLBMSend(t *testing.T) {
 
 	fmt.Println(fooBal)
 
-	startTokens := sdk.TokensFromConsensusPower(50)
+	startTokens := sdk.TokensFromConsensusPower(50, sdk.DefaultPowerReduction)
 	fmt.Println(startTokens.Uint64())
 	require.Equal(t, startTokens, fooBal.GetBalances().AmountOf(denom))
 
 	// Send some tokens from one account to the other
-	sendTokens := sdk.TokensFromConsensusPower(10)
+	sendTokens := sdk.TokensFromConsensusPower(10, sdk.DefaultPowerReduction)
 	_, err := f.TxSend(keyFoo, barAddr, sdk.NewCoin(denom, sendTokens), "-y")
 	require.NoError(t, err)
 
@@ -282,11 +282,11 @@ func TestLBMGasAuto(t *testing.T) {
 	barAddr := f.KeyAddress(keyBar)
 
 	fooBal := f.QueryBalances(fooAddr)
-	startTokens := sdk.TokensFromConsensusPower(50)
+	startTokens := sdk.TokensFromConsensusPower(50, sdk.DefaultPowerReduction)
 	require.Equal(t, startTokens, fooBal.GetBalances().AmountOf(denom))
 
 	// Test failure with auto gas disabled and very little gas set by hand
-	sendTokens := sdk.TokensFromConsensusPower(10)
+	sendTokens := sdk.TokensFromConsensusPower(10, sdk.DefaultPowerReduction)
 	out, err := f.TxSend(keyFoo, barAddr, sdk.NewCoin(denom, sendTokens), "--gas=10", "-y")
 	require.NoError(t, err)
 	require.Contains(t, out.String(), "out of gas in location")
@@ -343,7 +343,7 @@ func TestLBMCreateValidator(t *testing.T) {
 
 	consPubKey := sdk.MustBech32ifyPubKey(sdk.Bech32PubKeyTypeConsPub, ed25519.GenPrivKey().PubKey())
 
-	sendTokens := sdk.TokensFromConsensusPower(10)
+	sendTokens := sdk.TokensFromConsensusPower(10, sdk.DefaultPowerReduction)
 	_, err := f.TxSend(keyFoo, barAddr, sdk.NewCoin(denom, sendTokens), "-y")
 	require.NoError(t, err)
 
@@ -364,7 +364,7 @@ func TestLBMCreateValidator(t *testing.T) {
 	require.Equal(t, 0, len(msg.GetSignatures()))
 
 	// Test --dry-run
-	newValTokens := sdk.TokensFromConsensusPower(2)
+	newValTokens := sdk.TokensFromConsensusPower(2, sdk.DefaultPowerReduction)
 	_, err = f.TxStakingCreateValidator(keyBar, consPubKey, sdk.NewCoin(denom, newValTokens), "--dry-run")
 	require.NoError(t, err)
 
@@ -390,7 +390,7 @@ func TestLBMCreateValidator(t *testing.T) {
 	require.NotZero(t, validatorDelegations.GetDelegationResponses()[0].GetDelegation().GetShares())
 
 	// unbond a single share
-	unbondAmt := sdk.NewCoin(sdk.DefaultBondDenom, sdk.TokensFromConsensusPower(1))
+	unbondAmt := sdk.NewCoin(sdk.DefaultBondDenom, sdk.TokensFromConsensusPower(1, sdk.DefaultPowerReduction))
 	_, err = f.TxStakingUnbond(keyBar, unbondAmt.String(), barVal, "-y")
 	require.NoError(t, err)
 
@@ -439,14 +439,14 @@ func TestLBMSubmitProposal(t *testing.T) {
 	fooAddr := f.KeyAddress(keyFoo)
 
 	fooBal := f.QueryBalances(fooAddr)
-	startTokens := sdk.TokensFromConsensusPower(50)
+	startTokens := sdk.TokensFromConsensusPower(50, sdk.DefaultPowerReduction)
 	require.Equal(t, startTokens, fooBal.GetBalances().AmountOf(sdk.DefaultBondDenom))
 
 	proposalsQuery := f.QueryGovProposals()
 	require.Empty(t, proposalsQuery)
 
 	// Test submit generate only for submit proposal
-	proposalTokens := sdk.TokensFromConsensusPower(5)
+	proposalTokens := sdk.TokensFromConsensusPower(5, sdk.DefaultPowerReduction)
 	out, err := f.TxGovSubmitProposal(
 		fooAddr.String(), "Text", "Test", "test", sdk.NewCoin(denom, proposalTokens), "--generate-only", "-y")
 	require.NoError(t, err)
@@ -488,7 +488,7 @@ func TestLBMSubmitProposal(t *testing.T) {
 	require.Equal(t, proposalTokens, deposit.Amount.AmountOf(denom))
 
 	// Test deposit generate only
-	depositTokens := sdk.TokensFromConsensusPower(10)
+	depositTokens := sdk.TokensFromConsensusPower(10, sdk.DefaultPowerReduction)
 	out, err = f.TxGovDeposit(1, fooAddr.String(), sdk.NewCoin(denom, depositTokens), "--generate-only")
 	require.NoError(t, err)
 	msg = UnmarshalTx(t, out.Bytes())
@@ -585,11 +585,11 @@ func TestLBMSubmitParamChangeProposal(t *testing.T) {
 
 	fooAddr := f.KeyAddress(keyFoo)
 	fooBal := f.QueryBalances(fooAddr)
-	startTokens := sdk.TokensFromConsensusPower(50)
+	startTokens := sdk.TokensFromConsensusPower(50, sdk.DefaultPowerReduction)
 	require.Equal(t, startTokens, fooBal.GetBalances().AmountOf(sdk.DefaultBondDenom))
 
 	// write proposal to file
-	proposalTokens := sdk.TokensFromConsensusPower(5)
+	proposalTokens := sdk.TokensFromConsensusPower(5, sdk.DefaultPowerReduction)
 
 	proposal := fmt.Sprintf(`{
 "title": "Param Change",
@@ -663,14 +663,14 @@ func TestLBMSubmitCommunityPoolSpendProposal(t *testing.T) {
 
 	fooAddr := f.KeyAddress(keyFoo)
 	fooBal := f.QueryBalances(fooAddr)
-	startTokens := sdk.TokensFromConsensusPower(50)
+	startTokens := sdk.TokensFromConsensusPower(50, sdk.DefaultPowerReduction)
 	require.Equal(t, startTokens, fooBal.GetBalances().AmountOf(sdk.DefaultBondDenom))
 
 	err = n.WaitForNextBlock()
 	require.NoError(t, err)
 
 	// write proposal to file
-	proposalTokens := sdk.TokensFromConsensusPower(5)
+	proposalTokens := sdk.TokensFromConsensusPower(5, sdk.DefaultPowerReduction)
 
 	proposal := fmt.Sprintf(`{
 "title": "Community Pool Spend",
@@ -823,7 +823,7 @@ func TestLBMSendGenerateSignAndBroadcast(t *testing.T) {
 	barAddr := f.KeyAddress(keyBar)
 
 	// Test generate sendTx with default gas
-	sendTokens := sdk.TokensFromConsensusPower(10)
+	sendTokens := sdk.TokensFromConsensusPower(10, sdk.DefaultPowerReduction)
 	out, err := f.TxSend(fooAddr.String(), barAddr, sdk.NewCoin(denom, sendTokens), "--generate-only")
 	require.NoError(t, err)
 	msg := UnmarshalTx(t, out.Bytes())
@@ -864,7 +864,7 @@ func TestLBMSendGenerateSignAndBroadcast(t *testing.T) {
 
 	// Ensure foo has right amount of funds
 	fooBal := f.QueryBalances(fooAddr)
-	startTokens := sdk.TokensFromConsensusPower(50)
+	startTokens := sdk.TokensFromConsensusPower(50, sdk.DefaultPowerReduction)
 	require.Equal(t, startTokens, fooBal.GetBalances().AmountOf(denom))
 
 	// Test broadcast
@@ -950,7 +950,7 @@ func TestLBMEncode(t *testing.T) {
 	barAddr := f.KeyAddress(keyBar)
 	keyAddr := f.KeyAddress(keyFoo)
 
-	sendTokens := sdk.TokensFromConsensusPower(10)
+	sendTokens := sdk.TokensFromConsensusPower(10, sdk.DefaultPowerReduction)
 	out, err := f.TxSend(keyAddr.String(), barAddr, sdk.NewCoin(denom, sendTokens), "--generate-only", "--memo", "deadbeef")
 	require.NoError(t, err)
 
@@ -1160,7 +1160,7 @@ func TestLBMIncrementSequenceDecorator(t *testing.T) {
 	fooAddr := f.KeyAddress(keyFoo)
 	barAddr := f.KeyAddress(keyBar)
 
-	sendTokens := sdk.TokensFromConsensusPower(1)
+	sendTokens := sdk.TokensFromConsensusPower(1, sdk.DefaultPowerReduction)
 
 	time.Sleep(3 * time.Second)
 

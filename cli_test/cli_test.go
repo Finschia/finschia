@@ -1299,7 +1299,7 @@ func TestLBMWasmContract(t *testing.T) {
 		msgJSON := fmt.Sprintf("{}")
 		flagLabel := "--label=queue-test"
 		flagAmount := fmt.Sprintf("--amount=%d%s", amountSend, denomSend)
-		_, err := f.TxInstantiateWasm(codeID, msgJSON, flagFromFoo, flagGasAdjustment, flagGas, flagLabel, flagAmount, flagFromFoo, "-y")
+		_, err := f.TxInstantiateWasm(codeID, msgJSON, flagFromFoo, flagGasAdjustment, flagGas, flagLabel, flagAmount, flagFromFoo, "-y", "--no-admin")
 		require.NoError(t, err)
 		// Wait for a new block
 		err = n.WaitForNextBlock()

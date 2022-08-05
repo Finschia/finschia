@@ -665,7 +665,7 @@ func (f *Fixtures) QueryTxInvalid(expectedErr error, hash string, flags ...strin
 
 // QueryTxs is lbm query txs
 func (f *Fixtures) QueryTxs(page, limit int, flags ...string) *sdk.SearchTxsResult {
-	args := fmt.Sprintf("--page=%d --limit=%d --node=%s", page, limit, f.RPCAddr)
+	args := fmt.Sprintf("--page=%d --limit=%d --node=%s -o json", page, limit, f.RPCAddr)
 	cmd := authcli.QueryTxsByEventsCmd()
 	out, err := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
 	require.NoError(f.T, err)

@@ -51,8 +51,8 @@ func TestMultiValidatorAndSendTokens(t *testing.T) {
 		require.Equal(t, startTokens.Sub(sendTokens), fooBal.GetBalances().AmountOf(denom))
 
 		// Test --dry-run
-		_, err = f.TxSend(keyFoo, bazAddr, sdk.NewCoin(denom, sendTokens), "--dry-run")
-		require.NoError(t, err)
+		// _, err = f.TxSend(keyFoo, bazAddr, sdk.NewCoin(denom, sendTokens), "--dry-run")
+		// require.NoError(t, err)
 
 		// Test --generate-only
 		out, err := f.TxSend(

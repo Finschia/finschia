@@ -971,7 +971,7 @@ func TestLBMEncode(t *testing.T) {
 
 	// Check that the transaction decodes as expected
 	var decodedTx tx.Tx
-	require.Nil(t, cdc.UnmarshalBinaryBare(decodedBytes, &decodedTx))
+	require.Nil(t, cdc.Unmarshal(decodedBytes, &decodedTx))
 	require.Equal(t, "deadbeef", decodedTx.GetBody().GetMemo())
 }
 

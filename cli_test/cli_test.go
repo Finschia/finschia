@@ -256,7 +256,7 @@ func TestLBMSend(t *testing.T) {
 	require.Equal(t, startTokens.Sub(sendTokens.MulRaw(2)), fooBal.GetBalances().AmountOf(denom))
 
 	// test memo
-	_, err = f.TxSend(keyFoo, barAddr, sdk.NewCoin(denom, sendTokens), "--memo='testmemo'", "-y")
+	_, err = f.TxSend(keyFoo, barAddr, sdk.NewCoin(denom, sendTokens), fmt.Sprintf("--%s=%s", flags.FlagNote, "testnote"), "-y")
 	require.NoError(t, err)
 
 	err = n.WaitForNextBlock()
@@ -954,7 +954,7 @@ func TestLBMEncode(t *testing.T) {
 	keyAddr := f.KeyAddress(keyFoo)
 
 	sendTokens := sdk.TokensFromConsensusPower(10, sdk.DefaultPowerReduction)
-	out, err := f.TxSend(keyAddr.String(), barAddr, sdk.NewCoin(denom, sendTokens), "--generate-only", "--memo", "deadbeef")
+	out, err := f.TxSend(keyAddr.String(), barAddr, sdk.NewCoin(denom, sendTokens), "--generate-only", fmt.Sprintf("--%s=%s", flags.FlagNote, "deadbeef"))
 	require.NoError(t, err)
 
 	// Write it to disk

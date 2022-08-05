@@ -3,10 +3,12 @@
 package clitest
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/require"
 
+	"github.com/line/lbm-sdk/client/flags"
 	"github.com/line/lbm-sdk/crypto/keys/ed25519"
 	sdk "github.com/line/lbm-sdk/types"
 	"github.com/line/lbm/app"
@@ -79,8 +81,8 @@ func TestMultiValidatorAndSendTokens(t *testing.T) {
 		fooBal = f.QueryBalances(fooAddr)
 		require.Equal(t, startTokens.Sub(sendTokens.MulRaw(2)), fooBal.GetBalances().AmountOf(denom))
 
-		// test memo
-		_, err = f.TxSend(keyFoo, bazAddr, sdk.NewCoin(denom, sendTokens), "--memo='testmemo'", "-y")
+		// test note
+		_, err = f.TxSend(keyFoo, bazAddr, sdk.NewCoin(denom, sendTokens), fmt.Sprintf("--%s=%s", flags.FlagNote, "testnote"), "-y")
 		require.NoError(t, err)
 		require.NoError(t, fg.Network.WaitForNextBlock())
 

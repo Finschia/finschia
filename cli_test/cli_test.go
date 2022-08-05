@@ -470,7 +470,7 @@ func TestLBMSubmitProposal(t *testing.T) {
 	require.NoError(t, err)
 
 	// Ensure transaction tags can be queried
-	searchResult := f.QueryTxs(1, 50, fmt.Sprintf("--events='message.action=%s&message.sender=%s'", "submit_proposal", fooAddr))
+	searchResult := f.QueryTxs(1, 50, fmt.Sprintf("--events='message.action=%s&message.sender=%s'", sdk.MsgTypeURL(&gov.MsgSubmitProposal{}), fooAddr))
 	require.Len(t, searchResult.Txs, 1)
 
 	// Ensure deposit was deducted
@@ -516,7 +516,7 @@ func TestLBMSubmitProposal(t *testing.T) {
 	require.Equal(t, proposalTokens.Add(depositTokens), deposit.Amount.AmountOf(denom))
 
 	// Ensure tags are set on the transaction
-	searchResult = f.QueryTxs(1, 50, fmt.Sprintf("--events='message.action=%s&message.sender=%s'", "deposit", fooAddr))
+	searchResult = f.QueryTxs(1, 50, fmt.Sprintf("--events='message.action=%s&message.sender=%s'", sdk.MsgTypeURL(&gov.MsgDeposit{}), fooAddr))
 	require.Len(t, searchResult.Txs, 1)
 
 	// Ensure account has expected amount of funds
@@ -555,7 +555,7 @@ func TestLBMSubmitProposal(t *testing.T) {
 	require.Equal(t, gov.OptionYes, votes.GetVotes()[0].Option)
 
 	// Ensure tags are applied to voting transaction properly
-	searchResult = f.QueryTxs(1, 50, fmt.Sprintf("--events='message.action=%s&message.sender=%s'", "vote", fooAddr))
+	searchResult = f.QueryTxs(1, 50, fmt.Sprintf("--events='message.action=%s&message.sender=%s'", sdk.MsgTypeURL(&gov.MsgVote{}), fooAddr))
 	require.Len(t, searchResult.Txs, 1)
 
 	// Ensure no proposals in deposit period
@@ -612,7 +612,7 @@ func TestLBMSubmitParamChangeProposal(t *testing.T) {
 	require.NoError(t, err)
 
 	// ensure transaction tags can be queried
-	txsPage := f.QueryTxs(1, 50, fmt.Sprintf("--events='message.action=%s&message.sender=%s'", "submit_proposal", fooAddr))
+	txsPage := f.QueryTxs(1, 50, fmt.Sprintf("--events='message.action=%s&message.sender=%s'", sdk.MsgTypeURL(&gov.MsgSubmitProposal{}), fooAddr))
 	require.Len(t, txsPage.Txs, 1)
 
 	// ensure deposit was deducted
@@ -693,7 +693,7 @@ func TestLBMSubmitCommunityPoolSpendProposal(t *testing.T) {
 	require.NoError(t, err)
 
 	// ensure transaction tags can be queried
-	txsPage := f.QueryTxs(1, 50, fmt.Sprintf("--events='message.action=%s&message.sender=%s'", "submit_proposal", fooAddr))
+	txsPage := f.QueryTxs(1, 50, fmt.Sprintf("--events='message.action=%s&message.sender=%s'", sdk.MsgTypeURL(&gov.MsgSubmitProposal{}), fooAddr))
 	require.Len(t, txsPage.Txs, 1)
 
 	// ensure deposit was deducted

@@ -49,6 +49,9 @@ This version based on [lbm-sdk v0.46.0-rc6](https://github.com/line/lbm-sdk/rele
 
 ### Breaking Changes
 
+### Build, CI
+* (ci) [\#80](https://github.com/line/lbm/pull/80) remove stale github action
+
 
 <!-- Release links -->
 [Unreleased]: https://github.com/line/lbm/compare/v0.4.0...HEAD

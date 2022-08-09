@@ -1,4 +1,4 @@
-// +build cli_multi_node_test
+//go:build cli_multi_node_test
 
 package clitest
 

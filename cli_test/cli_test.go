@@ -1,4 +1,4 @@
-// +build cli_test
+//go:build cli_test
 
 package clitest
 

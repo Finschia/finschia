@@ -1416,6 +1416,7 @@ func newValidator(f *Fixtures, cfg testnet.Config, appCfg *srvconfig.Config, ctx
 	appCfg.API.Address = f.P2PAddr
 	tmCfg.P2P.ListenAddress = f.P2PAddr
 	tmCfg.RPC.ListenAddress = f.RPCAddr
+	appCfg.GRPCWeb.Enable = false
 	appCfg.GRPC.Address = f.GRPCAddr
 	appCfg.GRPC.Enable = true
 

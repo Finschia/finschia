@@ -46,6 +46,8 @@ import (
 	banktypes "github.com/line/lbm-sdk/x/bank/types"
 	distcli "github.com/line/lbm-sdk/x/distribution/client/cli"
 	disttypes "github.com/line/lbm-sdk/x/distribution/types"
+	"github.com/line/lbm-sdk/x/foundation"
+	foundationcli "github.com/line/lbm-sdk/x/foundation/client/cli"
 	"github.com/line/lbm-sdk/x/genutil"
 	genutilcli "github.com/line/lbm-sdk/x/genutil/client/cli"
 	govcli "github.com/line/lbm-sdk/x/gov/client/cli"
@@ -54,6 +56,7 @@ import (
 	slashing "github.com/line/lbm-sdk/x/slashing/types"
 	stakingcli "github.com/line/lbm-sdk/x/staking/client/cli"
 	staking "github.com/line/lbm-sdk/x/staking/types"
+	"github.com/line/lbm-sdk/x/stakingplus"
 	wasmcli "github.com/line/lbm-sdk/x/wasm/client/cli"
 
 	wasmtypes "github.com/line/lbm-sdk/x/wasm/types"
@@ -592,6 +595,58 @@ func (f *Fixtures) TxGovSubmitCommunityPoolSpendProposal(
 ) (testutil.BufferWriter, error) {
 	args := fmt.Sprintf("%s --keyring-backend=test --from=%s --node=%s", proposalPath, from, f.RPCAddr)
 	cmd := govcli.NewCmdSubmitProposal()
+	return testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
+}
+
+// ___________________________________________________________________________________
+// lbm tx foundation
+
+// TxFoundationGrantCreateValidator is lbm tx foundation grant /cosmos.staking.v1beta1.MsgCreateValidator
+func (f *Fixtures) TxFoundationGrantCreateValidator(members []sdk.AccAddress, grantee sdk.AccAddress, flags ...string) (testutil.BufferWriter, error) {
+	authorization := &stakingplus.CreateValidatorAuthorization{
+		ValidatorAddress: sdk.ValAddress(grantee).String(),
+	}
+	require.NoError(f.T, authorization.ValidateBasic())
+
+	return f.TxFoundationGrant(members, grantee, authorization, flags...)
+}
+
+// TxFoundationGrant is lbm tx foundation submit-proposal on grant
+func (f *Fixtures) TxFoundationGrant(members []sdk.AccAddress, grantee sdk.AccAddress, authorization foundation.Authorization, flags ...string) (testutil.BufferWriter, error) {
+	operator := f.QueryFoundationInfo().Info.Operator
+	msg := &foundation.MsgGrant{
+		Operator: operator,
+		Grantee:  grantee.String(),
+	}
+	require.NoError(f.T, msg.SetAuthorization(authorization))
+
+	return f.TxFoundationSubmitProposal(members, []sdk.Msg{msg}, flags...)
+}
+
+// TxFoundationGrant is lbm tx foundation grant
+func (f *Fixtures) TxFoundationSubmitProposal(proposers []sdk.AccAddress, msgs []sdk.Msg, flags ...string) (testutil.BufferWriter, error) {
+	proposersStr := make([]string, len(proposers))
+	for i, proposer := range proposers {
+		proposersStr[i] = proposer.String()
+	}
+	proposersJSON, err := json.Marshal(proposersStr)
+	require.NoError(f.T, err)
+
+	cdc, _ := app.MakeCodecs()
+	msgsStr := make([]json.RawMessage, len(msgs))
+	for i, msg := range msgs {
+		var err error
+		msgsStr[i], err = cdc.MarshalInterfaceJSON(msg)
+		require.NoError(f.T, err)
+	}
+	msgsJSON, err := json.Marshal(msgsStr)
+	require.NoError(f.T, err)
+
+	args := fmt.Sprintf("--keyring-backend=test testmeta %s %s", proposersJSON, msgsJSON)
+	args += fmt.Sprintf(" --%s=%s", foundationcli.FlagExec, foundation.Exec_EXEC_TRY)
+	args += fmt.Sprintf(" --node=%s", f.RPCAddr)
+
+	cmd := foundationcli.NewTxCmdSubmitProposal()
 	return testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
 }
 
@@ -1470,4 +1525,22 @@ func (f *Fixtures) QueryContractStateSmartWasm(contractAddress string, reqJSON s
 	res, errStr := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
 	require.Empty(f.T, errStr)
 	return res.String()
+}
+
+// ___________________________________________________________________________________
+// lbm query foundation
+
+// QueryFoundationInfo is lbm query fundation foundation-info
+func (f *Fixtures) QueryFoundationInfo(flags ...string) (info foundation.QueryFoundationInfoResponse) {
+	args := "-o=json"
+	cmd := foundationcli.NewQueryCmdFoundationInfo()
+	out, err := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
+	require.NoError(f.T, err)
+	require.NotNil(f.T, out)
+
+	cdc, _ := app.MakeCodecs()
+	err = cdc.UnmarshalJSON(out.Bytes(), &info)
+	require.NoError(f.T, err)
+
+	return
 }

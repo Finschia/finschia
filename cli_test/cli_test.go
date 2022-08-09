@@ -371,6 +371,14 @@ func TestLBMCreateValidator(t *testing.T) {
 	// _, err = f.TxStakingCreateValidator(barAddr.String(), consPubKey, sdk.NewCoin(denom, newValTokens), "--dry-run")
 	// require.NoError(t, err)
 
+	// grant bar to create validator
+	member := f.KeyAddress(keyFoo)
+	_, err = f.TxFoundationGrantCreateValidator([]sdk.AccAddress{member}, barAddr, "-y")
+	require.NoError(t, err)
+
+	err = n.WaitForNextBlock()
+	require.NoError(t, err)
+
 	// Create the validator
 	_, err = f.TxStakingCreateValidator(keyBar, consPubKey, sdk.NewCoin(denom, newValTokens), "-y")
 	require.NoError(t, err)

@@ -46,6 +46,7 @@ This version based on [lbm-sdk v0.46.0-rc6](https://github.com/line/lbm-sdk/rele
 [\#76](https://github.com/line/lbm/pull/76) fix Dockerfile.static to build lbm instead of building wasmvm in the Dockerfile
 
 ### Bug Fixes
+* [\#83](https://github.com/line/lbm/pull/83) enable tests on CI
 
 ### Breaking Changes
 

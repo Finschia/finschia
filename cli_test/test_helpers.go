@@ -46,6 +46,8 @@ import (
 	banktypes "github.com/line/lbm-sdk/x/bank/types"
 	distcli "github.com/line/lbm-sdk/x/distribution/client/cli"
 	disttypes "github.com/line/lbm-sdk/x/distribution/types"
+	"github.com/line/lbm-sdk/x/foundation"
+	foundationcli "github.com/line/lbm-sdk/x/foundation/client/cli"
 	"github.com/line/lbm-sdk/x/genutil"
 	genutilcli "github.com/line/lbm-sdk/x/genutil/client/cli"
 	govcli "github.com/line/lbm-sdk/x/gov/client/cli"
@@ -54,6 +56,7 @@ import (
 	slashing "github.com/line/lbm-sdk/x/slashing/types"
 	stakingcli "github.com/line/lbm-sdk/x/staking/client/cli"
 	staking "github.com/line/lbm-sdk/x/staking/types"
+	"github.com/line/lbm-sdk/x/stakingplus"
 	wasmcli "github.com/line/lbm-sdk/x/wasm/client/cli"
 
 	wasmtypes "github.com/line/lbm-sdk/x/wasm/types"
@@ -126,6 +129,10 @@ var (
 		Use:   "ostracon",
 		Short: "Ostracon subcommands",
 	}
+)
+
+var (
+	minGasPrice = sdk.NewCoin(feeDenom, sdk.ZeroInt())
 )
 
 func init() {
@@ -265,12 +272,7 @@ func (f Fixtures) GenesisState() app.GenesisState {
 func InitFixtures(t *testing.T) (f *Fixtures) {
 	f = NewFixtures(t, getHomeDir(t))
 
-	// ensure keystore has foo and bar keys
-	f.KeysDelete(keyFoo)
-	f.KeysDelete(keyBar)
-	f.KeysDelete(keyBaz)
-	f.KeysDelete(keyVesting)
-	f.KeysDelete(keyFooBarBaz)
+	// add foo and bar keys to the keystore
 	f.KeysAdd(keyFoo)
 	f.KeysAdd(keyBar)
 	f.KeysAdd(keyBaz)
@@ -278,13 +280,7 @@ func InitFixtures(t *testing.T) (f *Fixtures) {
 	f.KeysAdd(keyFooBarBaz, "--multisig-threshold=2", fmt.Sprintf(
 		"--multisig=%s,%s,%s", keyFoo, keyBar, keyBaz))
 
-	// ensure keystore to have user keys
-	f.KeysDelete(UserTina)
-	f.KeysDelete(UserKevin)
-	f.KeysDelete(UserRinah)
-	f.KeysDelete(UserBrian)
-	f.KeysDelete(UserEvelyn)
-	f.KeysDelete(UserSam)
+	// add user keys to the keystore
 	f.KeysAdd(UserTina)
 	f.KeysAdd(UserKevin)
 	f.KeysAdd(UserRinah)
@@ -431,7 +427,7 @@ func (f *Fixtures) ValidateGenesis(genFile string, flags ...string) {
 
 // KeysDelete is lbm keys delete
 func (f *Fixtures) KeysDelete(name string, flags ...string) {
-	args := fmt.Sprintf("delete --keyring-backend=test -f -y %s", name)
+	args := fmt.Sprintf("delete --keyring-backend=test -y %s", name)
 	cmd := clientkeys.Commands(f.Home)
 	_, err := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
 
@@ -603,6 +599,58 @@ func (f *Fixtures) TxGovSubmitCommunityPoolSpendProposal(
 }
 
 // ___________________________________________________________________________________
+// lbm tx foundation
+
+// TxFoundationGrantCreateValidator is lbm tx foundation grant /cosmos.staking.v1beta1.MsgCreateValidator
+func (f *Fixtures) TxFoundationGrantCreateValidator(members []sdk.AccAddress, grantee sdk.AccAddress, flags ...string) (testutil.BufferWriter, error) {
+	authorization := &stakingplus.CreateValidatorAuthorization{
+		ValidatorAddress: sdk.ValAddress(grantee).String(),
+	}
+	require.NoError(f.T, authorization.ValidateBasic())
+
+	return f.TxFoundationGrant(members, grantee, authorization, flags...)
+}
+
+// TxFoundationGrant is lbm tx foundation submit-proposal on grant
+func (f *Fixtures) TxFoundationGrant(members []sdk.AccAddress, grantee sdk.AccAddress, authorization foundation.Authorization, flags ...string) (testutil.BufferWriter, error) {
+	operator := f.QueryFoundationInfo().Info.Operator
+	msg := &foundation.MsgGrant{
+		Operator: operator,
+		Grantee:  grantee.String(),
+	}
+	require.NoError(f.T, msg.SetAuthorization(authorization))
+
+	return f.TxFoundationSubmitProposal(members, []sdk.Msg{msg}, flags...)
+}
+
+// TxFoundationGrant is lbm tx foundation grant
+func (f *Fixtures) TxFoundationSubmitProposal(proposers []sdk.AccAddress, msgs []sdk.Msg, flags ...string) (testutil.BufferWriter, error) {
+	proposersStr := make([]string, len(proposers))
+	for i, proposer := range proposers {
+		proposersStr[i] = proposer.String()
+	}
+	proposersJSON, err := json.Marshal(proposersStr)
+	require.NoError(f.T, err)
+
+	cdc, _ := app.MakeCodecs()
+	msgsStr := make([]json.RawMessage, len(msgs))
+	for i, msg := range msgs {
+		var err error
+		msgsStr[i], err = cdc.MarshalInterfaceJSON(msg)
+		require.NoError(f.T, err)
+	}
+	msgsJSON, err := json.Marshal(msgsStr)
+	require.NoError(f.T, err)
+
+	args := fmt.Sprintf("--keyring-backend=test testmeta %s %s", proposersJSON, msgsJSON)
+	args += fmt.Sprintf(" --%s=%s", foundationcli.FlagExec, foundation.Exec_EXEC_TRY)
+	args += fmt.Sprintf(" --node=%s", f.RPCAddr)
+
+	cmd := foundationcli.NewTxCmdSubmitProposal()
+	return testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
+}
+
+// ___________________________________________________________________________________
 // lbm query account
 
 // QueryAccount is lbm query account
@@ -672,7 +720,7 @@ func (f *Fixtures) QueryTxInvalid(expectedErr error, hash string, flags ...strin
 
 // QueryTxs is lbm query txs
 func (f *Fixtures) QueryTxs(page, limit int, flags ...string) *sdk.SearchTxsResult {
-	args := fmt.Sprintf("--page=%d --limit=%d --node=%s", page, limit, f.RPCAddr)
+	args := fmt.Sprintf("--page=%d --limit=%d --node=%s -o json", page, limit, f.RPCAddr)
 	cmd := authcli.QueryTxsByEventsCmd()
 	out, err := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
 	require.NoError(f.T, err)
@@ -1113,7 +1161,6 @@ func (fg *FixtureGroup) initNodes(numberOfNodes int) {
 		require.NoError(fg.T, err)
 	}
 	for name, f := range fg.fixturesMap {
-		f.KeysDelete(name)
 		f.KeysAdd(name)
 	}
 
@@ -1142,14 +1189,14 @@ func (fg *FixtureGroup) initNodes(numberOfNodes int) {
 		require.NoError(t, err)
 	}
 }
-func (fg *FixtureGroup) LBMStartCluster(flags ...string) {
+func (fg *FixtureGroup) LBMStartCluster(minGasPrices string, flags ...string) {
 	genDoc, err := osttypes.GenesisDocFromJSON(fg.genesisFileContent)
 	require.NoError(fg.T, err)
 
 	var appState app.GenesisState
 	require.NoError(fg.T, legacy.Cdc.UnmarshalJSON(genDoc.AppState, &appState))
 
-	cfg := newTestnetConfig(fg.T, appState, fg.T.Name(), "")
+	cfg := newTestnetConfig(fg.T, appState, fg.T.Name(), minGasPrices)
 
 	validators := make([]*testnet.Validator, 0)
 	for _, f := range fg.fixturesMap {
@@ -1176,7 +1223,6 @@ func (fg *FixtureGroup) AddFullNode(flags ...string) *Fixtures {
 	// Initialize lbm
 	{
 		f.LBMInit(name, fmt.Sprintf("--chain-id=%s", chainID))
-		f.KeysDelete(name)
 		f.KeysAdd(name)
 	}
 
@@ -1370,6 +1416,7 @@ func newValidator(f *Fixtures, cfg testnet.Config, appCfg *srvconfig.Config, ctx
 	appCfg.API.Address = f.P2PAddr
 	tmCfg.P2P.ListenAddress = f.P2PAddr
 	tmCfg.RPC.ListenAddress = f.RPCAddr
+	appCfg.GRPCWeb.Enable = false
 	appCfg.GRPC.Address = f.GRPCAddr
 	appCfg.GRPC.Enable = true
 
@@ -1479,4 +1526,22 @@ func (f *Fixtures) QueryContractStateSmartWasm(contractAddress string, reqJSON s
 	res, errStr := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
 	require.Empty(f.T, errStr)
 	return res.String()
+}
+
+// ___________________________________________________________________________________
+// lbm query foundation
+
+// QueryFoundationInfo is lbm query fundation foundation-info
+func (f *Fixtures) QueryFoundationInfo(flags ...string) (info foundation.QueryFoundationInfoResponse) {
+	args := "-o=json"
+	cmd := foundationcli.NewQueryCmdFoundationInfo()
+	out, err := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
+	require.NoError(f.T, err)
+	require.NotNil(f.T, out)
+
+	cdc, _ := app.MakeCodecs()
+	err = cdc.UnmarshalJSON(out.Bytes(), &info)
+	require.NoError(f.T, err)
+
+	return
 }

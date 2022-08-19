@@ -47,7 +47,7 @@ This version based on [lbm-sdk v0.46.0-rc6](https://github.com/line/lbm-sdk/rele
 
 ### Bug Fixes
 * (command) [\#81](https://github.com/line/lbm/pull/81) add wrong address to genesis file in add-genesis-account command
-* (cli) [\#86](https://github.com/line/lbm/pull/86) bump up line/lbm-sdk to v0.46.0-rc6.0.20220819011147-620e456b322b
+* (x/collection) [\#86](https://github.com/line/lbm/pull/86) add omitted cli commands on x/collection and fix Query/Balance
 
 ### Breaking Changes
 

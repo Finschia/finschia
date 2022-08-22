@@ -71,16 +71,6 @@ import (
 	"github.com/line/lbm-sdk/x/gov"
 	govkeeper "github.com/line/lbm-sdk/x/gov/keeper"
 	govtypes "github.com/line/lbm-sdk/x/gov/types"
-	"github.com/line/lbm-sdk/x/ibc/applications/transfer"
-	ibctransferkeeper "github.com/line/lbm-sdk/x/ibc/applications/transfer/keeper"
-	ibctransfertypes "github.com/line/lbm-sdk/x/ibc/applications/transfer/types"
-	ibc "github.com/line/lbm-sdk/x/ibc/core"
-	ibcclient "github.com/line/lbm-sdk/x/ibc/core/02-client"
-	ibcclientclient "github.com/line/lbm-sdk/x/ibc/core/02-client/client"
-	ibcclienttypes "github.com/line/lbm-sdk/x/ibc/core/02-client/types"
-	porttypes "github.com/line/lbm-sdk/x/ibc/core/05-port/types"
-	ibchost "github.com/line/lbm-sdk/x/ibc/core/24-host"
-	ibckeeper "github.com/line/lbm-sdk/x/ibc/core/keeper"
 	"github.com/line/lbm-sdk/x/mint"
 	mintkeeper "github.com/line/lbm-sdk/x/mint/keeper"
 	minttypes "github.com/line/lbm-sdk/x/mint/types"
@@ -136,18 +126,14 @@ var (
 				distrclient.ProposalHandler,
 				upgradeclient.ProposalHandler,
 				upgradeclient.CancelProposalHandler,
-				ibcclientclient.UpdateClientProposalHandler,
-				ibcclientclient.UpgradeProposalHandler,
 			)...,
 		),
 		params.AppModuleBasic{},
 		crisis.AppModuleBasic{},
 		slashing.AppModuleBasic{},
-		ibc.AppModuleBasic{},
 		feegrantmodule.AppModuleBasic{},
 		upgrade.AppModuleBasic{},
 		evidence.AppModuleBasic{},
-		transfer.AppModuleBasic{},
 		authzmodule.AppModuleBasic{},
 		vesting.AppModuleBasic{},
 		wasm.AppModuleBasic{},
@@ -163,7 +149,6 @@ var (
 		stakingtypes.BondedPoolName:    {authtypes.Burner, authtypes.Staking},
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:            {authtypes.Burner},
-		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
 	}
 
 	// module accounts that are allowed to receive tokens
@@ -206,17 +191,11 @@ type LinkApp struct { // nolint: golint
 	UpgradeKeeper    upgradekeeper.Keeper
 	ParamsKeeper     paramskeeper.Keeper
 	AuthzKeeper      authzkeeper.Keeper
-	IBCKeeper        *ibckeeper.Keeper // IBC Keeper must be a pointer in the app, so we can SetRouter on it correctly
 	EvidenceKeeper   evidencekeeper.Keeper
-	TransferKeeper   ibctransferkeeper.Keeper
 	FeeGrantKeeper   feegrantkeeper.Keeper
 	WasmKeeper       wasm.Keeper
 
-	// make scoped keepers public for test purposes
-	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
-	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
-	ScopedWasmKeeper     capabilitykeeper.ScopedKeeper
-
+	ScopedWasmKeeper capabilitykeeper.ScopedKeeper
 	// the module manager
 	mm *module.Manager
 
@@ -257,10 +236,8 @@ func NewLinkApp(
 		slashingtypes.StoreKey,
 		govtypes.StoreKey,
 		paramstypes.StoreKey,
-		ibchost.StoreKey,
 		upgradetypes.StoreKey,
 		evidencetypes.StoreKey,
-		ibctransfertypes.StoreKey,
 		capabilitytypes.StoreKey,
 		feegrant.StoreKey,
 		foundation.StoreKey,
@@ -288,8 +265,6 @@ func NewLinkApp(
 
 	// add capability keeper and ScopeToModule for ibc module
 	app.CapabilityKeeper = capabilitykeeper.NewKeeper(appCodec, keys[capabilitytypes.StoreKey], memKeys[capabilitytypes.MemStoreKey])
-	scopedIBCKeeper := app.CapabilityKeeper.ScopeToModule(ibchost.ModuleName)
-	scopedTransferKeeper := app.CapabilityKeeper.ScopeToModule(ibctransfertypes.ModuleName)
 	scopedWasmKeeper := app.CapabilityKeeper.ScopeToModule(wasm.ModuleName)
 
 	// Applications that wish to enforce statically created ScopedKeepers should call `Seal` after creating
@@ -331,27 +306,8 @@ func NewLinkApp(
 		stakingtypes.NewMultiStakingHooks(app.DistrKeeper.Hooks(), app.SlashingKeeper.Hooks()),
 	)
 
-	// Create IBC Keeper
-	app.IBCKeeper = ibckeeper.NewKeeper(
-		appCodec, keys[ibchost.StoreKey], app.GetSubspace(ibchost.ModuleName), app.StakingKeeper, app.UpgradeKeeper, scopedIBCKeeper,
-	)
-
 	// Create Authz Keeper
 	app.AuthzKeeper = authzkeeper.NewKeeper(keys[authzkeeper.StoreKey], appCodec, app.BaseApp.MsgServiceRouter())
-
-	// Create Transfer Keepers
-	app.TransferKeeper = ibctransferkeeper.NewKeeper(
-		appCodec, keys[ibctransfertypes.StoreKey], app.GetSubspace(ibctransfertypes.ModuleName),
-		app.IBCKeeper.ChannelKeeper, &app.IBCKeeper.PortKeeper,
-		app.AccountKeeper, app.BankKeeper, scopedTransferKeeper,
-	)
-	transferModule := transfer.NewAppModule(app.TransferKeeper)
-
-	// Create static IBC router, add transfer route, then set and seal it
-	ibcRouter := porttypes.NewRouter()
-	ibcRouter.AddRoute(ibctransfertypes.ModuleName, transferModule)
-	ibcRouter.AddRoute(wasm.ModuleName, wasm.NewIBCHandler(app.WasmKeeper, app.IBCKeeper.ChannelKeeper))
-	app.IBCKeeper.SetRouter(ibcRouter)
 
 	// create evidence keeper with router
 	evidenceKeeper := evidencekeeper.NewKeeper(
@@ -377,10 +333,10 @@ func NewLinkApp(
 		app.BankKeeper,
 		app.StakingKeeper,
 		app.DistrKeeper,
-		app.IBCKeeper.ChannelKeeper,
-		&app.IBCKeeper.PortKeeper,
+		nil,
+		nil,
 		scopedWasmKeeper,
-		app.TransferKeeper,
+		nil,
 		app.MsgServiceRouter(),
 		app.GRPCQueryRouter(),
 		wasmDir,
@@ -397,7 +353,6 @@ func NewLinkApp(
 		AddRoute(paramproposal.RouterKey, params.NewParamChangeProposalHandler(app.ParamsKeeper)).
 		AddRoute(distrtypes.RouterKey, distr.NewCommunityPoolSpendProposalHandler(app.DistrKeeper)).
 		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
-		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper)).
 		AddRoute(foundation.RouterKey, foundationkeeper.NewProposalHandler(app.FoundationKeeper)).
 		AddRoute(wasm.RouterKey, wasm.NewWasmProposalHandler(app.WasmKeeper, wasm.EnableAllProposals))
 
@@ -445,10 +400,8 @@ func NewLinkApp(
 		upgrade.NewAppModule(app.UpgradeKeeper),
 		wasm.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper),
 		evidence.NewAppModule(app.EvidenceKeeper),
-		ibc.NewAppModule(app.IBCKeeper),
 		params.NewAppModule(app.ParamsKeeper),
 		authzmodule.NewAppModule(appCodec, app.AuthzKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
-		transferModule,
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -473,8 +426,6 @@ func NewLinkApp(
 		feegrant.ModuleName,
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
-		ibchost.ModuleName,
-		ibctransfertypes.ModuleName,
 		wasm.ModuleName,
 	)
 	app.mm.SetOrderEndBlockers(
@@ -494,8 +445,6 @@ func NewLinkApp(
 		paramstypes.ModuleName,
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
-		ibchost.ModuleName,
-		ibctransfertypes.ModuleName,
 		foundation.ModuleName,
 		wasm.ModuleName,
 	)
@@ -526,8 +475,6 @@ func NewLinkApp(
 		feegrant.ModuleName,
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
-		ibchost.ModuleName,
-		ibctransfertypes.ModuleName,
 		foundation.ModuleName,
 		// wasm after ibc transfer
 		wasm.ModuleName,
@@ -555,8 +502,6 @@ func NewLinkApp(
 		wasm.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper),
 		evidence.NewAppModule(app.EvidenceKeeper),
 		authzmodule.NewAppModule(appCodec, app.AuthzKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
-		ibc.NewAppModule(app.IBCKeeper),
-		transferModule,
 	)
 
 	app.sm.RegisterStoreDecoders()
@@ -599,8 +544,6 @@ func NewLinkApp(
 		// Initialize the keeper of bankkeeper
 		app.BankKeeper.InitializeBankPlus(ctx)
 	}
-	app.ScopedIBCKeeper = scopedIBCKeeper
-	app.ScopedTransferKeeper = scopedTransferKeeper
 	app.ScopedWasmKeeper = scopedWasmKeeper
 
 	return app
@@ -774,8 +717,6 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(slashingtypes.ModuleName)
 	paramsKeeper.Subspace(govtypes.ModuleName).WithKeyTable(govtypes.ParamKeyTable())
 	paramsKeeper.Subspace(crisistypes.ModuleName)
-	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
-	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(wasm.ModuleName)
 
 	return paramsKeeper

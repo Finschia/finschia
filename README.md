@@ -4,7 +4,7 @@
 
 This repository hosts `LBM(LINE Blockchain Mainnet)`. This repository is forked from [gaia](https://github.com/cosmos/gaia) at 2021-03-15. LBM is a mainnet app implementation using [lbm-sdk](https://github.com/line/lbm-sdk) and [ostracon](https://github.com/line/ostracon).
 
-**Node**: Requires [Go 1.15+](https://golang.org/dl/)
+**Node**: Requires [Go 1.18+](https://golang.org/dl/)
 
 **Warnings**: Initial development is in progress, but there has not yet been a stable.
 

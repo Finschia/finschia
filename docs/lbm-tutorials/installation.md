@@ -66,7 +66,7 @@ server_name: lbm
 version: 1.0.0
 commit: 8692310a5361006f8c02d44cd7df2d41f130089b
 build_tags: netgo,goleveldb
-go: go version go1.18.3 darwin/amd64
+go: go version go1.18.5 darwin/amd64
 build_deps:
 - github.com/...
 - github.com/...

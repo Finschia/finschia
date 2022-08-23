@@ -53,6 +53,7 @@ This version based on [lbm-sdk v0.46.0-rc6](https://github.com/line/lbm-sdk/rele
 
 ### Build, CI
 * (ci) [\#80](https://github.com/line/lbm/pull/80) remove stale github action
+* (build) [\#89](https://github.com/line/lbm/pull/89) upgrade golang to 1.18
 
 
 <!-- Release links -->

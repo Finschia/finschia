@@ -2,7 +2,7 @@
 # > docker build --platform="linux/amd64" -t line/lbm .
 # > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.lbm:/root/.lbm -v line/lbm lbm init
 # > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.lbm:/root/.lbm -v line/lbm lbm start --rpc.laddr=tcp://0.0.0.0:26657 --p2p.laddr=tcp://0.0.0.0:26656
-FROM golang:1.15-alpine3.13 AS build-env
+FROM golang:1.18.3-alpine AS build-env
 ARG LBM_BUILD_OPTIONS=""
 
 # Set up OS dependencies

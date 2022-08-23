@@ -49,6 +49,7 @@ This version based on [lbm-sdk v0.46.0-rc6](https://github.com/line/lbm-sdk/rele
 * [\#83](https://github.com/line/lbm/pull/83) enable tests on CI
 
 ### Breaking Changes
+* [\#87](https://github.com/line/lbm/pull/87) remove unused modules from app
 
 ### Build, CI
 * (ci) [\#80](https://github.com/line/lbm/pull/80) remove stale github action

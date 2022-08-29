@@ -149,8 +149,8 @@ lru_size = 0`
 func initRootCmd(rootCmd *cobra.Command, encodingConfig params.EncodingConfig) {
 	// Todo This is applied to https://github.com/cosmos/cosmos-sdk/pull/9299.
 	// But it is failed in `make localnet-start`. Let's check it later.
-	//cfg := sdk.GetConfig()
-	//cfg.Seal()
+	// cfg := sdk.GetConfig()
+	// cfg.Seal()
 
 	rootCmd.AddCommand(
 		genutilcli.InitCmd(app.ModuleBasics, app.DefaultNodeHome),

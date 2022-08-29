@@ -554,13 +554,15 @@ func TestLBMSubmitProposal(t *testing.T) {
 	// Query the vote
 	vote := f.QueryGovVote(1, fooAddr)
 	require.Equal(t, uint64(1), vote.ProposalId)
-	require.Equal(t, gov.OptionYes, vote.Option)
+	require.Equal(t, 1, len(vote.Options))
+	require.Equal(t, gov.OptionYes, vote.Options[0].Option)
 
 	// Query the votes
 	votes := f.QueryGovVotes(1)
 	require.Len(t, votes.GetVotes(), 1)
 	require.Equal(t, uint64(1), votes.GetVotes()[0].ProposalId)
-	require.Equal(t, gov.OptionYes, votes.GetVotes()[0].Option)
+	require.Equal(t, 1, len(votes.GetVotes()[0].Options))
+	require.Equal(t, gov.OptionYes, votes.GetVotes()[0].Options[0].Option)
 
 	// Ensure tags are applied to voting transaction properly
 	searchResult = f.QueryTxs(1, 50, fmt.Sprintf("--events='message.action=%s&message.sender=%s'", sdk.MsgTypeURL(&gov.MsgVote{}), fooAddr))
@@ -1236,7 +1238,8 @@ func TestLBMWasmContract(t *testing.T) {
 	flagFromFoo := fmt.Sprintf("--from=%s", fooAddr)
 	flagGas := "--gas=auto"
 	flagGasAdjustment := "--gas-adjustment=1.2"
-	workDir, _ := os.Getwd()
+	workDir, err := os.Getwd()
+	require.NoError(t, err)
 	tmpDir := path.Join(workDir, "tmp-dir-for-test-queue")
 	dirContract := path.Join(workDir, "contracts", "queue")
 	hashFile := path.Join(dirContract, "hash.txt")
@@ -1251,7 +1254,8 @@ func TestLBMWasmContract(t *testing.T) {
 	enqueueValue := 2
 
 	// make tmpDir
-	os.Mkdir(tmpDir, os.ModePerm)
+	err = os.Mkdir(tmpDir, os.ModePerm)
+	require.NoError(t, err)
 
 	// validate that there are no code in the chain
 	{
@@ -1273,8 +1277,9 @@ func TestLBMWasmContract(t *testing.T) {
 		queryCodesResponse := f.QueryListCodeWasm()
 		require.Len(t, queryCodesResponse.CodeInfos, 1)
 
-		//validate the hash is the same
-		expectedRow, _ := ioutil.ReadFile(hashFile)
+		// validate the hash is the same
+		expectedRow, err := ioutil.ReadFile(hashFile)
+		require.NoError(t, err)
 		expected, err := hex.DecodeString(string(expectedRow[:64]))
 		require.NoError(t, err)
 		actual := queryCodesResponse.CodeInfos[0].DataHash.Bytes()
@@ -1285,14 +1290,18 @@ func TestLBMWasmContract(t *testing.T) {
 	{
 		outputPath := path.Join(tmpDir, "queue-tmp.wasm")
 		f.QueryCodeWasm(codeID, outputPath)
-		fLocal, _ := os.Open(wasmQueue)
-		fChain, _ := os.Open(outputPath)
+		fLocal, err := os.Open(wasmQueue)
+		require.NoError(t, err)
+		fChain, err := os.Open(outputPath)
+		require.NoError(t, err)
 
 		// 2000000 is enough length
 		dataLocal := make([]byte, 2000000)
 		dataChain := make([]byte, 2000000)
-		fLocal.Read(dataLocal)
-		fChain.Read(dataChain)
+		_, err = fLocal.Read(dataLocal)
+		require.NoError(t, err)
+		_, err = fChain.Read(dataChain)
+		require.NoError(t, err)
 		require.Equal(t, dataLocal, dataChain)
 	}
 
@@ -1304,7 +1313,7 @@ func TestLBMWasmContract(t *testing.T) {
 
 	// instantiate a contract with the code queue
 	{
-		msgJSON := fmt.Sprintf("{}")
+		msgJSON := "{}"
 		flagLabel := "--label=queue-test"
 		flagAmount := fmt.Sprintf("--amount=%d%s", amountSend, denomSend)
 		_, err := f.TxInstantiateWasm(codeID, msgJSON, flagFromFoo, flagGasAdjustment, flagGas, flagLabel, flagAmount, flagFromFoo, "-y", "--no-admin")

@@ -18,5 +18,6 @@ require (
 replace (
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 	github.com/line/lbm-sdk => github.com/zemyblue/lbm-sdk v1.0.0-init.1.0.20220906044615-22305fb02c55
+	github.com/line/ostracon => github.com/zemyblue/ostracon v1.0.5-0.20220906044053-08076f2cbdb1
 	google.golang.org/grpc => google.golang.org/grpc v1.33.2
 )

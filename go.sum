@@ -1164,8 +1164,8 @@ github.com/yuin/goldmark v1.1.32/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9de
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.3.5/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
 github.com/yuin/goldmark v1.4.1/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
-github.com/zemyblue/lbm-sdk v1.0.0-init.1.0.20220905132505-e2ab73720ac3 h1:OnlW+LVE2P+cz139YzujhTD4nJlaGdfsdUG+UFWwMG0=
-github.com/zemyblue/lbm-sdk v1.0.0-init.1.0.20220905132505-e2ab73720ac3/go.mod h1:AkwJ8mUtSnwejFLUmxpVyJpY4i03+LOBiS5R9Y1y8LE=
+github.com/zemyblue/lbm-sdk v1.0.0-init.1.0.20220906044615-22305fb02c55 h1:5zOs7MkWzr/4LJanzSE4c5lZqjqxHXQDTaET8fz/Ih4=
+github.com/zemyblue/lbm-sdk v1.0.0-init.1.0.20220906044615-22305fb02c55/go.mod h1:odWex78dfwQhVLZTnX9v/3n/Ph+zy6cNiocuSidUBXw=
 github.com/zondax/hid v0.9.0 h1:eiT3P6vNxAEVxXMw66eZUAAnU2zD33JBkfG/EnfAKl8=
 github.com/zondax/hid v0.9.0/go.mod h1:l5wttcP0jwtdLjqjMMWFVEE7d1zO0jvSPA9OPZxWpEM=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=

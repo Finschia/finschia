@@ -36,22 +36,14 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ## [Unreleased]
 
-This version based on [lbm-sdk v0.46.0-rc6](https://github.com/line/lbm-sdk/releases/tag/v0.46.0-rc6)
-
 ### Features
-* (x/collection) [\#72](https://github.com/line/lbm/pull/72) add x/collection
-* (x/wasm) [\#79](https://github.com/line/lbm/pull/79) chore: add iterator feature for wasm module
 
 ### Improvements
-* (ci) [\#76](https://github.com/line/lbm/pull/76) fix Dockerfile.static to build lbm instead of building wasmvm in the Dockerfile
 
 ### Bug Fixes
-* (command) [\#81](https://github.com/line/lbm/pull/81) add wrong address to genesis file in add-genesis-account command
-* (x/collection) [\#86](https://github.com/line/lbm/pull/86) add omitted cli commands on x/collection and fix Query/Balance
-* (x/collection) [\#90](https://github.com/line/lbm/pull/90) fix bugs in x/collection MsgModify
 
 ### Breaking Changes
 
 
 <!-- Release links -->
-[Unreleased]: https://github.com/line/lbm/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/line/lbm/compare/v0.5.0...HEAD

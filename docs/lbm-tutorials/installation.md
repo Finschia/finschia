@@ -21,7 +21,7 @@ source ~/.bash_profile
 ```
 
 ::: tip
-**Go 1.15+** is required for the Cosmos SDK.
+**Go 1.18+** is required for the LBM SDK.
 :::
 
 ## Install the binaries
@@ -66,7 +66,7 @@ server_name: lbm
 version: 1.0.0
 commit: 8692310a5361006f8c02d44cd7df2d41f130089b
 build_tags: netgo,goleveldb
-go: go version go1.15.2 darwin/amd64
+go: go version go1.18.5 darwin/amd64
 build_deps:
 - github.com/...
 - github.com/...

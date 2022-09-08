@@ -81,3 +81,7 @@ run:
   # include test files or not, default is true
   tests: true
 
+  # set tags for the integration tests
+  build-tags:
+    - cli_test
+    - cli_multi_test

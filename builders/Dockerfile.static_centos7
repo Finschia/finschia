@@ -45,8 +45,8 @@ ENV PATH=$HOME/.cargo/bin:$PATH
 
 # install go
 WORKDIR /tmp
-ADD https://golang.org/dl/go1.15.15.linux-amd64.tar.gz .
-RUN tar -C /usr/local -xzf go1.15.15.linux-amd64.tar.gz
+ADD https://golang.org/dl/go1.18.5.linux-amd64.tar.gz .
+RUN tar -C /usr/local -xzf go1.18.5.linux-amd64.tar.gz
 ENV PATH=/usr/local/go/bin:$PATH
 
 # install cmake3(required by snappy, If use yum, it installs as version 2)

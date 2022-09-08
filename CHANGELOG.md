@@ -36,14 +36,9 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ## [Unreleased]
 
-This version based on [lbm-sdk v0.46.0-rc6](https://github.com/line/lbm-sdk/releases/tag/v0.46.0-rc6)
-
 ### Features
-* (x/collection) [\#72](https://github.com/line/lbm/pull/72) add x/collection
-* (x/wasm) [\#79](https://github.com/line/lbm/pull/79) chore: add iterator feature for wasm module
 
 ### Improvements
-[\#76](https://github.com/line/lbm/pull/76) fix Dockerfile.static to build lbm instead of building wasmvm in the Dockerfile
 
 ### Bug Fixes
 * [\#83](https://github.com/line/lbm/pull/83) enable tests on CI
@@ -57,4 +52,4 @@ This version based on [lbm-sdk v0.46.0-rc6](https://github.com/line/lbm-sdk/rele
 
 
 <!-- Release links -->
-[Unreleased]: https://github.com/line/lbm/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/line/lbm/compare/v0.5.0...HEAD

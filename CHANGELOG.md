@@ -41,8 +41,13 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Improvements
 
 ### Bug Fixes
+* [\#83](https://github.com/line/lbm/pull/83) enable tests on CI
 
 ### Breaking Changes
+* [\#87](https://github.com/line/lbm/pull/87) remove unused modules from app
+
+### Build, CI
+* (ci) [\#80](https://github.com/line/lbm/pull/80) remove stale github action
 
 
 <!-- Release links -->

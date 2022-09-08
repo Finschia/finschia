@@ -48,7 +48,11 @@ contain valid denominations. Accounts may optionally be supplied with vesting pa
 			addr, err := sdk.AccAddressFromBech32(args[0])
 			if err != nil {
 				inBuf := bufio.NewReader(cmd.InOrStdin())
-				keyringBackend, _ := cmd.Flags().GetString(flags.FlagKeyringBackend)
+				keyringBackend, err := cmd.Flags().GetString(flags.FlagKeyringBackend)
+				if err != nil {
+					return err
+				}
+
 				if keyringBackend != "" && clientCtx.Keyring == nil {
 					var err error
 					kr, err = keyring.New(sdk.KeyringServiceName(), keyringBackend, clientCtx.HomeDir, inBuf)

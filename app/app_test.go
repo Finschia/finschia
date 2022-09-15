@@ -124,6 +124,7 @@ func TestRunMigrations(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
+		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			var err error
 

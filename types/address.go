@@ -8,9 +8,8 @@ const (
 	Bech32MainPrefix    = "link"
 	Bech32TestnetPrefix = "tlink"
 
-	// LINK in [SLIP-044](https://github.com/satoshilabs/slips/blob/master/slip-0044.md)
-	CoinType           = 438
-	FullFundraiserPath = "m/44'/438'/0'/0/0"
+	// CoinType is the LINK coin type as defined in [SLIP-044](https://github.com/satoshilabs/slips/blob/master/slip-0044.md)
+	CoinType = 438
 )
 
 func Bech32PrefixAcc(testnet bool) (prefix string) {

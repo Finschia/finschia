@@ -2,6 +2,7 @@ package app
 
 import (
 	"encoding/json"
+
 	"github.com/line/lbm-sdk/codec"
 )
 

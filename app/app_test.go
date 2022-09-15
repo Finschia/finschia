@@ -108,34 +108,19 @@ func TestRunMigrations(t *testing.T) {
 	testCases := []struct {
 		name         string
 		moduleName   string
-		forVersion   uint64
-		expRegErr    bool // errors while registering migration
 		expRegErrMsg string
-		expRunErr    bool // errors while running migration
 		expRunErrMsg string
+		forVersion   uint64
 		expCalled    int
+		expRegErr    bool // errors while registering migration
+		expRunErr    bool // errors while running migration
 	}{
 		{
 			"cannot register migration for version 0",
-			"bank", 0,
-			true, "module migration versions should start at 1: invalid version", false, "", 0,
+			"bank", "module migration versions should start at 1: invalid version", "",
+			0, 0,
+			true, false,
 		},
-		// TODO(dudong2): bank module has no migration func, so comment out tests
-		// {
-		// 	"throws error on RunMigrations if no migration registered for bank",
-		// 	"", 1,
-		// 	false, "", true, "no migrations found for module bank: not found", 0,
-		// },
-		// {
-		// 	"can register and run migration handler for x/bank",
-		// 	"bank", 1,
-		// 	false, "", false, "", 1,
-		// },
-		// {
-		// 	"cannot register migration handler for same module & forVersion",
-		// 	"bank", 1,
-		// 	true, "another migration for module bank and version 1 already exists: internal logic error", false, "", 0,
-		// },
 	}
 
 	for _, tc := range testCases {

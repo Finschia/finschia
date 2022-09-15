@@ -43,6 +43,9 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Bug Fixes
 * [\#83](https://github.com/line/lbm/pull/83) enable tests on CI
 
+### Improvements
+* [\#95](https://github.com/line/lbm/pull/95) apply the changes of lbm-sdk v0.46.0-rc8
+
 ### Breaking Changes
 * [\#87](https://github.com/line/lbm/pull/87) remove unused modules from app
 

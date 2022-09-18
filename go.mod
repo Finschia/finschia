@@ -17,7 +17,7 @@ require (
 
 replace (
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
-	github.com/line/lbm-sdk => github.com/zemyblue/lbm-sdk v1.0.0-init.1.0.20220906120839-8ce07baaf5af
+	github.com/line/lbm-sdk => github.com/zemyblue/lbm-sdk v1.0.0-init.1.0.20220918094440-acc604e2ac3f
 	github.com/line/ostracon => github.com/zemyblue/ostracon v1.0.5-0.20220906115006-7fde9eabbdbb
 	google.golang.org/grpc => google.golang.org/grpc v1.33.2
 )

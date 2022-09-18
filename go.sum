@@ -1161,8 +1161,8 @@ github.com/yuin/goldmark v1.1.32/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9de
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.3.5/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
 github.com/yuin/goldmark v1.4.1/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
-github.com/zemyblue/lbm-sdk v1.0.0-init.1.0.20220906120839-8ce07baaf5af h1:83UCB386ZO4MhSIaHxT6oSPft5GPELfVHcipLGO+5Ts=
-github.com/zemyblue/lbm-sdk v1.0.0-init.1.0.20220906120839-8ce07baaf5af/go.mod h1:X/pb8GFtFt8qmXT7pQxu9Vf49N6qLGcbIFYpdm7lDlE=
+github.com/zemyblue/lbm-sdk v1.0.0-init.1.0.20220918094440-acc604e2ac3f h1:nh1YIvW6PwUsLmgFpz1g2A6tgh0TWfnYwIrqeQfVa/Q=
+github.com/zemyblue/lbm-sdk v1.0.0-init.1.0.20220918094440-acc604e2ac3f/go.mod h1:X/pb8GFtFt8qmXT7pQxu9Vf49N6qLGcbIFYpdm7lDlE=
 github.com/zemyblue/ostracon v1.0.5-0.20220906115006-7fde9eabbdbb h1:881j3+Ref6mUeL3M/sbVNbEtrAITK2JWScGzzysoBhE=
 github.com/zemyblue/ostracon v1.0.5-0.20220906115006-7fde9eabbdbb/go.mod h1:8gnHCqwRjbJfhVtQkl7KIfcubtpsIEmiN0u91B4EYWY=
 github.com/zondax/hid v0.9.0 h1:eiT3P6vNxAEVxXMw66eZUAAnU2zD33JBkfG/EnfAKl8=

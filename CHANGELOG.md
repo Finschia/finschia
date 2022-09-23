@@ -43,6 +43,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Bug Fixes
 * [\#83](https://github.com/line/lbm/pull/83) enable tests on CI
 * (app) [\#96](https://github.com/line/lbm/pull/96) fix the bug not setting `iavl-cache-size` value of the `app.toml`
+* (baseapp) [\#97](https://github.com/line/lbm/pull/97) fix max gas validation bug of lbm-sdk
 
 ### Improvements
 * [\#95](https://github.com/line/lbm/pull/95) apply the changes of lbm-sdk v0.46.0-rc8

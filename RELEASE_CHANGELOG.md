@@ -34,6 +34,24 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 # Changelog
 
+## [v0.6.0]
+
+This version based on [lbm-sdk v0.46.0-rc8](https://github.com/line/lbm-sdk/releases/tag/v0.46.0-rc8)
+
+### Bug Fixes
+* (app) [\#96](https://github.com/line/lbm/pull/96) fix the bug not setting `iavl-cache-size` value of the `app.toml`
+* (baseapp) [\#97](https://github.com/line/lbm/pull/97) fix max gas validation bug of lbm-sdk
+
+### Breaking Changes
+* (app) [\#87](https://github.com/line/lbm/pull/87) remove unused modules from app
+* (lbm-sdk) [\#95](https://github.com/line/lbm/pull/95) apply the changes of lbm-sdk v0.46.0-rc8
+
+### Build, CI
+* (ci) [\#80](https://github.com/line/lbm/pull/80) remove stale github action
+* (ci) [\#83](https://github.com/line/lbm/pull/83) enable tests on CI
+* (build) [\#89](https://github.com/line/lbm/pull/89) upgrade golang to 1.18
+
+
 ## [v0.5.0]
 
 This version based on [lbm-sdk v0.46.0-rc6](https://github.com/line/lbm-sdk/releases/tag/v0.46.0-rc6)
@@ -117,6 +135,7 @@ Please refer [CHANGELOG_OF_GAIA_v4.0.4](https://github.com/cosmos/gaia/blob/v4.0
 
 
 <!-- Release links -->
+[v0.6.0]: https://github.com/line/lbm/compare/v0.5.0...v0.6.0
 [v0.5.0]: https://github.com/line/lbm/compare/v0.4.0...v0.5.0
 [v0.4.0]: https://github.com/line/lbm/compare/v0.3.0...v0.4.0
 [v0.3.0]: https://github.com/line/lbm/compare/v0.2.0-rc0...v0.3.0

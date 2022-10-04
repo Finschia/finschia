@@ -41,20 +41,13 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Improvements
 
 ### Bug Fixes
-* [\#83](https://github.com/line/lbm/pull/83) enable tests on CI
-* (app) [\#96](https://github.com/line/lbm/pull/96) fix the bug not setting `iavl-cache-size` value of the `app.toml`
-* (baseapp) [\#97](https://github.com/line/lbm/pull/97) fix max gas validation bug of lbm-sdk
 
 ### Improvements
-* [\#95](https://github.com/line/lbm/pull/95) apply the changes of lbm-sdk v0.46.0-rc8
 
 ### Breaking Changes
-* [\#87](https://github.com/line/lbm/pull/87) remove unused modules from app
 
 ### Build, CI
-* (ci) [\#80](https://github.com/line/lbm/pull/80) remove stale github action
-* (build) [\#89](https://github.com/line/lbm/pull/89) upgrade golang to 1.18
 
 
 <!-- Release links -->
-[Unreleased]: https://github.com/line/lbm/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/line/lbm/compare/v0.6.0...HEAD

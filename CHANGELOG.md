@@ -41,6 +41,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Improvements
 
 ### Bug Fixes
+* (globa) [\#103](https://github.com/line/lbm/pull/103) replace deprecated functions of ioutil package
 
 ### Improvements
 

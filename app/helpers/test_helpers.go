@@ -5,36 +5,36 @@ import (
 	"testing"
 	"time"
 
+	abci "github.com/line/ostracon/abci/types"
+	"github.com/line/ostracon/libs/log"
+	ocproto "github.com/line/ostracon/proto/ostracon/types"
+	octypes "github.com/line/ostracon/types"
 	"github.com/stretchr/testify/require"
-	abci "github.com/tendermint/tendermint/abci/types"
-	"github.com/tendermint/tendermint/libs/log"
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	tmtypes "github.com/tendermint/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
 
-	gaiaapp "github.com/cosmos/gaia/v7/app"
+	linkapp "github.com/line/lbm/app"
 )
 
 // SimAppChainID hardcoded chainID for simulation
 const (
-	SimAppChainID = "gaia-app"
+	SimAppChainID = "link-app"
 )
 
 // DefaultConsensusParams defines the default Tendermint consensus params used
-// in GaiaApp testing.
+// in linkapp testing.
 var DefaultConsensusParams = &abci.ConsensusParams{
 	Block: &abci.BlockParams{
 		MaxBytes: 200000,
 		MaxGas:   2000000,
 	},
-	Evidence: &tmproto.EvidenceParams{
+	Evidence: &ocproto.EvidenceParams{
 		MaxAgeNumBlocks: 302400,
 		MaxAgeDuration:  504 * time.Hour, // 3 weeks is the max duration
 		MaxBytes:        10000,
 	},
-	Validator: &tmproto.ValidatorParams{
+	Validator: &ocproto.ValidatorParams{
 		PubKeyTypes: []string{
-			tmtypes.ABCIPubKeyTypeEd25519,
+			octypes.ABCIPubKeyTypeEd25519,
 		},
 	},
 }
@@ -43,7 +43,7 @@ type EmptyAppOptions struct{}
 
 func (EmptyAppOptions) Get(o string) interface{} { return nil }
 
-func Setup(t *testing.T, isCheckTx bool, invCheckPeriod uint) *gaiaapp.GaiaApp {
+func Setup(t *testing.T, isCheckTx bool, invCheckPeriod uint) *linkapp.LinkApp {
 	t.Helper()
 
 	app, genesisState := setup(!isCheckTx, invCheckPeriod)
@@ -65,23 +65,24 @@ func Setup(t *testing.T, isCheckTx bool, invCheckPeriod uint) *gaiaapp.GaiaApp {
 	return app
 }
 
-func setup(withGenesis bool, invCheckPeriod uint) (*gaiaapp.GaiaApp, gaiaapp.GenesisState) {
+func setup(withGenesis bool, invCheckPeriod uint) (*linkapp.LinkApp, linkapp.GenesisState) {
 	db := dbm.NewMemDB()
-	encCdc := gaiaapp.MakeEncodingConfig()
-	app := gaiaapp.NewGaiaApp(
+	encCdc := linkapp.MakeEncodingConfig()
+	app := linkapp.NewLinkApp(
 		log.NewNopLogger(),
 		db,
 		nil,
 		true,
 		map[int64]bool{},
-		gaiaapp.DefaultNodeHome,
+		linkapp.DefaultNodeHome,
 		invCheckPeriod,
 		encCdc,
 		EmptyAppOptions{},
+		nil,
 	)
 	if withGenesis {
-		return app, gaiaapp.NewDefaultGenesisState()
+		return app, linkapp.NewDefaultGenesisState(encCdc.Marshaler)
 	}
 
-	return app, gaiaapp.GenesisState{}
+	return app, linkapp.GenesisState{}
 }

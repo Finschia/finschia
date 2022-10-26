@@ -7,7 +7,6 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
@@ -1113,7 +1112,7 @@ func TestLBMCollectGentxs(t *testing.T) {
 	f := NewFixtures(t, getHomeDir(t))
 
 	// Initialize temporary directories
-	gentxDir, err := ioutil.TempDir("", "")
+	gentxDir, err := os.MkdirTemp("", "")
 	gentxDoc := filepath.Join(gentxDir, "gentx.json")
 	require.NoError(t, err)
 
@@ -1278,7 +1277,7 @@ func TestLBMWasmContract(t *testing.T) {
 		require.Len(t, queryCodesResponse.CodeInfos, 1)
 
 		// validate the hash is the same
-		expectedRow, err := ioutil.ReadFile(hashFile)
+		expectedRow, err := os.ReadFile(hashFile)
 		require.NoError(t, err)
 		expected, err := hex.DecodeString(string(expectedRow[:64]))
 		require.NoError(t, err)

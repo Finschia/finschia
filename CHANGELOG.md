@@ -37,6 +37,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ## [Unreleased]
 
 ### Features
+* [\#104](https://github.com/line/lbm/pull/104) fix: bump up to lbm-sdk 80ba750fc
 
 ### Improvements
 

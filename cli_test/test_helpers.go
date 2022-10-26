@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -177,7 +176,7 @@ func getHomeDir(t *testing.T) string {
 	tmpDir := path.Join(os.ExpandEnv("$HOME"), ".lbmtest")
 	err := os.MkdirAll(tmpDir, os.ModePerm)
 	require.NoError(t, err)
-	tmpDir, err = ioutil.TempDir(tmpDir, "link_integration_"+strings.Split(t.Name(), "/")[0]+"_")
+	tmpDir, err = os.MkdirTemp(tmpDir, "link_integration_"+strings.Split(t.Name(), "/")[0]+"_")
 	require.NoError(t, err)
 	return tmpDir
 }
@@ -1147,7 +1146,7 @@ func (fg *FixtureGroup) initNodes(numberOfNodes int) {
 	t := fg.T
 
 	// Initialize temporary directories
-	gentxDir, err := ioutil.TempDir("", "")
+	gentxDir, err := os.MkdirTemp("", "")
 	require.NoError(t, err)
 	defer func() {
 		require.NoError(t, os.RemoveAll(gentxDir))
@@ -1179,13 +1178,13 @@ func (fg *FixtureGroup) initNodes(numberOfNodes int) {
 		f.CollectGenTxs(fmt.Sprintf("--gentx-dir=%s", gentxDir))
 		f.ValidateGenesis(filepath.Join(f.Home, "config", "genesis.json"))
 		if len(fg.genesisFileContent) == 0 {
-			fg.genesisFileContent, err = ioutil.ReadFile(f.GenesisFile())
+			fg.genesisFileContent, err = os.ReadFile(f.GenesisFile())
 			require.NoError(t, err)
 		}
 	}
 
 	for _, f := range fg.fixturesMap {
-		err := ioutil.WriteFile(f.GenesisFile(), fg.genesisFileContent, os.ModePerm)
+		err := os.WriteFile(f.GenesisFile(), fg.genesisFileContent, os.ModePerm)
 		require.NoError(t, err)
 	}
 }
@@ -1212,7 +1211,7 @@ func (fg *FixtureGroup) AddFullNode(flags ...string) *Fixtures {
 	chainID := fg.T.Name()
 
 	name := fmt.Sprintf("%s-%s%d", t.Name(), namePrefix, idx)
-	tmpDir, err := ioutil.TempDir("", "")
+	tmpDir, err := os.MkdirTemp("", "")
 	require.NoError(t, err)
 
 	appCfg := srvconfig.DefaultConfig()
@@ -1231,7 +1230,7 @@ func (fg *FixtureGroup) AddFullNode(flags ...string) *Fixtures {
 		if len(fg.genesisFileContent) == 0 {
 			panic("genesis file is not loaded")
 		}
-		err := ioutil.WriteFile(f.GenesisFile(), fg.genesisFileContent, os.ModePerm)
+		err := os.WriteFile(f.GenesisFile(), fg.genesisFileContent, os.ModePerm)
 		require.NoError(t, err)
 	}
 
@@ -1336,7 +1335,7 @@ func addFlags(args string, flags ...string) []string {
 
 // Write the given string to a new temporary file
 func WriteToNewTempFile(t *testing.T, s string) *os.File {
-	fp, err := ioutil.TempFile(os.TempDir(), "cosmos_cli_test_")
+	fp, err := os.CreateTemp(os.TempDir(), "cosmos_cli_test_")
 	require.Nil(t, err)
 	_, err = fp.WriteString(s)
 	require.Nil(t, err)

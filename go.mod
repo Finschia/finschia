@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/golang/mock v1.6.0
 	github.com/gorilla/mux v1.8.0
-	github.com/line/lbm-sdk v0.46.0-rc8.0.20220921091728-30cd552eeb2b
+	github.com/line/lbm-sdk v0.46.0-rc8.0.20220919090258-80ba750fc719
 	github.com/line/ostracon v1.0.7-0.20220906074149-e6ecd80874f8
 	github.com/prometheus/client_golang v1.13.0
 	github.com/rakyll/statik v0.1.7
@@ -22,7 +22,7 @@ require (
 	github.com/ChainSafe/go-schnorrkel v0.0.0-20200405005733-88cbf1b4c40d // indirect
 	github.com/VictoriaMetrics/fastcache v1.10.0 // indirect
 	github.com/Workiva/go-datastructures v1.0.53 // indirect
-	github.com/armon/go-metrics v0.4.0 // indirect
+	github.com/armon/go-metrics v0.4.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bgentry/speakeasy v0.1.0 // indirect
 	github.com/btcsuite/btcd v0.22.1 // indirect

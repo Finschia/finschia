@@ -1,6 +1,7 @@
 package app
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"io"
@@ -13,7 +14,6 @@ import (
 	"github.com/rakyll/statik/fs"
 
 	abci "github.com/line/ostracon/abci/types"
-	ostjson "github.com/line/ostracon/libs/json"
 	"github.com/line/ostracon/libs/log"
 	ostos "github.com/line/ostracon/libs/os"
 	ostproto "github.com/line/ostracon/proto/ostracon/types"
@@ -92,10 +92,29 @@ import (
 	upgradeclient "github.com/line/lbm-sdk/x/upgrade/client"
 	upgradekeeper "github.com/line/lbm-sdk/x/upgrade/keeper"
 	upgradetypes "github.com/line/lbm-sdk/x/upgrade/types"
+
+	ica "github.com/line/lbm-sdk/x/ibc/applications/27-interchain-accounts"
+	icahost "github.com/line/lbm-sdk/x/ibc/applications/27-interchain-accounts/host"
+	icahostkeeper "github.com/line/lbm-sdk/x/ibc/applications/27-interchain-accounts/host/keeper"
+	icahosttypes "github.com/line/lbm-sdk/x/ibc/applications/27-interchain-accounts/host/types"
+	icatypes "github.com/line/lbm-sdk/x/ibc/applications/27-interchain-accounts/types"
+	"github.com/line/lbm-sdk/x/ibc/applications/transfer"
+	ibctransferkeeper "github.com/line/lbm-sdk/x/ibc/applications/transfer/keeper"
+	ibctransfertypes "github.com/line/lbm-sdk/x/ibc/applications/transfer/types"
+	ibc "github.com/line/lbm-sdk/x/ibc/core"
+	ibcclient "github.com/line/lbm-sdk/x/ibc/core/02-client"
+	ibcclientclient "github.com/line/lbm-sdk/x/ibc/core/02-client/client"
+	ibcclienttypes "github.com/line/lbm-sdk/x/ibc/core/02-client/types"
+	porttypes "github.com/line/lbm-sdk/x/ibc/core/05-port/types"
+	ibchost "github.com/line/lbm-sdk/x/ibc/core/24-host"
+	ibckeeper "github.com/line/lbm-sdk/x/ibc/core/keeper"
+
 	"github.com/line/lbm-sdk/x/wasm"
 	wasmclient "github.com/line/lbm-sdk/x/wasm/client"
 	wasmkeeper "github.com/line/lbm-sdk/x/wasm/keeper"
 	wasmlbmtypes "github.com/line/lbm-sdk/x/wasm/lbmtypes"
+
+	appante "github.com/line/lbm/ante"
 	appparams "github.com/line/lbm/app/params"
 
 	// unnamed import of statik for swagger UI support
@@ -129,6 +148,8 @@ var (
 				distrclient.ProposalHandler,
 				upgradeclient.ProposalHandler,
 				upgradeclient.CancelProposalHandler,
+				ibcclientclient.UpdateClientProposalHandler,
+				ibcclientclient.UpgradeProposalHandler,
 			)...,
 		),
 		params.AppModuleBasic{},
@@ -139,6 +160,9 @@ var (
 		evidence.AppModuleBasic{},
 		authzmodule.AppModuleBasic{},
 		vesting.AppModuleBasic{},
+		ibc.AppModuleBasic{},
+		transfer.AppModuleBasic{},
+		ica.AppModuleBasic{},
 		wasm.AppModuleBasic{},
 	)
 
@@ -148,10 +172,12 @@ var (
 		distrtypes.ModuleName:          nil,
 		foundation.TreasuryName:        nil,
 		foundation.AdministratorName:   nil,
+		icatypes.ModuleName:            nil,
 		minttypes.ModuleName:           {authtypes.Minter},
 		stakingtypes.BondedPoolName:    {authtypes.Burner, authtypes.Staking},
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:            {authtypes.Burner},
+		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
 	}
 
 	// module accounts that are allowed to receive tokens
@@ -194,11 +220,19 @@ type LinkApp struct { // nolint: golint
 	UpgradeKeeper    upgradekeeper.Keeper
 	ParamsKeeper     paramskeeper.Keeper
 	AuthzKeeper      authzkeeper.Keeper
-	EvidenceKeeper   evidencekeeper.Keeper
-	FeeGrantKeeper   feegrantkeeper.Keeper
-	WasmKeeper       wasm.Keeper
+	// IBC Keeper must be a pointer in the app, so we can SetRouter on it correctly
+	IBCKeeper      *ibckeeper.Keeper
+	TransferKeeper ibctransferkeeper.Keeper
+	ICAHostKeeper  icahostkeeper.Keeper
+	EvidenceKeeper evidencekeeper.Keeper
+	FeeGrantKeeper feegrantkeeper.Keeper
+	WasmKeeper     wasm.Keeper
 
-	ScopedWasmKeeper capabilitykeeper.ScopedKeeper
+	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
+	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
+	ScopedICAHostKeeper  capabilitykeeper.ScopedKeeper
+	ScopedWasmKeeper     capabilitykeeper.ScopedKeeper
+
 	// the module manager
 	mm *module.Manager
 
@@ -247,6 +281,9 @@ func NewLinkApp(
 		capabilitytypes.StoreKey,
 		feegrant.StoreKey,
 		foundation.StoreKey,
+		ibchost.StoreKey,
+		ibctransfertypes.StoreKey,
+		icahosttypes.StoreKey,
 		wasm.StoreKey,
 	)
 
@@ -271,6 +308,9 @@ func NewLinkApp(
 
 	// add capability keeper and ScopeToModule for ibc module
 	app.CapabilityKeeper = capabilitykeeper.NewKeeper(appCodec, keys[capabilitytypes.StoreKey], memKeys[capabilitytypes.MemStoreKey])
+	scopedIBCKeeper := app.CapabilityKeeper.ScopeToModule(ibchost.ModuleName)
+	scopedTransferKeeper := app.CapabilityKeeper.ScopeToModule(ibctransfertypes.ModuleName)
+	scopedICAHostKeeper := app.CapabilityKeeper.ScopeToModule(icahosttypes.SubModuleName)
 	scopedWasmKeeper := app.CapabilityKeeper.ScopeToModule(wasm.ModuleName)
 
 	// Applications that wish to enforce statically created ScopedKeepers should call `Seal` after creating
@@ -322,6 +362,48 @@ func NewLinkApp(
 	// If evidence needs to be handled for the app, set routes in router here and seal
 	app.EvidenceKeeper = *evidenceKeeper
 
+	app.IBCKeeper = ibckeeper.NewKeeper(
+		appCodec,
+		keys[ibchost.StoreKey],
+		app.GetSubspace(ibchost.ModuleName),
+		app.StakingKeeper,
+		app.UpgradeKeeper,
+		scopedIBCKeeper,
+	)
+
+	app.TransferKeeper = ibctransferkeeper.NewKeeper(
+		appCodec,
+		keys[ibctransfertypes.StoreKey],
+		app.GetSubspace(ibctransfertypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		app.AccountKeeper,
+		app.BankKeeper,
+		scopedTransferKeeper,
+	)
+	transferModule := transfer.NewAppModule(app.TransferKeeper)
+	transferIBCModule := transfer.NewIBCModule(app.TransferKeeper)
+
+	app.ICAHostKeeper = icahostkeeper.NewKeeper(
+		appCodec, keys[icahosttypes.StoreKey],
+		app.GetSubspace(icahosttypes.SubModuleName),
+		app.IBCKeeper.ChannelKeeper,
+		&app.IBCKeeper.PortKeeper,
+		app.AccountKeeper,
+		scopedICAHostKeeper,
+		app.MsgServiceRouter(),
+	)
+	icaModule := ica.NewAppModule(nil, &app.ICAHostKeeper)
+	icaHostIBCModule := icahost.NewIBCModule(app.ICAHostKeeper)
+
+	// create static IBC router, add transfer route, then set and seal it
+	ibcRouter := porttypes.NewRouter()
+	ibcRouter.AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
+		AddRoute(ibctransfertypes.ModuleName, transferIBCModule)
+
+	app.IBCKeeper.SetRouter(ibcRouter)
+
 	wasmDir := filepath.Join(homePath, "wasm")
 	wasmConfig, err := wasm.ReadWasmConfig(appOpts)
 	if err != nil {
@@ -360,6 +442,7 @@ func NewLinkApp(
 		AddRoute(distrtypes.RouterKey, distr.NewCommunityPoolSpendProposalHandler(app.DistrKeeper)).
 		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
 		AddRoute(foundation.RouterKey, foundationkeeper.NewProposalHandler(app.FoundationKeeper)).
+		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper)).
 		AddRoute(wasm.RouterKey, wasmkeeper.NewWasmProposalHandler(app.WasmKeeper, wasmlbmtypes.EnableAllProposals))
 
 	govKeeper := govkeeper.NewKeeper(
@@ -408,6 +491,9 @@ func NewLinkApp(
 		evidence.NewAppModule(app.EvidenceKeeper),
 		params.NewAppModule(app.ParamsKeeper),
 		authzmodule.NewAppModule(appCodec, app.AuthzKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
+		ibc.NewAppModule(app.IBCKeeper),
+		transferModule,
+		icaModule,
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -432,6 +518,9 @@ func NewLinkApp(
 		feegrant.ModuleName,
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
+		ibctransfertypes.ModuleName,
+		ibchost.ModuleName,
+		icatypes.ModuleName,
 		wasm.ModuleName,
 	)
 	app.mm.SetOrderEndBlockers(
@@ -452,6 +541,9 @@ func NewLinkApp(
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
 		foundation.ModuleName,
+		ibctransfertypes.ModuleName,
+		ibchost.ModuleName,
+		icatypes.ModuleName,
 		wasm.ModuleName,
 	)
 
@@ -482,6 +574,9 @@ func NewLinkApp(
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
 		foundation.ModuleName,
+		ibctransfertypes.ModuleName,
+		ibchost.ModuleName,
+		icatypes.ModuleName,
 		// wasm after ibc transfer
 		wasm.ModuleName,
 	)
@@ -511,13 +606,16 @@ func NewLinkApp(
 	app.SetInitChainer(app.InitChainer)
 	app.SetBeginBlocker(app.BeginBlocker)
 
-	anteHandler, err := ante.NewAnteHandler(
-		ante.HandlerOptions{
-			AccountKeeper:   app.AccountKeeper,
-			BankKeeper:      app.BankKeeper,
-			SignModeHandler: encodingConfig.TxConfig.SignModeHandler(),
-			FeegrantKeeper:  app.FeeGrantKeeper,
-			SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
+	anteHandler, err := appante.NewAnteHandler(
+		appante.HandlerOptions{
+			HandlerOptions: ante.HandlerOptions{
+				AccountKeeper:   app.AccountKeeper,
+				BankKeeper:      app.BankKeeper,
+				SignModeHandler: encodingConfig.TxConfig.SignModeHandler(),
+				FeegrantKeeper:  app.FeeGrantKeeper,
+				SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
+			},
+			IBCkeeper: app.IBCKeeper,
 		},
 	)
 	if err != nil {
@@ -553,6 +651,9 @@ func NewLinkApp(
 		// Initialize the keeper of bankkeeper
 		app.BankKeeper.InitializeBankPlus(ctx)
 	}
+
+	app.ScopedIBCKeeper = scopedIBCKeeper
+	app.ScopedTransferKeeper = scopedTransferKeeper
 	app.ScopedWasmKeeper = scopedWasmKeeper
 
 	return app
@@ -582,7 +683,7 @@ func (app *LinkApp) EndBlocker(ctx sdk.Context, req abci.RequestEndBlock) abci.R
 // InitChainer application update at chain initialization
 func (app *LinkApp) InitChainer(ctx sdk.Context, req abci.RequestInitChain) abci.ResponseInitChain {
 	var genesisState GenesisState
-	if err := ostjson.Unmarshal(req.AppStateBytes, &genesisState); err != nil {
+	if err := json.Unmarshal(req.AppStateBytes, &genesisState); err != nil {
 		panic(err)
 	}
 	app.UpgradeKeeper.SetModuleVersionMap(ctx, app.mm.GetVersionMap())
@@ -727,6 +828,9 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(slashingtypes.ModuleName)
 	paramsKeeper.Subspace(govtypes.ModuleName).WithKeyTable(govtypes.ParamKeyTable())
 	paramsKeeper.Subspace(crisistypes.ModuleName)
+	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
+	paramsKeeper.Subspace(ibchost.ModuleName)
+	paramsKeeper.Subspace(icahosttypes.SubModuleName)
 	paramsKeeper.Subspace(wasm.ModuleName)
 
 	return paramsKeeper

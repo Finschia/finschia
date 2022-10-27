@@ -147,6 +147,7 @@ var (
 		distrtypes.ModuleName:          nil,
 		foundation.TreasuryName:        nil,
 		foundation.AdministratorName:   nil,
+		foundation.GovMinterName:       {authtypes.Minter},
 		minttypes.ModuleName:           {authtypes.Minter},
 		stakingtypes.BondedPoolName:    {authtypes.Burner, authtypes.Staking},
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},

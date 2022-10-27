@@ -587,8 +587,8 @@ github.com/libp2p/go-buffer-pool v0.1.0/go.mod h1:N+vh8gMqimBzdKkSMVuydVDq+UV5QT
 github.com/lightstep/lightstep-tracer-common/golang/gogo v0.0.0-20190605223551-bc2310a04743/go.mod h1:qklhhLq1aX+mtWk9cPHPzaBjWImj5ULL6C7HFJtXQMM=
 github.com/lightstep/lightstep-tracer-go v0.18.1/go.mod h1:jlF1pusYV4pidLvZ+XD0UBX0ZE6WURAspgAczcDHrL4=
 github.com/line/gorocksdb v0.0.0-20210406043732-d4bea34b6d55/go.mod h1:DHRJroSL7NaRkpvocRx3OtRsleXVsYSxBI9SfHFlTQ0=
-github.com/line/lbm-sdk v0.46.0-rc8.0.20221017154056-66988a235a0e h1:Dh8P+DQZzjzN/WlmpEN5NFSQ64IylD4j1cfxssWgc6A=
-github.com/line/lbm-sdk v0.46.0-rc8.0.20221017154056-66988a235a0e/go.mod h1:Sy608AEgz5jGnT8vsbFFHxxQpxKAyycBcZ9kOfujs+4=
+github.com/line/lbm-sdk v0.46.0-rc8.0.20221018033939-15168bfb5461 h1:RLEXFBVlpb07xzACESgCnXPWMitIvC6wdg4whNFHSJk=
+github.com/line/lbm-sdk v0.46.0-rc8.0.20221018033939-15168bfb5461/go.mod h1:Sy608AEgz5jGnT8vsbFFHxxQpxKAyycBcZ9kOfujs+4=
 github.com/line/ostracon v1.0.7-0.20220906074149-e6ecd80874f8 h1:f4qs+qoF28n+bezpZIPAtbdl36l6hwm7EbrZeOGQZhI=
 github.com/line/ostracon v1.0.7-0.20220906074149-e6ecd80874f8/go.mod h1:fZk18b2be10fRB4qGM2IyvMIGKuPtBVa8xnPxDg9LRI=
 github.com/line/tm-db/v2 v2.0.0-init.1.0.20220121012851-61d2bc1d9486 h1:uvXQdcWaUyNsgkXBz375FpQ285WEJaLXhQ5HtoNK/GU=

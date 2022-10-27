@@ -5,12 +5,12 @@ go 1.18
 require (
 	github.com/golang/mock v1.6.0
 	github.com/gorilla/mux v1.8.0
-	github.com/line/lbm-sdk v0.46.0-rc8.0.20221012030525-8b8c01bd1f71
+	github.com/line/lbm-sdk v0.46.0-rc8.0.20221014080716-fae516e3e3de
 	github.com/line/ostracon v1.0.7-0.20220906074149-e6ecd80874f8
 	github.com/prometheus/client_golang v1.13.0
 	github.com/rakyll/statik v0.1.7
 	github.com/spf13/cast v1.5.0
-	github.com/spf13/cobra v1.5.0
+	github.com/spf13/cobra v1.6.0
 	github.com/spf13/viper v1.13.0
 	github.com/stretchr/testify v1.8.0
 	github.com/tendermint/tm-db v0.6.7
@@ -73,7 +73,7 @@ require (
 	github.com/hdevalence/ed25519consensus v0.0.0-20220222234857-c00d1f31bab3 // indirect
 	github.com/herumi/bls-eth-go-binary v0.0.0-20220509081320-2d8ab06de53c // indirect
 	github.com/improbable-eng/grpc-web v0.15.0 // indirect
-	github.com/inconshreveable/mousetrap v1.0.0 // indirect
+	github.com/inconshreveable/mousetrap v1.0.1 // indirect
 	github.com/jmhodges/levigo v1.0.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/keybase/go-keychain v0.0.0-20190712205309-48d3d31d256d // indirect

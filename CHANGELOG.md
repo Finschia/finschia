@@ -41,6 +41,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Improvements
 
 ### Bug Fixes
+* (app) [\#106](https://github.com/line/lbm/pull/106) change module order in `init genesis`
 
 ### Improvements
 

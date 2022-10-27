@@ -50,7 +50,7 @@ func (s *IntegrationTestSuite) SetupTest() {
 }
 
 func (s *IntegrationTestSuite) CreateTestTx(privs []cryptotypes.PrivKey, accNums []uint64, accSeqs []uint64, chainID string) (xauthsigning.Tx, error) {
-	var sigsV2 []signing.SignatureV2
+	sigsV2 := make([]signing.SignatureV2, 0, len(privs))
 	for i, priv := range privs {
 		sigV2 := signing.SignatureV2{
 			PubKey: priv.PubKey(),

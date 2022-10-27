@@ -1498,8 +1498,8 @@ func (f *Fixtures) QueryListCodeWasm(flags ...string) wasmtypes.QueryCodesRespon
 	return queryCodesResponse
 }
 
-func (f *Fixtures) QueryCodeWasm(codeID uint64, outputPath string, flags ...string) {
-	args := fmt.Sprintf("%d %s -o=json", codeID, outputPath)
+func (f *Fixtures) QueryCodeWasm(codeID uint64, flags ...string) {
+	args := fmt.Sprintf("%d -o=json", codeID)
 	cmd := wasmcli.GetCmdQueryCode()
 	_, errStr := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
 	require.Empty(f.T, errStr)

@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/golang/mock v1.6.0
 	github.com/gorilla/mux v1.8.0
-	github.com/line/lbm-sdk v0.46.0-rc8.0.20221020005054-4fcf9858ee6a
+	github.com/line/lbm-sdk v0.46.0-rc8.0.20221021040758-fee8f643ad51
 	github.com/line/ostracon v1.0.7-0.20220906074149-e6ecd80874f8
 	github.com/prometheus/client_golang v1.13.0
 	github.com/rakyll/statik v0.1.7

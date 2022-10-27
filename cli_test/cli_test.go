@@ -1239,7 +1239,6 @@ func TestLBMWasmContract(t *testing.T) {
 	flagGasAdjustment := "--gas-adjustment=1.2"
 	workDir, err := os.Getwd()
 	require.NoError(t, err)
-	tmpDir := path.Join(workDir, "tmp-dir-for-test-queue")
 	dirContract := path.Join(workDir, "contracts", "queue")
 	hashFile := path.Join(dirContract, "hash.txt")
 	wasmQueue := path.Join(dirContract, "contract.wasm")
@@ -1253,8 +1252,11 @@ func TestLBMWasmContract(t *testing.T) {
 	enqueueValue := 2
 
 	// make tmpDir
-	err = os.Mkdir(tmpDir, os.ModePerm)
+	tmpDir, err := os.MkdirTemp("", "")
 	require.NoError(t, err)
+	defer func() {
+		require.NoError(t, os.RemoveAll(tmpDir))
+	}()
 
 	// validate that there are no code in the chain
 	{
@@ -1357,7 +1359,4 @@ func TestLBMWasmContract(t *testing.T) {
 		res = f.QueryContractStateSmartWasm(contractAddress, "{\"sum\":{}}")
 		require.Equal(t, fmt.Sprintf("{\"data\":{\"sum\":%d}}", initValue+enqueueValue), strings.TrimRight(res, "\n"))
 	}
-
-	// remove tmp dir
-	os.RemoveAll(tmpDir)
 }

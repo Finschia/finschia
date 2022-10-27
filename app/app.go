@@ -465,23 +465,23 @@ func NewLinkApp(
 	// NOTE: staking module is required if HistoricalEntries param > 0
 	// NOTE: capability module's beginblocker must come before any modules using capabilities (e.g. IBC)
 	app.mm.SetOrderInitGenesis(
-		upgradetypes.ModuleName,
 		capabilitytypes.ModuleName,
-		minttypes.ModuleName,
-		distrtypes.ModuleName,
-		slashingtypes.ModuleName,
-		evidencetypes.ModuleName,
-		stakingtypes.ModuleName,
 		authtypes.ModuleName,
 		banktypes.ModuleName,
+		distrtypes.ModuleName,
+		stakingtypes.ModuleName,
+		slashingtypes.ModuleName,
 		govtypes.ModuleName,
+		minttypes.ModuleName,
+		foundation.ModuleName,
 		crisistypes.ModuleName,
 		genutiltypes.ModuleName,
+		evidencetypes.ModuleName,
 		authz.ModuleName,
 		feegrant.ModuleName,
 		paramstypes.ModuleName,
+		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
-		foundation.ModuleName,
 		// wasm after ibc transfer
 		wasm.ModuleName,
 	)

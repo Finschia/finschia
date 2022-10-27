@@ -589,6 +589,8 @@ github.com/lightstep/lightstep-tracer-go v0.18.1/go.mod h1:jlF1pusYV4pidLvZ+XD0U
 github.com/line/gorocksdb v0.0.0-20210406043732-d4bea34b6d55/go.mod h1:DHRJroSL7NaRkpvocRx3OtRsleXVsYSxBI9SfHFlTQ0=
 github.com/line/lbm-sdk v0.46.0-rc8.0.20221016135110-e3e7ad5ac12a h1:HOtKUkyubvJNl13+jQCfJ+n+ncwFADfNonDUOnhqS8g=
 github.com/line/lbm-sdk v0.46.0-rc8.0.20221016135110-e3e7ad5ac12a/go.mod h1:Sy608AEgz5jGnT8vsbFFHxxQpxKAyycBcZ9kOfujs+4=
+github.com/line/lbm-sdk v0.46.0-rc8.0.20221017114813-a389b6330510 h1:I9J9jEY/iox/F9wmMPBGv+iJmVh5S1XYYVep+olYtHE=
+github.com/line/lbm-sdk v0.46.0-rc8.0.20221017114813-a389b6330510/go.mod h1:Sy608AEgz5jGnT8vsbFFHxxQpxKAyycBcZ9kOfujs+4=
 github.com/line/ostracon v1.0.7-0.20220906074149-e6ecd80874f8 h1:f4qs+qoF28n+bezpZIPAtbdl36l6hwm7EbrZeOGQZhI=
 github.com/line/ostracon v1.0.7-0.20220906074149-e6ecd80874f8/go.mod h1:fZk18b2be10fRB4qGM2IyvMIGKuPtBVa8xnPxDg9LRI=
 github.com/line/tm-db/v2 v2.0.0-init.1.0.20220121012851-61d2bc1d9486 h1:uvXQdcWaUyNsgkXBz375FpQ285WEJaLXhQ5HtoNK/GU=

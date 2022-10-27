@@ -27,7 +27,7 @@ jobs:
       - name: install tparse
         run: |
           export GO111MODULE="on" && go install github.com/mfridman/tparse@v0.8.3
-      - uses: actions/cache@v3.0.5
+      - uses: actions/cache@v3.0.11
         with:
           path: ~/go/bin
           key: ${{ runner.os }}-go-tparse-binary
@@ -42,7 +42,7 @@ jobs:
       - uses: actions/setup-go@v3.2.1
         with:
           go-version: 1.18
-      - uses: technote-space/get-diff-action@v6.1.0
+      - uses: technote-space/get-diff-action@v6.1.1
         with:
           PATTERNS: |
             **/**.go
@@ -93,7 +93,7 @@ jobs:
       - uses: actions/setup-go@v3.2.1
         with:
           go-version: 1.18
-      - uses: technote-space/get-diff-action@v6.1.0
+      - uses: technote-space/get-diff-action@v6.1.1
         with:
           PATTERNS: |
             **/**.go
@@ -117,7 +117,7 @@ jobs:
     needs: tests
     steps:
       - uses: actions/checkout@v3
-      - uses: technote-space/get-diff-action@v6.1.0
+      - uses: technote-space/get-diff-action@v6.1.1
         with:
           PATTERNS: |
             **/**.go
@@ -154,7 +154,7 @@ jobs:
             sed -i.bak "/$(echo $filename | sed 's/\//\\\//g')/d" coverage.txt
           done
         if: env.GIT_DIFF
-      - uses: codecov/codecov-action@v3.1.0
+      - uses: codecov/codecov-action@v3.1.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.txt
@@ -172,7 +172,7 @@ jobs:
       - uses: actions/setup-go@v3.2.1
         with:
           go-version: 1.18
-      - uses: technote-space/get-diff-action@v6.1.0
+      - uses: technote-space/get-diff-action@v6.1.1
         with:
           PATTERNS: |
             **/**.go
@@ -197,7 +197,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v3
-      - uses: technote-space/get-diff-action@v6.1.0
+      - uses: technote-space/get-diff-action@v6.1.1
         with:
           PATTERNS: |
             **/**.go
@@ -219,7 +219,7 @@ jobs:
         with:
           name: "${{ github.sha }}-03-integration-output"
         if: env.GIT_DIFF
-      - uses: actions/cache@v3.0.5
+      - uses: actions/cache@v3.0.11
         with:
           path: ~/go/bin
           key: ${{ runner.os }}-go-tparse-binary
@@ -240,7 +240,7 @@ jobs:
       - uses: actions/setup-go@v3.2.1
         with:
           go-version: 1.18
-      - uses: technote-space/get-diff-action@v6.1.0
+      - uses: technote-space/get-diff-action@v6.1.1
         with:
           PATTERNS: |
             **/**.go
@@ -265,7 +265,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v3
-      - uses: technote-space/get-diff-action@v6.1.0
+      - uses: technote-space/get-diff-action@v6.1.1
         with:
           PATTERNS: |
             **/**.go
@@ -287,7 +287,7 @@ jobs:
         with:
           name: "${{ github.sha }}-03-integration-multi-node-output"
         if: env.GIT_DIFF
-      - uses: actions/cache@v3.0.5
+      - uses: actions/cache@v3.0.11
         with:
           path: ~/go/bin
           key: ${{ runner.os }}-go-tparse-binary

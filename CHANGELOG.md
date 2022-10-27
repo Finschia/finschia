@@ -37,7 +37,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ## [Unreleased]
 
 ### Features
-* [\#105](https://github.com/line/lbm/pull/105) feat: bump up to lbm-sdk 80ba750fc
+* [\#105](https://github.com/line/lbm/pull/105) feat: add IBC module
 
 ### Improvements
 

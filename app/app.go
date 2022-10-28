@@ -65,7 +65,6 @@ import (
 	feegrantkeeper "github.com/line/lbm-sdk/x/feegrant/keeper"
 	feegrantmodule "github.com/line/lbm-sdk/x/feegrant/module"
 	"github.com/line/lbm-sdk/x/foundation"
-	foundationclient "github.com/line/lbm-sdk/x/foundation/client"
 	foundationkeeper "github.com/line/lbm-sdk/x/foundation/keeper"
 	foundationmodule "github.com/line/lbm-sdk/x/foundation/module"
 	"github.com/line/lbm-sdk/x/genutil"
@@ -123,7 +122,6 @@ var (
 		gov.NewAppModuleBasic(
 			append(
 				wasmclient.ProposalHandlers,
-				foundationclient.UpdateFoundationParamsProposalHandler,
 				paramsclient.ProposalHandler,
 				distrclient.ProposalHandler,
 				upgradeclient.ProposalHandler,
@@ -145,8 +143,8 @@ var (
 	maccPerms = map[string][]string{
 		authtypes.FeeCollectorName:     nil,
 		distrtypes.ModuleName:          nil,
+		foundation.ModuleName:          nil,
 		foundation.TreasuryName:        nil,
-		foundation.AdministratorName:   nil,
 		foundation.GovMinterName:       {authtypes.Minter},
 		minttypes.ModuleName:           {authtypes.Minter},
 		stakingtypes.BondedPoolName:    {authtypes.Burner, authtypes.Staking},
@@ -156,7 +154,7 @@ var (
 
 	// module accounts that are allowed to receive tokens
 	allowedReceivingModAcc = map[string]bool{
-		distrtypes.ModuleName: true,
+		// govtypes.ModuleName: true, // TODO: uncomment it when authority is ready
 	}
 )
 
@@ -304,7 +302,7 @@ func NewLinkApp(
 	app.FeeGrantKeeper = feegrantkeeper.NewKeeper(appCodec, keys[feegrant.StoreKey], app.AccountKeeper)
 	app.UpgradeKeeper = upgradekeeper.NewKeeper(skipUpgradeHeights, keys[upgradetypes.StoreKey], appCodec, homePath, app.BaseApp)
 	foundationConfig := foundation.DefaultConfig()
-	app.FoundationKeeper = foundationkeeper.NewKeeper(appCodec, keys[foundation.StoreKey], app.BaseApp.MsgServiceRouter(), app.AccountKeeper, app.BankKeeper, stakingKeeper, authtypes.FeeCollectorName, foundationConfig)
+	app.FoundationKeeper = foundationkeeper.NewKeeper(appCodec, keys[foundation.StoreKey], app.BaseApp.MsgServiceRouter(), app.AccountKeeper, app.BankKeeper, authtypes.FeeCollectorName, foundationConfig, foundation.DefaultAuthority().String())
 
 	// register the staking hooks
 	// NOTE: stakingKeeper above is passed by reference, so that it will contain these hooks
@@ -359,7 +357,6 @@ func NewLinkApp(
 		AddRoute(paramproposal.RouterKey, params.NewParamChangeProposalHandler(app.ParamsKeeper)).
 		AddRoute(distrtypes.RouterKey, distr.NewCommunityPoolSpendProposalHandler(app.DistrKeeper)).
 		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
-		AddRoute(foundation.RouterKey, foundationkeeper.NewProposalHandler(app.FoundationKeeper)).
 		AddRoute(wasm.RouterKey, wasmkeeper.NewWasmProposalHandler(app.WasmKeeper, wasmlbmtypes.EnableAllProposals))
 
 	govKeeper := govkeeper.NewKeeper(
@@ -397,7 +394,7 @@ func NewLinkApp(
 		capability.NewAppModule(appCodec, *app.CapabilityKeeper),
 		crisis.NewAppModule(&app.CrisisKeeper, skipGenesisInvariants),
 		feegrantmodule.NewAppModule(appCodec, app.AccountKeeper, app.BankKeeper, app.FeeGrantKeeper, app.interfaceRegistry),
-		foundationmodule.NewAppModule(appCodec, app.FoundationKeeper, app.StakingKeeper),
+		foundationmodule.NewAppModule(appCodec, app.FoundationKeeper),
 		gov.NewAppModule(appCodec, app.GovKeeper, app.AccountKeeper, app.BankKeeper),
 		mint.NewAppModule(appCodec, app.MintKeeper, app.AccountKeeper),
 		slashing.NewAppModule(appCodec, app.SlashingKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),

@@ -612,10 +612,10 @@ func (f *Fixtures) TxFoundationGrantCreateValidator(members []sdk.AccAddress, gr
 
 // TxFoundationGrant is lbm tx foundation submit-proposal on grant
 func (f *Fixtures) TxFoundationGrant(members []sdk.AccAddress, grantee sdk.AccAddress, authorization foundation.Authorization, flags ...string) (testutil.BufferWriter, error) {
-	operator := f.QueryFoundationInfo().Info.Operator
+	authority := foundation.DefaultAuthority()
 	msg := &foundation.MsgGrant{
-		Operator: operator,
-		Grantee:  grantee.String(),
+		Authority: authority.String(),
+		Grantee:   grantee.String(),
 	}
 	require.NoError(f.T, msg.SetAuthorization(authorization))
 

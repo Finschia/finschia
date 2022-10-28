@@ -615,7 +615,7 @@ func (f *Fixtures) TxFoundationGrant(members []sdk.AccAddress, grantee sdk.AccAd
 	authority := foundation.DefaultAuthority()
 	msg := &foundation.MsgGrant{
 		Authority: authority.String(),
-		Grantee:  grantee.String(),
+		Grantee:   grantee.String(),
 	}
 	require.NoError(f.T, msg.SetAuthorization(authorization))
 

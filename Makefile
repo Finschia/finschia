@@ -78,6 +78,16 @@ else
   endif
 endif
 
+# VRF library selection
+ifeq (libsodium,$(findstring libsodium,$(LBM_BUILD_OPTIONS)))
+  CGO_ENABLED=1
+  BUILD_TAGS += gcc libsodium
+  LIBSODIUM_TARGET = libsodium
+  CGO_CFLAGS += "-I$(LIBSODIUM_OS)/include"
+  CGO_LDFLAGS += "-L$(LIBSODIUM_OS)/lib -lsodium"
+endif
+
+
 # secp256k1 implementation selection
 ifeq (libsecp256k1,$(findstring libsecp256k1,$(LBM_BUILD_OPTIONS)))
   CGO_ENABLED=1
@@ -133,7 +143,7 @@ all: install lint test
 
 build: BUILD_ARGS=-o $(BUILDDIR)/
 
-build: go.sum $(BUILDDIR)/ dbbackend
+build: go.sum $(BUILDDIR)/ dbbackend $(LIBSODIUM_TARGET)
 	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go build -mod=readonly $(BUILD_FLAGS) $(BUILD_ARGS) ./...
 
 build-static: go.sum $(BUILDDIR)/
@@ -143,7 +153,7 @@ build-static-centos7: go.sum $(BUILDDIR)/
 	docker build -t line/lbm-builder:static_centos7 -f builders/Dockerfile.static_centos7 .
 	docker run -it --rm -v $(shell pwd):/code -e LBM_BUILD_OPTIONS="$(LBM_BUILD_OPTIONS)" line/lbm-builder:static_centos7
 
-install: go.sum $(BUILDDIR)/ dbbackend
+install: go.sum $(BUILDDIR)/ dbbackend $(LIBSODIUM_TARGET)
 	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go install $(BUILD_FLAGS) $(BUILD_ARGS) ./cmd/lbm
 
 $(BUILDDIR)/:
@@ -328,3 +338,27 @@ test-docker-push: test-docker
 	benchmark \
 	build-docker-lbmnode localnet-start localnet-stop \
 	docker-single-node
+
+###############################################################################
+###                                  tools                                  ###
+###############################################################################
+
+VRF_ROOT = $(shell pwd)/tools
+LIBSODIUM_ROOT = $(VRF_ROOT)/libsodium
+LIBSODIUM_OS = $(VRF_ROOT)/sodium/$(shell go env GOOS)_$(shell go env GOARCH)
+ifneq ($(TARGET_HOST), "")
+LIBSODIUM_HOST = "--host=$(TARGET_HOST)"
+endif
+
+libsodium:
+	@if [ ! -f $(LIBSODIUM_OS)/lib/libsodium.a ]; then \
+		rm -rf $(LIBSODIUM_ROOT) && \
+		mkdir $(LIBSODIUM_ROOT) && \
+		git submodule update --init --recursive && \
+		cd $(LIBSODIUM_ROOT) && \
+		./autogen.sh && \
+		./configure --disable-shared --prefix="$(LIBSODIUM_OS)" $(LIBSODIUM_HOST) && \
+		$(MAKE) && \
+		$(MAKE) install; \
+	fi
+.PHONY: libsodium

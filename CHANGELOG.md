@@ -40,6 +40,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * [\#108](https://github.com/line/lbm/pull/108) Bump github.com/line/lbm-sdk from e19f863a8 to a389b6330
 * [\#110](https://github.com/line/lbm/pull/110) apply GovMint on x/foundation
 * [\#111](https://github.com/line/lbm/pull/111) Bump github.com/line/lbm-sdk from 66988a235 to 0.46.0-rc9
+* (build) [\#113](https://github.com/line/lbm/pull/113) enable to use libsodium version ostracon
 
 ### Improvements
 

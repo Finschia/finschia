@@ -49,6 +49,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (app) [\#107](https://github.com/line/lbm/pull/107) change module order in `init genesis`
 
 ### Improvements
+* (app) [\#114](https://github.com/line/lbm/pull/114) change the default compile setting to support ledger
 
 ### Breaking Changes
 

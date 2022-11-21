@@ -111,8 +111,8 @@ jobs:
         if: env.GIT_DIFF
       - name: test & coverage report creation
         env:
-          CGO_CFLAGS: -I/home/runner/work/lbm-sdk/lbm-sdk/tools/sodium/linux_amd64/include
-          CGO_LDFLAGS: -L/home/runner/work/lbm-sdk/lbm-sdk/tools/sodium/linux_amd64/lib -lsodium
+          CGO_CFLAGS: "-I${{ github.workspace }}/tools/sodium/linux_amd64/include"
+          CGO_LDFLAGS: "-L${{ github.workspace }}/tools/sodium/linux_amd64/lib -lsodium"
         run: |
           cat pkgs.txt.part.${{ matrix.part }} | xargs go test -mod=readonly -timeout 30m -coverprofile=${{ matrix.part }}profile.out -covermode=atomic -tags='ledger test_ledger_mock goleveldb gcc libsodium'
         if: env.GIT_DIFF
@@ -199,8 +199,8 @@ jobs:
         if: env.GIT_DIFF
       - name: test & coverage report creation
         env:
-          CGO_CFLAGS: -I/home/runner/work/lbm-sdk/lbm-sdk/tools/sodium/linux_amd64/include
-          CGO_LDFLAGS: -L/home/runner/work/lbm-sdk/lbm-sdk/tools/sodium/linux_amd64/lib -lsodium
+          CGO_CFLAGS: "-I${{ github.workspace }}/tools/sodium/linux_amd64/include"
+          CGO_LDFLAGS: "-L${{ github.workspace }}/tools/sodium/linux_amd64/lib -lsodium"
         run: |
           xargs --arg-file=pkgs.txt.part.${{ matrix.part }} go test -mod=readonly -json -timeout 30m -tags='cli_test goleveldb gcc libsodium' | tee ${{ matrix.part }}-integration-output.txt
         if: env.GIT_DIFF

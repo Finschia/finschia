@@ -147,7 +147,7 @@ build: go.sum $(BUILDDIR)/ dbbackend $(LIBSODIUM_TARGET)
 	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go build -mod=readonly $(BUILD_FLAGS) $(BUILD_ARGS) ./...
 
 build-static: go.sum $(BUILDDIR)/
-	docker build -t line/lbmnode:latest -f builders/Dockerfile.static . --build-arg ARCH=$(ARCH)
+	docker build -t line/lbmnode:latest -f builders/Dockerfile.static . --build-arg ARCH=$(ARCH) --platform="linux/amd64"
 
 build-static-centos7: go.sum $(BUILDDIR)/
 	docker build -t line/lbm-builder:static_centos7 -f builders/Dockerfile.static_centos7 .

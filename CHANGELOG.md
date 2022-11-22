@@ -50,6 +50,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (ci) [\#115](https://github.com/line/lbm/pull/115) fix test flow to install libsodium
 
 ### Improvements
+* (app) [\#114](https://github.com/line/lbm/pull/114) change the default compile setting to support ledger
 
 ### Breaking Changes
 

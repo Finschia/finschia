@@ -10,7 +10,7 @@ ifeq (, $(findstring release/,$(BRANCH)))
 endif
 
 PACKAGES_SIMTEST=$(shell go list ./... | grep '/simulation')
-LEDGER_ENABLED ?= false
+LEDGER_ENABLED ?= true
 SDK_PACK := $(shell go list -m github.com/line/lbm-sdk | sed  's/ /\@/g')
 OST_VERSION := $(shell go list -m github.com/line/ostracon | sed 's:.* ::') # grab everything after the space in "github.com/line/ostracon v0.34.7"
 DOCKER := $(shell which docker)

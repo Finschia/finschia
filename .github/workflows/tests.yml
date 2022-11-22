@@ -105,6 +105,9 @@ jobs:
         with:
           name: "${{ github.sha }}-${{ matrix.part }}"
         if: env.GIT_DIFF
+      - name: Install dependencies
+        run: |
+          sudo apt-get install -y build-essential libtool autoconf automake tcc
       - name: install libsodium
         run: |
           make libsodium
@@ -193,6 +196,9 @@ jobs:
         with:
           name: "${{ github.sha }}-${{ matrix.part }}"
         if: env.GIT_DIFF
+      - name: Install dependencies
+          run: |
+            sudo apt-get install -y build-essential libtool autoconf automake tcc
       - name: install libsodium
         run: |
           make libsodium

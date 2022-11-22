@@ -47,6 +47,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Bug Fixes
 * (global) [\#103](https://github.com/line/lbm/pull/103) replace deprecated functions of ioutil package
 * (app) [\#107](https://github.com/line/lbm/pull/107) change module order in `init genesis`
+* (ci) [\#115](https://github.com/line/lbm/pull/115) fix test flow to install libsodium
 
 ### Improvements
 

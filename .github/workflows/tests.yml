@@ -283,8 +283,11 @@ jobs:
         run: make libsodium
         if: env.GIT_DIFF
       - name: test report creation
+        env:
+          CGO_CFLAGS: "-I${{ github.workspace }}/tools/sodium/linux_amd64/include"
+          CGO_LDFLAGS: "-L${{ github.workspace }}/tools/sodium/linux_amd64/lib -lsodium"
         run: |
-          xargs --arg-file=pkgs.txt.part.${{ matrix.part }} go test -mod=readonly -json -timeout 30m -tags='cli_multi_node_test goleveldb gcc libsodium' | tee ${{ matrix.part }}-integration-multi-node-output.txt
+          xargs --arg-file=pkgs.txt.part.${{ matrix.part }} go test -mod=readonly -json -timeout 30m -tags='cli_multi_node_test goleveldb libsodium' | tee ${{ matrix.part }}-integration-multi-node-output.txt
         if: env.GIT_DIFF
       - uses: actions/upload-artifact@v3
         with:

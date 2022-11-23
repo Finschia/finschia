@@ -107,7 +107,7 @@ jobs:
         if: env.GIT_DIFF
       - name: Install dependencies
         run: |
-          sudo apt-get update && sudo apt-get install -y build-essential libtool autoconf automake tcc
+          sudo apt-get update && sudo apt-get install -y build-essential libtool autoconf automake
       - name: install libsodium
         run: |
           make libsodium
@@ -198,7 +198,7 @@ jobs:
         if: env.GIT_DIFF
       - name: Install dependencies
         run: |
-          sudo apt-get update && sudo apt-get install -y build-essential libtool autoconf automake tcc
+          sudo apt-get update && sudo apt-get install -y build-essential libtool autoconf automake
       - name: install libsodium
         run: |
           make libsodium
@@ -278,7 +278,7 @@ jobs:
         if: env.GIT_DIFF
       - name: Install dependencies
         run: |
-          sudo apt-get update && sudo apt-get install -y build-essential libtool autoconf automake tcc
+          sudo apt-get update && sudo apt-get install -y build-essential libtool autoconf automake
       - name: install libsodium
         run: make libsodium
         if: env.GIT_DIFF

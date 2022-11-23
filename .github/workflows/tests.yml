@@ -276,6 +276,12 @@ jobs:
         with:
           name: "${{ github.sha }}-${{ matrix.part }}"
         if: env.GIT_DIFF
+      - name: Install dependencies
+        run: |
+          sudo apt-get update && sudo apt-get install -y build-essential libtool autoconf automake tcc
+      - name: install libsodium
+        run: make libsodium
+        if: env.GIT_DIFF
       - name: test report creation
         run: |
           xargs --arg-file=pkgs.txt.part.${{ matrix.part }} go test -mod=readonly -json -timeout 30m -tags='cli_multi_node_test goleveldb libsodium' | tee ${{ matrix.part }}-integration-multi-node-output.txt

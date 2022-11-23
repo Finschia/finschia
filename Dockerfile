@@ -1,8 +1,9 @@
 # Simple usage with a mounted data directory:
-# > docker build --platform="linux/amd64" -t line/lbm .
+# > docker build --platform="linux/amd64" -t line/lbm . --build-arg ARCH=x86_64
 # > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.lbm:/root/.lbm -v line/lbm lbm init
 # > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.lbm:/root/.lbm -v line/lbm lbm start --rpc.laddr=tcp://0.0.0.0:26657 --p2p.laddr=tcp://0.0.0.0:26656
 FROM golang:1.18-alpine AS build-env
+ARG ARCH=$ARCH
 ARG LBM_BUILD_OPTIONS=""
 
 # Set up OS dependencies
@@ -23,20 +24,14 @@ COPY ./go.mod /lbm-build/lbm/go.mod
 COPY ./go.sum /lbm-build/lbm/go.sum
 RUN go mod download
 
-# Build cosmwasm
-ENV RUSTUP_HOME=/usr/local/rustup
-ENV CARGO_HOME=/usr/local/cargo
-ENV PATH=$CARGO_HOME/bin:$PATH
+# See https://github.com/line/wasmvm/releases
+# See https://github.com/line/wasmvm/releases
+ADD https://github.com/line/wasmvm/releases/download/v1.0.0-0.10.0/libwasmvm_static.x86_64.a /lib/libwasmvm_static.x86_64.a
+ADD https://github.com/line/wasmvm/releases/download/v1.0.0-0.10.0/libwasmvm_static.aarch64.a /lib/libwasmvm_static.aarch64.a
+RUN sha256sum /lib/libwasmvm_static.aarch64.a | grep bc3db72ba32f34ad88ceb1d20479411bd7f50ccd6a5ca50cc8ca462a561e6189
+RUN sha256sum /lib/libwasmvm_static.x86_64.a | grep 352fa5de5f9dba66f0a38082541d3e63e21394fee3e577ea35e0906294c61276
 
-RUN wget "https://static.rust-lang.org/rustup/dist/x86_64-unknown-linux-musl/rustup-init"
-RUN chmod +x rustup-init
-RUN ./rustup-init -y --no-modify-path --default-toolchain 1.57.0; rm rustup-init
-RUN chmod -R a+w $RUSTUP_HOME $CARGO_HOME
-RUN cd $(go list -f "{{ .Dir }}" -m github.com/line/wasmvm) && \
-    cd ./libwasmvm && \
-    RUSTFLAGS='-C target-feature=-crt-static' cargo build --release --example staticlib && \
-    mv -f target/release/examples/libstaticlib.a /usr/lib/libwasmvm_static.a && \
-    rm -rf target
+RUN ln -s /lib/libwasmvm_static.${ARCH}.a /usr/lib/libwasmvm_static.a
 
 # Add source files
 COPY . .

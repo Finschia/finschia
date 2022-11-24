@@ -335,7 +335,7 @@ func getCliCtx(f *Fixtures) client.Context {
 		WithTxConfig(encodingConfig.TxConfig).
 		WithLegacyAmino(encodingConfig.Amino).
 		WithAccountRetriever(authtypes.AccountRetriever{}).
-		WithBroadcastMode("block").
+		WithBroadcastMode("sync").
 		WithSkipConfirmation(true).
 		WithHomeDir(f.Home).
 		WithKeyringDir(f.Home).

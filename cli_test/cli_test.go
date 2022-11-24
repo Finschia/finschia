@@ -171,11 +171,14 @@ func TestLBMFeesDeduction(t *testing.T) {
 		keyFoo, barAddr, sdk.NewCoin(fooDenom, largeCoins),
 		fmt.Sprintf("--fees=%s", sdk.NewInt64Coin(feeDenom, 2)), "-y")
 	require.NoError(t, err)
-	require.Contains(t, out.String(), "insufficient funds")
 
 	// Wait for a block
 	err = n.WaitForNextBlock()
 	require.NoError(t, err)
+
+	resp := UnmarshalTxResponse(t, out.Bytes())
+	out2 := f.QueryTx(resp.TxHash)
+	require.Contains(t, out2.String(), "insufficient funds")
 
 	// ensure state didn't change
 	fooBal = f.QueryBalances(fooAddr)
@@ -743,7 +746,7 @@ func TestLBMQueryTxPagination(t *testing.T) {
 		require.NoError(t, err)
 		seq++
 	}
-	time.Sleep(time.Second * 1)
+	n.WaitForNextBlock()
 
 	// perPage = 15, 2 pages
 	txsPage1 := f.QueryTxs(1, 2, fmt.Sprintf("--events='message.sender=%s'", fooAddr))

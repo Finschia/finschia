@@ -746,7 +746,8 @@ func TestLBMQueryTxPagination(t *testing.T) {
 		require.NoError(t, err)
 		seq++
 	}
-	n.WaitForNextBlock()
+	err := n.WaitForNextBlock()
+	require.NoError(t, err)
 
 	// perPage = 15, 2 pages
 	txsPage1 := f.QueryTxs(1, 2, fmt.Sprintf("--events='message.sender=%s'", fooAddr))

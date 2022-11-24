@@ -169,7 +169,7 @@ func TestLBMFeesDeduction(t *testing.T) {
 	largeCoins := sdk.TokensFromConsensusPower(10000000, sdk.DefaultPowerReduction)
 	out, err := f.TxSend(
 		keyFoo, barAddr, sdk.NewCoin(fooDenom, largeCoins),
-		fmt.Sprintf("--fees=%s", sdk.NewInt64Coin(feeDenom, 2)), "-y")
+		fmt.Sprintf("--fees=%s", sdk.NewInt64Coin(feeDenom, 2)), "--broadcast-mode", "sync", "-y")
 	require.NoError(t, err)
 
 	// Wait for a block
@@ -616,7 +616,7 @@ func TestLBMSubmitParamChangeProposal(t *testing.T) {
 	proposalFile := WriteToNewTempFile(t, proposal)
 
 	// create the param change proposal
-	out, err := f.TxGovSubmitParamChangeProposal(keyFoo, proposalFile.Name(), "-y")
+	out, err := f.TxGovSubmitParamChangeProposal(keyFoo, proposalFile.Name(), "--broadcast-mode", "sync", "-y")
 	fmt.Println(out.String())
 	require.NoError(t, err)
 

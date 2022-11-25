@@ -1429,7 +1429,7 @@ func newValidator(f *Fixtures, cfg testnet.Config, appCfg *srvconfig.Config, ctx
 
 	ctx.Logger = logger
 
-	require.NoError(f.T, os.MkdirAll(filepath.Join(f.Home, "config"), 0755))
+	require.NoError(f.T, os.MkdirAll(filepath.Join(f.Home, "config"), 0o755))
 
 	tmCfg.SetRoot(f.Home)
 	tmCfg.Moniker = f.Moniker

@@ -94,7 +94,7 @@ Example:
 	return cmd
 }
 
-const nodeDirPerm = 0755
+const nodeDirPerm = 0o755
 
 // Initialize the testnet
 func InitTestnet(

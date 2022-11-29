@@ -34,7 +34,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 # Changelog
 
-## [v0.7.0] - 2022-11-28
+## [v0.7.0] - 2022-11-29
 
 This version base on [lbm-sdk v0.46.0](https://github.com/line/lbm-sdk/releases/tag/v0.46.0).
 

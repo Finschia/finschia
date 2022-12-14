@@ -43,7 +43,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Bug Fixes
 
 ### Breaking Changes
-(api) [\#123](https://github.com/line/lbm/pull/123) refactor: remove legacy REST API routes
+(api) [\#123](https://github.com/line/lbm/pull/123) remove legacy REST API routes
 
 ### Build, CI
 

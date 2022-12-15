@@ -27,7 +27,7 @@ jobs:
       -   name: "Build artifacts"
           run: make distclean build-reproducible
       -   name: "Generate release note"
-          run: go run ./contrib/generate_release_note/main.go ${{ env.VERSION }} ./artifacts/build_report ./CHANGELOG.md
+          run: go run ./contrib/generate_release_note/main.go ${{ env.VERSION }} ./artifacts/build_report ./RELEASE_NOTE.md
       -   name: "Create release"
           id: create_release
           uses: actions/create-release@v1

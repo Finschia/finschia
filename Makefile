@@ -198,15 +198,16 @@ dbbackend:
 endif
 
 build-reproducible: go.sum
-	$(DOCKER) rm latest-build || true
+	$(DOCKER) rm latest-build || true > /dev/null 2>&1
+	# to be implemented for: 'darwin/amd64 linux/arm64 windows/amd64'
 	$(DOCKER) run --volume=$(CURDIR):/sources:ro \
-		# to be implemented: 'darwin/amd64 linux/arm64 windows/amd64' \
         --env TARGET_PLATFORMS='linux/amd64' \
         --env APP=lbm \
         --env VERSION=$(VERSION) \
         --env COMMIT=$(COMMIT) \
         --env LEDGER_ENABLED=$(LEDGER_ENABLED) \
-        --name latest-build lbm/rbuilder:latest
+        --name latest-build \
+        lbm/rbuilder:latest
 	$(DOCKER) cp -a latest-build:/home/builder/artifacts/ $(CURDIR)/
 	$(DOCKER) rm latest-build
 

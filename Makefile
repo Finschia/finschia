@@ -198,18 +198,19 @@ dbbackend:
 endif
 
 build-reproducible: go.sum
-	$(DOCKER) rm latest-build || true > /dev/null 2>&1
+	$(DOCKER) rm lbm-build-artifacts || true > /dev/null 2>&1
 	# to be implemented for: 'darwin/amd64 linux/arm64 windows/amd64'
-	$(DOCKER) run --volume=$(CURDIR):/sources:ro \
+	$(DOCKER) run --volume=$(CURDIR):/lbm:ro \
         --env TARGET_PLATFORMS='linux/amd64' \
         --env APP=lbm \
         --env VERSION=$(VERSION) \
         --env COMMIT=$(COMMIT) \
         --env LEDGER_ENABLED=$(LEDGER_ENABLED) \
-        --name latest-build \
-        lbm/rbuilder:latest
-	$(DOCKER) cp -a latest-build:/home/builder/artifacts/ $(CURDIR)/
-	$(DOCKER) rm latest-build
+        --name lbm-build-artifacts \
+        lbm/build-artifacts:latest \
+        .release-build.sh
+	$(DOCKER) cp -a lbm-build-artifacts:/home/lbm/artifacts/ $(CURDIR)/
+	$(DOCKER) rm lbm-build-artifacts
 
 build-docker:
 	docker build --build-arg LBM_BUILD_OPTIONS="$(LBM_BUILD_OPTIONS)" -t line/lbm .

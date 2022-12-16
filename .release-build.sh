@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# NOTE: This script is used by lbm/rbuilder Docker container to build release binaries for the platforms listed in
-# TARGET_PLATFORMS. If you want to build locally, please run `make distclean build-reproducible` instead of using this
-# directly.
+# NOTE: This script is used by lbm/build-artifact Docker container to build release binaries for the platforms listed
+# in TARGET_PLATFORMS. If you want to build locally, please run `make distclean build-reproducible` instead of using
+# this directly.
 
 set -ue
 
@@ -15,7 +15,7 @@ set -ue
 # - DEBUG
 
 # Source builder's functions library
-. /usr/local/share/lbm/buildlib.sh
+. /lbm/builders/build-artifacts/buildlib.sh
 
 # These variables are now available
 # - BASEDIR
@@ -41,8 +41,10 @@ for platform in ${TARGET_PLATFORMS} ; do
     # This function restore the build environment variables to their
     # original state.
     restore_build_env
+    echo "hage"
 done
 
 # Generate and display build report.
+echo "hoge"
 generate_build_report
 cat ${OUTDIR}/build_report

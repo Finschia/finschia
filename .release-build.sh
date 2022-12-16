@@ -14,19 +14,55 @@ set -ue
 # - LEDGER_ENABLED
 # - DEBUG
 
-# Source builder's functions library
-. /lbm/builders/build-artifacts/buildlib.sh
+BASEDIR="$(mktemp -d)"
+BASENAME="${APP}-${VERSION}"
 
-# These variables are now available
-# - BASEDIR
-# - OUTDIR
+OUTDIR="${HOME}/artifacts"
+rm -rfv ${OUTDIR}/
+mkdir -p ${OUTDIR}/
+
+FILE_EXT=""
+if [ $(go env GOOS) = windows ]
+then
+  FILE_EXT=".exe"
+fi
+
+# Prepare a taball for release.
+TARBALL="${BASEDIR}/${BASENAME}.tgz"
+git archive --format=tar --prefix "${BASENAME}/" HEAD | gzip -9n > "${TARBALL}"
+
+# Setup a directory to build from the taball.
+BUILDDIR="${BASEDIR}/build"
+mkdir -p ${BUILDDIR}
+cd ${BUILDDIR}
+tar zxf "${TARBALL}" --strip-components=1
+go mod download
+
+# Add the tarball to artifacts
+mv "${TARBALL}" "${OUTDIR}"
+
+setup_env(){
+  local PLATFORM="$1"
+  _GOOS="$(go env GOOS)"
+  _GOARCH="$(go env GOARCH)"
+  # slash-separated identifiers such as linux/amd64
+  go env -w GOOS="${PLATFORM%%/*}"
+  go env -w GOARCH="${PLATFORM##*/}"
+}
+
+restore_env() {
+  go env -w GOOS="${_GOOS}"
+  go env -w GOARCH="${_GOARCH}"
+  unset _GOOS
+  unset _GOARCH
+}
 
 # Build for each os-architecture pair
 for platform in ${TARGET_PLATFORMS} ; do
-    # This function sets GOOS, GOARCH, and OS_FILE_EXT environment variables
-    # according to the build target platform. OS_FILE_EXT is empty in all
+    # This function sets GOOS, GOARCH, and FILE_EXT environment variables
+    # according to the build target platform. FILE_EXT is empty in all
     # cases except when the target platform is 'windows'.
-    setup_build_env_for_platform "${platform}"
+    setup_env "${platform}"
 
     make clean
     echo Building for $(go env GOOS)/$(go env GOARCH) >&2
@@ -36,15 +72,25 @@ for platform in ${TARGET_PLATFORMS} ; do
         VERSION=${VERSION} \
         COMMIT=${COMMIT} \
         LEDGER_ENABLED=${LEDGER_ENABLED}
-    mv ./build/${APP}${OS_FILE_EXT} ${OUTDIR}/${APP}-${VERSION}-$(go env GOOS)-$(go env GOARCH)${OS_FILE_EXT}
+    mv ./build/${APP}${FILE_EXT} ${OUTDIR}/${BASENAME}-$(go env GOOS)-$(go env GOARCH)${FILE_EXT}
 
     # This function restore the build environment variables to their
     # original state.
-    restore_build_env
-    echo "hage"
+    restore_env
 done
 
 # Generate and display build report.
-echo "hoge"
-generate_build_report
-cat ${OUTDIR}/build_report
+REPORT_FILE="$(mktemp)"
+pushd "${OUTDIR}"
+cat > "${REPORT_FILE}" <<EOF
+App: ${APP}
+Version: ${VERSION}
+Commit: ${COMMIT}
+EOF
+echo "Files:" >> "${REPORT_FILE}"
+md5sum * | sed 's/^/ /' >> "${REPORT_FILE}"
+echo 'Checksums-Sha256:' >> "${REPORT_FILE}"
+sha256sum * | sed 's/^/ /' >> "${REPORT_FILE}"
+popd
+mv "${REPORT_FILE}" "${OUTDIR}/build_report"
+cat "${OUTDIR}/build_report"

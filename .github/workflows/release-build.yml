@@ -25,7 +25,7 @@ jobs:
       -   name: "Build artifacts"
           run: make distclean build-reproducible
       -   name: "Generate release note"
-          run: cat ./RELEASE_NOTE.md <(echo) ./artifacts/build_report > ./releasenote
+          run: cat ./RELEASE_NOTE.md <(echo) <(echo '```') ./artifacts/build_report <(echo '```') > ./releasenote
       -   name: "Create release"
           id: create_release
           uses: actions/create-release@v1

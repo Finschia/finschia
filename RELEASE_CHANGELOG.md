@@ -34,6 +34,28 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 # Changelog
 
+## [v0.7.0] - 2022-11-29
+
+This version base on [lbm-sdk v0.46.0](https://github.com/line/lbm-sdk/releases/tag/v0.46.0).
+
+### Features
+* [\#108](https://github.com/line/lbm/pull/108) Bump github.com/line/lbm-sdk from e19f863a8 to a389b6330
+* [\#110](https://github.com/line/lbm/pull/110) apply GovMint on x/foundation
+* [\#111](https://github.com/line/lbm/pull/111) Bump github.com/line/lbm-sdk from 66988a235 to 0.46.0-rc9
+* (build) [\#113](https://github.com/line/lbm/pull/113) enable to use libsodium version ostracon
+
+### Improvements
+
+### Bug Fixes
+* (global) [\#103](https://github.com/line/lbm/pull/103) replace deprecated functions of ioutil package
+* (app) [\#107](https://github.com/line/lbm/pull/107) change module order in `init genesis`
+* (ci) [\#115](https://github.com/line/lbm/pull/115) fix test flow to install libsodium
+* (build) [\#118](https://github.com/line/lbm/pull/118) fix docker build in Mac M1 device
+
+### Improvements
+* (app) [\#114](https://github.com/line/lbm/pull/114) change the default compile setting to support ledger
+
+
 ## [v0.6.0]
 
 This version based on [lbm-sdk v0.46.0-rc8](https://github.com/line/lbm-sdk/releases/tag/v0.46.0-rc8)
@@ -135,6 +157,7 @@ Please refer [CHANGELOG_OF_GAIA_v4.0.4](https://github.com/cosmos/gaia/blob/v4.0
 
 
 <!-- Release links -->
+[v0.7.0]: https://github.com/line/lbm/compare/v0.6.0...v0.7.0
 [v0.6.0]: https://github.com/line/lbm/compare/v0.5.0...v0.6.0
 [v0.5.0]: https://github.com/line/lbm/compare/v0.4.0...v0.5.0
 [v0.4.0]: https://github.com/line/lbm/compare/v0.3.0...v0.4.0

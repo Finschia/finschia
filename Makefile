@@ -1,12 +1,14 @@
 #!/usr/bin/make -f
 
-BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
-COMMIT := $(shell git log -1 --format='%H')
+COMMIT ?= $(shell git log -1 --format='%H')
 
 # ascribe tag only if on a release/ branch, otherwise pick branch name and concatenate commit hash
-VERSION := $(shell echo $(shell git describe --tags) | sed 's/^v//')
-ifeq (, $(findstring release/,$(BRANCH)))
-  VERSION = $(BRANCH)-$(COMMIT)
+ifeq (, $(VERSION))
+  BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
+  VERSION := $(shell echo $(shell git describe --tags) | sed 's/^v//')
+  ifeq (, $(findstring release/,$(BRANCH)))
+    VERSION = $(subst /,_,$(BRANCH))-$(COMMIT)
+  endif
 endif
 
 PACKAGES_SIMTEST=$(shell go list ./... | grep '/simulation')
@@ -196,15 +198,19 @@ dbbackend:
 endif
 
 build-reproducible: go.sum
-	$(DOCKER) rm latest-build || true
-	$(DOCKER) run --volume=$(CURDIR):/sources:ro \
-        --env TARGET_PLATFORMS='linux/amd64 darwin/amd64 linux/arm64 windows/amd64' \
+	$(DOCKER) rm lbm-build-artifacts || true > /dev/null 2>&1
+	# to be implemented for: 'darwin/amd64 linux/arm64 windows/amd64'
+	$(DOCKER) run --volume=$(CURDIR):/lbm:ro \
+        --env TARGET_PLATFORMS='linux/amd64' \
         --env APP=lbm \
         --env VERSION=$(VERSION) \
         --env COMMIT=$(COMMIT) \
         --env LEDGER_ENABLED=$(LEDGER_ENABLED) \
-        --name latest-build cosmossdk/rbuilder:latest
-	$(DOCKER) cp -a latest-build:/home/builder/artifacts/ $(CURDIR)/
+        --name lbm-build-artifacts \
+        lbm/build-artifacts:latest \
+        .release-build.sh
+	$(DOCKER) cp -a lbm-build-artifacts:/home/lbm/artifacts/ $(CURDIR)/
+	$(DOCKER) rm lbm-build-artifacts
 
 build-docker:
 	docker build --build-arg LBM_BUILD_OPTIONS="$(LBM_BUILD_OPTIONS)" -t line/lbm .

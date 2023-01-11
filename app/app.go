@@ -2,7 +2,6 @@ package app
 
 import (
 	"fmt"
-
 	"io"
 	stdlog "log"
 	"net/http"
@@ -23,7 +22,6 @@ import (
 	"github.com/line/lbm-sdk/client"
 	nodeservice "github.com/line/lbm-sdk/client/grpc/node"
 	"github.com/line/lbm-sdk/client/grpc/tmservice"
-	"github.com/line/lbm-sdk/client/rpc"
 	"github.com/line/lbm-sdk/codec"
 	"github.com/line/lbm-sdk/codec/types"
 	"github.com/line/lbm-sdk/server/api"
@@ -36,7 +34,6 @@ import (
 	"github.com/line/lbm-sdk/version"
 	"github.com/line/lbm-sdk/x/auth"
 	"github.com/line/lbm-sdk/x/auth/ante"
-	authrest "github.com/line/lbm-sdk/x/auth/client/rest"
 	authkeeper "github.com/line/lbm-sdk/x/auth/keeper"
 	authsims "github.com/line/lbm-sdk/x/auth/simulation"
 	authtx "github.com/line/lbm-sdk/x/auth/tx"
@@ -97,6 +94,7 @@ import (
 	wasmclient "github.com/line/lbm-sdk/x/wasm/client"
 	wasmkeeper "github.com/line/lbm-sdk/x/wasm/keeper"
 	wasmlbmtypes "github.com/line/lbm-sdk/x/wasm/lbmtypes"
+
 	appparams "github.com/line/lbm/app/params"
 
 	// unnamed import of statik for swagger UI support
@@ -672,9 +670,7 @@ func (app *LinkApp) SimulationManager() *module.SimulationManager {
 // API server.
 func (app *LinkApp) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APIConfig) {
 	clientCtx := apiSvr.ClientCtx
-	rpc.RegisterRoutes(clientCtx, apiSvr.Router)
-	// Register legacy tx routes.
-	authrest.RegisterTxRoutes(clientCtx, apiSvr.Router)
+
 	// Register new tx routes from grpc-gateway.
 	authtx.RegisterGRPCGatewayRoutes(clientCtx, apiSvr.GRPCGatewayRouter)
 	// Register new tendermint queries routes from grpc-gateway.
@@ -683,8 +679,7 @@ func (app *LinkApp) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APICo
 	// Register node gRPC service for grpc-gateway.
 	nodeservice.RegisterGRPCGatewayRoutes(clientCtx, apiSvr.GRPCGatewayRouter)
 
-	// Register legacy and grpc-gateway routes for all modules.
-	ModuleBasics.RegisterRESTRoutes(clientCtx, apiSvr.Router)
+	// Register grpc-gateway routes for all modules.
 	ModuleBasics.RegisterGRPCGatewayRoutes(clientCtx, apiSvr.GRPCGatewayRouter)
 
 	// register swagger API from root so that other applications can override easily

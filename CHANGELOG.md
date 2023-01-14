@@ -38,6 +38,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ### Features
 * (build) [\#126](https://github.com/line/lbm/pull/126) Automatically generates release note and binaries
+* (x/wasmd) [\#355](https://github.com/line/lbm/pull/355) chore: apply detached x/wasmd
 
 ### Improvements
 

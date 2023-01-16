@@ -1,9 +1,11 @@
 FROM golang:1.18.9-bullseye
 
 RUN apt update && \
-    apt upgrade && \
+    apt upgrade -y && \
     apt install -y \
-        build-essential
+        build-essential \
+        g++-x86-64-linux-gnu \
+        g++-aarch64-linux-gnu
 
 RUN mkdir /lbm
 RUN useradd -ms /bin/bash -U lbm

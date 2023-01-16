@@ -48,6 +48,23 @@ setup_env(){
   # slash-separated identifiers such as linux/amd64
   go env -w GOOS="${PLATFORM%%/*}"
   go env -w GOARCH="${PLATFORM##*/}"
+
+  if [[ -v CC ]]; then _CC="${CC}"; fi
+  if [[ -v CXX ]]; then _CXX="${CXX}"; fi
+  case "${PLATFORM}" in
+  "linux/amd64")
+    export CC=x86_64-linux-gnu-gcc
+    export CXX=x86_64-linux-gnu-g++
+    echo "Using Linux AMD64 (x86_64) cross-compiler: ${CC}"
+    ;;
+  "linux/arm64")
+    export CC=aarch64-linux-gnu-gcc
+    export CXX=aarch64-linux-gnu-g++
+    echo "Using Linux ARM64 cross-compiler: ${CC}"
+    ;;
+  *)
+    echo "WARN: Unknown platform \"${PLATFORM}\", using platform default compiler: ${CC:-unknown}"
+  esac
 }
 
 restore_env() {
@@ -55,6 +72,8 @@ restore_env() {
   go env -w GOARCH="${_GOARCH}"
   unset _GOOS
   unset _GOARCH
+  if [[ -v _CC ]]; then export CC="${_CC}"; unset _CC; fi
+  if [[ -v _CXX ]]; then export CXX="${_CXX}"; unset _CXX; fi
 }
 
 # Build for each os-architecture pair
@@ -71,7 +90,8 @@ for platform in ${TARGET_PLATFORMS} ; do
         LDFLAGS=-buildid=${VERSION} \
         VERSION=${VERSION} \
         COMMIT=${COMMIT} \
-        LEDGER_ENABLED=${LEDGER_ENABLED}
+        LEDGER_ENABLED=${LEDGER_ENABLED} \
+        CC=${CC} CXX=${CXX}
     mv ./build/${APP}${FILE_EXT} ${OUTDIR}/${BASENAME}-$(go env GOOS)-$(go env GOARCH)${FILE_EXT}
 
     # This function restore the build environment variables to their

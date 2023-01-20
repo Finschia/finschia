@@ -56,9 +56,8 @@ import (
 	stakingcli "github.com/line/lbm-sdk/x/staking/client/cli"
 	staking "github.com/line/lbm-sdk/x/staking/types"
 	"github.com/line/lbm-sdk/x/stakingplus"
-	wasmcli "github.com/line/lbm-sdk/x/wasm/client/cli"
+	wasmcli "github.com/line/wasmd/x/wasm/client/cli"
 
-	wasmtypes "github.com/line/lbm-sdk/x/wasm/types"
 	ostcmd "github.com/line/ostracon/cmd/ostracon/commands"
 	ostcfg "github.com/line/ostracon/config"
 	ostflags "github.com/line/ostracon/libs/cli/flags"
@@ -66,6 +65,7 @@ import (
 	osthttp "github.com/line/ostracon/rpc/client/http"
 	ostctypes "github.com/line/ostracon/rpc/core/types"
 	osttypes "github.com/line/ostracon/types"
+	wasmtypes "github.com/line/wasmd/x/wasm/types"
 )
 
 const (

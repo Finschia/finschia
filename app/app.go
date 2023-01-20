@@ -90,10 +90,10 @@ import (
 	upgradeclient "github.com/line/lbm-sdk/x/upgrade/client"
 	upgradekeeper "github.com/line/lbm-sdk/x/upgrade/keeper"
 	upgradetypes "github.com/line/lbm-sdk/x/upgrade/types"
-	"github.com/line/lbm-sdk/x/wasm"
-	wasmclient "github.com/line/lbm-sdk/x/wasm/client"
-	wasmkeeper "github.com/line/lbm-sdk/x/wasm/keeper"
-	wasmlbmtypes "github.com/line/lbm-sdk/x/wasm/lbmtypes"
+	"github.com/line/wasmd/x/wasm"
+	wasmclient "github.com/line/wasmd/x/wasm/client"
+	wasmkeeper "github.com/line/wasmd/x/wasm/keeper"
+	wasmlbmtypes "github.com/line/wasmd/x/wasm/lbmtypes"
 
 	appparams "github.com/line/lbm/app/params"
 
@@ -145,7 +145,6 @@ var (
 		distrtypes.ModuleName:          nil,
 		foundation.ModuleName:          nil,
 		foundation.TreasuryName:        nil,
-		foundation.GovMinterName:       {authtypes.Minter},
 		minttypes.ModuleName:           {authtypes.Minter},
 		stakingtypes.BondedPoolName:    {authtypes.Burner, authtypes.Staking},
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},

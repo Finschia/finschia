@@ -95,44 +95,85 @@ jobs:
       matrix:
         arch: [ "amd64", "arm64" ]
     steps:
-    - name: "Set tag as version"
-      run: echo "VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV  # set env.VERSION=v0.0.0
-    - name: "Setup Xcode"
-      run: sudo xcode-select --switch /Applications/Xcode.app
-    - name: "Install md5sum"
-      run: |
-        brew update
-        brew install md5sha1sum
-    - name: "Install go"
-      uses: actions/setup-go@v3
-      with:
-        go-version: '1.18'
-        check-latest: true
-    - name: "Print go environment"
-      run: go env
-    - name: "Download compressed repository source"
-      uses: actions/download-artifact@v3
-      with:
-        name: release-${{ env.VERSION }}
-    - name: "Extract compressed repository source"
-      run: tar zxf lbm-${{ env.VERSION }}.tgz --strip-components=1
+      - name: "Set tag as version"
+        run: echo "VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV  # set env.VERSION=v0.0.0
+      - name: "Setup Xcode"
+        run: sudo xcode-select --switch /Applications/Xcode.app
+      - name: "Install md5sum"
+        run: |
+          brew update
+          brew install md5sha1sum
+      - name: "Install go"
+        uses: actions/setup-go@v3
+        with:
+          go-version: '1.18'
+          check-latest: true
+      - name: "Print go environment"
+        run: go env
+      - name: "Download compressed repository source"
+        uses: actions/download-artifact@v3
+        with:
+          name: release-${{ env.VERSION }}
+      - name: "Extract compressed repository source"
+        run: tar zxf lbm-${{ env.VERSION }}.tgz --strip-components=1
 
-    - name: "Set ID=${{ env.VERSION }}-darwin-${{ matrix.arch }}"
-      run: echo "ID=${{ env.VERSION }}-darwin-${{ matrix.arch }}" >> $GITHUB_ENV
-    - name: "Build artifact: darwin-${{ matrix.arch }}"
-      run: |
-        make clean build GOARCH=${{ matrix.arch }}
-        mv ./build/lbm ./build/lbm-${{ env.ID }}
-        md5sum ./build/lbm-${{ env.ID }} | awk '{print $1}' > ./build/lbm-${{ env.ID }}.md5
-        shasum -a 256 ./build/lbm-${{ env.ID }} | awk '{print $1}' > ./build/lbm-${{ env.ID }}.sha256
-    - name: "Store artifact: darwin-${{ matrix.arch }}"
-      uses: actions/upload-artifact@v3
-      with:
-        name: release-${{ env.VERSION }}
-        path: |
-          ./build/lbm-${{ env.ID }}
-          ./build/lbm-${{ env.ID }}.md5
-          ./build/lbm-${{ env.ID }}.sha256
+      - name: "Set ID=${{ env.VERSION }}-darwin-${{ matrix.arch }}"
+        run: echo "ID=${{ env.VERSION }}-darwin-${{ matrix.arch }}" >> $GITHUB_ENV
+      - name: "Build artifact: darwin-${{ matrix.arch }}"
+        run: |
+          make clean build GOARCH=${{ matrix.arch }}
+          mv ./build/lbm ./build/lbm-${{ env.ID }}
+          md5sum ./build/lbm-${{ env.ID }} | awk '{print $1}' > ./build/lbm-${{ env.ID }}.md5
+          shasum -a 256 ./build/lbm-${{ env.ID }} | awk '{print $1}' > ./build/lbm-${{ env.ID }}.sha256
+      - name: "Store artifact: darwin-${{ matrix.arch }}"
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-${{ env.VERSION }}
+          path: |
+            ./build/lbm-${{ env.ID }}
+            ./build/lbm-${{ env.ID }}.md5
+            ./build/lbm-${{ env.ID }}.sha256
+
+  build_for_windows:
+    name: "Release Build for Windows"
+    needs: create_tarball
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        arch: [ "amd64" ]
+    steps:
+      - name: "Set tag as version"
+        run: echo "VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV  # set env.VERSION=v0.0.0
+      - name: "Install go"
+        uses: actions/setup-go@v3
+        with:
+          go-version: '1.18'
+          check-latest: true
+      - name: "Print go environment"
+        run: go env
+      - name: "Download compressed repository source"
+        uses: actions/download-artifact@v3
+        with:
+          name: release-${{ env.VERSION }}
+      - name: "Extract compressed repository source"
+        run: tar zxf lbm-${{ env.VERSION }}.tgz --strip-components=1
+
+      - name: "Set ID=${{ env.VERSION }}-windows-${{ matrix.arch }}"
+        run: echo "ID=${{ env.VERSION }}-windows-${{ matrix.arch }}" >> $GITHUB_ENV
+      - name: "Build artifact: windows-${{ matrix.arch }}"
+        run: |
+          make clean build GOARCH=${{ matrix.arch }}
+          mv ./build/lbm ./build/lbm-${{ env.ID }}
+          md5sum ./build/lbm-${{ env.ID }} | awk '{print $1}' > ./build/lbm-${{ env.ID }}.md5
+          shasum -a 256 ./build/lbm-${{ env.ID }} | awk '{print $1}' > ./build/lbm-${{ env.ID }}.sha256
+      - name: "Store artifact: windows-${{ matrix.arch }}"
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-${{ env.VERSION }}
+          path: |
+            ./build/lbm-${{ env.ID }}
+            ./build/lbm-${{ env.ID }}.md5
+            ./build/lbm-${{ env.ID }}.sha256
 
   create_release:
     name: "Create Release"

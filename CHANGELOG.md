@@ -37,7 +37,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ## [Unreleased]
 
 ### Features
-* (build) [\#126](https://github.com/line/lbm/pull/126) Automatically generates release note and binaries
+* (build) [\#126](https://github.com/line/lbm/pull/126), [\#130](https://github.com/line/lbm/pull/130) Automatically generate a release note, linux/amd64 and linux/arm64 binaries on release
 
 ### Improvements
 

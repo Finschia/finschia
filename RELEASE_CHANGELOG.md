@@ -34,6 +34,15 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 # Changelog
 
+## [v0.8.0]
+
+### Features
+* [\#126](https://github.com/line/lbm/pull/126), [\#130](https://github.com/line/lbm/pull/130) Automatically generate a release note, linux/amd64 and linux/arm64 binaries on release
+
+### Improvements
+
+### Bug Fixes
+
 ## [v0.7.0] - 2022-11-29
 
 This version base on [lbm-sdk v0.46.0](https://github.com/line/lbm-sdk/releases/tag/v0.46.0).
@@ -45,15 +54,13 @@ This version base on [lbm-sdk v0.46.0](https://github.com/line/lbm-sdk/releases/
 * (build) [\#113](https://github.com/line/lbm/pull/113) enable to use libsodium version ostracon
 
 ### Improvements
+* (app) [\#114](https://github.com/line/lbm/pull/114) change the default compile setting to support ledger
 
 ### Bug Fixes
 * (global) [\#103](https://github.com/line/lbm/pull/103) replace deprecated functions of ioutil package
 * (app) [\#107](https://github.com/line/lbm/pull/107) change module order in `init genesis`
 * (ci) [\#115](https://github.com/line/lbm/pull/115) fix test flow to install libsodium
 * (build) [\#118](https://github.com/line/lbm/pull/118) fix docker build in Mac M1 device
-
-### Improvements
-* (app) [\#114](https://github.com/line/lbm/pull/114) change the default compile setting to support ledger
 
 
 ## [v0.6.0]

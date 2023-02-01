@@ -89,7 +89,6 @@ ifeq (libsodium,$(findstring libsodium,$(LBM_BUILD_OPTIONS)))
   CGO_LDFLAGS += "-L$(LIBSODIUM_OS)/lib -lsodium"
 endif
 
-
 # secp256k1 implementation selection
 ifeq (libsecp256k1,$(findstring libsecp256k1,$(LBM_BUILD_OPTIONS)))
   CGO_ENABLED=1
@@ -196,21 +195,6 @@ dbbackend:
 else
 dbbackend:
 endif
-
-build-reproducible: go.sum
-	$(DOCKER) rm lbm-build-artifacts || true > /dev/null 2>&1
-	# to be implemented for: 'darwin/amd64 linux/arm64 windows/amd64'
-	$(DOCKER) run --volume=$(CURDIR):/lbm:ro \
-        --env TARGET_PLATFORMS='linux/amd64' \
-        --env APP=lbm \
-        --env VERSION=$(VERSION) \
-        --env COMMIT=$(COMMIT) \
-        --env LEDGER_ENABLED=$(LEDGER_ENABLED) \
-        --name lbm-build-artifacts \
-        lbm/build-artifacts:latest \
-        .release-build.sh
-	$(DOCKER) cp -a lbm-build-artifacts:/home/lbm/artifacts/ $(CURDIR)/
-	$(DOCKER) rm lbm-build-artifacts
 
 build-docker:
 	docker build --build-arg LBM_BUILD_OPTIONS="$(LBM_BUILD_OPTIONS)" -t line/lbm .

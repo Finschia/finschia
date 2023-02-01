@@ -37,7 +37,9 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ## [Unreleased]
 
 ### Features
-* (build) [\#126](https://github.com/line/lbm/pull/126), [\#130](https://github.com/line/lbm/pull/130) Automatically generate a release note, linux/amd64 and linux/arm64 binaries on release
+* (build) [\#126](https://github.com/line/lbm/pull/126) Automatically generates release note and binaries
+* (x/wasmd) [\#355](https://github.com/line/lbm/pull/355) chore: apply detached x/wasmd
+* (build) [\#130](https://github.com/line/lbm/pull/130) Add a release build for the linux/arm64, darwin/amd64, and darwin/arm64 platform
 
 ### Improvements
 

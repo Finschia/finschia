@@ -66,6 +66,9 @@ import (
 	"github.com/line/lbm-sdk/x/capability"
 	capabilitykeeper "github.com/line/lbm-sdk/x/capability/keeper"
 	capabilitytypes "github.com/line/lbm-sdk/x/capability/types"
+	"github.com/line/lbm-sdk/x/collection"
+	collectionkeeper "github.com/line/lbm-sdk/x/collection/keeper"
+	collectionmodule "github.com/line/lbm-sdk/x/collection/module"
 	"github.com/line/lbm-sdk/x/crisis"
 	crisiskeeper "github.com/line/lbm-sdk/x/crisis/keeper"
 	crisistypes "github.com/line/lbm-sdk/x/crisis/types"
@@ -102,6 +105,11 @@ import (
 	stakingkeeper "github.com/line/lbm-sdk/x/staking/keeper"
 	stakingtypes "github.com/line/lbm-sdk/x/staking/types"
 	stakingplusmodule "github.com/line/lbm-sdk/x/stakingplus/module"
+	"github.com/line/lbm-sdk/x/token"
+	"github.com/line/lbm-sdk/x/token/class"
+	classkeeper "github.com/line/lbm-sdk/x/token/class/keeper"
+	tokenkeeper "github.com/line/lbm-sdk/x/token/keeper"
+	tokenmodule "github.com/line/lbm-sdk/x/token/module"
 	"github.com/line/lbm-sdk/x/upgrade"
 	upgradeclient "github.com/line/lbm-sdk/x/upgrade/client"
 	upgradekeeper "github.com/line/lbm-sdk/x/upgrade/keeper"
@@ -154,6 +162,8 @@ var (
 		evidence.AppModuleBasic{},
 		authzmodule.AppModuleBasic{},
 		vesting.AppModuleBasic{},
+		tokenmodule.AppModuleBasic{},
+		collectionmodule.AppModuleBasic{},
 		ibc.AppModuleBasic{},
 		transfer.AppModuleBasic{},
 		ica.AppModuleBasic{},
@@ -215,12 +225,15 @@ type LinkApp struct { // nolint: golint
 	ParamsKeeper     paramskeeper.Keeper
 	AuthzKeeper      authzkeeper.Keeper
 	// IBC Keeper must be a pointer in the app, so we can SetRouter on it correctly
-	IBCKeeper      *ibckeeper.Keeper
-	TransferKeeper ibctransferkeeper.Keeper
-	ICAHostKeeper  icahostkeeper.Keeper
-	EvidenceKeeper evidencekeeper.Keeper
-	FeeGrantKeeper feegrantkeeper.Keeper
-	WasmKeeper     wasm.Keeper
+	IBCKeeper        *ibckeeper.Keeper
+	TransferKeeper   ibctransferkeeper.Keeper
+	ICAHostKeeper    icahostkeeper.Keeper
+	EvidenceKeeper   evidencekeeper.Keeper
+	FeeGrantKeeper   feegrantkeeper.Keeper
+	ClassKeeper      classkeeper.Keeper
+	TokenKeeper      tokenkeeper.Keeper
+	CollectionKeeper collectionkeeper.Keeper
+	WasmKeeper       wasm.Keeper
 
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
@@ -275,6 +288,9 @@ func NewLinkApp(
 		capabilitytypes.StoreKey,
 		feegrant.StoreKey,
 		foundation.StoreKey,
+		class.StoreKey,
+		token.StoreKey,
+		collection.StoreKey,
 		ibchost.StoreKey,
 		ibctransfertypes.StoreKey,
 		icahosttypes.StoreKey,
@@ -345,6 +361,10 @@ func NewLinkApp(
 	app.UpgradeKeeper = upgradekeeper.NewKeeper(skipUpgradeHeights, keys[upgradetypes.StoreKey], appCodec, homePath, app.BaseApp)
 	foundationConfig := foundation.DefaultConfig()
 	app.FoundationKeeper = foundationkeeper.NewKeeper(appCodec, keys[foundation.StoreKey], app.BaseApp.MsgServiceRouter(), app.AccountKeeper, app.BankKeeper, authtypes.FeeCollectorName, foundationConfig, foundation.DefaultAuthority().String())
+
+	app.ClassKeeper = classkeeper.NewKeeper(appCodec, keys[class.StoreKey])
+	app.TokenKeeper = tokenkeeper.NewKeeper(appCodec, keys[token.StoreKey], app.ClassKeeper)
+	app.CollectionKeeper = collectionkeeper.NewKeeper(appCodec, keys[collection.StoreKey], app.ClassKeeper)
 
 	// register the staking hooks
 	// NOTE: stakingKeeper above is passed by reference, so that it will contain these hooks
@@ -487,6 +507,8 @@ func NewLinkApp(
 		wasm.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper),
 		evidence.NewAppModule(app.EvidenceKeeper),
 		params.NewAppModule(app.ParamsKeeper),
+		tokenmodule.NewAppModule(appCodec, app.TokenKeeper),
+		collectionmodule.NewAppModule(appCodec, app.CollectionKeeper),
 		authzmodule.NewAppModule(appCodec, app.AuthzKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
 		ibc.NewAppModule(app.IBCKeeper),
 		transferModule,
@@ -515,6 +537,8 @@ func NewLinkApp(
 		feegrant.ModuleName,
 		paramstypes.ModuleName,
 		vestingtypes.ModuleName,
+		token.ModuleName,
+		collection.ModuleName,
 		ibctransfertypes.ModuleName,
 		ibchost.ModuleName,
 		icatypes.ModuleName,
@@ -538,6 +562,8 @@ func NewLinkApp(
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
 		foundation.ModuleName,
+		token.ModuleName,
+		collection.ModuleName,
 		ibctransfertypes.ModuleName,
 		ibchost.ModuleName,
 		icatypes.ModuleName,
@@ -571,6 +597,8 @@ func NewLinkApp(
 		paramstypes.ModuleName,
 		upgradetypes.ModuleName,
 		vestingtypes.ModuleName,
+		token.ModuleName,
+		collection.ModuleName,
 		ibctransfertypes.ModuleName,
 		ibchost.ModuleName,
 		icatypes.ModuleName,

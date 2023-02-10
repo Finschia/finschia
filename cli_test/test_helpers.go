@@ -60,7 +60,6 @@ import (
 
 	ostcmd "github.com/line/ostracon/cmd/ostracon/commands"
 	ostcfg "github.com/line/ostracon/config"
-	ostflags "github.com/line/ostracon/libs/cli/flags"
 	"github.com/line/ostracon/libs/log"
 	osthttp "github.com/line/ostracon/rpc/client/http"
 	ostctypes "github.com/line/ostracon/rpc/core/types"
@@ -1423,7 +1422,7 @@ func newValidator(f *Fixtures, cfg testnet.Config, appCfg *srvconfig.Config, ctx
 	var err error
 	if cfg.EnableLogging {
 		logger = log.NewOCLogger(log.NewSyncWriter(os.Stdout))
-		logger, err = ostflags.ParseLogLevel("info", logger, ostcfg.DefaultLogLevel)
+		logger, err = log.ParseLogLevel("info", logger, ostcfg.DefaultLogLevel)
 		require.NoError(f.T, err)
 	}
 

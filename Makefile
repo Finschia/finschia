@@ -131,6 +131,18 @@ ifeq (,$(findstring nostrip,$(LBM_BUILD_OPTIONS)))
   BUILD_FLAGS += -trimpath
 endif
 
+# platform depend behavior
+ifeq (darwin, $(shell go env GOOS))
+  LIBWASMVM ?= libwasmvm.dylib
+else
+  ifeq (linux, $(shell go env GOOS))
+    LIBWASMVM ?= libwasmvm.$(ARCH).so
+  else
+    echo "ERROR: unsupported platform: $(shell go env GOOS)"
+    exit 1
+  endif
+endif
+
 #$(info $$BUILD_FLAGS is [$(BUILD_FLAGS)])
 
 # The below include contains the tools target.
@@ -153,6 +165,27 @@ build-static: go.sum $(BUILDDIR)/
 build-static-centos7: go.sum $(BUILDDIR)/
 	docker build -t line/lbm-builder:static_centos7 -f builders/Dockerfile.static_centos7 .
 	docker run -it --rm -v $(shell pwd):/code -e LBM_BUILD_OPTIONS="$(LBM_BUILD_OPTIONS)" line/lbm-builder:static_centos7
+
+# USAGE: go env -w GOARCH={amd64|arm64} && make clean build-release-bundle VERSION=v0.0.0
+RELEASE_BUNDLE=lbm-$(VERSION)-$(shell go env GOOS)-$(shell go env GOARCH)
+LIBWASMVM_PATH=$(shell find $(shell go env GOMODCACHE) -name $(LIBWASMVM) -type f)
+build-release-bundle: build
+	@if [ "$(shell go env GOOS)" != "$(shell go env GOHOSTOS)" ]; then echo "ERROR: OS not match"; exit 1; fi
+	@if [ ! -f "${LIBWASMVM_PATH}" ]; then echo "ERROR: $(LIBWASMVM) not found"; exit 1; fi
+	@mkdir -p $(BUILDDIR)/$(RELEASE_BUNDLE)
+	@cp $(BUILDDIR)/lbm $(BUILDDIR)/$(RELEASE_BUNDLE)/$(RELEASE_BUNDLE)
+	@cp "$(LIBWASMVM_PATH)" $(BUILDDIR)/$(RELEASE_BUNDLE)/
+	@case "$(shell go env GOHOSTOS),$(shell go env GOHOSTARCH),$(shell go env GOARCH)" in \
+	  *,amd64,amd64 | *,arm64,arm64 | darwin,arm64,*) \
+	    LD_LIBRARY_PATH=$(BUILDDIR)/$(RELEASE_BUNDLE) $(BUILDDIR)/$(RELEASE_BUNDLE)/$(RELEASE_BUNDLE) version; \
+	    if [ $$? -ne 0 ]; then echo "ERROR: Test execution failed."; printenv; go env; exit 1; fi; \
+	    echo "OK: Test execution confirmed.";; \
+      *) \
+        echo "SKIP: Test execution unconfirmed.";; \
+    esac
+	@cd $(BUILDDIR) && tar zcvf ./$(RELEASE_BUNDLE).tgz $(RELEASE_BUNDLE)/ > /dev/null 2>&1
+	@rm -rf $(BUILDDIR)/$(RELEASE_BUNDLE)/
+	@echo "Built: $(BUILDDIR)/$(RELEASE_BUNDLE).tgz"
 
 install: go.sum $(BUILDDIR)/ dbbackend $(LIBSODIUM_TARGET)
 	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go install $(BUILD_FLAGS) $(BUILD_ARGS) ./cmd/lbm

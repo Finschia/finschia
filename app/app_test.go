@@ -31,6 +31,7 @@ import (
 	foundationmodule "github.com/line/lbm-sdk/x/foundation/module"
 	"github.com/line/lbm-sdk/x/genutil"
 	"github.com/line/lbm-sdk/x/gov"
+
 	// "github.com/line/lbm-sdk/x/ibc/applications/transfer"
 	// ibc "github.com/line/lbm-sdk/x/ibc/core"
 	"github.com/line/lbm-sdk/x/mint"

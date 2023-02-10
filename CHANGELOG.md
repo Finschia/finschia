@@ -40,6 +40,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (build) [\#126](https://github.com/line/lbm/pull/126) Automatically generates release note and binaries
 * (x/wasmd) [\#355](https://github.com/line/lbm/pull/355) chore: apply detached x/wasmd
 * (build) [\#130](https://github.com/line/lbm/pull/130) Add a release build for the linux/arm64, darwin/amd64, and darwin/arm64 platform
+* (lbm-sdk) [\#137](https://github.com/line/lbm/pull/137) Bump line/lbm-sdk to 6c84a4cffa
 
 ### Improvements
 

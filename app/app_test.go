@@ -31,8 +31,9 @@ import (
 	foundationmodule "github.com/line/lbm-sdk/x/foundation/module"
 	"github.com/line/lbm-sdk/x/genutil"
 	"github.com/line/lbm-sdk/x/gov"
-	"github.com/line/lbm-sdk/x/ibc/applications/transfer"
-	ibc "github.com/line/lbm-sdk/x/ibc/core"
+
+	// "github.com/line/lbm-sdk/x/ibc/applications/transfer"
+	// ibc "github.com/line/lbm-sdk/x/ibc/core"
 	"github.com/line/lbm-sdk/x/mint"
 	"github.com/line/lbm-sdk/x/params"
 	"github.com/line/lbm-sdk/x/slashing"
@@ -165,17 +166,17 @@ func TestRunMigrations(t *testing.T) {
 					"slashing":     slashing.AppModule{}.ConsensusVersion(),
 					"gov":          gov.AppModule{}.ConsensusVersion(),
 					"params":       params.AppModule{}.ConsensusVersion(),
-					"ibc":          ibc.AppModule{}.ConsensusVersion(),
-					"upgrade":      upgrade.AppModule{}.ConsensusVersion(),
-					"vesting":      vesting.AppModule{}.ConsensusVersion(),
-					"feegrant":     feegrantmodule.AppModule{}.ConsensusVersion(),
-					"transfer":     transfer.AppModule{}.ConsensusVersion(),
-					"evidence":     evidence.AppModule{}.ConsensusVersion(),
-					"crisis":       crisis.AppModule{}.ConsensusVersion(),
-					"genutil":      genutil.AppModule{}.ConsensusVersion(),
-					"capability":   capability.AppModule{}.ConsensusVersion(),
-					"foundation":   foundationmodule.AppModule{}.ConsensusVersion(),
-					"token":        tokenmodule.AppModule{}.ConsensusVersion(),
+					// "ibc":          ibc.AppModule{}.ConsensusVersion(),
+					"upgrade":  upgrade.AppModule{}.ConsensusVersion(),
+					"vesting":  vesting.AppModule{}.ConsensusVersion(),
+					"feegrant": feegrantmodule.AppModule{}.ConsensusVersion(),
+					// "transfer":     transfer.AppModule{}.ConsensusVersion(),
+					"evidence":   evidence.AppModule{}.ConsensusVersion(),
+					"crisis":     crisis.AppModule{}.ConsensusVersion(),
+					"genutil":    genutil.AppModule{}.ConsensusVersion(),
+					"capability": capability.AppModule{}.ConsensusVersion(),
+					"foundation": foundationmodule.AppModule{}.ConsensusVersion(),
+					"token":      tokenmodule.AppModule{}.ConsensusVersion(),
 				},
 			)
 			if tc.expRunErr {
@@ -221,16 +222,16 @@ func TestInitGenesisOnMigration(t *testing.T) {
 			"slashing":     slashing.AppModule{}.ConsensusVersion(),
 			"gov":          gov.AppModule{}.ConsensusVersion(),
 			"params":       params.AppModule{}.ConsensusVersion(),
-			"ibc":          ibc.AppModule{}.ConsensusVersion(),
-			"upgrade":      upgrade.AppModule{}.ConsensusVersion(),
-			"vesting":      vesting.AppModule{}.ConsensusVersion(),
-			"transfer":     transfer.AppModule{}.ConsensusVersion(),
-			"evidence":     evidence.AppModule{}.ConsensusVersion(),
-			"crisis":       crisis.AppModule{}.ConsensusVersion(),
-			"genutil":      genutil.AppModule{}.ConsensusVersion(),
-			"capability":   capability.AppModule{}.ConsensusVersion(),
-			"foundation":   foundationmodule.AppModule{}.ConsensusVersion(),
-			"token":        tokenmodule.AppModule{}.ConsensusVersion(),
+			// "ibc":          ibc.AppModule{}.ConsensusVersion(),
+			"upgrade": upgrade.AppModule{}.ConsensusVersion(),
+			"vesting": vesting.AppModule{}.ConsensusVersion(),
+			// "transfer":     transfer.AppModule{}.ConsensusVersion(),
+			"evidence":   evidence.AppModule{}.ConsensusVersion(),
+			"crisis":     crisis.AppModule{}.ConsensusVersion(),
+			"genutil":    genutil.AppModule{}.ConsensusVersion(),
+			"capability": capability.AppModule{}.ConsensusVersion(),
+			"foundation": foundationmodule.AppModule{}.ConsensusVersion(),
+			"token":      tokenmodule.AppModule{}.ConsensusVersion(),
 		},
 	)
 

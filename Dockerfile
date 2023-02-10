@@ -25,19 +25,18 @@ COPY ./go.sum /lbm-build/lbm/go.sum
 RUN go mod download
 
 # See https://github.com/line/wasmvm/releases
-# See https://github.com/line/wasmvm/releases
-ADD https://github.com/line/wasmvm/releases/download/v1.0.0-0.10.0/libwasmvm_static.x86_64.a /lib/libwasmvm_static.x86_64.a
-ADD https://github.com/line/wasmvm/releases/download/v1.0.0-0.10.0/libwasmvm_static.aarch64.a /lib/libwasmvm_static.aarch64.a
-RUN sha256sum /lib/libwasmvm_static.aarch64.a | grep bc3db72ba32f34ad88ceb1d20479411bd7f50ccd6a5ca50cc8ca462a561e6189
-RUN sha256sum /lib/libwasmvm_static.x86_64.a | grep 352fa5de5f9dba66f0a38082541d3e63e21394fee3e577ea35e0906294c61276
+ADD https://github.com/line/wasmvm/releases/download/v1.1.1-0.11.1/libwasmvm_muslc.x86_64.a /lib/libwasmvm_muslc.x86_64.a
+ADD https://github.com/line/wasmvm/releases/download/v1.1.1-0.11.1/libwasmvm_muslc.aarch64.a /lib/libwasmvm_muslc.aarch64.a
+RUN sha256sum /lib/libwasmvm_muslc.aarch64.a | grep e03e401e58f72d40a08a99a81bb05123146bb1d6f68b9afbede5481b3ea460f7
+RUN sha256sum /lib/libwasmvm_muslc.x86_64.a | grep 06fcd14950c5014e35cc4af39090cb7161b5594d398a7d8fb05525d991370a18
 
-RUN ln -s /lib/libwasmvm_static.${ARCH}.a /usr/lib/libwasmvm_static.a
+RUN ln -s /lib/libwasmvm_muslc.${ARCH}.a /usr/lib/libwasmvm_muslc.a
 
 # Add source files
 COPY . .
 
 # Make install
-RUN BUILD_TAGS=static make install CGO_ENABLED=1 LBM_BUILD_OPTIONS="$LBM_BUILD_OPTIONS"
+RUN BUILD_TAGS=muslc make install CGO_ENABLED=1 LBM_BUILD_OPTIONS="$LBM_BUILD_OPTIONS"
 
 # Final image
 FROM alpine:edge

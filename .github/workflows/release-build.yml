@@ -90,68 +90,68 @@ jobs:
             ./build/lbm-${{ env.ID }}.md5
             ./build/lbm-${{ env.ID }}.sha256
 
-  build_for_darwin:
-    name: "Release Build for macOS"
-    needs: create_tarball
-    runs-on: macOS-latest
-    strategy:
-      matrix:
-        arch: [ "amd64", "arm64" ]
-        include:
-          - arch: amd64
-            libwasmvm: libwasmvm.dylib
-            test: 1
-          - arch: arm64
-            libwasmvm: libwasmvm.dylib
-            test: 0
-    steps:
-      - name: "Set tag as version"
-        run: echo "VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV  # set env.VERSION=v0.0.0
-      - name: "Setup Xcode"
-        run: sudo xcode-select --switch /Applications/Xcode.app
-      - name: "Install md5sum"
-        run: |
-          brew update
-          brew install md5sha1sum
-      - name: "Install go"
-        uses: actions/setup-go@v3
-        with:
-          go-version: '1.18'
-          check-latest: true
-      - name: "Print go environment"
-        run: go env
-      - name: "Download compressed repository source"
-        uses: actions/download-artifact@v3
-        with:
-          name: release-${{ env.VERSION }}
-      - name: "Extract compressed repository source"
-        run: tar zxf lbm-${{ env.VERSION }}.tgz --strip-components=1
-
-      - name: "Set ID=${{ env.VERSION }}-darwin-${{ matrix.arch }}"
-        run: echo "ID=${{ env.VERSION }}-darwin-${{ matrix.arch }}" >> $GITHUB_ENV
-      - name: "Build release bundle: darwin-${{ matrix.arch }}"
-        run: |
-          go env -w GOARCH=${{ matrix.arch }}
-          make clean build-release-bundle
-      - name: "Create checksum: darwin-${{ matrix.arch }}"
-        run: |
-          cd ./build
-          ls -laF
-          md5sum lbm-${{ env.ID }}.tgz > ./lbm-${{ env.ID }}.md5
-          shasum -a 256 lbm-${{ env.ID }}.tgz > ./lbm-${{ env.ID }}.sha256
-      - name: "Store artifact: darwin-${{ matrix.arch }}"
-        uses: actions/upload-artifact@v3
-        with:
-          name: release-${{ env.VERSION }}
-          path: |
-            ./build/lbm-${{ env.ID }}.tgz
-            ./build/lbm-${{ env.ID }}.md5
-            ./build/lbm-${{ env.ID }}.sha256
+#  build_for_darwin:
+#    name: "Release Build for macOS"
+#    needs: create_tarball
+#    runs-on: macOS-latest
+#    strategy:
+#      matrix:
+#        arch: [ "amd64", "arm64" ]
+#        include:
+#          - arch: amd64
+#            libwasmvm: libwasmvm.dylib
+#            test: 1
+#          - arch: arm64
+#            libwasmvm: libwasmvm.dylib
+#            test: 0
+#    steps:
+#      - name: "Set tag as version"
+#        run: echo "VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV  # set env.VERSION=v0.0.0
+#      - name: "Setup Xcode"
+#        run: sudo xcode-select --switch /Applications/Xcode.app
+#      - name: "Install md5sum"
+#        run: |
+#          brew update
+#          brew install md5sha1sum
+#      - name: "Install go"
+#        uses: actions/setup-go@v3
+#        with:
+#          go-version: '1.18'
+#          check-latest: true
+#      - name: "Print go environment"
+#        run: go env
+#      - name: "Download compressed repository source"
+#        uses: actions/download-artifact@v3
+#        with:
+#          name: release-${{ env.VERSION }}
+#      - name: "Extract compressed repository source"
+#        run: tar zxf lbm-${{ env.VERSION }}.tgz --strip-components=1
+#
+#      - name: "Set ID=${{ env.VERSION }}-darwin-${{ matrix.arch }}"
+#        run: echo "ID=${{ env.VERSION }}-darwin-${{ matrix.arch }}" >> $GITHUB_ENV
+#      - name: "Build release bundle: darwin-${{ matrix.arch }}"
+#        run: |
+#          go env -w GOARCH=${{ matrix.arch }}
+#          make clean build-release-bundle
+#      - name: "Create checksum: darwin-${{ matrix.arch }}"
+#        run: |
+#          cd ./build
+#          ls -laF
+#          md5sum lbm-${{ env.ID }}.tgz > ./lbm-${{ env.ID }}.md5
+#          shasum -a 256 lbm-${{ env.ID }}.tgz > ./lbm-${{ env.ID }}.sha256
+#      - name: "Store artifact: darwin-${{ matrix.arch }}"
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: release-${{ env.VERSION }}
+#          path: |
+#            ./build/lbm-${{ env.ID }}.tgz
+#            ./build/lbm-${{ env.ID }}.md5
+#            ./build/lbm-${{ env.ID }}.sha256
 
   create_release:
     name: "Create Release"
-    #    needs: [ build_for_linux ]
-    needs: [ build_for_linux, build_for_darwin ]
+    needs: [ build_for_linux ]
+#    needs: [ build_for_linux, build_for_darwin ]
     runs-on: self-hosted
     steps:
       - name: "Set tag as version"
@@ -173,14 +173,10 @@ jobs:
           echo "Checksums MD5:" >> build_report.txt
           echo "  `cat lbm-${{ env.VERSION }}-linux-amd64.md5`" >> build_report.txt
           echo "  `cat lbm-${{ env.VERSION }}-linux-arm64.md5`" >> build_report.txt
-          echo "  `cat lbm-${{ env.VERSION }}-darwin-amd64.md5`" >> build_report.txt
-          echo "  `cat lbm-${{ env.VERSION }}-darwin-arm64.md5`" >> build_report.txt
           echo "  `cat lbm-${{ env.VERSION }}.tgz.md5`" >> build_report.txt
           echo "Checksums SHA256:" >> build_report.txt
           echo "  `cat lbm-${{ env.VERSION }}-linux-amd64.sha256`" >> build_report.txt
           echo "  `cat lbm-${{ env.VERSION }}-linux-arm64.sha256`" >> build_report.txt
-          echo "  `cat lbm-${{ env.VERSION }}-darwin-amd64.sha256`" >> build_report.txt
-          echo "  `cat lbm-${{ env.VERSION }}-darwin-arm64.sha256`" >> build_report.txt
           echo "  `cat lbm-${{ env.VERSION }}.tgz.sha256`" >> build_report.txt
       - name: "Create release note"
         run: |
@@ -219,24 +215,24 @@ jobs:
           asset_path: lbm-${{ env.VERSION }}-linux-arm64.tgz
           asset_name: lbm-${{ env.VERSION }}-linux-arm64.tgz
           asset_content_type: application/octet-stream
-      - name: "Upload artifact: lbm-${{ env.VERSION }}-dawrin-amd64"
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: lbm-${{ env.VERSION }}-darwin-amd64.tgz
-          asset_name: lbm-${{ env.VERSION }}-darwin-amd64.tgz
-          asset_content_type: application/octet-stream
-      - name: "Upload artifact: lbm-${{ env.VERSION }}-dawrin-arm64"
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: lbm-${{ env.VERSION }}-darwin-arm64.tgz
-          asset_name: lbm-${{ env.VERSION }}-darwin-arm64.tgz
-          asset_content_type: application/octet-stream
+#      - name: "Upload artifact: lbm-${{ env.VERSION }}-dawrin-amd64"
+#        uses: actions/upload-release-asset@v1
+#        env:
+#          GITHUB_TOKEN: ${{ github.token }}
+#        with:
+#          upload_url: ${{ steps.create_release.outputs.upload_url }}
+#          asset_path: lbm-${{ env.VERSION }}-darwin-amd64.tgz
+#          asset_name: lbm-${{ env.VERSION }}-darwin-amd64.tgz
+#          asset_content_type: application/octet-stream
+#      - name: "Upload artifact: lbm-${{ env.VERSION }}-dawrin-arm64"
+#        uses: actions/upload-release-asset@v1
+#        env:
+#          GITHUB_TOKEN: ${{ github.token }}
+#        with:
+#          upload_url: ${{ steps.create_release.outputs.upload_url }}
+#          asset_path: lbm-${{ env.VERSION }}-darwin-arm64.tgz
+#          asset_name: lbm-${{ env.VERSION }}-darwin-arm64.tgz
+#          asset_content_type: application/octet-stream
       - name: "Upload artifact: compressed repository source"
         uses: actions/upload-release-asset@v1
         env:

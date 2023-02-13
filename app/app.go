@@ -645,9 +645,8 @@ func NewLinkApp(
 				FeegrantKeeper:  app.FeeGrantKeeper,
 				SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
 			},
-			IBCkeeper:         app.IBCKeeper,
-			WasmConfig:        &wasmConfig,
-			TXCounterStoreKey: keys[wasmplustypes.StoreKey],
+			IBCkeeper:  app.IBCKeeper,
+			WasmConfig: &wasmConfig,
 		},
 	)
 	if err != nil {

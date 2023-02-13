@@ -117,6 +117,9 @@ import (
 	"github.com/line/wasmd/x/wasm"
 	wasmclient "github.com/line/wasmd/x/wasm/client"
 	wasmkeeper "github.com/line/wasmd/x/wasm/keeper"
+	"github.com/line/wasmd/x/wasmplus"
+	wasmpluskeeper "github.com/line/wasmd/x/wasmplus/keeper"
+	wasmplustypes "github.com/line/wasmd/x/wasmplus/types"
 
 	appante "github.com/line/lbm/ante"
 	appparams "github.com/line/lbm/app/params"
@@ -167,7 +170,7 @@ var (
 		ibc.AppModuleBasic{},
 		transfer.AppModuleBasic{},
 		ica.AppModuleBasic{},
-		wasm.AppModuleBasic{},
+		wasmplus.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -182,6 +185,7 @@ var (
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
+		wasmplustypes.ModuleName:       {authtypes.Burner},
 	}
 
 	// module accounts that are allowed to receive tokens
@@ -233,7 +237,7 @@ type LinkApp struct { // nolint: golint
 	ClassKeeper      classkeeper.Keeper
 	TokenKeeper      tokenkeeper.Keeper
 	CollectionKeeper collectionkeeper.Keeper
-	WasmKeeper       wasm.Keeper
+	WasmKeeper       wasmpluskeeper.Keeper
 
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
@@ -294,7 +298,7 @@ func NewLinkApp(
 		ibchost.StoreKey,
 		ibctransfertypes.StoreKey,
 		icahosttypes.StoreKey,
-		wasm.StoreKey,
+		wasmplustypes.StoreKey,
 	)
 
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -327,7 +331,7 @@ func NewLinkApp(
 	scopedIBCKeeper := app.CapabilityKeeper.ScopeToModule(ibchost.ModuleName)
 	scopedTransferKeeper := app.CapabilityKeeper.ScopeToModule(ibctransfertypes.ModuleName)
 	scopedICAHostKeeper := app.CapabilityKeeper.ScopeToModule(icahosttypes.SubModuleName)
-	scopedWasmKeeper := app.CapabilityKeeper.ScopeToModule(wasm.ModuleName)
+	scopedWasmKeeper := app.CapabilityKeeper.ScopeToModule(wasmplustypes.ModuleName)
 
 	// Applications that wish to enforce statically created ScopedKeepers should call `Seal` after creating
 	// their scoped modules in `NewApp` with `ScopeToModule`
@@ -420,7 +424,8 @@ func NewLinkApp(
 	// create static IBC router, add transfer route, then set and seal it
 	ibcRouter := porttypes.NewRouter()
 	ibcRouter.AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
-		AddRoute(ibctransfertypes.ModuleName, transferIBCModule)
+		AddRoute(ibctransfertypes.ModuleName, transferIBCModule).
+		AddRoute(wasmplustypes.ModuleName, wasm.NewIBCHandler(app.WasmKeeper, app.IBCKeeper.ChannelKeeper))
 
 	app.IBCKeeper.SetRouter(ibcRouter)
 
@@ -432,11 +437,11 @@ func NewLinkApp(
 
 	// The last arguments can contain custom message handlers, and custom query handlers,
 	// if we want to allow any custom callbacks
-	supportedFeatures := "iterator,staking,stargate"
-	app.WasmKeeper = wasm.NewKeeper(
+	availableCapabilities := "iterator,staking,stargate,cosmwasm_1_1"
+	app.WasmKeeper = wasmpluskeeper.NewKeeper(
 		appCodec,
-		keys[wasm.StoreKey],
-		app.GetSubspace(wasm.ModuleName),
+		keys[wasmplustypes.StoreKey],
+		app.GetSubspace(wasmplustypes.ModuleName),
 		app.AccountKeeper,
 		app.BankKeeper,
 		app.StakingKeeper,
@@ -449,7 +454,7 @@ func NewLinkApp(
 		app.GRPCQueryRouter(),
 		wasmDir,
 		wasmConfig,
-		supportedFeatures,
+		availableCapabilities,
 		wasmOpts...,
 	)
 
@@ -460,7 +465,7 @@ func NewLinkApp(
 		AddRoute(distrtypes.RouterKey, distr.NewCommunityPoolSpendProposalHandler(app.DistrKeeper)).
 		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
 		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper)).
-		AddRoute(wasm.RouterKey, wasmkeeper.NewWasmProposalHandler(app.WasmKeeper, wasm.EnableAllProposals))
+		AddRoute(wasmplustypes.RouterKey, wasmpluskeeper.NewWasmProposalHandler(&app.WasmKeeper, wasmplustypes.EnableAllProposals))
 
 	govKeeper := govkeeper.NewKeeper(
 		appCodec, keys[govtypes.StoreKey], app.GetSubspace(govtypes.ModuleName), app.AccountKeeper, app.BankKeeper,
@@ -504,7 +509,7 @@ func NewLinkApp(
 		distr.NewAppModule(appCodec, app.DistrKeeper, app.AccountKeeper, app.BankKeeper, app.StakingKeeper),
 		stakingplusmodule.NewAppModule(appCodec, app.StakingKeeper, app.AccountKeeper, app.BankKeeper, app.FoundationKeeper),
 		upgrade.NewAppModule(app.UpgradeKeeper),
-		wasm.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper),
+		wasmplus.NewAppModule(appCodec, &app.WasmKeeper, app.StakingKeeper, app.AccountKeeper, app.BankKeeper),
 		evidence.NewAppModule(app.EvidenceKeeper),
 		params.NewAppModule(app.ParamsKeeper),
 		tokenmodule.NewAppModule(appCodec, app.TokenKeeper),
@@ -542,7 +547,7 @@ func NewLinkApp(
 		ibctransfertypes.ModuleName,
 		ibchost.ModuleName,
 		icatypes.ModuleName,
-		wasm.ModuleName,
+		wasmplustypes.ModuleName,
 	)
 	app.mm.SetOrderEndBlockers(
 		crisistypes.ModuleName,
@@ -567,7 +572,7 @@ func NewLinkApp(
 		ibctransfertypes.ModuleName,
 		ibchost.ModuleName,
 		icatypes.ModuleName,
-		wasm.ModuleName,
+		wasmplustypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -603,7 +608,7 @@ func NewLinkApp(
 		ibchost.ModuleName,
 		icatypes.ModuleName,
 		// wasm after ibc transfer
-		wasm.ModuleName,
+		wasmplustypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
@@ -640,7 +645,8 @@ func NewLinkApp(
 				FeegrantKeeper:  app.FeeGrantKeeper,
 				SigGasConsumer:  ante.DefaultSigVerificationGasConsumer,
 			},
-			IBCkeeper: app.IBCKeeper,
+			IBCkeeper:  app.IBCKeeper,
+			WasmConfig: &wasmConfig,
 		},
 	)
 	if err != nil {
@@ -655,7 +661,7 @@ func NewLinkApp(
 	// see cmd/lbm/cmd/root.go: 257-265
 	if manager := app.SnapshotManager(); manager != nil {
 		err := manager.RegisterExtensions(
-			wasmkeeper.NewWasmSnapshotter(app.CommitMultiStore(), &app.WasmKeeper),
+			wasmkeeper.NewWasmSnapshotter(app.CommitMultiStore(), &app.WasmKeeper.Keeper),
 		)
 		if err != nil {
 			panic(fmt.Errorf("failed to register snapshot extension: %s", err))
@@ -860,7 +866,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(icahosttypes.SubModuleName)
-	paramsKeeper.Subspace(wasm.ModuleName)
+	paramsKeeper.Subspace(wasmplustypes.ModuleName)
 
 	return paramsKeeper
 }

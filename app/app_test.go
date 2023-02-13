@@ -32,6 +32,7 @@ import (
 	foundationmodule "github.com/line/lbm-sdk/x/foundation/module"
 	"github.com/line/lbm-sdk/x/genutil"
 	"github.com/line/lbm-sdk/x/gov"
+	"github.com/line/wasmd/x/wasmplus"
 
 	"github.com/line/ibc-go/v3/modules/apps/transfer"
 	ibc "github.com/line/ibc-go/v3/modules/core"
@@ -179,6 +180,7 @@ func TestRunMigrations(t *testing.T) {
 					"foundation":   foundationmodule.AppModule{}.ConsensusVersion(),
 					"token":        tokenmodule.AppModule{}.ConsensusVersion(),
 					"collection":   collectionmodule.AppModule{}.ConsensusVersion(),
+					"wasm":         wasmplus.AppModule{}.ConsensusVersion(),
 				},
 			)
 			if tc.expRunErr {

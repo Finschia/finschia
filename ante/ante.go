@@ -33,9 +33,10 @@ func NewAnteHandler(opts HandlerOptions) (sdk.AnteHandler, error) {
 	if opts.WasmConfig == nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "wasm config is required for ante builder")
 	}
-	if opts.TXCounterStoreKey == nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "tx counter key is required for ante builder")
-	}
+	// TODO: should be check why this anteHandler doesn't calculate gas simulation and if it's absolutely necessary.
+	//if opts.TXCounterStoreKey == nil {
+	//	return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "tx counter key is required for ante builder")
+	//}
 
 	sigGasConsumer := opts.SigGasConsumer
 	if sigGasConsumer == nil {
@@ -45,7 +46,7 @@ func NewAnteHandler(opts HandlerOptions) (sdk.AnteHandler, error) {
 	anteDecorators := []sdk.AnteDecorator{
 		ante.NewSetUpContextDecorator(),
 		wasmkeeper.NewLimitSimulationGasDecorator(opts.WasmConfig.SimulationGasLimit), // after setup context to enforce limits early
-		wasmkeeper.NewCountTXDecorator(opts.TXCounterStoreKey),
+		//wasmkeeper.NewCountTXDecorator(opts.TXCounterStoreKey),
 		ante.NewRejectExtensionOptionsDecorator(),
 		ante.NewMempoolFeeDecorator(),
 		ante.NewValidateBasicDecorator(),

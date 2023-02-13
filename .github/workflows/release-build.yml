@@ -41,12 +41,10 @@ jobs:
             cc: x86_64-linux-gnu-gcc
             cxx: x86_64-linux-gnu-g++
             libwasmvm: libwasmvm.x86_64.so
-            test: 1
           - arch: arm64
             cc: aarch64-linux-gnu-gcc
             cxx: aarch64-linux-gnu-g++
             libwasmvm: libwasmvm.aarch64.so
-            test: 0
     steps:
       - name: "Set tag as version"
         run: echo "VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV  # set env.VERSION=v0.0.0
@@ -100,10 +98,8 @@ jobs:
 #        include:
 #          - arch: amd64
 #            libwasmvm: libwasmvm.dylib
-#            test: 1
 #          - arch: arm64
 #            libwasmvm: libwasmvm.dylib
-#            test: 0
 #    steps:
 #      - name: "Set tag as version"
 #        run: echo "VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV  # set env.VERSION=v0.0.0

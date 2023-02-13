@@ -168,10 +168,12 @@ build-static-centos7: go.sum $(BUILDDIR)/
 
 # USAGE: go env -w GOARCH={amd64|arm64} && make clean build-release-bundle VERSION=v0.0.0
 RELEASE_BUNDLE=lbm-$(VERSION)-$(shell go env GOOS)-$(shell go env GOARCH)
-LIBWASMVM_PATH=$(shell find $(shell go env GOMODCACHE) -name $(LIBWASMVM) -type f)
+LIBWASMVM_VERSION=$(shell go list -m github.com/line/wasmvm | awk '{print $$2}')
+LIBWASMVM_PATH=$(shell find $(shell go env GOMODCACHE) -name $(LIBWASMVM) -type f | grep "$(LIBWASMVM_VERSION)")
 build-release-bundle: build
 	@if [ "$(shell go env GOOS)" != "$(shell go env GOHOSTOS)" ]; then echo "ERROR: OS not match"; exit 1; fi
-	@if [ ! -f "${LIBWASMVM_PATH}" ]; then echo "ERROR: $(LIBWASMVM) not found"; exit 1; fi
+	@if [   -z "${LIBWASMVM_PATH}" ]; then echo "ERROR: $(LIBWASMVM) $(LIBWASMVM_VERSION) not found: $(shell go env GOMODCACHE)"; exit 1; fi
+	@if [ ! -f "${LIBWASMVM_PATH}" ]; then echo "ERROR: Multiple version of $(LIBWASMVM) found: ${LIBWASMVM_PATH}"; exit 1; fi
 	@mkdir -p $(BUILDDIR)/$(RELEASE_BUNDLE)
 	@cp $(BUILDDIR)/lbm $(BUILDDIR)/$(RELEASE_BUNDLE)/$(RELEASE_BUNDLE)
 	@cp "$(LIBWASMVM_PATH)" $(BUILDDIR)/$(RELEASE_BUNDLE)/

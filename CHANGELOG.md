@@ -44,6 +44,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (x/collection,token) [\#138](https://github.com/line/lbm/pull/138) Add x/token and x/collection
 * (ibc-go) [\#140](https://github.com/line/lbm/pull/140) apply ibc-go
 * (x/wasmplus) [\#141](https://github.com/line/lbm/pull/141) change wasm module to wrapped `x/wasmplus`
+* (lbm-sdk) [\#144](https://github.com/line/lbm/pull/144) bump line/lbm-sdk v0.47.0-alpha1 (11966d1234155ebef20b64f2ae7a905beffdb33f) 
 
 ### Improvements
 

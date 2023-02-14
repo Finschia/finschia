@@ -6,7 +6,7 @@ require (
 	github.com/golang/mock v1.6.0
 	github.com/gorilla/mux v1.8.0
 	github.com/line/ibc-go/v3 v3.3.2-0.20230210040007-d855e1d87f26
-	github.com/line/lbm-sdk v0.46.1-0.20230210081039-e37187274590
+	github.com/line/lbm-sdk v0.47.0-alpha1.0.20230214070148-11966d123415
 	github.com/line/ostracon v1.0.9-0.20230209043112-5aca894db3a6
 	github.com/line/wasmd v0.0.0-20230210060816-9104d00c6a61
 	github.com/prometheus/client_golang v1.14.0

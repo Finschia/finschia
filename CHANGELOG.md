@@ -43,6 +43,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (lbm-sdk) [\#137](https://github.com/line/lbm/pull/137) Bump line/lbm-sdk to 6c84a4cffa
 * (x/collection,token) [\#138](https://github.com/line/lbm/pull/138) Add x/token and x/collection
 * (ibc-go) [\#140](https://github.com/line/lbm/pull/140) apply ibc-go
+* (build) [\#143](https://github.com/line/lbm/pull/143) Modify the Makefile to build release bundles
 
 ### Improvements
 

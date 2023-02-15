@@ -5,13 +5,14 @@ on:
   pull_request:
     branches:
       - main
-  # push:
-  #   tags:
-  #     - "v[0-9]+.[0-9]+.[0-9]+" # Push events to matching v*, i.e. v1.0, v20.15.10
-  #     - "v[0-9]+.[0-9]+.[0-9]+-rc*" # Push events to matching v*, i.e. v1.0-rc1, v20.15.10-rc5
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+" # Push events to matching v*, i.e. v1.0, v20.15.10
+      - "v[0-9]+.[0-9]+.[0-9]+-*" # Push events to matching v*, i.e. v1.0-rc1, v20.15.10-alpha1
+
 env:
-  registry: docker-registry.linecorp.com
-  repository: link-network/v2/lbm
+  registry: docker.io
+  repository: line/lbm
 jobs:
   build:
     runs-on: self-hosted
@@ -44,7 +45,7 @@ jobs:
           tags: |
             type=semver,pattern={{version}}
       - name: docker build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           push: ${{github.event_name != 'pull_request'}}
           build-args: ARCH=x86_64

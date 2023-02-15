@@ -54,6 +54,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 (api) [\#123](https://github.com/line/lbm/pull/123) remove legacy REST API routes
 
 ### Build, CI
+(ci) [\#145](https://github.com/line/lbm/pull/145) add github action to push docker image to docker.io
 
 
 <!-- Release links -->

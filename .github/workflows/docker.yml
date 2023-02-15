@@ -37,7 +37,8 @@ jobs:
       - name: docker build
         uses: docker/build-push-action@v4
         with:
-          push: ${{github.event_name != 'pull_request'}}
+#          push: ${{github.event_name != 'pull_request'}}
+          push: true
           build-args: ARCH=x86_64
           tags: ${{steps.meta.outputs.tags}}
           labels: ${{steps.meta.outputs.labels}}

@@ -43,6 +43,8 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (lbm-sdk) [\#137](https://github.com/line/lbm/pull/137) Bump line/lbm-sdk to 6c84a4cffa
 * (x/collection,token) [\#138](https://github.com/line/lbm/pull/138) Add x/token and x/collection
 * (ibc-go) [\#140](https://github.com/line/lbm/pull/140) apply ibc-go
+* (x/wasmplus) [\#141](https://github.com/line/lbm/pull/141) change wasm module to wrapped `x/wasmplus`
+* (lbm-sdk) [\#144](https://github.com/line/lbm/pull/144) bump line/lbm-sdk v0.47.0-alpha1 (11966d1234155ebef20b64f2ae7a905beffdb33f) 
 * (build) [\#143](https://github.com/line/lbm/pull/143) Modify the Makefile to build release bundles
 
 ### Improvements
@@ -53,6 +55,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 (api) [\#123](https://github.com/line/lbm/pull/123) remove legacy REST API routes
 
 ### Build, CI
+(ci) [\#145](https://github.com/line/lbm/pull/145) add github action to push docker image to docker.io
 
 
 <!-- Release links -->

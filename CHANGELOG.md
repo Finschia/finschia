@@ -47,6 +47,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (lbm-sdk) [\#144](https://github.com/line/lbm/pull/144) bump line/lbm-sdk v0.47.0-alpha1 (11966d1234155ebef20b64f2ae7a905beffdb33f) 
 
 ### Improvements
+* (x/wasmd) [\#146](https://github.com/line/lbm/pull/146) update wasmd version
 
 ### Bug Fixes
 

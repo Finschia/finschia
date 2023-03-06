@@ -129,7 +129,7 @@ import (
 	_ "github.com/line/lbm-sdk/client/docs/statik"
 )
 
-const appName = "LBM"
+const appName = "Finschia"
 
 var (
 	// DefaultNodeHome default home directories for the application daemon

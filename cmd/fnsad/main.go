@@ -7,7 +7,7 @@ import (
 	svrcmd "github.com/line/lbm-sdk/server/cmd"
 
 	"github.com/line/lbm/app"
-	"github.com/line/lbm/cmd/lbm/cmd"
+	"github.com/line/lbm/cmd/fnsad/cmd"
 )
 
 func main() {

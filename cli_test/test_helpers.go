@@ -20,7 +20,7 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/line/lbm/app"
-	lbmcmd "github.com/line/lbm/cmd/lbm/cmd"
+	lbmcmd "github.com/line/lbm/cmd/fnsad/cmd"
 	lbmtypes "github.com/line/lbm/types"
 
 	"github.com/line/lbm-sdk/baseapp"

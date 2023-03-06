@@ -61,8 +61,8 @@ func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 		WithViper("")
 
 	rootCmd := &cobra.Command{
-		Use:   "lbm",
-		Short: "LINE Blockchain Mainnet (LBM) App",
+		Use:   "fnsad",
+		Short: "Finschia Mainnet App",
 		PersistentPreRunE: func(cmd *cobra.Command, _ []string) error {
 			// set the default command outputs
 			cmd.SetOut(cmd.OutOrStdout())

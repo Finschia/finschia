@@ -19,10 +19,6 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/require"
 
-	"github.com/line/lbm/app"
-	lbmcmd "github.com/line/lbm/cmd/fnsad/cmd"
-	lbmtypes "github.com/line/lbm/types"
-
 	"github.com/line/lbm-sdk/baseapp"
 	"github.com/line/lbm-sdk/client"
 	clientkeys "github.com/line/lbm-sdk/client/keys"
@@ -65,6 +61,10 @@ import (
 	ostctypes "github.com/line/ostracon/rpc/core/types"
 	osttypes "github.com/line/ostracon/types"
 	wasmtypes "github.com/line/wasmd/x/wasm/types"
+
+	"github.com/line/finschia/app"
+	lbmcmd "github.com/line/finschia/cmd/fnsad/cmd"
+	lbmtypes "github.com/line/finschia/types"
 )
 
 const (

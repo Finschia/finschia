@@ -21,9 +21,10 @@ import (
 	"github.com/line/lbm-sdk/types/tx"
 	gov "github.com/line/lbm-sdk/x/gov/types"
 	minttypes "github.com/line/lbm-sdk/x/mint/types"
-	"github.com/line/lbm/app"
 	osttypes "github.com/line/ostracon/types"
 	"github.com/stretchr/testify/require"
+
+	"github.com/line/finschia/app"
 )
 
 func TestLBMKeysAddMultisig(t *testing.T) {

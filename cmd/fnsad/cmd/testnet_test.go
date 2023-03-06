@@ -11,10 +11,11 @@ import (
 	banktypes "github.com/line/lbm-sdk/x/bank/types"
 	genutiltest "github.com/line/lbm-sdk/x/genutil/client/testutil"
 	genutiltypes "github.com/line/lbm-sdk/x/genutil/types"
-	"github.com/line/lbm/app"
 	"github.com/line/ostracon/libs/log"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/require"
+
+	"github.com/line/finschia/app"
 )
 
 func Test_TestnetCmd(t *testing.T) {

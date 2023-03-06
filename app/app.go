@@ -122,8 +122,8 @@ import (
 	wasmpluskeeper "github.com/line/wasmd/x/wasmplus/keeper"
 	wasmplustypes "github.com/line/wasmd/x/wasmplus/types"
 
-	appante "github.com/line/lbm/ante"
-	appparams "github.com/line/lbm/app/params"
+	appante "github.com/line/finschia/ante"
+	appparams "github.com/line/finschia/app/params"
 
 	// unnamed import of statik for swagger UI support
 	_ "github.com/line/lbm-sdk/client/docs/statik"

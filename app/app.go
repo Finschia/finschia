@@ -261,7 +261,7 @@ func init() {
 		stdlog.Println("Failed to get home dir %2", err)
 	}
 
-	DefaultNodeHome = filepath.Join(userHomeDir, ".lbm")
+	DefaultNodeHome = filepath.Join(userHomeDir, ".finschia")
 }
 
 // NewLinkApp returns a reference to an initialized Link.

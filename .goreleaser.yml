@@ -6,23 +6,23 @@ before:
     - go generate ./...
 builds:
 -
-  id: "lbm"
-  main: ./cmd/lbm
-  binary: build/lbm
+  id: "finschia"
+  main: ./cmd/fnsad
+  binary: build/fnsad
   env:
     - CGO_ENABLED=0
   flags:
     - -mod=readonly
     - -tags=netgo ledger
   ldflags:
-    - -X github.com/line/lbm-sdk/version.Name=lbm
-    - -X github.com/line/lbm-sdk/version.ServerName=lbm
+    - -X github.com/line/lbm-sdk/version.Name=fisnchia
+    - -X github.com/line/lbm-sdk/version.ServerName=finschia
     - -X github.com/line/lbm-sdk/version.Version={{ .Version }}
     - -X github.com/line/lbm-sdk/version.Commit={{ .FullCommit }}
     - -X "github.com/line/lbm-sdk/version.BuildTags=netgo,ledger"
 archives:
 -
-  builds: ['lbm']
+  builds: ['fnsad']
   replacements:
     darwin: Darwin
     linux: Linux

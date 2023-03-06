@@ -1,8 +1,8 @@
-# LBM(LINE Blockchain Mainnet)
+# Finschia
 
 [![codecov](https://codecov.io/gh/line/lbm/branch/main/graph/badge.svg?token=JFFuUevpzJ)](https://codecov.io/gh/line/lbm)
 
-This repository hosts `LBM(LINE Blockchain Mainnet)`. This repository is forked from [gaia](https://github.com/cosmos/gaia) at 2021-03-15. LBM is a mainnet app implementation using [lbm-sdk](https://github.com/line/lbm-sdk) and [ostracon](https://github.com/line/ostracon).
+This repository hosts `Finschia`. This repository is forked from [gaia](https://github.com/cosmos/gaia) at 2021-03-15. Finschia is a mainnet app implementation using [lbm-sdk](https://github.com/line/lbm-sdk), [ostracon](https://github.com/line/ostracon), [wasmd](https://github.com/line/wasmd) and [ibc-go](https://github.com/line/ibc-go).
 
 **Node**: Requires [Go 1.18+](https://golang.org/dl/)
 
@@ -31,7 +31,7 @@ sh init_single.sh docker testnet  # prepare keys, validators, initial state, etc
 
 **Run**
 ```
-docker run -i -p 26656:26656 -p 26657:26657 -v ${HOME}/.lbm:/root/.lbm line/lbm lbm start
+docker run -i -p 26656:26656 -p 26657:26657 -v ${HOME}/.finschia:/root/.finschia line/lbm lbm start
 ```
 
 ## Local

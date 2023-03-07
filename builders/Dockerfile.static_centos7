@@ -1,13 +1,13 @@
 # make image
-# > docker build -t line/lbm-builder:static -f builders/Dockerfile.static_centos7 .
+# > docker build -t line/finschia-builder:static -f builders/Dockerfile.static_centos7 .
 #
 # run build
-# > docker run -it --rm -v $(pwd):/code line/lbm-builder:static_centos7
+# > docker run -it --rm -v $(pwd):/code line/finschia-builder:static_centos7
 #
 # make image and run build
 # > docker run -it --rm -v $(pwd):/code -e LBM_BUILD_OPTIONS=rocksdb $(docker build -f builders/Dockerfile.static_centos7 -q .)
 
-FROM centos:7.6.1810
+FROM centos:centos7
 
 ENV LBM_BUILD_OPTIONS="goleveldb"
 
@@ -60,5 +60,5 @@ WORKDIR /code
 # copy build script
 COPY builders/scripts/build-static.sh builders/scripts/build-static.sh
 
-# # build lbm
+# # build finschia
 ENTRYPOINT builders/scripts/build-static.sh

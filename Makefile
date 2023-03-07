@@ -105,8 +105,8 @@ build_tags_comma_sep := $(subst $(whitespace),$(comma),$(build_tags))
 
 # process linker flags
 
-ldflags = -X github.com/line/lbm-sdk/version.Name=lbm \
-		  -X github.com/line/lbm-sdk/version.AppName=lbm \
+ldflags = -X github.com/line/lbm-sdk/version.Name=finschia \
+		  -X github.com/line/lbm-sdk/version.AppName=finschia \
 		  -X github.com/line/lbm-sdk/version.Version=$(VERSION) \
 		  -X github.com/line/lbm-sdk/version.Commit=$(COMMIT) \
 		  -X github.com/line/lbm-sdk/types.DBBackend=$(DB_BACKEND) \
@@ -148,11 +148,11 @@ build: go.sum $(BUILDDIR)/ dbbackend $(LIBSODIUM_TARGET)
 	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go build -mod=readonly $(BUILD_FLAGS) $(BUILD_ARGS) ./...
 
 build-static: go.sum $(BUILDDIR)/
-	docker build -t line/lbmnode:latest -f builders/Dockerfile.static . --build-arg ARCH=$(ARCH) --platform="linux/amd64"
+	docker build -t line/finschianode:latest -f builders/Dockerfile.static . --build-arg ARCH=$(ARCH) --platform="linux/amd64"
 
 build-static-centos7: go.sum $(BUILDDIR)/
-	docker build -t line/lbm-builder:static_centos7 -f builders/Dockerfile.static_centos7 .
-	docker run -it --rm -v $(shell pwd):/code -e LBM_BUILD_OPTIONS="$(LBM_BUILD_OPTIONS)" line/lbm-builder:static_centos7
+	docker build -t line/finschia-builder:static_centos7 -f builders/Dockerfile.static_centos7 .
+	docker run -it --rm -v $(shell pwd):/code -e LBM_BUILD_OPTIONS="$(LBM_BUILD_OPTIONS)" line/finschia-builder:static_centos7
 
 install: go.sum $(BUILDDIR)/ dbbackend $(LIBSODIUM_TARGET)
 	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go install $(BUILD_FLAGS) $(BUILD_ARGS) ./cmd/fnsad
@@ -214,7 +214,7 @@ go.sum: go.mod
 draw-deps:
 	@# requires brew install graphviz or apt-get install graphviz
 	go get github.com/RobotsAndPencils/goviz
-	@goviz -i ./cmd/lbm -d 2 | dot -Tpng -o dependency-graph.png
+	@goviz -i ./cmd/fnsad -d 2 | dot -Tpng -o dependency-graph.png
 
 clean:
 	rm -rf $(BUILDDIR)/ artifacts/
@@ -303,7 +303,7 @@ build-docker-lbmnode:
 localnet-start: localnet-stop build-static localnet-build-nodes
 
 localnet-build-nodes:
-	docker run --rm -v $(CURDIR)/mytestnet:/data line/lbmnode \
+	docker run --rm -v $(CURDIR)/mytestnet:/data line/finschianode \
 			testnet init-files --v 4 -o /data --starting-ip-address 192.168.10.2 --keyring-backend=test
 	docker-compose up -d
 

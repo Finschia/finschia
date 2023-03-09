@@ -17,11 +17,11 @@ WORKDIR /finschia-build/finschia
 COPY ./Makefile ./
 COPY ./contrib ./contrib
 COPY ./sims.mk ./
+COPY ./go.mod /finschia-build/finschia/go.mod
+COPY ./go.sum /finschia-build/finschia/go.sum
 RUN make dbbackend LBM_BUILD_OPTIONS="$LBM_BUILD_OPTIONS"
 
 # Install GO dependencies
-COPY ./go.mod /finschia-build/finschia/go.mod
-COPY ./go.sum /finschia-build/finschia/go.sum
 RUN go mod download
 
 # See https://github.com/line/wasmvm/releases

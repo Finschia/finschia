@@ -13,13 +13,12 @@ RUN apk add --update --no-cache $PACKAGES
 # Set WORKDIR to finschia
 WORKDIR /finschia-build/finschia
 
-# prepare dbbackend before building; this can be cached
-COPY ./Makefile ./
-COPY ./contrib ./contrib
-COPY ./sims.mk ./
+#COPY ./Makefile ./
+#COPY ./contrib ./contrib
+#COPY ./sims.mk ./
 COPY ./go.mod /finschia-build/finschia/go.mod
 COPY ./go.sum /finschia-build/finschia/go.sum
-RUN make dbbackend LBM_BUILD_OPTIONS="$LBM_BUILD_OPTIONS"
+
 
 # Install GO dependencies
 RUN go mod download
@@ -34,6 +33,9 @@ RUN ln -s /lib/libwasmvm_muslc.${ARCH}.a /usr/lib/libwasmvm_muslc.a
 
 # Add source files
 COPY . .
+
+# prepare dbbackend before building; this can be cached
+RUN make dbbackend LBM_BUILD_OPTIONS="$LBM_BUILD_OPTIONS"
 
 # Make install
 RUN BUILD_TAGS=muslc make build CGO_ENABLED=1

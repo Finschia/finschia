@@ -81,7 +81,7 @@ func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 			if err := client.SetCmdClientContextHandler(initClientCtx, cmd); err != nil {
 				return err
 			}
-			return lbmPreRunE(cmd)
+			return fnsaPreRunE(cmd)
 		},
 	}
 	rootCmd.PersistentFlags().Bool(flagTestnet, false, "Run with testnet mode. The address prefix becomes tlink if this flag is set.")
@@ -330,7 +330,7 @@ func initConfig(testnet bool) {
 	config.Seal()
 }
 
-func lbmPreRunE(cmd *cobra.Command) (err error) {
+func fnsaPreRunE(cmd *cobra.Command) (err error) {
 	customAppTemplate, customAppConfig := initAppConfig()
 	err = server.InterceptConfigsPreRunHandler(cmd, customAppTemplate, customAppConfig)
 

@@ -1,6 +1,6 @@
 name: Build & Push
-# Build & Push builds the lbm docker image on every tag push,
-# and pushes the image to https://docker-registry.linecorp.com/link-network/v2/lbm
+# Build & Push builds the finschia docker image on every tag push
+
 on:
   pull_request:
     branches:

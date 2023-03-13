@@ -3,7 +3,7 @@
 # > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.finschia:/root/.finschia -v line/finschia fnsad init
 # > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.finschia:/root/.finschia -v line/finschia fnsad start --rpc.laddr=tcp://0.0.0.0:26657 --p2p.laddr=tcp://0.0.0.0:26656
 FROM golang:1.18-alpine AS build-env
-ARG LBM_BUILD_OPTIONS=""
+ARG FINSCHIA_BUILD_OPTIONS=""
 ARG ARCH=$ARCH
 
 # Set up OS dependencies
@@ -33,7 +33,7 @@ RUN ln -s /lib/libwasmvm_muslc.${ARCH}.a /usr/lib/libwasmvm_muslc.a
 COPY . .
 
 # prepare dbbackend before building; this can be cached
-RUN make dbbackend LBM_BUILD_OPTIONS="$LBM_BUILD_OPTIONS"
+RUN make dbbackend FINSCHIA_BUILD_OPTIONS="$FINSCHIA_BUILD_OPTIONS"
 
 # Make install
 RUN BUILD_TAGS=muslc make build CGO_ENABLED=1

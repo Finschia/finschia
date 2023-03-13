@@ -5,11 +5,11 @@
 # > docker run -it --rm -v $(pwd):/code line/finschia-builder:static_centos7
 #
 # make image and run build
-# > docker run -it --rm -v $(pwd):/code -e LBM_BUILD_OPTIONS=rocksdb $(docker build -f builders/Dockerfile.static_centos7 -q .)
+# > docker run -it --rm -v $(pwd):/code -e FINSCHIA_BUILD_OPTIONS=rocksdb $(docker build -f builders/Dockerfile.static_centos7 -q .)
 
 FROM centos:centos7
 
-ENV LBM_BUILD_OPTIONS="goleveldb"
+ENV FINSCHIA_BUILD_OPTIONS="goleveldb"
 
 
 RUN yum -y update && \

@@ -4,7 +4,7 @@
 # > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.finschia:/root/.finschia -v line/lbm fnsad start --rpc.laddr=tcp://0.0.0.0:26657 --p2p.laddr=tcp://0.0.0.0:26656
 FROM golang:1.18-alpine AS build-env
 ARG ARCH=$ARCH
-ARG LBM_BUILD_OPTIONS=""
+ARG FINSCHIA_BUILD_OPTIONS=""
 
 # Set up OS dependencies
 ENV PACKAGES curl wget make cmake git libc-dev bash gcc g++ linux-headers eudev-dev python3 perl
@@ -17,7 +17,7 @@ WORKDIR /finschia-build/finschia
 COPY ./Makefile ./
 COPY ./contrib ./contrib
 COPY ./sims.mk ./
-RUN make dbbackend LBM_BUILD_OPTIONS="$(LBM_BUILD_OPTIONS)"
+RUN make dbbackend FINSCHIA_BUILD_OPTIONS="$(FINSCHIA_BUILD_OPTIONS)"
 
 # Install GO dependencies
 COPY ./go.mod /finschia-build/finschia/go.mod
@@ -34,7 +34,7 @@ RUN ln -s /lib/libwasmvm_muslc.${ARCH}.a /usr/lib/libwasmvm_muslc.a
 COPY . .
 
 # Make install
-RUN BUILD_TAGS=muslc make install CGO_ENABLED=1 LBM_BUILD_OPTIONS="$LBM_BUILD_OPTIONS"
+RUN BUILD_TAGS=muslc make install CGO_ENABLED=1 FINSCHIA_BUILD_OPTIONS="$FINSCHIA_BUILD_OPTIONS"
 
 # Final image
 FROM alpine:edge

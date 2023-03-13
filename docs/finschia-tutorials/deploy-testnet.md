@@ -4,13 +4,13 @@ order: 6
 
 # Deploy Your Own Gaia Testnet
 
-This document describes 3 ways to setup a network of `lbm` nodes, each serving a different usecase:
+This document describes 3 ways to setup a network of `finschia` nodes, each serving a different usecase:
 
 1. Single-node, local, manual testnet
 2. Multi-node, local, automated testnet
 3. Multi-node, remote, automated testnet
 
-Supporting code can be found in the [networks directory](https://github.com/line/lbm/tree/main/networks) and additionally the `local` or `remote` sub-directories.
+Supporting code can be found in the [networks directory](https://github.com/line/finschia/tree/main/networks) and additionally the `local` or `remote` sub-directories.
 
 > NOTE: The `remote` network bootstrapping may be out of sync with the latest releases and is not to be relied upon.
 
@@ -24,7 +24,7 @@ This guide helps you create a single validator node that runs a network locally 
 
 ### Requirements
 
-- [Install lbm](./installation.md)
+- [Install finschia](./installation.md)
 - [Install `jq`](https://stedolan.github.io/jq/download/) (optional)
 
 ### Create Genesis File and Start the Network
@@ -34,54 +34,54 @@ This guide helps you create a single validator node that runs a network locally 
 cd $HOME
 
 # Initialize the genesis.json file that will help you to bootstrap the network
-lbm init --chain-id=testing testing
+fnsad init --chain-id=testing testing
 
 # Create a key to hold your validator account
-lbm keys add validator
+fnsad keys add validator
 
 # Add that key into the genesis.app_state.accounts array in the genesis file
 # NOTE: this command lets you set the number of coins. Make sure this account has some coins
 # with the genesis.app_state.staking.params.bond_denom denom, the default is staking
-lbm add-genesis-account $(lbm keys show validator -a) 1000000000stake,1000000000validatortoken
+fnsad add-genesis-account $(fnsad keys show validator -a) 1000000000stake,1000000000validatortoken
 
 # Generate the transaction that creates your validator
-lbm gentx validator 1000000000stake --chain-id testing
+fnsad gentx validator 1000000000stake --chain-id testing
 
 # Add the generated bonding transaction to the genesis file
-lbm collect-gentxs
+fnsad collect-gentxs
 
-# Now its safe to start `lbm`
-lbm start
+# Now its safe to start `fnsad`
+fnsad start
 ```
 
-This setup puts all the data for `lbm` in `~/.lbm`. You can examine the genesis file you created at `~/.lbm/config/genesis.json`. With this configuration `lbm` is also ready to use and has an account with tokens (both staking and custom).
+This setup puts all the data for `finschia` in `~/.finschia`. You can examine the genesis file you created at `~/.finschia/config/genesis.json`. With this configuration `finschia` is also ready to use and has an account with tokens (both staking and custom).
 
 ## Multi-node, Local, Automated Testnet
 
-From the [networks/local directory](https://github.com/line/lbm/tree/main/networks/local):
+From the [networks/local directory](https://github.com/line/finschia/tree/main/networks/local):
 
 ### Requirements
 
-- [Install lbm](./installation.md)
+- [Install finschia](./installation.md)
 - [Install docker](https://docs.docker.com/engine/installation/)
 - [Install docker-compose](https://docs.docker.com/compose/install/)
 
 ### Build
 
-Build the `lbm` binary (linux) and the `line/finschianode` docker image required for running the `localnet` commands. This binary will be mounted into the container and can be updated rebuilding the image, so you only need to build the image once.
+Build the `fnsad` binary (linux) and the `line/finschianode` docker image required for running the `localnet` commands. This binary will be mounted into the container and can be updated rebuilding the image, so you only need to build the image once.
 
 ```bash
-# Clone the lbm repo
-git clone https://github.com/line/lbm.git
+# Clone the finschia repo
+git clone https://github.com/line/finschia.git
 
-# Work from the lbm repo
-cd lbm
+# Work from the finschia repo
+cd finschia
 
 # Build the linux binary in ./build
 make build-linux
 
 # Build line/finschianode image
-make build-docker-lbmnode
+make build-docker-finschianode
 ```
 
 ### Run Your Testnet
@@ -92,15 +92,15 @@ To start a 4 node testnet run:
 make localnet-start
 ```
 
-This command creates a 4-node network using the lbmnode image.
+This command creates a 4-node network using the finschianode image.
 The ports for each node are found in this table:
 
-| Node ID    | P2P Port | RPC Port |
-| ---------- | -------- | -------- |
-| `lbmnode0` | `26656`  | `26657`  |
-| `lbmnode1` | `26659`  | `26660`  |
-| `lbmnode2` | `26661`  | `26662`  |
-| `lbmnode3` | `26663`  | `26664`  |
+| Node ID         | P2P Port | RPC Port |
+|-----------------| -------- | -------- |
+| `finschianode0` | `26656`  | `26657`  |
+| `finschianode1` | `26659`  | `26660`  |
+| `finschianode2` | `26661`  | `26662`  |
+| `finschianode3` | `26663`  | `26664`  |
 
 To update the binary, just rebuild it and restart the nodes:
 
@@ -108,7 +108,7 @@ To update the binary, just rebuild it and restart the nodes:
 make build-linux localnet-start
 ```
 
-To stop docker lbm nodes:
+To stop docker finschia nodes:
 
 ```
 make localnet-stop
@@ -117,7 +117,7 @@ make localnet-stop
 ### Configuration
 
 The `make localnet-start` creates files for a 4-node testnet in `./build` by
-calling the `lbm testnet` command. This outputs a handful of files in the
+calling the `fnsad testnet` command. This outputs a handful of files in the
 `./build` directory:
 
 ```bash
@@ -128,62 +128,62 @@ build/
 │   ├── node1.json
 │   ├── node2.json
 │   └── node3.json
-├── lbm
+├── finschia
 ├── node0
-│   └── lbm
+│   └── finschia
 │       ├── config
 │       ├── data
 │       ├── key_seed.json
 │       ├── keyring-test
-│       └── lbm.log
+│       └── finschia.log
 ├── node1
-│   └── lbm
+│   └── finschia
 │       ├── config
 │       ├── data
 │       ├── key_seed.json
 │       ├── keyring-test
-│       └── lbm.log
+│       └── finschia.log
 ├── node2
-│   └── lbm
+│   └── finschia
 │       ├── config
 │       ├── data
 │       ├── key_seed.json
 │       ├── keyring-test
-│       └── lbm.log
+│       └── finschia.log
 └── node3
-    └── lbm
+    └── finschia
         ├── config
         ├── data
         ├── key_seed.json
         ├── keyring-test
-        └── lbm.log
+        └── finschia.log
 ```
 
-Each `./build/nodeN` directory is mounted to the `/lbm` directory in each container.
+Each `./build/nodeN` directory is mounted to the `/finschia` directory in each container.
 
 ### Logging
 
-Logs are saved under each `./build/nodeN/lbm/lbm.log`. You can also watch logs
+Logs are saved under each `./build/nodeN/finschia/finschia.log`. You can also watch logs
 directly via Docker, for example:
 
 ```
-docker logs -f lbmnode0
+docker logs -f finschianode0
 ```
 
 ### Keys & Accounts
 
-To interact with `lbm` and start querying state or creating txs, you use the
-`lbm` directory of any given node as your `home`, for example:
+To interact with `fnsad` and start querying state or creating txs, you use the
+`fnsad` directory of any given node as your `home`, for example:
 
 ```bash
-lbm keys list --home ./build/node0/lbm
+fnsad keys list --home ./build/node0/finschia
 ```
 
 Now that accounts exists, you may create new accounts and send those accounts
 funds!
 
 ::: tip
-**Note**: Each node's seed is located at `./build/nodeN/lbm/key_seed.json` and can be restored to the CLI using the `lbm keys add --restore` command
+**Note**: Each node's seed is located at `./build/nodeN/finschia/key_seed.json` and can be restored to the CLI using the `fnsad keys add --restore` command
 :::
 
 ### Special Binaries
@@ -192,12 +192,12 @@ If you have multiple binaries with different names, you can specify which one to
 
 ```
 # Run with custom binary
-BINARY=lbmfoo make localnet-start
+BINARY=fnsad make localnet-start
 ```
 
 ## Multi-Node, Remote, Automated Testnet
 
-The following should be run from the [networks directory](https://github.com/line/lbm/tree/main/networks).
+The following should be run from the [networks directory](https://github.com/line/finschia/tree/main/networks).
 
 ### Terraform & Ansible
 

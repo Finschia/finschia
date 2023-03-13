@@ -2,9 +2,9 @@
 order: 2
 -->
 
-# Install lbm
+# Install finschia
 
-This guide will explain how to install the `lbm` entrypoint
+This guide will explain how to install the `fnsad` entrypoint
 onto your system. With these installed on a server, you can participate in the
 mainnet as either a [Full Node](./join-mainnet.md) or a
 [Validator](../validators/validator-setup.md).
@@ -27,17 +27,17 @@ source ~/.bash_profile
 ## Install the binaries
 
 Next, let's install the latest version of Gaia. Make sure you `git checkout` the
-correct [released version](https://github.com/line/lbm/releases).
+correct [released version](https://github.com/line/finschia/releases).
 
 ```bash
-git clone -b <latest-release-tag> https://github.com/line/lbm
-cd lbm && make install
+git clone -b <latest-release-tag> https://github.com/line/finschia
+cd finschia && make install
 ```
 
 If this command fails due to the following error message, you might have already set `LDFLAGS` prior to running this step.
 
 ```
-# github.com/lbm/lbm/cmd/lbm
+# github.com/line/finschia/cmd/fnsad
 flag provided but not defined: -L
 usage: link [options] main.o
 ...
@@ -52,17 +52,17 @@ LDFLAGS="" make install
 
 > _NOTE_: If you still have issues at this step, please check that you have the latest stable version of GO installed.
 
-That will install the `lbm` binary. Verify that everything is OK:
+That will install the `fnsad` binary. Verify that everything is OK:
 
 ```bash
-lbm version --long
+fnsad version --long
 ```
 
-`lbm` for instance should output something similar to:
+`fnsad` for instance should output something similar to:
 
 ```bash
-name: lbm
-server_name: lbm
+name: finschia
+server_name: fisnchia
 version: 1.0.0
 commit: 8692310a5361006f8c02d44cd7df2d41f130089b
 build_tags: netgo,goleveldb

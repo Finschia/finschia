@@ -20,7 +20,7 @@ func TestMultiValidatorAndSendTokens(t *testing.T) {
 
 	fg := InitFixturesGroup(t)
 
-	fg.LBMStartCluster(minGasPrice.String())
+	fg.FinschiaStartCluster(minGasPrice.String())
 	defer fg.Cleanup()
 
 	f := fg.Fixture(0)
@@ -99,7 +99,7 @@ func TestMultiValidatorAddNodeAndPromoteValidator(t *testing.T) {
 	t.Parallel()
 
 	fg := InitFixturesGroup(t)
-	fg.LBMStartCluster(minGasPrice.String())
+	fg.FinschiaStartCluster(minGasPrice.String())
 	defer fg.Cleanup()
 
 	f1 := fg.Fixture(0)

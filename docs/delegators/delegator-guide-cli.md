@@ -4,7 +4,7 @@ order: 1
 
 # Delegator Guide (CLI)
 
-This document contains all the necessary information for delegators to interact with the LBM through the Command-Line Interface (CLI).
+This document contains all the necessary information for delegators to interact with the Finschia through the Command-Line Interface (CLI).
 
 It also contains instructions on how to manage accounts, restore accounts from the fundraiser and use a ledger nano device.
 
@@ -14,7 +14,7 @@ carefully, as negligence in this significant process could lead to an indefinite
 loss of your base coin. Therefore, read through the following instructions in their 
 entirety prior to proceeding and reach out to us in case you need support.
 
-Please also note that you are about to interact with the LBM, a
+Please also note that you are about to interact with the Finschia, a
 blockchain technology containing highly experimental software. While the
 blockchain has been developed in accordance to the state of the art and audited
 with utmost care, we can nevertheless expect to have issues, updates and bugs.
@@ -32,14 +32,14 @@ Please exercise extreme caution!
 
 ## Table of Contents
 
-- [Installing `lbm`](#installing-lbm)
-- [LBM Accounts](#lbm-accounts)
+- [Installing `fnsad`](#installing-finschia)
+- [Finschia Accounts](#finschia-accounts)
     + [Restoring an Account from the Fundraiser](#restoring-an-account-from-the-fundraiser)
     + [Creating an Account](#creating-an-account)
 - [Accessing a LINE Blockchain Mainnet](#accessing-a-line-blockchain-mainnet)
     + [Running Your Own Full-Node](#running-your-own-full-node)
     + [Connecting to a Remote Full-Node](#connecting-to-a-remote-full-node)
-- [Setting Up `lbm`](#setting-up-lbm)
+- [Setting Up `fnsad`](#setting-up-finschia)
 - [Querying the State](#querying-the-state)
 - [Sending Transactions](#sending-transactions)
     + [A Note on Gas and Fees](#a-note-on-gas-and-fees)
@@ -47,29 +47,29 @@ Please exercise extreme caution!
     + [Participating in Governance](#participating-in-governance)
     + [Signing Transactions from an Offline Computer](#signing-transactions-from-an-offline-computer)
 
-## Installing `lbm` 
+## Installing `fnsad` 
 
-`lbm`: This is the command-line interface to interact with a `lbm` full-node. 
+`fnsad`: This is the command-line interface to interact with a `fnsad` full-node. 
 
 ::: warning
-**Please check that you download the latest stable release of `lbm` that is available**
+**Please check that you download the latest stable release of `fnsad` that is available**
 :::
 
 [**Download the binaries**]
 Not available yet.
 
-[**Install from source**](../lbm-tutorials/installation.md)
+[**Install from source**](../finschia-tutorials/installation.md)
 
 ::: tip
-`lbm` is used from a terminal. To open the terminal, follow these steps:
+`fnsad` is used from a terminal. To open the terminal, follow these steps:
 - **Windows**: `Start` > `All Programs` > `Accessories` > `Command Prompt`
 - **MacOS**: `Finder` > `Applications` > `Utilities` > `Terminal`
 - **Linux**: `Ctrl` + `Alt` + `T`
 :::
 
-## LBM Accounts
+## Finschia Accounts
 
-At the core of every LBM account, there is a seed, which takes the form of a 12 or 24-words mnemonic. From this mnemonic, it is possible to create any number of LBM accounts, i.e. pairs of private key/public key. This is called an HD wallet (see [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) for more information on the HD wallet specification).
+At the core of every Finschia account, there is a seed, which takes the form of a 12 or 24-words mnemonic. From this mnemonic, it is possible to create any number of Fisnchia accounts, i.e. pairs of private key/public key. This is called an HD wallet (see [BIP32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki) for more information on the HD wallet specification).
 
 ```
      Account 0                         Account 1                         Account 2
@@ -118,7 +118,7 @@ The address is a public string with a human-readable prefix (e.g. `link1twsfmuj2
 *NOTE: This section only concerns fundraiser participants*
 :::
 
-If you participated in the fundraiser, you should be in possession of a 12-words mnemonic. Newly generated mnemonics use 24 words, but 12-word mnemonics are also compatible with all the LBM tools. 
+If you participated in the fundraiser, you should be in possession of a 12-words mnemonic. Newly generated mnemonics use 24 words, but 12-word mnemonics are also compatible with all the Finschia tools. 
 
 #### On a Ledger Device
 
@@ -150,7 +150,7 @@ Next, click [here](#using-a-ledger-device) to learn how to generate an account.
 To restore an account using a fundraiser mnemonic and store the associated encrypted private key on a computer, use the following command:
 
 ```bash
-lbm keys add <yourKeyName> --recover
+fnsad keys add <yourKeyName> --recover
 ```
 
 - `<yourKeyName>` is the name of the account. It is a reference to the account number used to derive the key pair from the mnemonic. You will use this name to identify your account when you want to send a transaction.
@@ -169,7 +169,7 @@ store security policies please refer to your operating system manual.**
 
 ### Creating an Account
 
-To create an account, you just need to have `lbm` installed. Before creating it, you need to know where you intend to store and interact with your private keys. The best options are to store them in an offline dedicated computer or a ledger device. Storing them on your regular online computer involves more risk, since anyone who infiltrates your computer through the internet could exfiltrate your private keys and steal your funds.
+To create an account, you just need to have `fnsad` installed. Before creating it, you need to know where you intend to store and interact with your private keys. The best options are to store them in an offline dedicated computer or a ledger device. Storing them on your regular online computer involves more risk, since anyone who infiltrates your computer through the internet could exfiltrate your private keys and steal your funds.
 
 #### Using a Ledger Device
 
@@ -177,17 +177,17 @@ To create an account, you just need to have `lbm` installed. Before creating it,
 **Only use Ledger devices that you bought factory new or trust fully**
 :::
 
-When you initialize your ledger, a 24-word mnemonic is generated and stored in the device. This mnemonic is compatible with LBM and LBM accounts can be derived from it. Therefore, all you have to do is make your ledger compatible with `lbm`. To do so, you need to go through the following steps:
+When you initialize your ledger, a 24-word mnemonic is generated and stored in the device. This mnemonic is compatible with Finschia and Finschia accounts can be derived from it. Therefore, all you have to do is make your ledger compatible with `fnsad`. To do so, you need to go through the following steps:
 
 1. Download the Ledger Live app [here](https://www.ledger.com/pages/ledger-live). 
 2. Connect your ledger via USB and update to the latest firmware
-3. Go to the ledger live app store, and download the "LBM" application (this can take a while). **Note: You may have to enable `Dev Mode` in the `Settings` of Ledger Live to be able to download the "LBM" application**. 
-4. Navigate to the LBM app on your ledger device
+3. Go to the ledger live app store, and download the "Finschia" application (this can take a while). **Note: You may have to enable `Dev Mode` in the `Settings` of Ledger Live to be able to download the "Finschia" application**. 
+4. Navigate to the Finschia app on your ledger device
 
 Then, to create an account, use the following command:
 
 ```bash
-lbm keys add <yourAccountName> --ledger 
+fnsad keys add <yourAccountName> --ledger 
 ```
 
 ::: warning
@@ -206,7 +206,7 @@ lbm keys add <yourAccountName> --ledger
 To generate an account, just use the following command:
 
 ```bash
-lbm keys add <yourKeyName>
+fnsad keys add <yourKeyName>
 ```
 
 The command will generate a 24-words mnemonic and save the private and public keys for account `0`
@@ -241,7 +241,7 @@ rm ~/.bash_history
 You can generate more accounts from the same mnemonic using the following command:
 
 ```bash
-lbm keys add <yourKeyName> --recover --account 1
+fnsad keys add <yourKeyName> --recover --account 1
 ```
 
 This command will prompt you to input a passphrase as well as your mnemonic. Change the account number to generate a different account. 
@@ -259,30 +259,30 @@ In order to query the state and send transactions, you need a way to access the 
 
 This is the most secure option, but comes with relatively high resource requirements. In order to run your own full-node, you need good bandwidth and at least 1TB of disk space. 
 
-You will find the tutorial on how to install `lbm` [here](../lbm-tutorials/installation.md), and the guide to run a full-node [here](../lbm-tutorials/join-mainnet.md).
+You will find the tutorial on how to install `fnsad` [here](../finschia-tutorials/installation.md), and the guide to run a full-node [here](../finschia-tutorials/join-mainnet.md).
 
 ### Connecting to a Remote Full-Node
 
 If you do not want or cannot run your own node, you can connect to someone else's full-node. You should pick an operator you trust, because a malicious operator could return  incorrect query results or censor your transactions. However, they will never be able to steal your funds, as your private keys are stored locally on your computer or ledger device. Possible options of full-node operators include validators, wallet providers or exchanges. 
 
-In order to connect to the full-node, you will need an address of the following form: `https://77.87.106.33:26657` (*Note: This is a placeholder*). This address has to be communicated by the full-node operator you choose to trust. You will use this address in the [following section](#setting-up-lbm).
+In order to connect to the full-node, you will need an address of the following form: `https://77.87.106.33:26657` (*Note: This is a placeholder*). This address has to be communicated by the full-node operator you choose to trust. You will use this address in the [following section](#setting-up-finschia).
 
-## Setting Up `lbm`
+## Setting Up `fnsad`
 
 ::: tip
-**Before setting up `lbm`, make sure you have set up a way to [access a LINE Blockchain Mainnet](#accessing-a-line-blockchain-mainnet)**
+**Before setting up `fnsad`, make sure you have set up a way to [access a LINE Blockchain Mainnet](#accessing-a-line-blockchain-mainnet)**
 :::
 
 ::: warning
-**Please check that you are always using the latest stable release of `lbm`**
+**Please check that you are always using the latest stable release of `fnsad`**
 :::
 
-`lbm` is the tool that enables you to interact with the node that runs on a LINE Blockchain Mainnet, whether you run it yourself or not. Let us set it up properly.
+`fnsad` is the tool that enables you to interact with the node that runs on a Finschia Mainnet, whether you run it yourself or not. Let us set it up properly.
 
-In order to set up `lbm`, use the following command:
+In order to set up `fnsad`, use the following command:
 
 ```bash
-lbm config <flag> <value>
+fnsad config <flag> <value>
 ```
 
 It allows you to set a default value for each given flag. 
@@ -290,9 +290,9 @@ It allows you to set a default value for each given flag.
 First, set up the address of the full-node you want to connect to:
 
 ```bash
-lbm config node <host>:<port
+fnsad config node <host>:<port
 
-// example: lbm config node https://77.87.106.33:26657
+// example: fnsad config node https://77.87.106.33:26657
 ```
 
 If you run your own full-node, just use `tcp://localhost:26657` as the address. 
@@ -300,7 +300,7 @@ If you run your own full-node, just use `tcp://localhost:26657` as the address.
 Then, let us set the default value of the `--trust-node` flag:
 
 ```bash
-lbm config trust-node false
+fnsad config trust-node false
 
 // Set to true if you run a light-client node, false otherwise
 ```
@@ -308,50 +308,50 @@ lbm config trust-node false
 Finally, let us set the `chain-id` of the blockchain we want to interact with:
 
 ```bash
-lbm config chain-id lbm-2
+fnsad config chain-id finschia-2
 ```
 
 ## Querying the State
 
 ::: tip
-**Before you can bond base coins and withdraw rewards, you need to [set up `lbm`](#setting-up-lbm)**
+**Before you can bond base coins and withdraw rewards, you need to [set up `fnsad`](#setting-up-fnsad)**
 :::
 
-`lbm` lets you query all relevant information from the blockchain, like account balances, amount of bonded tokens, outstanding rewards, governance proposals and more. Next is a list of the most useful commands for delegator. 
+`fnsad` lets you query all relevant information from the blockchain, like account balances, amount of bonded tokens, outstanding rewards, governance proposals and more. Next is a list of the most useful commands for delegator. 
 
 ```bash
 // query account balances and other account-related information
-lbm query account <yourAddress>
+fnsad query account <yourAddress>
 
 // query the list of validators
-lbm query staking validators
+fnsad query staking validators
 
 // query the information of a validator given their address (e.g. linkvaloper1ghekyjucln7y67ntx7cf27m9dpuxxemnjz9hqc)
-lbm query staking validator <validatorAddress>
+fnsad query staking validator <validatorAddress>
 
 // query all delegations made from a delegator given their address (e.g. link1qyqszqgpqyqszqgpqyqszqgpqyqszqgp8apuk5)
-lbm query staking delegations <delegatorAddress>
+fnsad query staking delegations <delegatorAddress>
 
 // query a specific delegation made from a delegator (e.g. link1qyqszqgpqyqszqgpqyqszqgpqyqszqgp8apuk5) to a validator (e.g. linkvaloper1ghekyjucln7y67ntx7cf27m9dpuxxemnjz9hqc) given their addresses
-lbm query staking delegation <delegatorAddress> <validatorAddress>
+fnsad query staking delegation <delegatorAddress> <validatorAddress>
 
 // query the rewards of a delegator given a delegator address (e.g. link1qyqszqgpqyqszqgpqyqszqgpqyqszqgp8apuk5)
-lbm query distribution rewards <delegatorAddress> 
+fnsad query distribution rewards <delegatorAddress> 
 
 // query all proposals currently open for depositing
-lbm query gov proposals --status deposit_period
+fnsad query gov proposals --status deposit_period
 
 // query all proposals currently open for voting
-lbm query gov proposals --status voting_period
+fnsad query gov proposals --status voting_period
 
 // query a proposal given its proposalID
-lbm query gov proposal <proposalID>
+fnsad query gov proposal <proposalID>
 ```
 
 For more commands, just type:
 
 ```bash
-lbm query
+fnsad query
 ```
 
 For each command, you can use the `-h` or `--help` flag to get more information.
@@ -383,7 +383,7 @@ For mainnet, the recommended `gas-prices` is `0.025ulink`.
 ### Sending Tokens
 
 ::: tip
-**Before you can bond atbase coins and withdraw rewards, you need to [set up `lbm`](#setting-up-lbm) and [create an account](#creating-an-account)**
+**Before you can bond atbase coins and withdraw rewards, you need to [set up `fnsad`](#setting-up-fnsad) and [create an account](#creating-an-account)**
 :::
 
 ::: warning
@@ -395,13 +395,13 @@ For mainnet, the recommended `gas-prices` is `0.025ulink`.
 // Ex value for parameters (do not actually use these values in your tx!!): <to_address>=link1ghekyjucln7y67ntx7cf27m9dpuxxemnqk82wt <amount>=1000000ulink 
 // Ex value for flags: <gasPrice>=0.025ulink
 
-lbm tx send <to_address> <amount> --from <yourKeyName> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice>
+fnsad tx send <to_address> <amount> --from <yourKeyName> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice>
 ```
 
 ### Bonding base coin and Withdrawing Rewards
 
 ::: tip
-**Before you can bond base coins and withdraw rewards, you need to [set up `lbm`](#setting-up-lbm) and [create an account](#creating-an-account)**
+**Before you can bond base coins and withdraw rewards, you need to [set up `fnsad`](#setting-up-fnsad) and [create an account](#creating-an-account)**
 :::
 
 ::: warning
@@ -416,7 +416,7 @@ lbm tx send <to_address> <amount> --from <yourKeyName> --gas auto --gas-adjustme
 // Bond a certain amount of base coin to a given validator
 // ex value for flags: <validatorAddress>=linkvaloper1ghekyjucln7y67ntx7cf27m9dpuxxemnjz9hqc, <amountToBound>=10000000ulink, <gasPrice>=0.025ulink
 
-lbm tx staking delegate <validatorAddress> <amountToBond> --from <delegatorKeyName> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice>
+fnsad tx staking delegate <validatorAddress> <amountToBond> --from <delegatorKeyName> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice>
 
 
 // Redelegate a certain amount of base coin from a validator to another
@@ -425,19 +425,19 @@ lbm tx staking delegate <validatorAddress> <amountToBond> --from <delegatorKeyNa
 // After a redelegation, no other redelegation can be made from the account for the next 3 weeks
 // ex value for flags: <stcValidatorAddress>=linkvaloper1ghekyjucln7y67ntx7cf27m9dpuxxemnjz9hqc, <amountToRedelegate>=100000000ulink, <gasPrice>=0.025ulink
 
-lbm tx staking redelegate <srcValidatorAddress> <destValidatorAddress> <amountToRedelegate> --from <delegatorKeyName> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice>
+fnsad tx staking redelegate <srcValidatorAddress> <destValidatorAddress> <amountToRedelegate> --from <delegatorKeyName> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice>
 
 // Withdraw all rewards
 // ex value for flag: <gasPrice>=0.025ulink
 
-lbm tx distribution withdraw-all-rewards --from <delegatorKeyName> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice>
+fnsad tx distribution withdraw-all-rewards --from <delegatorKeyName> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice>
 
 
 // Unbond a certain amount of base coin from a given validator 
 // You will have to wait 3 weeks before your base coin are fully unbonded and transferrable 
 // ex value for flags: <validatorAddress>=linkvaloper1ghekyjucln7y67ntx7cf27m9dpuxxemnjz9hqc, <amountToUnbound>=10000000ulink, <gasPrice>=0.025ulink
 
-lbm tx staking unbond <validatorAddress> <amountToUnbond> --from <delegatorKeyName> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice>
+fnsad tx staking unbond <validatorAddress> <amountToUnbond> --from <delegatorKeyName> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice>
 ```
 
 ::: warning
@@ -448,14 +448,14 @@ To confirm that your transaction went through, you can use the following queries
 
 ```bash
 // your balance should change after you bond base coin or withdraw rewards
-lbm query account
+fnsad query account
 
 // you should have delegations after you bond base coin
-lbm query staking delegations <delegatorAddress>
+fnsad query staking delegations <delegatorAddress>
 
 // this returns your tx if it has been included
 // use the tx hash that was displayed when you created the tx
-lbm query tx <txHash>
+fnsad query tx <txHash>
 
 ```
 
@@ -492,19 +492,19 @@ At the end of the voting period, the proposal is accepted if there are more than
 // <type>=text/parameter_change/software_upgrade
 // ex value for flag: <gasPrice>=0.025ulink
 
-lbm tx gov submit-proposal --title "Test Proposal" --description "My awesome proposal" --type <type> --deposit=10000000ulink --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice> --from <delegatorKeyName>
+fnsad tx gov submit-proposal --title "Test Proposal" --description "My awesome proposal" --type <type> --deposit=10000000ulink --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice> --from <delegatorKeyName>
 
 // Increase deposit of a proposal
-// Retrieve proposalID from lbm query gov proposals --status deposit_period
+// Retrieve proposalID from finschia query gov proposals --status deposit_period
 // ex value for parameter: <deposit>=10000000ulink
 
-lbm tx gov deposit <proposalID> <deposit> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice> --from <delegatorKeyName>
+fnsad tx gov deposit <proposalID> <deposit> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice> --from <delegatorKeyName>
 
 // Vote on a proposal
-// Retrieve proposalID from lbm query gov proposals --status voting_period 
+// Retrieve proposalID from finschia query gov proposals --status voting_period 
 // <option>=yes/no/no_with_veto/abstain
 
-lbm tx gov vote <proposalID> <option> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice> --from <delegatorKeyName>
+fnsad tx gov vote <proposalID> <option> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice> --from <delegatorKeyName>
 ```
 
 ### Signing Transactions From an Offline Computer
@@ -515,15 +515,15 @@ If you do not have a ledger device and want to interact with your private key on
 // Bond base coin 
 // ex value for flags: <amountToBound>=10000000ulink, <bech32AddressOfValidator>=linkvaloper1ghekyjucln7y67ntx7cf27m9dpuxxemnjz9hqc, <gasPrice>=0.025ulink, <delegatorAddress>=link1qyqszqgpqyqszqgpqyqszqgpqyqszqgp8apuk5
 
-lbm tx staking delegate <validatorAddress> <amountToBond> --from <delegatorAddress> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice> --generate-only > unsignedTX.json
+fnsad tx staking delegate <validatorAddress> <amountToBond> --from <delegatorAddress> --gas auto --gas-adjustment 1.5 --gas-prices <gasPrice> --generate-only > unsignedTX.json
 ```
 
 In order to sign, you will also need the `chain-id`, `account-number` and `sequence`. The `chain-id` is a unique identifier for the blockchain on which you are submitting the transaction. The `account-number` is an identifier generated when your account first receives funds. The `sequence` number is used to keep track of the number of transactions you have sent and prevent replay attacks.
 
-Get the chain-id from the genesis file (`lbm-2`), and the two other fields using the account query:
+Get the chain-id from the genesis file (`finschia-2`), and the two other fields using the account query:
 
 ```bash
-lbm query account <yourAddress> --chain-id lbm-2
+fnsad query account <yourAddress> --chain-id finschia-2
 ```
 
 Then, copy `unsignedTx.json` and transfer it (e.g. via USB) to the offline computer. If it is not done already, [create an account on the offline computer](#using-a-computer). For additional security, you can double check the parameters of your transaction before signing it using the following command:
@@ -535,11 +535,11 @@ cat unsignedTx.json
 Now, sign the transaction using the following command. You will need the `chain-id`, `sequence` and `account-number` obtained earlier:
 
 ```bash
-lbm tx sign unsignedTx.json --from <delegatorKeyName> --offline --chain-id lbm-2 --sequence <sequence> --account-number <account-number> > signedTx.json
+fnsad tx sign unsignedTx.json --from <delegatorKeyName> --offline --chain-id finschia-2 --sequence <sequence> --account-number <account-number> > signedTx.json
 ```
 
 Copy `signedTx.json` and transfer it back to the online computer. Finally, use the following command to broadcast the transaction:
 
 ```bash
-lbm tx broadcast signedTx.json
+fnsad tx broadcast signedTx.json
 ```

@@ -1187,7 +1187,7 @@ func (fg *FixtureGroup) initNodes(numberOfNodes int) {
 		require.NoError(t, err)
 	}
 }
-func (fg *FixtureGroup) LBMStartCluster(minGasPrices string, flags ...string) {
+func (fg *FixtureGroup) FinschiaStartCluster(minGasPrices string, flags ...string) {
 	genDoc, err := osttypes.GenesisDocFromJSON(fg.genesisFileContent)
 	require.NoError(fg.T, err)
 

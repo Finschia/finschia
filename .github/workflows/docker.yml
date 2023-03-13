@@ -29,7 +29,6 @@ jobs:
           endpoint: buildx
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["docker-hub-mirror.linecorp.com"]
       - name: login to the registry
         uses: docker/login-action@v2
         if: github.event_name != 'pull_request'

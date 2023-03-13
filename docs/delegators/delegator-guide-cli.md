@@ -36,7 +36,7 @@ Please exercise extreme caution!
 - [Finschia Accounts](#finschia-accounts)
     + [Restoring an Account from the Fundraiser](#restoring-an-account-from-the-fundraiser)
     + [Creating an Account](#creating-an-account)
-- [Accessing a LINE Blockchain Mainnet](#accessing-a-line-blockchain-mainnet)
+- [Accessing a Finschia Mainnet](#accessing-a-line-blockchain-mainnet)
     + [Running Your Own Full-Node](#running-your-own-full-node)
     + [Connecting to a Remote Full-Node](#connecting-to-a-remote-full-node)
 - [Setting Up `fnsad`](#setting-up-finschia)
@@ -122,7 +122,7 @@ If you participated in the fundraiser, you should be in possession of a 12-words
 
 #### On a Ledger Device
 
-At the core of a ledger device, there is a mnemonic used to generate accounts on multiple blockchains (including a LINE Blockchain Mainnet). Usually, you will create a new mnemonic when you initialize your ledger device. However, it is possible to tell the ledger device to use a mnemonic provided by the user instead. Let us go ahead and see how you can input the mnemonic you obtained during the fundraiser as the seed of your ledger device. 
+At the core of a ledger device, there is a mnemonic used to generate accounts on multiple blockchains (including a Finschia Mainnet). Usually, you will create a new mnemonic when you initialize your ledger device. However, it is possible to tell the ledger device to use a mnemonic provided by the user instead. Let us go ahead and see how you can input the mnemonic you obtained during the fundraiser as the seed of your ledger device. 
 
 ::: warning
 *NOTE: To do this, **it is preferable to use a brand new ledger device.**. Indeed, there can be only one mnemonic per ledger device. If, however, you want to use a ledger that is already initialized with a seed, you can reset it by going in `Settings`>`Device`>`Reset All`. **Please note that this will wipe out the seed currently stored on the device. If you have not properly secured the associated mnemonic, you could lose your funds!!!***
@@ -247,7 +247,7 @@ fnsad keys add <yourKeyName> --recover --account 1
 This command will prompt you to input a passphrase as well as your mnemonic. Change the account number to generate a different account. 
 
 
-## Accessing a LINE Blockchain Mainnet
+## Accessing a Finschia Mainnet
 
 In order to query the state and send transactions, you need a way to access the network. To do so, you can either run your own full-node, or connect to someone else's.
 
@@ -270,7 +270,7 @@ In order to connect to the full-node, you will need an address of the following 
 ## Setting Up `fnsad`
 
 ::: tip
-**Before setting up `fnsad`, make sure you have set up a way to [access a LINE Blockchain Mainnet](#accessing-a-line-blockchain-mainnet)**
+**Before setting up `fnsad`, make sure you have set up a way to [access a Finschia Mainnet](#accessing-a-line-blockchain-mainnet)**
 :::
 
 ::: warning
@@ -359,12 +359,12 @@ For each command, you can use the `-h` or `--help` flag to get more information.
 ## Sending Transactions
 
 ::: warning
-On a LINE Blockchain Mainnet, the accepted denom is `ulink`, where `1link = 1,000,000ulink`
+On a Finschia Mainnet, the accepted denom is `ulink`, where `1link = 1,000,000ulink`
 :::
 
 ### A Note on Gas and Fees
 
-Transactions on a LINE Blockchain Mainnet need to include a transaction fee in order to be processed. This fee pays for the gas required to run the transaction. The formula is the following:
+Transactions on a Finschia Mainnet need to include a transaction fee in order to be processed. This fee pays for the gas required to run the transaction. The formula is the following:
 
 ```
 fees = ceil(gas * gasPrices)
@@ -465,7 +465,7 @@ Double check with a block explorer if you interact with the network through a tr
 
 #### Primer on Governance
 
-A LINE Blockchain Mainnet has a built-in governance system that lets bonded base coin holders vote on proposals. There are three types of proposal:
+A Finschia Mainnet has a built-in governance system that lets bonded base coin holders vote on proposals. There are three types of proposal:
 
 - `Text Proposals`: These are the most basic type of proposals. They can be used to get the opinion of the network on a given topic. 
 - `Parameter Proposals`: These are used to update the value of an existing parameter.

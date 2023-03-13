@@ -12,7 +12,7 @@ Welcome to the documentation of the **Finschia Mainnet**.
 
 - [Intro to the `fnsad` software](finschia-tutorials/what-is-finschia.md)
 
-## Join the LINE Blockchain Mainnet
+## Join the Finschia Mainnet
 
 - [Install the `fnsad` application](finschia-tutorials/installation.md)
 - [Set up a full node and join the mainnet](finschia-tutorials/join-mainnet.md)
@@ -27,7 +27,7 @@ Welcome to the documentation of the **Finschia Mainnet**.
 - [Validator Resources](./validators/README.md): Contains documentation for `finschia` validators.
 - [Delegator Resources](./delegators/README.md): Contains documentation for delegators.
 - [Other Resources](./resources/README.md): Contains documentation on `finschia`, genesis file, service providers, ledger wallets, ...
-- [finschia Archives](./resources/archives.md): State archives of past iteration of the LINE Blockchain Mainnet.
+- [finschia Archives](./resources/archives.md): State archives of past iteration of the Finschia Mainnet.
 
 # Contribute
 

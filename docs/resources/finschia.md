@@ -6,7 +6,7 @@ order: 1
 
 ## Finschia Daemon
 
-`fnsad` is the tool that enables you to interact with the node that runs on a LINE Blockchain Mainnet network, whether you run it yourself or not. Let us set it up properly. In order to install it, follow the [installation procedure](../finschia-tutorials/installation.md).
+`fnsad` is the tool that enables you to interact with the node that runs on a Finschia Mainnet network, whether you run it yourself or not. Let us set it up properly. In order to install it, follow the [installation procedure](../finschia-tutorials/installation.md).
 
 ### Setting up finschia
 
@@ -94,7 +94,7 @@ fnsad ostracon show-validator
 Note that this is the Ostracon signing key, _not_ the operator key you will use in delegation transactions.
 
 ::: danger Warning
-We strongly recommend _NOT_ using the same passphrase for multiple keys. The LINE Blockchain Mainnet team will not be responsible for the loss of funds.
+We strongly recommend _NOT_ using the same passphrase for multiple keys. The Finschia Mainnet team will not be responsible for the loss of funds.
 :::
 
 #### Generate Multisig Public Keys

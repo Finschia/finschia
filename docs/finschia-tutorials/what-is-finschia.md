@@ -2,7 +2,7 @@
 order: 1
 -->
 
-# What is finschia?
+# What is Finschia?
 
 `fnsad` is the name of the LBM SDK application for a Finschia Mainnet. It comes with 2 main entrypoints:
 
@@ -22,4 +22,4 @@ order: 1
 
 About a Finschia Mainnet: A Finschia Mainnet is a blockchain mainnet network using Finschia. Any Finschia Mainnet can connect to each other via IBC, it automatically gains access to all the other blockchains that are connected to it. A Finschia Mainnet is a public Proof-of-Stake chain. Its staking token is called the Link.
 
-Next, learn how to [install finschia](./installation.md).
+Next, learn how to [install Finschia](./installation.md).

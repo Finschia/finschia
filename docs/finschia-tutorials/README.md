@@ -6,11 +6,11 @@ parent:
 
 # Finschia Tutorials
 
-This folder contains tutorials related to the `finschia` application.
+This folder contains tutorials related to the `Finschia` application.
 
-- [Introduction to the `finschia` application](./what-is-finschia.md)
-- [Installing `finschia`](./installation.md)
+- [Introduction to the `Finschia` application](./what-is-finschia.md)
+- [Installing `Finschia`](./installation.md)
 - [Running a full-node for a Finschia Mainnet](./join-mainnet.md)
-- [Running a full-node for a `finschia` testnet](./join-testnet.md)
+- [Running a full-node for a `Finschia` testnet](./join-testnet.md)
 - [Upgrading a Node from a previous version](./upgrade-node.md)
-- [Deploying a `finschia` testnet](./deploy-testnet.md)
+- [Deploying a `Finschia` testnet](./deploy-testnet.md)

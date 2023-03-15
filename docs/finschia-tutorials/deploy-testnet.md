@@ -4,7 +4,7 @@ order: 6
 
 # Deploy Your Own Gaia Testnet
 
-This document describes 3 ways to setup a network of `finschia` nodes, each serving a different usecase:
+This document describes 3 ways to setup a network of `Finschia` nodes, each serving a different usecase:
 
 1. Single-node, local, manual testnet
 2. Multi-node, local, automated testnet
@@ -24,7 +24,7 @@ This guide helps you create a single validator node that runs a network locally 
 
 ### Requirements
 
-- [Install finschia](./installation.md)
+- [Install Finschia](./installation.md)
 - [Install `jq`](https://stedolan.github.io/jq/download/) (optional)
 
 ### Create Genesis File and Start the Network
@@ -54,7 +54,7 @@ fnsad collect-gentxs
 fnsad start
 ```
 
-This setup puts all the data for `finschia` in `~/.finschia`. You can examine the genesis file you created at `~/.finschia/config/genesis.json`. With this configuration `finschia` is also ready to use and has an account with tokens (both staking and custom).
+This setup puts all the data for `Finschia` in `~/.finschia`. You can examine the genesis file you created at `~/.finschia/config/genesis.json`. With this configuration `finschia` is also ready to use and has an account with tokens (both staking and custom).
 
 ## Multi-node, Local, Automated Testnet
 
@@ -62,7 +62,7 @@ From the [networks/local directory](https://github.com/line/finschia/tree/main/n
 
 ### Requirements
 
-- [Install finschia](./installation.md)
+- [Install Finschia](./installation.md)
 - [Install docker](https://docs.docker.com/engine/installation/)
 - [Install docker-compose](https://docs.docker.com/compose/install/)
 
@@ -108,7 +108,7 @@ To update the binary, just rebuild it and restart the nodes:
 make build-linux localnet-start
 ```
 
-To stop docker finschia nodes:
+To stop docker Finschia nodes:
 
 ```
 make localnet-stop

@@ -24,5 +24,5 @@ rm -rf target
 
 cd "${PROJECT_ROOT}" || exit 1
 
-# build finschia
+# build Finschia
 BUILD_TAGS=static LINK_STATICALLY=true make build FINSCHIA_BUILD_OPTIONS="${FINSCHIA_BUILD_OPTIONS}"

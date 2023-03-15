@@ -36,7 +36,7 @@ The `chain_id` is a unique identifier for your chain. It helps differentiate bet
 
 ## Consensus Parameters
 
-Next, the genesis file defines consensus parameters. Consensus parameters regroup all the parameters that are related to the consensus layer, which is `Ostracon` in the case of `finschia`. Let us look at these parameters:
+Next, the genesis file defines consensus parameters. Consensus parameters regroup all the parameters that are related to the consensus layer, which is `Ostracon` in the case of `Finschia`. Let us look at these parameters:
 
 - `block`
   - `max_bytes`: Maximum number of bytes per block.

@@ -18,7 +18,7 @@ Welcome to the documentation of the **Finschia Mainnet**.
 - [Set up a full node and join the mainnet](finschia-tutorials/join-mainnet.md)
 - [Upgrade to a validator node](./validators/validator-setup.md)
 
-## Setup Your Own `finschia` Testnet
+## Setup Your Own `Finschia` Testnet
 
 - [Setup your own `fnsad` testnet](finschia-tutorials/deploy-testnet.md)
 
@@ -27,7 +27,7 @@ Welcome to the documentation of the **Finschia Mainnet**.
 - [Validator Resources](./validators/README.md): Contains documentation for `finschia` validators.
 - [Delegator Resources](./delegators/README.md): Contains documentation for delegators.
 - [Other Resources](./resources/README.md): Contains documentation on `finschia`, genesis file, service providers, ledger wallets, ...
-- [finschia Archives](./resources/archives.md): State archives of past iteration of the Finschia Mainnet.
+- [Finschia Archives](./resources/archives.md): State archives of past iteration of the Finschia Mainnet.
 
 # Contribute
 

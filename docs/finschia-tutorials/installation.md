@@ -2,7 +2,7 @@
 order: 2
 -->
 
-# Install finschia
+# Install Finschia
 
 This guide will explain how to install the `fnsad` entrypoint
 onto your system. With these installed on a server, you can participate in the

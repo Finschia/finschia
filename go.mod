@@ -1,4 +1,4 @@
-module github.com/line/lbm
+module github.com/line/finschia
 
 go 1.18
 

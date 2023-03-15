@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# This script is used in the Dockerfiles and installs the lbm dependency libwasmvm.*.a into the container image.
+# This script is used in the Dockerfiles and installs the Finschia dependency libwasmvm.*.a into the container image.
 # See also https://github.com/line/wasmvm/releases
 
 set -e

@@ -122,14 +122,14 @@ import (
 	wasmpluskeeper "github.com/line/wasmd/x/wasmplus/keeper"
 	wasmplustypes "github.com/line/wasmd/x/wasmplus/types"
 
-	appante "github.com/line/lbm/ante"
-	appparams "github.com/line/lbm/app/params"
+	appante "github.com/line/finschia/ante"
+	appparams "github.com/line/finschia/app/params"
 
 	// unnamed import of statik for swagger UI support
 	_ "github.com/line/lbm-sdk/client/docs/statik"
 )
 
-const appName = "LBM"
+const appName = "Finschia"
 
 var (
 	// DefaultNodeHome default home directories for the application daemon
@@ -261,7 +261,7 @@ func init() {
 		stdlog.Println("Failed to get home dir %2", err)
 	}
 
-	DefaultNodeHome = filepath.Join(userHomeDir, ".lbm")
+	DefaultNodeHome = filepath.Join(userHomeDir, ".finschia")
 }
 
 // NewLinkApp returns a reference to an initialized Link.

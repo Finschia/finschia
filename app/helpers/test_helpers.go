@@ -12,7 +12,7 @@ import (
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
 
-	linkapp "github.com/line/lbm/app"
+	linkapp "github.com/line/finschia/app"
 )
 
 // SimAppChainID hardcoded chainID for simulation

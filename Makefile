@@ -50,11 +50,11 @@ ifeq ($(LEDGER_ENABLED),true)
 endif
 
 # DB backend selection; use default for testing; use rocksdb or cleveldb for performance; build automation is not ready for boltdb and badgerdb yet.
-ifeq (,$(filter $(LBM_BUILD_OPTIONS), cleveldb rocksdb boltdb badgerdb))
+ifeq (,$(filter $(FINSCHIA_BUILD_OPTIONS), cleveldb rocksdb boltdb badgerdb))
   BUILD_TAGS += goleveldb
   DB_BACKEND = goleveldb
 else
-  ifeq (cleveldb,$(findstring cleveldb,$(LBM_BUILD_OPTIONS)))
+  ifeq (cleveldb,$(findstring cleveldb,$(FINSCHIA_BUILD_OPTIONS)))
     CGO_ENABLED=1
     BUILD_TAGS += gcc cleveldb
     DB_BACKEND = cleveldb
@@ -62,11 +62,11 @@ else
     CGO_CFLAGS=-I$(shell pwd)/$(CLEVELDB_DIR)/include
     CGO_LDFLAGS="-L$(shell pwd)/$(CLEVELDB_DIR)/build -L$(shell pwd)/snappy/build -lleveldb -lm -lstdc++ -lsnappy"
   endif
-  ifeq (badgerdb,$(findstring badgerdb,$(LBM_BUILD_OPTIONS)))
+  ifeq (badgerdb,$(findstring badgerdb,$(FINSCHIA_BUILD_OPTIONS)))
     BUILD_TAGS += badgerdb
     DB_BACKEND = badgerdb
   endif
-  ifeq (rocksdb,$(findstring rocksdb,$(LBM_BUILD_OPTIONS)))
+  ifeq (rocksdb,$(findstring rocksdb,$(FINSCHIA_BUILD_OPTIONS)))
     CGO_ENABLED=1
     BUILD_TAGS += gcc rocksdb
     DB_BACKEND = rocksdb
@@ -74,14 +74,14 @@ else
     CGO_CFLAGS=-I$(ROCKSDB_DIR)/include
     CGO_LDFLAGS="-L$(ROCKSDB_DIR) -lrocksdb -lm -lstdc++ $(shell awk '/PLATFORM_LDFLAGS/ {sub("PLATFORM_LDFLAGS=", ""); print}' < $(ROCKSDB_DIR)/make_config.mk)"
   endif
-  ifeq (boltdb,$(findstring boltdb,$(LBM_BUILD_OPTIONS)))
+  ifeq (boltdb,$(findstring boltdb,$(FINSCHIA_BUILD_OPTIONS)))
     BUILD_TAGS += boltdb
     DB_BACKEND = boltdb
   endif
 endif
 
 # VRF library selection
-ifeq (libsodium,$(findstring libsodium,$(LBM_BUILD_OPTIONS)))
+ifeq (libsodium,$(findstring libsodium,$(FINSCHIA_BUILD_OPTIONS)))
   CGO_ENABLED=1
   BUILD_TAGS += gcc libsodium
   LIBSODIUM_TARGET = libsodium
@@ -90,7 +90,7 @@ ifeq (libsodium,$(findstring libsodium,$(LBM_BUILD_OPTIONS)))
 endif
 
 # secp256k1 implementation selection
-ifeq (libsecp256k1,$(findstring libsecp256k1,$(LBM_BUILD_OPTIONS)))
+ifeq (libsecp256k1,$(findstring libsecp256k1,$(FINSCHIA_BUILD_OPTIONS)))
   CGO_ENABLED=1
   BUILD_TAGS += libsecp256k1
 endif
@@ -105,8 +105,8 @@ build_tags_comma_sep := $(subst $(whitespace),$(comma),$(build_tags))
 
 # process linker flags
 
-ldflags = -X github.com/line/lbm-sdk/version.Name=lbm \
-		  -X github.com/line/lbm-sdk/version.AppName=lbm \
+ldflags = -X github.com/line/lbm-sdk/version.Name=finschia \
+		  -X github.com/line/lbm-sdk/version.AppName=finschia \
 		  -X github.com/line/lbm-sdk/version.Version=$(VERSION) \
 		  -X github.com/line/lbm-sdk/version.Commit=$(COMMIT) \
 		  -X github.com/line/lbm-sdk/types.DBBackend=$(DB_BACKEND) \
@@ -117,7 +117,7 @@ ifeq ($(LINK_STATICALLY),true)
 	ldflags += -linkmode=external -extldflags "-Wl,-z,muldefs -static"
 endif
 
-ifeq (,$(findstring nostrip,$(LBM_BUILD_OPTIONS)))
+ifeq (,$(findstring nostrip,$(FINSCHIA_BUILD_OPTIONS)))
   ldflags += -w -s
 endif
 ldflags += $(LDFLAGS)
@@ -127,7 +127,7 @@ BUILD_FLAGS := -tags "$(build_tags)" -ldflags '$(ldflags)'
 CLI_TEST_BUILD_FLAGS := -tags "cli_test $(build_tags)"
 CLI_MULTI_BUILD_FLAGS := -tags "cli_multi_node_test $(build_tags)"
 # check for nostrip option
-ifeq (,$(findstring nostrip,$(LBM_BUILD_OPTIONS)))
+ifeq (,$(findstring nostrip,$(FINSCHIA_BUILD_OPTIONS)))
   BUILD_FLAGS += -trimpath
 endif
 
@@ -160,14 +160,14 @@ build: go.sum $(BUILDDIR)/ dbbackend $(LIBSODIUM_TARGET)
 	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go build -mod=readonly $(BUILD_FLAGS) $(BUILD_ARGS) ./...
 
 build-static: go.sum $(BUILDDIR)/
-	docker build -t line/lbmnode:latest -f builders/Dockerfile.static . --build-arg ARCH=$(ARCH) --platform="linux/amd64"
+	docker build -t line/finschianode:latest -f builders/Dockerfile.static . --build-arg ARCH=$(ARCH) --platform="linux/amd64"
 
 build-static-centos7: go.sum $(BUILDDIR)/
-	docker build -t line/lbm-builder:static_centos7 -f builders/Dockerfile.static_centos7 .
-	docker run -it --rm -v $(shell pwd):/code -e LBM_BUILD_OPTIONS="$(LBM_BUILD_OPTIONS)" line/lbm-builder:static_centos7
+	docker build -t line/finschia-builder:static_centos7 -f builders/Dockerfile.static_centos7 .
+	docker run -it --rm -v $(shell pwd):/code -e FINSCHIA_BUILD_OPTIONS="$(FINSCHIA_BUILD_OPTIONS)" line/finschia-builder:static_centos7
 
 # USAGE: go env -w GOARCH={amd64|arm64} && make clean build-release-bundle VERSION=v0.0.0
-RELEASE_BUNDLE=lbm-$(VERSION)-$(shell go env GOOS)-$(shell go env GOARCH)
+RELEASE_BUNDLE=finschia-$(VERSION)-$(shell go env GOOS)-$(shell go env GOARCH)
 LIBWASMVM_VERSION=$(shell go list -m github.com/line/wasmvm | awk '{print $$2}')
 LIBWASMVM_PATH=$(shell find $(shell go env GOMODCACHE) -name $(LIBWASMVM) -type f | grep "$(LIBWASMVM_VERSION)")
 build-release-bundle: build
@@ -175,7 +175,7 @@ build-release-bundle: build
 	@if [   -z "${LIBWASMVM_PATH}" ]; then echo "ERROR: $(LIBWASMVM) $(LIBWASMVM_VERSION) not found: $(shell go env GOMODCACHE)"; exit 1; fi
 	@if [ ! -f "${LIBWASMVM_PATH}" ]; then echo "ERROR: Multiple version of $(LIBWASMVM) found: ${LIBWASMVM_PATH}"; exit 1; fi
 	@mkdir -p $(BUILDDIR)/$(RELEASE_BUNDLE)
-	@cp $(BUILDDIR)/lbm $(BUILDDIR)/$(RELEASE_BUNDLE)/$(RELEASE_BUNDLE)
+	@cp $(BUILDDIR)/fnsad $(BUILDDIR)/$(RELEASE_BUNDLE)/$(RELEASE_BUNDLE)
 	@cp "$(LIBWASMVM_PATH)" $(BUILDDIR)/$(RELEASE_BUNDLE)/
 	@case "$(shell go env GOHOSTOS),$(shell go env GOHOSTARCH),$(shell go env GOARCH)" in \
 	  *,amd64,amd64 | *,arm64,arm64 | darwin,arm64,*) \
@@ -190,7 +190,7 @@ build-release-bundle: build
 	@echo "Built: $(BUILDDIR)/$(RELEASE_BUNDLE).tgz"
 
 install: go.sum $(BUILDDIR)/ dbbackend $(LIBSODIUM_TARGET)
-	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go install $(BUILD_FLAGS) $(BUILD_ARGS) ./cmd/lbm
+	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go install $(BUILD_FLAGS) $(BUILD_ARGS) ./cmd/fnsad
 
 $(BUILDDIR)/:
 	mkdir -p $(BUILDDIR)/
@@ -232,7 +232,7 @@ dbbackend:
 endif
 
 build-docker:
-	docker build --build-arg LBM_BUILD_OPTIONS="$(LBM_BUILD_OPTIONS)" -t line/lbm .
+	docker build --build-arg FINSCHIA_BUILD_OPTIONS="$(FINSCHIA_BUILD_OPTIONS)" -t line/lbm .
 
 build-contract-tests-hooks:
 	mkdir -p $(BUILDDIR)
@@ -249,7 +249,7 @@ go.sum: go.mod
 draw-deps:
 	@# requires brew install graphviz or apt-get install graphviz
 	go get github.com/RobotsAndPencils/goviz
-	@goviz -i ./cmd/lbm -d 2 | dot -Tpng -o dependency-graph.png
+	@goviz -i ./cmd/fnsad -d 2 | dot -Tpng -o dependency-graph.png
 
 clean:
 	rm -rf $(BUILDDIR)/ artifacts/
@@ -331,14 +331,14 @@ format:
 ###                                Localnet                                 ###
 ###############################################################################
 
-build-docker-lbmnode:
+build-docker-finschianode:
 	$(MAKE) -C networks/local
 
 # Run a 4-node testnet locally
 localnet-start: localnet-stop build-static localnet-build-nodes
 
 localnet-build-nodes:
-	docker run --rm -v $(CURDIR)/mytestnet:/data line/lbmnode \
+	docker run --rm -v $(CURDIR)/mytestnet:/data line/finschianode \
 			testnet init-files --v 4 -o /data --starting-ip-address 192.168.10.2 --keyring-backend=test
 	docker-compose up -d
 
@@ -361,7 +361,7 @@ test-docker-push: test-docker
 	setup-transactions setup-contract-tests-data start-link run-lcd-contract-tests contract-tests \
 	test test-all test-build test-cover test-unit test-race \
 	benchmark \
-	build-docker-lbmnode localnet-start localnet-stop \
+	build-docker-finschianode localnet-start localnet-stop \
 	docker-single-node
 
 ###############################################################################

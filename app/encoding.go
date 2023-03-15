@@ -2,7 +2,8 @@ package app
 
 import (
 	"github.com/line/lbm-sdk/std"
-	"github.com/line/lbm/app/params"
+
+	"github.com/line/finschia/app/params"
 )
 
 // MakeEncodingConfig creates an EncodingConfig for testing

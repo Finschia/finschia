@@ -60,6 +60,8 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Build, CI
 (ci) [\#145](https://github.com/line/lbm/pull/145) add github action to push docker image to docker.io
 
+### Docs
+* (doc) [\#156](https://github.com/line/finschia/pull/156) modify broken link or typo doc file and add issue and pr template
 
 <!-- Release links -->
 [Unreleased]: https://github.com/line/lbm/compare/v0.7.0...HEAD

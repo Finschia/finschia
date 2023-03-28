@@ -37,9 +37,9 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ## [Unreleased]
 
 ### Features
-* (wasmvm) [\#159](https://github.com/line/finschia/pull/159) Bump github.com/line/wasmvm from v1.1.1-0.11.1 to v1.1.1-0.11.2
 
 ### Improvements
+* (lbm-sdk) [\#159](https://github.com/line/finschia/pull/159) Bump github.com/line/lbm-sdk from v0.47.0-rc1 to v0.47.0-rc2
 
 ### Bug Fixes
 

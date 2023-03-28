@@ -19,7 +19,8 @@ DOCKER := $(shell which docker)
 BUILDDIR ?= $(CURDIR)/build
 TEST_DOCKER_REPO=jackzampolin/linktest
 CGO_ENABLED ?= 1
-ARCH ?= x86_64
+ARCH ?= aarch64
+PLATFORM ?= arm64
 
 export GO111MODULE = on
 
@@ -148,7 +149,7 @@ build: go.sum $(BUILDDIR)/ dbbackend $(LIBSODIUM_TARGET)
 	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go build -mod=readonly $(BUILD_FLAGS) $(BUILD_ARGS) ./...
 
 build-static: go.sum $(BUILDDIR)/
-	docker build -t line/lbmnode:latest -f builders/Dockerfile.static . --build-arg ARCH=$(ARCH) --platform="linux/amd64"
+	docker build -t line/lbmnode:latest -f builders/Dockerfile.static . --build-arg ARCH=$(ARCH) --platform="linux/$(PLATFORM)"
 
 build-static-centos7: go.sum $(BUILDDIR)/
 	docker build -t line/lbm-builder:static_centos7 -f builders/Dockerfile.static_centos7 .
@@ -197,7 +198,7 @@ dbbackend:
 endif
 
 build-docker:
-	docker build --build-arg LBM_BUILD_OPTIONS="$(LBM_BUILD_OPTIONS)" -t line/lbm .
+	docker build --build-arg LBM_BUILD_OPTIONS="$(LBM_BUILD_OPTIONS)" --build-arg ARCH=$(ARCH) -t line/lbm . --platform="linux/$(PLATFORM)"
 
 build-contract-tests-hooks:
 	mkdir -p $(BUILDDIR)

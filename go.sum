@@ -420,6 +420,8 @@ github.com/line/ibc-go/v3 v3.3.2-0.20230210040007-d855e1d87f26 h1:uSnHy48K15ia3c
 github.com/line/ibc-go/v3 v3.3.2-0.20230210040007-d855e1d87f26/go.mod h1:iIUVJLrKDzW/y1nrNQ3XyVrQ3FjNyd6fjgWTBbldAaQ=
 github.com/line/lbm-sdk v0.47.0-rc1 h1:h0E3W3gt97/AJFV2SASjBrR+TvZC4srFC8yKCFpgX+g=
 github.com/line/lbm-sdk v0.47.0-rc1/go.mod h1:JrjVsj1KaVtkHbAC8X3gwRIhM8A6vE2k17W6iWbNv3o=
+github.com/line/lbm-sdk v0.47.0-rc1.0.20230328075331-b948bbdf084c h1:9ENsbCqd2TRig6z28JsXrQ6o0xIGspTs6uylsXywLaw=
+github.com/line/lbm-sdk v0.47.0-rc1.0.20230328075331-b948bbdf084c/go.mod h1:JrjVsj1KaVtkHbAC8X3gwRIhM8A6vE2k17W6iWbNv3o=
 github.com/line/ostracon v1.0.9 h1:LcDAQKeQyk5Q/As2Qfkqv5Sl8Tl4fUhRSuXg2q4XfAQ=
 github.com/line/ostracon v1.0.9/go.mod h1:WHeAYlDEWvR1oKxw8UVYFa9AJVa3uaGDdDxkrZA5kEY=
 github.com/line/wasmd v0.0.0-20230217063243-577e45074b4b h1:kc2xMbJSOX3Dw4RC+TNTCvVwUo/L5DDgSZloMW7Dit0=

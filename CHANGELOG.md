@@ -51,6 +51,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ### Improvements
 * (x/wasmd) [\#146](https://github.com/line/lbm/pull/146) update wasmd version
+* (x/wasmd) [\#158](https://github.com/line/finschia/pull/158) bump up wasmd version to v0.1.0
 
 ### Bug Fixes
 

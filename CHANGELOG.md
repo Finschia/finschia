@@ -59,7 +59,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ### Build, CI
 (ci) [\#145](https://github.com/line/lbm/pull/145) add github action to push docker image to docker.io
-
+(build) [\#157](https://github.com/line/finschia/pull/157) add build args
 
 <!-- Release links -->
 [Unreleased]: https://github.com/line/lbm/compare/v0.7.0...HEAD

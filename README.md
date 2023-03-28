@@ -20,6 +20,13 @@ or
 make build-docker WITH_CLEVELDB=yes GITHUB_TOKEN=${YOUR_GITHUB_TOKEN}  # build docker image with cleveldb
 ```
 
+_Note1_
+
+If you are using M1 mac, you need to specify build args like this:
+```
+make build-docker ARCH=aarch64 PLATFORM=arm64
+```
+
 **Configure**
 ```
 sh init_single.sh docker          # prepare keys, validators, initial state, etc.

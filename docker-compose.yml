@@ -1,9 +1,9 @@
 version: '3'
 
 services:
-  lbmnode0:
-    container_name: lbmnode0
-    image: "line/lbmnode"
+  fnsadnode0:
+    container_name: fnsadnode0
+    image: "line/finschianode"
     ports:
       - "26656-26657:26656-26657"
     environment:
@@ -15,9 +15,9 @@ services:
       localnet:
         ipv4_address: 192.168.10.2
 
-  lbmnode1:
-    container_name: lbmnode1
-    image: "line/lbmnode"
+  fnsadnode1:
+    container_name: fnsadnode1
+    image: "line/finschianode"
     ports:
       - "26659-26660:26656-26657"
     environment:
@@ -29,9 +29,9 @@ services:
       localnet:
         ipv4_address: 192.168.10.3
 
-  lbmnode2:
-    container_name: lbmnode2
-    image: "line/lbmnode"
+  fnsadnode2:
+    container_name: fnsadnode2
+    image: "line/finschianode"
     environment:
       - ID=2
       - LOG=${LOG:-lbm.log}
@@ -43,9 +43,9 @@ services:
       localnet:
         ipv4_address: 192.168.10.4
 
-  lbmnode3:
-    container_name: lbmnode3
-    image: "line/lbmnode"
+  fnsadnode3:
+    container_name: fnsadnode3
+    image: "line/finschianode"
     environment:
       - ID=3
       - LOG=${LOG:-lbm.log}

@@ -27,7 +27,6 @@ import (
 	banktypes "github.com/line/lbm-sdk/x/bank/types"
 	"github.com/line/lbm-sdk/x/crisis"
 	genutilcli "github.com/line/lbm-sdk/x/genutil/client/cli"
-	lbmtypes "github.com/line/lbm/types"
 	ostcli "github.com/line/ostracon/libs/cli"
 	"github.com/line/ostracon/libs/log"
 	"github.com/line/wasmd/x/wasm"
@@ -38,8 +37,9 @@ import (
 	"github.com/spf13/viper"
 	dbm "github.com/tendermint/tm-db"
 
-	"github.com/line/lbm/app"
-	"github.com/line/lbm/app/params"
+	"github.com/line/finschia/app"
+	"github.com/line/finschia/app/params"
+	fnsatypes "github.com/line/finschia/types"
 )
 
 const (
@@ -61,8 +61,8 @@ func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 		WithViper("")
 
 	rootCmd := &cobra.Command{
-		Use:   "lbm",
-		Short: "LINE Blockchain Mainnet (LBM) App",
+		Use:   "fnsad",
+		Short: "Finschia Mainnet App",
 		PersistentPreRunE: func(cmd *cobra.Command, _ []string) error {
 			// set the default command outputs
 			cmd.SetOut(cmd.OutOrStdout())
@@ -81,7 +81,7 @@ func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 			if err := client.SetCmdClientContextHandler(initClientCtx, cmd); err != nil {
 				return err
 			}
-			return lbmPreRunE(cmd)
+			return fnsaPreRunE(cmd)
 		},
 	}
 	rootCmd.PersistentFlags().Bool(flagTestnet, false, "Run with testnet mode. The address prefix becomes tlink if this flag is set.")
@@ -322,15 +322,15 @@ func createSimappAndExport(
 
 func initConfig(testnet bool) {
 	config := sdk.GetConfig()
-	config.SetCoinType(lbmtypes.CoinType)
-	config.SetBech32PrefixForAccount(lbmtypes.Bech32PrefixAcc(testnet), lbmtypes.Bech32PrefixAccPub(testnet))
-	config.SetBech32PrefixForConsensusNode(lbmtypes.Bech32PrefixConsAddr(testnet), lbmtypes.Bech32PrefixConsPub(testnet))
-	config.SetBech32PrefixForValidator(lbmtypes.Bech32PrefixValAddr(testnet), lbmtypes.Bech32PrefixValPub(testnet))
+	config.SetCoinType(fnsatypes.CoinType)
+	config.SetBech32PrefixForAccount(fnsatypes.Bech32PrefixAcc(testnet), fnsatypes.Bech32PrefixAccPub(testnet))
+	config.SetBech32PrefixForConsensusNode(fnsatypes.Bech32PrefixConsAddr(testnet), fnsatypes.Bech32PrefixConsPub(testnet))
+	config.SetBech32PrefixForValidator(fnsatypes.Bech32PrefixValAddr(testnet), fnsatypes.Bech32PrefixValPub(testnet))
 	config.GetCoinType()
 	config.Seal()
 }
 
-func lbmPreRunE(cmd *cobra.Command) (err error) {
+func fnsaPreRunE(cmd *cobra.Command) (err error) {
 	customAppTemplate, customAppConfig := initAppConfig()
 	err = server.InterceptConfigsPreRunHandler(cmd, customAppTemplate, customAppConfig)
 

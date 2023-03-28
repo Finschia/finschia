@@ -45,8 +45,12 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (ibc-go) [\#140](https://github.com/line/lbm/pull/140) apply ibc-go
 * (x/wasmplus) [\#141](https://github.com/line/lbm/pull/141) change wasm module to wrapped `x/wasmplus`
 * (lbm-sdk) [\#144](https://github.com/line/lbm/pull/144) bump line/lbm-sdk v0.47.0-alpha1 (11966d1234155ebef20b64f2ae7a905beffdb33f) 
+* (build) [\#150](https://github.com/line/lbm/pull/150) Modify the Makefile to build release bundles
+* (build) [\#153](https://github.com/line/finschia/pull/153) rename cli name to `fnsad`
+* (lbm-sdk) [\#154](https://github.com/line/finschia/pull/154) Bump github.com/line/lbm-sdk from v0.47.0-alpha1.0.20230214070148-11966d123415 to v0.47.0-rc1
 
 ### Improvements
+* (x/wasmd) [\#146](https://github.com/line/lbm/pull/146) update wasmd version
 
 ### Bug Fixes
 

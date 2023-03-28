@@ -6,8 +6,8 @@ import (
 	"github.com/line/lbm-sdk/server"
 	svrcmd "github.com/line/lbm-sdk/server/cmd"
 
-	"github.com/line/lbm/app"
-	"github.com/line/lbm/cmd/lbm/cmd"
+	"github.com/line/finschia/app"
+	"github.com/line/finschia/cmd/fnsad/cmd"
 )
 
 func main() {

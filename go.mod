@@ -8,7 +8,7 @@ require (
 	github.com/line/ibc-go/v3 v3.3.2-0.20230210040007-d855e1d87f26
 	github.com/line/lbm-sdk v0.47.0-rc1
 	github.com/line/ostracon v1.0.9
-	github.com/line/wasmd v0.0.0-20230217063243-577e45074b4b
+	github.com/line/wasmd v0.1.0
 	github.com/prometheus/client_golang v1.14.0
 	github.com/rakyll/statik v0.1.7
 	github.com/spf13/cast v1.5.0
@@ -81,7 +81,7 @@ require (
 	github.com/klauspost/compress v1.15.11 // indirect
 	github.com/lib/pq v1.10.7 // indirect
 	github.com/libp2p/go-buffer-pool v0.1.0 // indirect
-	github.com/line/wasmvm v1.1.1-0.11.1 // indirect
+	github.com/line/wasmvm v1.1.1-0.11.2 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect

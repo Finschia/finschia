@@ -1,6 +1,11 @@
 # Finschia
 
 [![codecov](https://codecov.io/gh/line/lbm/branch/main/graph/badge.svg?token=JFFuUevpzJ)](https://codecov.io/gh/line/lbm)
+[![license](https://img.shields.io/github/license/line/finschia.svg)](https://github.com/line/finschia/blob/main/LICENSE)
+[![LoC](https://tokei.rs/b1/github/line/finschia)](https://github.com/line/finschia)
+[![Go Report Card](https://goreportcard.com/badge/github.com/line/finschia)](https://goreportcard.com/report/github.com/line/finschia)
+[![GolangCI](https://golangci.com/badges/github.com/line/finschia.svg)](https://golangci.com/r/github.com/line/finschia)
+
 
 This repository hosts `Finschia`. This repository is forked from [gaia](https://github.com/cosmos/gaia) at 2021-03-15. Finschia is a mainnet app implementation using [lbm-sdk](https://github.com/line/lbm-sdk), [ostracon](https://github.com/line/ostracon), [wasmd](https://github.com/line/wasmd) and [ibc-go](https://github.com/line/ibc-go).
 
@@ -13,7 +18,7 @@ This repository hosts `Finschia`. This repository is forked from [gaia](https://
 ## Docker
 **Build Docker Image**
 ```
-make build-docker GITHUB_TOKEN=${YOUR_GITHUB_TOKEN}                # build docker image
+make build-docker                # build docker image
 ```
 or
 ```
@@ -38,32 +43,10 @@ sh init_single.sh docker testnet  # prepare keys, validators, initial state, etc
 
 **Run**
 ```
-docker run -i -p 26656:26656 -p 26657:26657 -v ${HOME}/.finschia:/root/.finschia line/lbm lbm start
+docker run -i -p 26656:26656 -p 26657:26657 -v ${HOME}/.finschia:/root/.finschia line/lbm fnsad start
 ```
 
 ## Local
-**Set up permissions**
-```
-go env -w GOPRIVATE="github.com/line/*"
-git config --global url."https://${YOUR_GITHUB_TOKEN}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
-```
-
-_Note1_
-
-You have to replace ${YOUR_GITHUB_TOKEN} with your token.
-
-To create a token, 
-see: https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token
-
-_Note2_
-
-Please check `GOPRIVATE` is set by run export and check the result. 
-```
-go env
-```
-if you can see `GOPRIVATE`, then you're good to go. 
-
-Otherwise you need to set `GOPRIVATE` as environment variable.
 
 **Build**
 ```
@@ -82,7 +65,7 @@ sh init_single.sh testnet  # for testnet
 
 **Run**
 ```
-lbm start                # Run a node
+fnsad start                # Run a node
 ```
 
 **visit with your browser**
@@ -99,4 +82,8 @@ make localnet-start
 ```
 make localnet-stop
 ```
+
+
+# How to contribute
+check out [CONTRIBUTING.md](CONTRIBUTING.md) for our guidelines & policies for how we develop Finschia. Thank you to all those who have contributed!
 

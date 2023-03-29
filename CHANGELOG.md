@@ -51,6 +51,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ### Improvements
 * (x/wasmd) [\#146](https://github.com/line/lbm/pull/146) update wasmd version
+* (x/wasmd) [\#158](https://github.com/line/finschia/pull/158) bump up wasmd version to v0.1.0
 
 ### Bug Fixes
 
@@ -60,6 +61,9 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Build, CI
 (ci) [\#145](https://github.com/line/lbm/pull/145) add github action to push docker image to docker.io
 (build) [\#157](https://github.com/line/finschia/pull/157) add build args
+
+### Docs
+* (doc) [\#156](https://github.com/line/finschia/pull/156) modify broken link or typo doc file and add issue and pr template
 
 <!-- Release links -->
 [Unreleased]: https://github.com/line/lbm/compare/v0.7.0...HEAD

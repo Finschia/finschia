@@ -15,7 +15,6 @@ Welcome to the documentation of the **Finschia Mainnet**.
 ## Join the Finschia Mainnet
 
 - [Install the `fnsad` application](finschia-tutorials/installation.md)
-- [Set up a full node and join the mainnet](finschia-tutorials/join-mainnet.md)
 - [Upgrade to a validator node](./validators/validator-setup.md)
 
 ## Setup Your Own `Finschia` Testnet

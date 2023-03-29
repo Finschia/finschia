@@ -20,9 +20,13 @@ BUILDDIR ?= $(CURDIR)/build
 TEST_DOCKER_REPO=jackzampolin/linktest
 CGO_ENABLED ?= 1
 ARCH ?= x86_64
-PLATFORM ?= amd64
+TARGET_PLATFORM ?= linux/amd64
 
 export GO111MODULE = on
+
+ifeq ($(ARCH), aarch64)
+	TARGET_PLATFORM=linux/arm64
+endif
 
 # process build tags
 
@@ -161,7 +165,7 @@ build: go.sum $(BUILDDIR)/ dbbackend $(LIBSODIUM_TARGET)
 	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go build -mod=readonly $(BUILD_FLAGS) $(BUILD_ARGS) ./...
 
 build-static: go.sum $(BUILDDIR)/
-	docker build -t line/finschianode:latest -f builders/Dockerfile.static . --build-arg ARCH=$(ARCH) --platform="linux/$(PLATFORM)"
+	docker build -t line/finschianode:latest -f builders/Dockerfile.static . --build-arg ARCH=$(ARCH) --platform="$(TARGET_PLATFORM)"
 
 build-static-centos7: go.sum $(BUILDDIR)/
 	docker build -t line/finschia-builder:static_centos7 -f builders/Dockerfile.static_centos7 .
@@ -233,7 +237,7 @@ dbbackend:
 endif
 
 build-docker:
-	docker build --build-arg FINSCHIA_BUILD_OPTIONS="$(FINSCHIA_BUILD_OPTIONS)" --build-arg ARCH=$(ARCH) -t line/lbm . --platform="linux/$(PLATFORM)"
+	docker build --build-arg FINSCHIA_BUILD_OPTIONS="$(FINSCHIA_BUILD_OPTIONS)" --build-arg ARCH=$(ARCH) -t line/lbm . --platform="$(TARGET_PLATFORM)"
 
 build-contract-tests-hooks:
 	mkdir -p $(BUILDDIR)

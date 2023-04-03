@@ -43,6 +43,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Bug Fixes
 
 ### Breaking Changes
+* (ibc-go)[\#164](https://github.com/line/finschia/pull/164) bump up ibc-go v3.3.2 for change ibc light client of Ostracon to Tendermint
 
 ### Build, CI
 

@@ -45,6 +45,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Breaking Changes
 
 ### Build, CI
+* (ci)[\#163](https://github.com/line/finschia/pull/163) fix `release-build` ci error occurred when adding assets after tagging
 
 ### Docs
 

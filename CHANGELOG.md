@@ -41,11 +41,13 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Improvements
 
 ### Bug Fixes
+* (lbm-sdk) [\#162](https://github.com/line/finschia/pull/162) Bump github.com/line/lbm-sdk from v0.47.0-rc2 to v0.47.0-rc3
 
 ### Breaking Changes
 * (ibc-go)[\#164](https://github.com/line/finschia/pull/164) bump up ibc-go v3.3.2 for change ibc light client of Ostracon to Tendermint
 
 ### Build, CI
+* (ci)[\#163](https://github.com/line/finschia/pull/163) fix `release-build` ci error occurred when adding assets after tagging
 
 ### Docs
 

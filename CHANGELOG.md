@@ -49,6 +49,8 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (ci)[\#163](https://github.com/line/finschia/pull/163) fix `release-build` ci error occurred when adding assets after tagging
 
 ### Docs
+* (doc)[\#165](https://github.com/line/finschia/pull/165) update license notice and code_of_conduct
+
 
 ## [v1.0.0-rc2](https://github.com/line/lbm/releases/tag/v1.0.0-rc2) - 2023-03-29
 

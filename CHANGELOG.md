@@ -41,6 +41,17 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Improvements
 
 ### Bug Fixes
+
+### Breaking Changes
+
+### Build, CI
+
+### Docs
+
+
+## [v1.0.0-rc3](https://github.com/line/lbm/releases/tag/v1.0.0-rc3) - 2023-04-03
+
+### Bug Fixes
 * (lbm-sdk) [\#162](https://github.com/line/finschia/pull/162) Bump github.com/line/lbm-sdk from v0.47.0-rc2 to v0.47.0-rc3
 
 ### Breaking Changes

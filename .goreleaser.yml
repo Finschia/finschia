@@ -15,7 +15,7 @@ builds:
     - -mod=readonly
     - -tags=netgo ledger
   ldflags:
-    - -X github.com/line/lbm-sdk/version.Name=fisnchia
+    - -X github.com/line/lbm-sdk/version.Name=finschia
     - -X github.com/line/lbm-sdk/version.ServerName=finschia
     - -X github.com/line/lbm-sdk/version.Version={{ .Version }}
     - -X github.com/line/lbm-sdk/version.Commit={{ .FullCommit }}

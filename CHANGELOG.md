@@ -48,6 +48,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Build, CI
 
 ### Docs
+* (license) [\#170](https://github.com/line/finschia/pull/170) fix license copyright holder and typo
 
 
 ## [v1.0.0-rc4](https://github.com/line/lbm/releases/tag/v1.0.0-rc4) - 2023-04-08

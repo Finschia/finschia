@@ -422,8 +422,8 @@ github.com/line/lbm-sdk v0.47.0-rc4.0.20230410115856-b8421116b3f2 h1:UOr6OFtnyPQ
 github.com/line/lbm-sdk v0.47.0-rc4.0.20230410115856-b8421116b3f2/go.mod h1:JrjVsj1KaVtkHbAC8X3gwRIhM8A6vE2k17W6iWbNv3o=
 github.com/line/ostracon v1.0.9 h1:LcDAQKeQyk5Q/As2Qfkqv5Sl8Tl4fUhRSuXg2q4XfAQ=
 github.com/line/ostracon v1.0.9/go.mod h1:WHeAYlDEWvR1oKxw8UVYFa9AJVa3uaGDdDxkrZA5kEY=
-github.com/line/wasmd v0.1.2-0.20230403061848-514953c0b244 h1:C+9EOgVJ6iQ0V4mJDvVLv5x/ARojW/s1mgJ5u+BVA6U=
-github.com/line/wasmd v0.1.2-0.20230403061848-514953c0b244/go.mod h1:28FzgJBcOUQJulgR9Bhh1J98FEEWbO7HR64KB/zfUo4=
+github.com/line/wasmd v0.1.2 h1:gvSP6JTb/ouFKjDIZ70Aurvx0L3ZzxnwWaMf355+RGY=
+github.com/line/wasmd v0.1.2/go.mod h1:28FzgJBcOUQJulgR9Bhh1J98FEEWbO7HR64KB/zfUo4=
 github.com/line/wasmvm v1.1.1-0.11.2 h1:dkwlXSBXQR4aEP8B7RkN4TXqjFbsB2QHPYtsJKlNHmQ=
 github.com/line/wasmvm v1.1.1-0.11.2/go.mod h1:Lq3FVvi/rb+OOlTxqtcqcao2GGESQ4hUpuXMcjdJbco=
 github.com/magiconair/properties v1.8.0/go.mod h1:PppfXfuXeibc/6YijjN8zIbojt8czPbwD3XqdrwzmxQ=

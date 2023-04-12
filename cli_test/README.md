@@ -33,7 +33,7 @@ func TestMyNewCommand(t *testing.T) {
 This boilerplate above:
 
 - Ensures the tests run in parallel. Because the tests are calling out to `os/exec` for many operations these tests can take a long time to run.
-- Creates `.fisnchia` folder in a new temp folder.
+- Creates `.finschia` folder in a new temp folder.
 - Uses `fnsad` to create 2 accounts for use in testing: `foo` and `bar`
 - Creates a genesis file with coins (`1000footoken,1000feetoken,150stake`) controlled by the `foo` key
 - Generates an initial bonding transaction (`gentx`) to make the `foo` key a validator at genesis

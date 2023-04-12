@@ -62,7 +62,7 @@ fnsad version --long
 
 ```bash
 name: finschia
-server_name: fisnchia
+server_name: finschia
 version: 1.0.0
 commit: 8692310a5361006f8c02d44cd7df2d41f130089b
 build_tags: netgo,goleveldb

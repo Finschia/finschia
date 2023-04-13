@@ -8,7 +8,7 @@ require (
 	github.com/line/ibc-go/v3 v3.3.2
 	github.com/line/lbm-sdk v0.47.0-rc4.0.20230410115856-b8421116b3f2
 	github.com/line/ostracon v1.0.9
-	github.com/line/wasmd v0.1.2-0.20230403061848-514953c0b244
+	github.com/line/wasmd v0.1.2
 	github.com/prometheus/client_golang v1.14.0
 	github.com/rakyll/statik v0.1.7
 	github.com/spf13/cast v1.5.0

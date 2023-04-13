@@ -39,15 +39,24 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Features
 
 ### Improvements
+
+### Bug Fixes
+
+### Breaking Changes
+
+### Build, CI
+
+### Docs
+
+
+## [v1.0.0-rc5](https://github.com/line/lbm/releases/tag/v1.0.0-rc5) - 2023-04-13
+
+### Improvements
 * (wasmd) [\#171](https://github.com/line/finschia/pull/171) bump up wasmd from v0.1.2-0.20230403061848-514953c0b244 to v0.1.2
 
 ### Bug Fixes
 * (lbm-sdk) [\#168](https://github.com/line/finschia/pull/168) Bump github.com/line/lbm-sdk from v0.47.0-rc4 to v0.47.0-rc4.0.20230410115856-b8421116b3f2
 * (lbm-sdk) [\#172](https://github.com/line/finschia/pull/172) Bump github.com/line/lbm-sdk from v0.47.0-rc4.0.20230410115856-b8421116b3f2 to v0.47.0-rc5
-
-### Breaking Changes
-
-### Build, CI
 
 ### Docs
 * (license) [\#170](https://github.com/line/finschia/pull/170) fix license copyright holder and typo

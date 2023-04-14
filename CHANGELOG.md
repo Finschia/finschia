@@ -57,6 +57,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Bug Fixes
 * (lbm-sdk) [\#168](https://github.com/line/finschia/pull/168) Bump github.com/line/lbm-sdk from v0.47.0-rc4 to v0.47.0-rc4.0.20230410115856-b8421116b3f2
 * (lbm-sdk) [\#172](https://github.com/line/finschia/pull/172) Bump github.com/line/lbm-sdk from v0.47.0-rc4.0.20230410115856-b8421116b3f2 to v0.47.0-rc5
+* (lbm-sdk) [\#174](https://github.com/line/finschia/pull/174) bump up lbm-sdk from v0.47.0-rc5 to v0.47.0-rc5.0.20230414034539-489c442416cd
 
 ### Docs
 * (license) [\#170](https://github.com/line/finschia/pull/170) fix license copyright holder and typo

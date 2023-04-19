@@ -5,7 +5,7 @@
   * rename the following dependencies (and update scripts when necessary)
     * github.com/line/lbm-sdk => github.com/Finschia/finschia-sdk
     * github.com/line/ostracon => github.com/Finschia/ostracon
-    * github.com/line/ibc-go => github.com/FInschia/ibc-go
+    * github.com/line/ibc-go => github.com/Finschia/ibc-go
     * github.com/line/wasmd => github.com/Finschia/wasmd
   * bump up Finschia/finschia-sdk
     * chore: change import path to github.com/Finschia/finschia-sdk

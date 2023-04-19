@@ -9,8 +9,8 @@
     * github.com/line/wasmd => github.com/Finschia/wasmd
   * bump up Finschia/finschia-sdk
     * chore: change import path to github.com/Finschia/finschia-sdk
-      fix: not to throw error when no txs in block
-      refactor: refactor x/token,collection query errors
+    * fix: not to throw error when no txs in block
+    * refactor: refactor x/token,collection query errors
   * change the ci runners from self-hosted to ubuntu-latest
 
 ## Base sub modules

@@ -165,11 +165,11 @@ build: go.sum $(BUILDDIR)/ dbbackend $(LIBSODIUM_TARGET)
 	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go build -mod=readonly $(BUILD_FLAGS) $(BUILD_ARGS) ./...
 
 build-static: go.sum $(BUILDDIR)/
-	docker build -t line/finschianode:latest -f builders/Dockerfile.static . --build-arg ARCH=$(ARCH) --platform="$(TARGET_PLATFORM)"
+	docker build -t finschia/finschianode:latest -f builders/Dockerfile.static . --build-arg ARCH=$(ARCH) --platform="$(TARGET_PLATFORM)"
 
 build-static-centos7: go.sum $(BUILDDIR)/
-	docker build -t line/finschia-builder:static_centos7 -f builders/Dockerfile.static_centos7 .
-	docker run -it --rm -v $(shell pwd):/code -e FINSCHIA_BUILD_OPTIONS="$(FINSCHIA_BUILD_OPTIONS)" line/finschia-builder:static_centos7
+	docker build -t finschia/finschia-builder:static_centos7 -f builders/Dockerfile.static_centos7 .
+	docker run -it --rm -v $(shell pwd):/code -e FINSCHIA_BUILD_OPTIONS="$(FINSCHIA_BUILD_OPTIONS)" finschia/finschia-builder:static_centos7
 
 # USAGE: go env -w GOARCH={amd64|arm64} && make clean build-release-bundle VERSION=v0.0.0
 RELEASE_BUNDLE=finschia-$(VERSION)-$(shell go env GOOS)-$(shell go env GOARCH)
@@ -237,7 +237,7 @@ dbbackend:
 endif
 
 build-docker:
-	docker build --build-arg FINSCHIA_BUILD_OPTIONS="$(FINSCHIA_BUILD_OPTIONS)" --build-arg ARCH=$(ARCH) -t line/finschia . --platform="$(TARGET_PLATFORM)"
+	docker build --build-arg FINSCHIA_BUILD_OPTIONS="$(FINSCHIA_BUILD_OPTIONS)" --build-arg ARCH=$(ARCH) -t finschia/finschianode . --platform="$(TARGET_PLATFORM)"
 
 build-contract-tests-hooks:
 	mkdir -p $(BUILDDIR)

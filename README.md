@@ -1,13 +1,13 @@
 # Finschia
 
-[![codecov](https://codecov.io/gh/line/lbm/branch/main/graph/badge.svg?token=JFFuUevpzJ)](https://codecov.io/gh/line/lbm)
-[![license](https://img.shields.io/github/license/line/finschia.svg)](https://github.com/line/finschia/blob/main/LICENSE)
-[![LoC](https://tokei.rs/b1/github/line/finschia)](https://github.com/line/finschia)
-[![Go Report Card](https://goreportcard.com/badge/github.com/line/finschia)](https://goreportcard.com/report/github.com/line/finschia)
-[![GolangCI](https://golangci.com/badges/github.com/line/finschia.svg)](https://golangci.com/r/github.com/line/finschia)
+[![codecov](https://codecov.io/gh/Finschia/finschia/branch/main/graph/badge.svg?token=JFFuUevpzJ)](https://codecov.io/gh/Finschia/finschia)
+[![license](https://img.shields.io/github/license/Finschia/finschia.svg)](https://github.com/Finschia/finschia/blob/main/LICENSE)
+[![LoC](https://tokei.rs/b1/github/Finschia/finschia)](https://github.com/Finschia/finschia)
+[![Go Report Card](https://goreportcard.com/badge/github.com/Finschia/finschia)](https://goreportcard.com/report/github.com/Finschia/finschia)
+[![GolangCI](https://golangci.com/badges/github.com/Finschia/finschia.svg)](https://golangci.com/r/github.com/Finschia/finschia)
 
 
-This repository hosts `Finschia`. This repository is forked from [gaia](https://github.com/cosmos/gaia) at 2021-03-15. Finschia is a mainnet app implementation using [lbm-sdk](https://github.com/line/lbm-sdk), [ostracon](https://github.com/line/ostracon), [wasmd](https://github.com/line/wasmd) and [ibc-go](https://github.com/line/ibc-go).
+This repository hosts `Finschia`. This repository is forked from [gaia](https://github.com/cosmos/gaia) at 2021-03-15. Finschia is a mainnet app implementation using [finschia-sdk](https://github.com/Finschia/finschia-sdk), [ostracon](https://github.com/Finschia/ostracon), [wasmd](https://github.com/Finschia/wasmd) and [ibc-go](https://github.com/Finschia/ibc-go).
 
 **Node**: Requires [Go 1.18+](https://golang.org/dl/)
 

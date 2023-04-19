@@ -5,7 +5,7 @@ parent:
 
 # Updating the docs
 
-If you want to open a PR on Finschia to update the documentation, please follow the guidelines in the [`CONTRIBUTING.md`](https://github.com/line/finschia/tree/main/CONTRIBUTING.md)
+If you want to open a PR on Finschia to update the documentation, please follow the guidelines in the [`CONTRIBUTING.md`](https://github.com/Finschia/finschia/tree/main/CONTRIBUTING.md)
 
 ## Docs Build Workflow
 
@@ -13,7 +13,7 @@ The documentation for Finschia is hosted at:
 
 - https://docs-blockchain.line.biz
 
-built from the files in this (`/docs`) directory for [main](https://github.com/line/finschia/tree/main/docs)
+built from the files in this (`/docs`) directory for [main](https://github.com/Finschia/finschia/tree/main/docs)
 
 ## README
 

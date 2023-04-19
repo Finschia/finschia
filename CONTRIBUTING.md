@@ -3,11 +3,11 @@
 First of all, thank you so much for taking your time to contribute!
 It will be amazing if you could help us by doing any of the following:
 
-- File an issue in [the issue tracker](https://github.com/line/finschia/issues) to report bugs and propose new features and
+- File an issue in [the issue tracker](https://github.com/Finschia/finschia/issues) to report bugs and propose new features and
   improvements.
-- Ask a question by creating a new issue in [the issue tracker](https://github.com/line/finschia/issues).
-  - Browse [the list of previously answered questions](https://github.com/line/finschia/issues?q=label%3Aquestion).
-- Contribute your work by sending [a pull request](https://github.com/line/finschia/pulls).
+- Ask a question by creating a new issue in [the issue tracker](https://github.com/Finschia/finschia/issues).
+  - Browse [the list of previously answered questions](https://github.com/Finschia/finschia/issues?q=label%3Aquestion).
+- Contribute your work by sending [a pull request](https://github.com/Finschia/finschia/pulls).
 
 ## Contributor license agreement
 
@@ -17,7 +17,7 @@ the ICLA (individual contributor license agreement). Please
 
 ## Code of conduct
 
-We expect contributors to follow [our code of conduct](https://github.com/line/finschia/blob/main/CODE_OF_CONDUCT.md).
+We expect contributors to follow [our code of conduct](https://github.com/Finschia/finschia/blob/main/CODE_OF_CONDUCT.md).
 
 ## Commit message and Pull Request message
 
@@ -52,12 +52,12 @@ Please note that Go requires code to live under absolute paths, which complicate
 While my fork lives at `https://github.com/someone/finschia`,
 the code should never exist at `$GOPATH/src/github.com/someone/finschia`.
 Instead, we use `git remote` to add the fork as a new remote for the original repo,
-`$GOPATH/src/github.com/line/finschia`, and do all the work there.
+`$GOPATH/src/github.com/Finschia/finschia`, and do all the work there.
 
 For instance, to create a fork and work on a branch of it, I would:
 
 - Create the fork on github, using the fork button.
-- Go to the original repo checked out locally (i.e. `$GOPATH/src/github.com/line/finschia`)
+- Go to the original repo checked out locally (i.e. `$GOPATH/src/github.com/Finschia/finschia`)
 - `git remote rename origin upstream`
 - `git remote add origin git@github.com:someone/finschia.git`
 
@@ -132,7 +132,7 @@ should be targeted against the release candidate branch.
 - `main` must never fail `make lint test test-race`
 - `main` should not fail `make lint`
 - no `--force` onto `main` (except when reverting a broken commit, which should seldom happen)
-- create a development branch either on github.com/line/finschia, or your fork (using `git remote add origin`)
+- create a development branch either on github.com/Finschia/finschia, or your fork (using `git remote add origin`)
 - before submitting a pull request, begin `git rebase` on top of `main`
 
 ### Pull Merge Procedure

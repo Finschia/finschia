@@ -8,11 +8,11 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/line/lbm-sdk/client/flags"
-	"github.com/line/lbm-sdk/crypto/keys/ed25519"
-	sdk "github.com/line/lbm-sdk/types"
+	"github.com/Finschia/finschia-sdk/client/flags"
+	"github.com/Finschia/finschia-sdk/crypto/keys/ed25519"
+	sdk "github.com/Finschia/finschia-sdk/types"
 
-	"github.com/line/finschia/app"
+	"github.com/Finschia/finschia/app"
 )
 
 func TestMultiValidatorAndSendTokens(t *testing.T) {

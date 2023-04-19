@@ -3,7 +3,7 @@ package app
 import (
 	"encoding/json"
 
-	"github.com/line/lbm-sdk/codec"
+	"github.com/Finschia/finschia-sdk/codec"
 )
 
 // GenesisState

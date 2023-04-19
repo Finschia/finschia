@@ -45,32 +45,33 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Breaking Changes
 
 ### Build, CI
+* (finschia-sdk,ostracon,wasmd,ibc-go) [\#176](https://github.com/Finschia/finschia/pull/176) Rename and bump up dependencies
 
 ### Docs
 
 
-## [v1.0.0-rc5](https://github.com/line/lbm/releases/tag/v1.0.0-rc5) - 2023-04-13
+## [v1.0.0-rc5](https://github.com/Finschia/finschia/releases/tag/v1.0.0-rc5) - 2023-04-13
 
 ### Improvements
-* (wasmd) [\#171](https://github.com/line/finschia/pull/171) bump up wasmd from v0.1.2-0.20230403061848-514953c0b244 to v0.1.2
+* (wasmd) [\#171](https://github.com/Finschia/finschia/pull/171) bump up wasmd from v0.1.2-0.20230403061848-514953c0b244 to v0.1.2
 
 ### Bug Fixes
-* (lbm-sdk) [\#168](https://github.com/line/finschia/pull/168) Bump github.com/line/lbm-sdk from v0.47.0-rc4 to v0.47.0-rc4.0.20230410115856-b8421116b3f2
-* (lbm-sdk) [\#172](https://github.com/line/finschia/pull/172) Bump github.com/line/lbm-sdk from v0.47.0-rc4.0.20230410115856-b8421116b3f2 to v0.47.0-rc5
-* (lbm-sdk) [\#174](https://github.com/line/finschia/pull/174) bump up lbm-sdk from v0.47.0-rc5 to v0.47.0-rc5.0.20230414034539-489c442416cd
+* (lbm-sdk) [\#168](https://github.com/Finschia/finschia/pull/168) Bump github.com/line/lbm-sdk from v0.47.0-rc4 to v0.47.0-rc4.0.20230410115856-b8421116b3f2
+* (lbm-sdk) [\#172](https://github.com/Finschia/finschia/pull/172) Bump github.com/line/lbm-sdk from v0.47.0-rc4.0.20230410115856-b8421116b3f2 to v0.47.0-rc5
+* (lbm-sdk) [\#174](https://github.com/Finschia/finschia/pull/174) bump up lbm-sdk from v0.47.0-rc5 to v0.47.0-rc5.0.20230414034539-489c442416cd
 
 ### Docs
-* (license) [\#170](https://github.com/line/finschia/pull/170) fix license copyright holder and typo
+* (license) [\#170](https://github.com/Finschia/finschia/pull/170) fix license copyright holder and typo
 
 
-## [v1.0.0-rc4](https://github.com/line/lbm/releases/tag/v1.0.0-rc4) - 2023-04-08
+## [v1.0.0-rc4](https://github.com/Finschia/finschia/releases/tag/v1.0.0-rc4) - 2023-04-08
 
 ### Features
 
 ### Improvements
 
 ### Bug Fixes
-* (lbm-sdk) [\#167](https://github.com/line/finschia/pull/167) Bump github.com/line/lbm-sdk from v0.47.0-rc3 to v0.47.0-rc4
+* (lbm-sdk) [\#167](https://github.com/Finschia/finschia/pull/167) Bump github.com/line/lbm-sdk from v0.47.0-rc3 to v0.47.0-rc4
 
 ### Breaking Changes
 
@@ -79,63 +80,63 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Docs
 
 
-## [v1.0.0-rc3](https://github.com/line/lbm/releases/tag/v1.0.0-rc3) - 2023-04-03
+## [v1.0.0-rc3](https://github.com/Finschia/finschia/releases/tag/v1.0.0-rc3) - 2023-04-03
 
 ### Bug Fixes
-* (lbm-sdk) [\#162](https://github.com/line/finschia/pull/162) Bump github.com/line/lbm-sdk from v0.47.0-rc2 to v0.47.0-rc3
+* (lbm-sdk) [\#162](https://github.com/Finschia/finschia/pull/162) Bump github.com/line/lbm-sdk from v0.47.0-rc2 to v0.47.0-rc3
 
 ### Breaking Changes
-* (ibc-go)[\#164](https://github.com/line/finschia/pull/164) bump up ibc-go v3.3.2 for change ibc light client of Ostracon to Tendermint
+* (ibc-go)[\#164](https://github.com/Finschia/finschia/pull/164) bump up ibc-go v3.3.2 for change ibc light client of Ostracon to Tendermint
 
 ### Build, CI
-* (ci)[\#163](https://github.com/line/finschia/pull/163) fix `release-build` ci error occurred when adding assets after tagging
+* (ci)[\#163](https://github.com/Finschia/finschia/pull/163) fix `release-build` ci error occurred when adding assets after tagging
 
 ### Docs
-* (doc)[\#165](https://github.com/line/finschia/pull/165) update license notice and code_of_conduct
+* (doc)[\#165](https://github.com/Finschia/finschia/pull/165) update license notice and code_of_conduct
 
 
-## [v1.0.0-rc2](https://github.com/line/lbm/releases/tag/v1.0.0-rc2) - 2023-03-29
+## [v1.0.0-rc2](https://github.com/Finschia/finschia/releases/tag/v1.0.0-rc2) - 2023-03-29
 
 ### Improvements
-* (x/wasmd) [\#158](https://github.com/line/finschia/pull/158) bump up wasmd version to v0.1.0
-* (lbm-sdk) [\#159](https://github.com/line/finschia/pull/159) Bump github.com/line/lbm-sdk from v0.47.0-rc1 to v0.47.0-rc2
+* (x/wasmd) [\#158](https://github.com/Finschia/finschia/pull/158) bump up wasmd version to v0.1.0
+* (lbm-sdk) [\#159](https://github.com/Finschia/finschia/pull/159) Bump github.com/line/lbm-sdk from v0.47.0-rc1 to v0.47.0-rc2
 
 ### Build, CI
-* (build) [\#157](https://github.com/line/finschia/pull/157) add build args
+* (build) [\#157](https://github.com/Finschia/finschia/pull/157) add build args
 
 ### Docs
-* (doc) [\#156](https://github.com/line/finschia/pull/156) modify broken link or typo doc file and add issue and pr template
+* (doc) [\#156](https://github.com/Finschia/finschia/pull/156) modify broken link or typo doc file and add issue and pr template
 
 
-## [v1.0.0-rc1](https://github.com/line/lbm/releases/tag/v1.0.0-rc1) - 2023-03-24
+## [v1.0.0-rc1](https://github.com/Finschia/finschia/releases/tag/v1.0.0-rc1) - 2023-03-24
 
 ### Features
-* (build) [\#150](https://github.com/line/lbm/pull/150) Modify the Makefile to build release bundles
-* (build) [\#153](https://github.com/line/finschia/pull/153) rename cli name to `fnsad`
-* (lbm-sdk) [\#154](https://github.com/line/finschia/pull/154) Bump github.com/line/lbm-sdk from v0.47.0-alpha1.0.20230214070148-11966d123415 to v0.47.0-rc1
+* (build) [\#150](https://github.com/Finschia/finschia/pull/150) Modify the Makefile to build release bundles
+* (build) [\#153](https://github.com/Finschia/finschia/pull/153) rename cli name to `fnsad`
+* (lbm-sdk) [\#154](https://github.com/Finschia/finschia/pull/154) Bump github.com/line/lbm-sdk from v0.47.0-alpha1.0.20230214070148-11966d123415 to v0.47.0-rc1
 
 ### Improvements
-* (x/wasmd) [\#147](https://github.com/line/lbm/pull/147) update wasmd version
+* (x/wasmd) [\#147](https://github.com/Finschia/finschia/pull/147) update wasmd version
 
 
-## [v1.0.0-rc0](https://github.com/line/lbm/releases/tag/v1.0.0-rc0) - 2023-02-16
+## [v1.0.0-rc0](https://github.com/Finschia/finschia/releases/tag/v1.0.0-rc0) - 2023-02-16
 
 ### Features
-* (build) [\#126](https://github.com/line/lbm/pull/126) Automatically generates release note and binaries
-* (x/wasmd) [\#129](https://github.com/line/lbm/pull/129) chore: apply detached x/wasmd
-* (build) [\#130](https://github.com/line/lbm/pull/130) Add a release build for the linux/arm64, darwin/amd64, and darwin/arm64 platform
-* (lbm-sdk) [\#137](https://github.com/line/lbm/pull/137) Bump line/lbm-sdk to 6c84a4cffa
-* (x/collection,token) [\#138](https://github.com/line/lbm/pull/138) Add x/token and x/collection
-* (ibc-go) [\#140](https://github.com/line/lbm/pull/140) apply ibc-go
-* (x/wasmplus) [\#141](https://github.com/line/lbm/pull/141) change wasm module to wrapped `x/wasmplus`
-* (lbm-sdk) [\#144](https://github.com/line/lbm/pull/144) bump line/lbm-sdk v0.47.0-alpha1 (11966d1234155ebef20b64f2ae7a905beffdb33f) 
+* (build) [\#126](https://github.com/Finschia/finschia/pull/126) Automatically generates release note and binaries
+* (x/wasmd) [\#129](https://github.com/Finschia/finschia/pull/129) chore: apply detached x/wasmd
+* (build) [\#130](https://github.com/Finschia/finschia/pull/130) Add a release build for the linux/arm64, darwin/amd64, and darwin/arm64 platform
+* (lbm-sdk) [\#137](https://github.com/Finschia/finschia/pull/137) Bump line/lbm-sdk to 6c84a4cffa
+* (x/collection,token) [\#138](https://github.com/Finschia/finschia/pull/138) Add x/token and x/collection
+* (ibc-go) [\#140](https://github.com/Finschia/finschia/pull/140) apply ibc-go
+* (x/wasmplus) [\#141](https://github.com/Finschia/finschia/pull/141) change wasm module to wrapped `x/wasmplus`
+* (lbm-sdk) [\#144](https://github.com/Finschia/finschia/pull/144) bump line/lbm-sdk v0.47.0-alpha1 (11966d1234155ebef20b64f2ae7a905beffdb33f) 
 
 ### Breaking Changes
-* (api) [\#123](https://github.com/line/lbm/pull/123) remove legacy REST API routes
+* (api) [\#123](https://github.com/Finschia/finschia/pull/123) remove legacy REST API routes
 
 ### Build, CI
-* (ci) [\#145](https://github.com/line/lbm/pull/145) add github action to push docker image to docker.io
+* (ci) [\#145](https://github.com/Finschia/finschia/pull/145) add github action to push docker image to docker.io
 
 
 <!-- Release links -->
-[Unreleased]: https://github.com/line/lbm/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/Finschia/finschia/compare/v0.7.0...HEAD

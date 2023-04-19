@@ -4,20 +4,20 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/line/lbm-sdk/client"
-	"github.com/line/lbm-sdk/client/tx"
-	cryptotypes "github.com/line/lbm-sdk/crypto/types"
-	"github.com/line/lbm-sdk/simapp"
-	"github.com/line/lbm-sdk/testutil/testdata"
-	sdk "github.com/line/lbm-sdk/types"
-	"github.com/line/lbm-sdk/types/tx/signing"
-	xauthsigning "github.com/line/lbm-sdk/x/auth/signing"
-	ocrand "github.com/line/ostracon/libs/rand"
+	"github.com/Finschia/finschia-sdk/client"
+	"github.com/Finschia/finschia-sdk/client/tx"
+	cryptotypes "github.com/Finschia/finschia-sdk/crypto/types"
+	"github.com/Finschia/finschia-sdk/simapp"
+	"github.com/Finschia/finschia-sdk/testutil/testdata"
+	sdk "github.com/Finschia/finschia-sdk/types"
+	"github.com/Finschia/finschia-sdk/types/tx/signing"
+	xauthsigning "github.com/Finschia/finschia-sdk/x/auth/signing"
+	ocrand "github.com/Finschia/ostracon/libs/rand"
 	"github.com/stretchr/testify/suite"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
-	linkapp "github.com/line/finschia/app"
-	linkhelpers "github.com/line/finschia/app/helpers"
+	linkapp "github.com/Finschia/finschia/app"
+	linkhelpers "github.com/Finschia/finschia/app/helpers"
 )
 
 type IntegrationTestSuite struct {

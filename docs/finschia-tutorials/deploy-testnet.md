@@ -10,7 +10,7 @@ This document describes 3 ways to setup a network of `Finschia` nodes, each serv
 2. Multi-node, local, automated testnet
 3. Multi-node, remote, automated testnet
 
-Supporting code can be found in the [networks directory](https://github.com/line/finschia/tree/main/networks) and additionally the `local` or `remote` sub-directories.
+Supporting code can be found in the [networks directory](https://github.com/Finschia/finschia/tree/main/networks) and additionally the `local` or `remote` sub-directories.
 
 > NOTE: The `remote` network bootstrapping may be out of sync with the latest releases and is not to be relied upon.
 
@@ -58,7 +58,7 @@ This setup puts all the data for `Finschia` in `~/.finschia`. You can examine th
 
 ## Multi-node, Local, Automated Testnet
 
-From the [networks/local directory](https://github.com/line/finschia/tree/main/networks/local):
+From the [networks/local directory](https://github.com/Finschia/finschia/tree/main/networks/local):
 
 ### Requirements
 
@@ -68,11 +68,11 @@ From the [networks/local directory](https://github.com/line/finschia/tree/main/n
 
 ### Build
 
-Build the `fnsad` binary (linux) and the `line/finschianode` docker image required for running the `localnet` commands. This binary will be mounted into the container and can be updated rebuilding the image, so you only need to build the image once.
+Build the `fnsad` binary (linux) and the `finschia/finschianode` docker image required for running the `localnet` commands. This binary will be mounted into the container and can be updated rebuilding the image, so you only need to build the image once.
 
 ```bash
 # Clone the finschia repo
-git clone https://github.com/line/finschia.git
+git clone https://github.com/Finschia/finschia.git
 
 # Work from the finschia repo
 cd finschia
@@ -80,7 +80,7 @@ cd finschia
 # Build the linux binary in ./build
 make build-linux
 
-# Build line/finschianode image
+# Build finschia/finschianode image
 make build-docker-finschianode
 ```
 
@@ -197,7 +197,7 @@ BINARY=fnsad make localnet-start
 
 ## Multi-Node, Remote, Automated Testnet
 
-The following should be run from the [networks directory](https://github.com/line/finschia/tree/main/networks).
+The following should be run from the [networks directory](https://github.com/Finschia/finschia/tree/main/networks).
 
 ### Terraform & Ansible
 

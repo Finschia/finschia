@@ -5,14 +5,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/line/ostracon/libs/log"
-	octypes "github.com/line/ostracon/types"
+	"github.com/Finschia/ostracon/libs/log"
+	octypes "github.com/Finschia/ostracon/types"
 	"github.com/stretchr/testify/require"
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
 
-	linkapp "github.com/line/finschia/app"
+	linkapp "github.com/Finschia/finschia/app"
 )
 
 // SimAppChainID hardcoded chainID for simulation

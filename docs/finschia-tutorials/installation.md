@@ -21,23 +21,23 @@ source ~/.bash_profile
 ```
 
 ::: tip
-**Go 1.18+** is required for the LBM SDK.
+**Go 1.18+** is required for the Finschia SDK.
 :::
 
 ## Install the binaries
 
 Next, let's install the latest version of Gaia. Make sure you `git checkout` the
-correct [released version](https://github.com/line/finschia/releases).
+correct [released version](https://github.com/Finschia/finschia/releases).
 
 ```bash
-git clone -b <latest-release-tag> https://github.com/line/finschia
+git clone -b <latest-release-tag> https://github.com/Finschia/finschia
 cd finschia && make install
 ```
 
 If this command fails due to the following error message, you might have already set `LDFLAGS` prior to running this step.
 
 ```
-# github.com/line/finschia/cmd/fnsad
+# github.com/Finschia/finschia/cmd/fnsad
 flag provided but not defined: -L
 usage: link [options] main.o
 ...
@@ -92,6 +92,6 @@ Build tags indicate special features that have been enabled in the binary.
 To test any changes made in the SDK or Ostracon, a `replace` clause needs to be added to `go.mod` providing the correct import path.
 
 - Make appropriate changes
-- Add `replace github.com/line/lbm-sdk => /path/to/clone/lbm-sdk` to `go.mod`
+- Add `replace github.com/Finschia/finschia-sdk => /path/to/clone/finschia-sdk` to `go.mod`
 - Run `make clean install` or `make clean build`
 - Test changes

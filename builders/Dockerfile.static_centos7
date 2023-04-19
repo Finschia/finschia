@@ -1,8 +1,8 @@
 # make image
-# > docker build -t line/finschia-builder:static -f builders/Dockerfile.static_centos7 .
+# > docker build -t finschia/finschia-builder:static -f builders/Dockerfile.static_centos7 .
 #
 # run build
-# > docker run -it --rm -v $(pwd):/code line/finschia-builder:static_centos7
+# > docker run -it --rm -v $(pwd):/code finschia/finschia-builder:static_centos7
 #
 # make image and run build
 # > docker run -it --rm -v $(pwd):/code -e FINSCHIA_BUILD_OPTIONS=rocksdb $(docker build -f builders/Dockerfile.static_centos7 -q .)

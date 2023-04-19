@@ -13,8 +13,8 @@ endif
 
 PACKAGES_SIMTEST=$(shell go list ./... | grep '/simulation')
 LEDGER_ENABLED ?= true
-SDK_PACK := $(shell go list -m github.com/line/lbm-sdk | sed  's/ /\@/g')
-OST_VERSION := $(shell go list -m github.com/line/ostracon | sed 's:.* ::') # grab everything after the space in "github.com/line/ostracon v0.34.7"
+SDK_PACK := $(shell go list -m github.com/Finschia/finschia-sdk | sed  's/ /\@/g')
+OST_VERSION := $(shell go list -m github.com/Finschia/ostracon | sed 's:.* ::') # grab everything after the space in "github.com/Finschia/ostracon v0.34.7"
 DOCKER := $(shell which docker)
 BUILDDIR ?= $(CURDIR)/build
 TEST_DOCKER_REPO=jackzampolin/linktest
@@ -110,13 +110,13 @@ build_tags_comma_sep := $(subst $(whitespace),$(comma),$(build_tags))
 
 # process linker flags
 
-ldflags = -X github.com/line/lbm-sdk/version.Name=finschia \
-		  -X github.com/line/lbm-sdk/version.AppName=finschia \
-		  -X github.com/line/lbm-sdk/version.Version=$(VERSION) \
-		  -X github.com/line/lbm-sdk/version.Commit=$(COMMIT) \
-		  -X github.com/line/lbm-sdk/types.DBBackend=$(DB_BACKEND) \
-		  -X "github.com/line/lbm-sdk/version.BuildTags=$(build_tags_comma_sep)" \
-		  -X github.com/line/ostracon/version.TMCoreSemVer=$(OST_VERSION)
+ldflags = -X github.com/Finschia/finschia-sdk/version.Name=finschia \
+		  -X github.com/Finschia/finschia-sdk/version.AppName=finschia \
+		  -X github.com/Finschia/finschia-sdk/version.Version=$(VERSION) \
+		  -X github.com/Finschia/finschia-sdk/version.Commit=$(COMMIT) \
+		  -X github.com/Finschia/finschia-sdk/types.DBBackend=$(DB_BACKEND) \
+		  -X "github.com/Finschia/finschia-sdk/version.BuildTags=$(build_tags_comma_sep)" \
+		  -X github.com/Finschia/ostracon/version.TMCoreSemVer=$(OST_VERSION)
 
 ifeq ($(LINK_STATICALLY),true)
 	ldflags += -linkmode=external -extldflags "-Wl,-z,muldefs -static"
@@ -165,15 +165,15 @@ build: go.sum $(BUILDDIR)/ dbbackend $(LIBSODIUM_TARGET)
 	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go build -mod=readonly $(BUILD_FLAGS) $(BUILD_ARGS) ./...
 
 build-static: go.sum $(BUILDDIR)/
-	docker build -t line/finschianode:latest -f builders/Dockerfile.static . --build-arg ARCH=$(ARCH) --platform="$(TARGET_PLATFORM)"
+	docker build -t finschia/finschianode:latest -f builders/Dockerfile.static . --build-arg ARCH=$(ARCH) --platform="$(TARGET_PLATFORM)"
 
 build-static-centos7: go.sum $(BUILDDIR)/
-	docker build -t line/finschia-builder:static_centos7 -f builders/Dockerfile.static_centos7 .
-	docker run -it --rm -v $(shell pwd):/code -e FINSCHIA_BUILD_OPTIONS="$(FINSCHIA_BUILD_OPTIONS)" line/finschia-builder:static_centos7
+	docker build -t finschia/finschia-builder:static_centos7 -f builders/Dockerfile.static_centos7 .
+	docker run -it --rm -v $(shell pwd):/code -e FINSCHIA_BUILD_OPTIONS="$(FINSCHIA_BUILD_OPTIONS)" finschia/finschia-builder:static_centos7
 
 # USAGE: go env -w GOARCH={amd64|arm64} && make clean build-release-bundle VERSION=v0.0.0
 RELEASE_BUNDLE=finschia-$(VERSION)-$(shell go env GOOS)-$(shell go env GOARCH)
-LIBWASMVM_VERSION=$(shell go list -m github.com/line/wasmvm | awk '{print $$2}')
+LIBWASMVM_VERSION=$(shell go list -m github.com/Finschia/wasmvm | awk '{print $$2}')
 LIBWASMVM_PATH=$(shell find $(shell go env GOMODCACHE) -name $(LIBWASMVM) -type f | grep "$(LIBWASMVM_VERSION)")
 build-release-bundle: build
 	@if [ "$(shell go env GOOS)" != "$(shell go env GOHOSTOS)" ]; then echo "ERROR: OS not match"; exit 1; fi
@@ -237,7 +237,7 @@ dbbackend:
 endif
 
 build-docker:
-	docker build --build-arg FINSCHIA_BUILD_OPTIONS="$(FINSCHIA_BUILD_OPTIONS)" --build-arg ARCH=$(ARCH) -t line/lbm . --platform="$(TARGET_PLATFORM)"
+	docker build --build-arg FINSCHIA_BUILD_OPTIONS="$(FINSCHIA_BUILD_OPTIONS)" --build-arg ARCH=$(ARCH) -t finschia/finschianode . --platform="$(TARGET_PLATFORM)"
 
 build-contract-tests-hooks:
 	mkdir -p $(BUILDDIR)
@@ -330,7 +330,7 @@ lint:
 format:
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/lcd/statik/statik.go" | xargs gofmt -w -s
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/lcd/statik/statik.go" | xargs misspell -w
-	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/lcd/statik/statik.go" | xargs goimports -w -local github.com/line/lbm-sdk
+	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/lcd/statik/statik.go" | xargs goimports -w -local github.com/Finschia/finschia-sdk
 
 ###############################################################################
 ###                                Localnet                                 ###
@@ -343,7 +343,7 @@ build-docker-finschianode:
 localnet-start: localnet-stop build-static localnet-build-nodes
 
 localnet-build-nodes:
-	docker run --rm -v $(CURDIR)/mytestnet:/data line/finschianode \
+	docker run --rm -v $(CURDIR)/mytestnet:/data finschia/finschianode \
 			testnet init-files --v 4 -o /data --starting-ip-address 192.168.10.2 --keyring-backend=test
 	docker-compose up -d
 

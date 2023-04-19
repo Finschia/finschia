@@ -4,11 +4,11 @@ order: 1
 
 # What is Finschia?
 
-`fnsad` is the name of the LBM SDK application for a Finschia Mainnet. It comes with 2 main entrypoints:
+`fnsad` is the name of the Finschia SDK application for a Finschia Mainnet. It comes with 2 main entrypoints:
 
 - `fnsad`: The Finschia Daemon and command-line interface (CLI). runs a full-node of the `fnsad` application.
 
-`fnsad` is built on `x/wasm` module of WASMD, `x/ibc` module of IBC-GO and the LBM SDK using the following modules:
+`fnsad` is built on `x/wasm` module of WASMD, `x/ibc` module of IBC-GO and the Finschia SDK using the following modules:
 
 - `x/auth`: Accounts and signatures.
 - `x/bank`: Token transfers.

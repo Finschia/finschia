@@ -9,7 +9,7 @@ on:
 jobs:
   create_tarball:
     name: "Create Tarball"
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: "Set tag as version"
         run: echo "VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV  # set env.VERSION=v0.0.0
@@ -32,7 +32,7 @@ jobs:
   build_for_linux:
     name: "Release Build for Linux"
     needs: create_tarball
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         arch: [ amd64, arm64 ]
@@ -148,7 +148,7 @@ jobs:
     name: "Create Release"
     needs: [ build_for_linux ]
 #    needs: [ build_for_linux, build_for_darwin ]
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: "Set tag as version"
         run: echo "VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV  # set env.VERSION=v0.0.0

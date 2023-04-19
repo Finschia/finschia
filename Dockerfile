@@ -1,7 +1,7 @@
 # Simple usage with a mounted data directory:
-# > docker build --platform="linux/amd64" -t line/lbm . --build-arg ARCH=x86_64
-# > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.finschia:/root/.finschia -v line/lbm fnsad init
-# > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.finschia:/root/.finschia -v line/lbm fnsad start --rpc.laddr=tcp://0.0.0.0:26657 --p2p.laddr=tcp://0.0.0.0:26656
+# > docker build --platform="linux/amd64" -t finschia/finschianode . --build-arg ARCH=x86_64
+# > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.finschia:/root/.finschia -v finschia/finschianode fnsad init
+# > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.finschia:/root/.finschia -v finschia/finschianode fnsad start --rpc.laddr=tcp://0.0.0.0:26657 --p2p.laddr=tcp://0.0.0.0:26656
 FROM golang:1.18-alpine AS build-env
 ARG ARCH=$ARCH
 ARG FINSCHIA_BUILD_OPTIONS=""

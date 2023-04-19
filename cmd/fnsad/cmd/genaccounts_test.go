@@ -6,23 +6,23 @@ import (
 
 	"testing"
 
-	"github.com/line/lbm-sdk/crypto/hd"
-	"github.com/line/lbm-sdk/crypto/keyring"
-	sdk "github.com/line/lbm-sdk/types"
+	"github.com/Finschia/finschia-sdk/crypto/hd"
+	"github.com/Finschia/finschia-sdk/crypto/keyring"
+	sdk "github.com/Finschia/finschia-sdk/types"
 
-	"github.com/line/ostracon/libs/log"
+	"github.com/Finschia/ostracon/libs/log"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/require"
 
-	"github.com/line/lbm-sdk/client"
-	"github.com/line/lbm-sdk/client/flags"
-	"github.com/line/lbm-sdk/server"
-	"github.com/line/lbm-sdk/simapp"
-	simcmd "github.com/line/lbm-sdk/simapp/simd/cmd"
-	"github.com/line/lbm-sdk/testutil/testdata"
-	"github.com/line/lbm-sdk/types/module"
-	"github.com/line/lbm-sdk/x/genutil"
-	genutiltest "github.com/line/lbm-sdk/x/genutil/client/testutil"
+	"github.com/Finschia/finschia-sdk/client"
+	"github.com/Finschia/finschia-sdk/client/flags"
+	"github.com/Finschia/finschia-sdk/server"
+	"github.com/Finschia/finschia-sdk/simapp"
+	simcmd "github.com/Finschia/finschia-sdk/simapp/simd/cmd"
+	"github.com/Finschia/finschia-sdk/testutil/testdata"
+	"github.com/Finschia/finschia-sdk/types/module"
+	"github.com/Finschia/finschia-sdk/x/genutil"
+	genutiltest "github.com/Finschia/finschia-sdk/x/genutil/client/testutil"
 )
 
 var testMbm = module.NewBasicManager(genutil.AppModuleBasic{})

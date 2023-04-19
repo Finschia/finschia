@@ -6,7 +6,7 @@ PROJECT_ROOT=$(realpath "$(dirname "$0")/../..")
 go mod download
 
 # build wasmvm static
-cd "$(go list -f "{{ .Dir }}" -m github.com/line/wasmvm)" || exit 1
+cd "$(go list -f "{{ .Dir }}" -m github.com/Finschia/wasmvm)" || exit 1
 cd ./libwasmvm
 
 echo "Starting aarch64-unknown-linux-musl build"

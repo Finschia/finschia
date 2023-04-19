@@ -15,11 +15,11 @@ builds:
     - -mod=readonly
     - -tags=netgo ledger
   ldflags:
-    - -X github.com/line/lbm-sdk/version.Name=finschia
-    - -X github.com/line/lbm-sdk/version.ServerName=finschia
-    - -X github.com/line/lbm-sdk/version.Version={{ .Version }}
-    - -X github.com/line/lbm-sdk/version.Commit={{ .FullCommit }}
-    - -X "github.com/line/lbm-sdk/version.BuildTags=netgo,ledger"
+    - -X github.com/Finschia/finschia-sdk/version.Name=finschia
+    - -X github.com/Finschia/finschia-sdk/version.ServerName=finschia
+    - -X github.com/Finschia/finschia-sdk/version.Version={{ .Version }}
+    - -X github.com/Finschia/finschia-sdk/version.Commit={{ .FullCommit }}
+    - -X "github.com/Finschia/finschia-sdk/version.BuildTags=netgo,ledger"
 archives:
 -
   builds: ['fnsad']

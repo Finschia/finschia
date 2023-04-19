@@ -6,7 +6,7 @@ order: 1
 
 ## Introduction
 
-The [Finschia Mainnet](../README.md) is based on [Ostracon](https://github.com/line/ostracon/tree/main/docs/introduction), which relies on a set of validators that are responsible for committing new blocks in the blockchain. These validators participate in the consensus protocol by broadcasting votes which contain cryptographic signatures signed by each validator's private key.
+The [Finschia Mainnet](../README.md) is based on [Ostracon](https://github.com/Finschia/ostracon/tree/main/docs/introduction), which relies on a set of validators that are responsible for committing new blocks in the blockchain. These validators participate in the consensus protocol by broadcasting votes which contain cryptographic signatures signed by each validator's private key.
 
 Validator candidates can bond their own base coins and have base coins ["delegated"](../delegators/delegator-guide-cli.md), or staked, to them by token holders. A Finschia Mainnet can have over 100 validators. The validators are determined by who has the most stake delegated to them — the top N validator candidates with the most stake will become Finschia validators.
 

@@ -1,15 +1,22 @@
-# Finschia v1.0.0-rc5 Release Note
+# Finschia v1.0.0-rc6 Release Note
 
 ## What's Changes
-* Bump github.com/line/lbm-sdk from v0.47.0-rc4 to v0.47.0-rc4.0.20230410115856-b8421116b3f2 by @0Tech in https://github.com/Finschia/finschia/pull/168
-* fix license copyright holder and typo by @zemyblue in https://github.com/Finschia/finschia/pull/170
-* chore: apply wasmd v0.1.2 by @zemyblue in https://github.com/Finschia/finschia/pull/171
-* Bump github.com/line/lbm-sdk from v0.47.0-rc4.0.20230410115856-b8421116b3f2 to v0.47.0-rc5 by @0Tech in https://github.com/Finschia/finschia/pull/172
+* Rename and bump up dependencies by @0Tech in https://github.com/Finschia/finschia/pull/176
+  * rename the following dependencies (and update scripts when necessary)
+    * github.com/line/lbm-sdk => github.com/Finschia/finschia-sdk
+    * github.com/line/ostracon => github.com/Finschia/ostracon
+    * github.com/line/ibc-go => github.com/Finschia/ibc-go
+    * github.com/line/wasmd => github.com/Finschia/wasmd
+  * bump up Finschia/finschia-sdk
+    * chore: change import path to github.com/Finschia/finschia-sdk
+    * fix: not to throw error when no txs in block
+    * refactor: refactor x/token,collection query errors
+  * change the ci runners from self-hosted to ubuntu-latest
 
 ## Base sub modules
-* Ostracon: [v1.0.9](https://github.com/Finschia/ostracon/tree/v1.0.9)
-* lbm-sdk: [v0.47.0-rc5](https://github.com/Finschia/finschia-sdk/tree/v0.47.0-rc5)
-* line/wasmd: [v0.1.2](https://github.com/Finschia/wasmd/tree/v0.1.2)
-* line/ibc-go: [v3.3.2](https://github.com/Finschia/ibc-go/tree/v3.3.2)
+* Ostracon: [v1.0.10-0.20230417090415-bc3f5693b6a1](https://github.com/Finschia/ostracon/tree/bc3f5693b6a15644dd313d23760280efe7a385a8)
+* finschia-sdk: [v0.47.0-rc6](https://github.com/Finschia/finschia-sdk/tree/v0.47.0-rc6)
+* Finschia/wasmd: [v0.1.3](https://github.com/Finschia/wasmd/tree/v0.1.3)
+* Finschia/ibc-go: [v3.3.3](https://github.com/Finschia/ibc-go/tree/v3.3.3)
 
-Full Changelog: [v1.0.0-rc4...v1.0.0-rc5](https://github.com/Finschia/finschia/compare/v1.0.0-rc4...v1.0.0-rc5)
+Full Changelog: [v1.0.0-rc5...v1.0.0-rc6](https://github.com/Finschia/finschia/compare/v1.0.0-rc5...v1.0.0-rc6)

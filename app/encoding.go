@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/line/lbm-sdk/std"
+	"github.com/Finschia/finschia-sdk/std"
 
 	"github.com/line/finschia/app/params"
 )

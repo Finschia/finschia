@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/line/ostracon/libs/log"
-	octypes "github.com/line/ostracon/types"
+	"github.com/Finschia/ostracon/libs/log"
+	octypes "github.com/Finschia/ostracon/types"
 	"github.com/stretchr/testify/require"
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"

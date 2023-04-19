@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"github.com/line/lbm-sdk/server"
-	svrcmd "github.com/line/lbm-sdk/server/cmd"
+	"github.com/Finschia/finschia-sdk/server"
+	svrcmd "github.com/Finschia/finschia-sdk/server/cmd"
 
 	"github.com/line/finschia/app"
 	"github.com/line/finschia/cmd/fnsad/cmd"

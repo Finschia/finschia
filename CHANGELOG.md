@@ -50,6 +50,12 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Docs
 
 
+## [v1.0.0-rc6](https://github.com/Finschia/finschia/releases/tag/v1.0.0-rc6) - 2023-04-19
+
+### Build, CI
+* (finschia-sdk,ostracon,wasmd,ibc-go) [\#176](https://github.com/Finschia/finschia/pull/176) Rename and bump up dependencies
+
+
 ## [v1.0.0-rc5](https://github.com/Finschia/finschia/releases/tag/v1.0.0-rc5) - 2023-04-13
 
 ### Improvements

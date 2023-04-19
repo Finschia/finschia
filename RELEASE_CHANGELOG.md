@@ -139,8 +139,8 @@ This version based on lbm-sdk v0.46.0-rc2
 ### Bug Fixes
 
 ### Breaking Changes
-* (sdk) (auth) [\#16](https://github.com/line/lfb/pull/16) Introduce sig block height for the new replay protection
-* (ostracon/sdk) [\#26](https://github.com/line/lfb/pull/26) Use vrf-based consensus, address string treatment
+* (sdk) (auth) [\#16](https://github.com/Finschia/lfb/pull/16) Introduce sig block height for the new replay protection
+* (ostracon/sdk) [\#26](https://github.com/Finschia/lfb/pull/26) Use vrf-based consensus, address string treatment
 * (global) [\#10](https://github.com/Finschia/finschia/pull/10) Re-brand lfb to lbm
 
 ### Build, CI

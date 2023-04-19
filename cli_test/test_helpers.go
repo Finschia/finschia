@@ -63,8 +63,8 @@ import (
 	wasmtypes "github.com/Finschia/wasmd/x/wasm/types"
 
 	"github.com/Finschia/finschia/app"
-	lbmcmd "github.com/Finschia/finschia/cmd/fnsad/cmd"
-	lbmtypes "github.com/Finschia/finschia/types"
+	fnsacmd "github.com/Finschia/finschia/cmd/fnsad/cmd"
+	fnsatypes "github.com/Finschia/finschia/types"
 )
 
 const (
@@ -136,10 +136,10 @@ var (
 func init() {
 	testnet := false
 	config := sdk.GetConfig()
-	config.SetBech32PrefixForAccount(lbmtypes.Bech32PrefixAcc(testnet), lbmtypes.Bech32PrefixAccPub(testnet))
-	config.SetBech32PrefixForValidator(lbmtypes.Bech32PrefixValAddr(testnet), lbmtypes.Bech32PrefixValPub(testnet))
-	config.SetBech32PrefixForConsensusNode(lbmtypes.Bech32PrefixConsAddr(testnet), lbmtypes.Bech32PrefixConsPub(testnet))
-	config.SetCoinType(lbmtypes.CoinType)
+	config.SetBech32PrefixForAccount(fnsatypes.Bech32PrefixAcc(testnet), fnsatypes.Bech32PrefixAccPub(testnet))
+	config.SetBech32PrefixForValidator(fnsatypes.Bech32PrefixValAddr(testnet), fnsatypes.Bech32PrefixValPub(testnet))
+	config.SetBech32PrefixForConsensusNode(fnsatypes.Bech32PrefixConsAddr(testnet), fnsatypes.Bech32PrefixConsPub(testnet))
+	config.SetCoinType(fnsatypes.CoinType)
 	config.Seal()
 
 	ostraconCmd.AddCommand(
@@ -376,7 +376,7 @@ func (f *Fixtures) LBMInit(moniker string, flags ...string) {
 // AddGenesisAccount is lbm add-genesis-account
 func (f *Fixtures) AddGenesisAccount(address sdk.AccAddress, coins sdk.Coins, flags ...string) {
 	args := fmt.Sprintf("%s %s --keyring-backend=test", address, coins)
-	cmd := lbmcmd.AddGenesisAccountCmd(f.Home)
+	cmd := fnsacmd.AddGenesisAccountCmd(f.Home)
 	_, err := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
 	require.NoError(f.T, err)
 }

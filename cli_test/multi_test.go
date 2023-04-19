@@ -12,7 +12,7 @@ import (
 	"github.com/Finschia/finschia-sdk/crypto/keys/ed25519"
 	sdk "github.com/Finschia/finschia-sdk/types"
 
-	"github.com/line/finschia/app"
+	"github.com/Finschia/finschia/app"
 )
 
 func TestMultiValidatorAndSendTokens(t *testing.T) {

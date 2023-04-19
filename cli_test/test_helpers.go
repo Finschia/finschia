@@ -62,9 +62,9 @@ import (
 	osttypes "github.com/Finschia/ostracon/types"
 	wasmtypes "github.com/Finschia/wasmd/x/wasm/types"
 
-	"github.com/line/finschia/app"
-	lbmcmd "github.com/line/finschia/cmd/fnsad/cmd"
-	lbmtypes "github.com/line/finschia/types"
+	"github.com/Finschia/finschia/app"
+	lbmcmd "github.com/Finschia/finschia/cmd/fnsad/cmd"
+	lbmtypes "github.com/Finschia/finschia/types"
 )
 
 const (

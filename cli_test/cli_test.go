@@ -24,7 +24,7 @@ import (
 	osttypes "github.com/Finschia/ostracon/types"
 	"github.com/stretchr/testify/require"
 
-	"github.com/line/finschia/app"
+	"github.com/Finschia/finschia/app"
 )
 
 func TestLBMKeysAddMultisig(t *testing.T) {

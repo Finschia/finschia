@@ -16,8 +16,8 @@ import (
 	"github.com/stretchr/testify/suite"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
-	linkapp "github.com/line/finschia/app"
-	linkhelpers "github.com/line/finschia/app/helpers"
+	linkapp "github.com/Finschia/finschia/app"
+	linkhelpers "github.com/Finschia/finschia/app/helpers"
 )
 
 type IntegrationTestSuite struct {

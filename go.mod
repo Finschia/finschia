@@ -1,4 +1,4 @@
-module github.com/line/finschia
+module github.com/Finschia/finschia
 
 go 1.18
 

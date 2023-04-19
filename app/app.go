@@ -122,8 +122,8 @@ import (
 	wasmpluskeeper "github.com/Finschia/wasmd/x/wasmplus/keeper"
 	wasmplustypes "github.com/Finschia/wasmd/x/wasmplus/types"
 
-	appante "github.com/line/finschia/ante"
-	appparams "github.com/line/finschia/app/params"
+	appante "github.com/Finschia/finschia/ante"
+	appparams "github.com/Finschia/finschia/app/params"
 
 	// unnamed import of statik for swagger UI support
 	_ "github.com/Finschia/finschia-sdk/client/docs/statik"

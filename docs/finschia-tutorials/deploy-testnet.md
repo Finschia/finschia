@@ -68,7 +68,7 @@ From the [networks/local directory](https://github.com/Finschia/finschia/tree/ma
 
 ### Build
 
-Build the `fnsad` binary (linux) and the `line/finschianode` docker image required for running the `localnet` commands. This binary will be mounted into the container and can be updated rebuilding the image, so you only need to build the image once.
+Build the `fnsad` binary (linux) and the `finschia/finschianode` docker image required for running the `localnet` commands. This binary will be mounted into the container and can be updated rebuilding the image, so you only need to build the image once.
 
 ```bash
 # Clone the finschia repo
@@ -80,7 +80,7 @@ cd finschia
 # Build the linux binary in ./build
 make build-linux
 
-# Build line/finschianode image
+# Build finschia/finschianode image
 make build-docker-finschianode
 ```
 

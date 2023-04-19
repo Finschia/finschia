@@ -43,7 +43,7 @@ sh init_single.sh docker testnet  # prepare keys, validators, initial state, etc
 
 **Run**
 ```
-docker run -i -p 26656:26656 -p 26657:26657 -v ${HOME}/.finschia:/root/.finschia line/lbm fnsad start
+docker run -i -p 26656:26656 -p 26657:26657 -v ${HOME}/.finschia:/root/.finschia finschia/finschianode fnsad start
 ```
 
 ## Local

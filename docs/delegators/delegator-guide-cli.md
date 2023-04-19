@@ -36,7 +36,7 @@ Please exercise extreme caution!
 - [Finschia Accounts](#finschia-accounts)
     + [Restoring an Account from the Fundraiser](#restoring-an-account-from-the-fundraiser)
     + [Creating an Account](#creating-an-account)
-- [Accessing a Finschia Mainnet](#accessing-a-line-blockchain-mainnet)
+- [Accessing a Finschia Mainnet](#accessing-a-finschia-mainnet)
     + [Running Your Own Full-Node](#running-your-own-full-node)
     + [Connecting to a Remote Full-Node](#connecting-to-a-remote-full-node)
 - [Setting Up `fnsad`](#setting-up-finschia)

@@ -12,7 +12,7 @@ on:
 
 env:
   registry: docker.io
-  repository: line/lbm
+  repository: finschia/finschianode
 jobs:
   build:
     runs-on: ubuntu-latest

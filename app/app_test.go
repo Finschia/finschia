@@ -34,14 +34,14 @@ import (
 	"github.com/Finschia/finschia-sdk/x/gov"
 	"github.com/Finschia/wasmd/x/wasmplus"
 
-	"github.com/Finschia/ibc-go/v3/modules/apps/transfer"
-	ibc "github.com/Finschia/ibc-go/v3/modules/core"
 	"github.com/Finschia/finschia-sdk/x/mint"
 	"github.com/Finschia/finschia-sdk/x/params"
 	"github.com/Finschia/finschia-sdk/x/slashing"
 	"github.com/Finschia/finschia-sdk/x/staking"
 	tokenmodule "github.com/Finschia/finschia-sdk/x/token/module"
 	"github.com/Finschia/finschia-sdk/x/upgrade"
+	"github.com/Finschia/ibc-go/v3/modules/apps/transfer"
+	ibc "github.com/Finschia/ibc-go/v3/modules/core"
 )
 
 func TestSimAppExportAndBlockedAddrs(t *testing.T) {

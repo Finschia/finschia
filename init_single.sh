@@ -9,7 +9,7 @@ then
     then
         mode="testnet"
     fi
-    FNSAD="docker run -i -p 26656:26656 -p 26657:26657 -v ${HOME}/.finschia:/root/.finschia line/finschia fnsad"
+    FNSAD="docker run -i -p 26656:26656 -p 26657:26657 -v ${HOME}/.finschia:/root/.finschia finschia/finschianode fnsad"
 elif [[ $1 == "testnet" ]]
 then
     mode="testnet"
@@ -37,7 +37,7 @@ if [[ ${mode} == "testnet" ]]
 then
     if [[ $1 == "docker" ]]
     then
-        docker run -i -p 26656:26656 -p 26657:26657 -v ${HOME}/.finschia:/root/.finschia line/finschia sh -c "export FNSAD_TESTNET=true"
+        docker run -i -p 26656:26656 -p 26657:26657 -v ${HOME}/.finschia:/root/.finschia finschia/finschianode sh -c "export FNSAD_TESTNET=true"
     else
        export FNSAD_TESTNET=true
     fi

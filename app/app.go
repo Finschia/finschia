@@ -659,7 +659,7 @@ func NewLinkApp(
 
 	// must be before loading version
 	// requires the snapshot store to be created and registered as a BaseAppOptions
-	// see cmd/lbm/cmd/root.go: 257-265
+	// see cmd/fnsad/cmd/root.go: 257-265
 	if manager := app.SnapshotManager(); manager != nil {
 		err := manager.RegisterExtensions(
 			wasmkeeper.NewWasmSnapshotter(app.CommitMultiStore(), &app.WasmKeeper.Keeper),
@@ -693,7 +693,7 @@ func NewLinkApp(
 
 // MakeCodecs constructs the *std.Codec and *codec.LegacyAmino instances used by
 // Link. It is useful for tests and clients who do not want to construct the
-// full lbm application
+// full fnsad application
 func MakeCodecs() (codec.Codec, *codec.LegacyAmino) {
 	cf := MakeEncodingConfig()
 	return cf.Marshaler, cf.Amino

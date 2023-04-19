@@ -343,7 +343,7 @@ build-docker-finschianode:
 localnet-start: localnet-stop build-static localnet-build-nodes
 
 localnet-build-nodes:
-	docker run --rm -v $(CURDIR)/mytestnet:/data line/finschianode \
+	docker run --rm -v $(CURDIR)/mytestnet:/data finschia/finschianode \
 			testnet init-files --v 4 -o /data --starting-ip-address 192.168.10.2 --keyring-backend=test
 	docker-compose up -d
 

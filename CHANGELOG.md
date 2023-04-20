@@ -41,11 +41,11 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Improvements
 
 ### Bug Fixes
+* (finschia-sdk) [\#178](https://github.com/Finschia/finschia/pull/178) Bump github.com/Finschia/finschia-sdk from v0.47.0-rc6 to v0.47.0-rc7
 
 ### Breaking Changes
 
 ### Build, CI
-* (finschia-sdk,ostracon,wasmd,ibc-go) [\#176](https://github.com/Finschia/finschia/pull/176) Rename and bump up dependencies
 
 ### Docs
 

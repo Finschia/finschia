@@ -41,13 +41,18 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Improvements
 
 ### Bug Fixes
-* (finschia-sdk) [\#178](https://github.com/Finschia/finschia/pull/178) Bump github.com/Finschia/finschia-sdk from v0.47.0-rc6 to v0.47.0-rc7
 
 ### Breaking Changes
 
 ### Build, CI
 
 ### Docs
+
+
+## [v1.0.0-rc7](https://github.com/Finschia/finschia/releases/tag/v1.0.0-rc7) - 2023-04-20
+
+### Bug Fixes
+* (finschia-sdk) [\#178](https://github.com/Finschia/finschia/pull/178) Bump github.com/Finschia/finschia-sdk from v0.47.0-rc6 to v0.47.0-rc7
 
 
 ## [v1.0.0-rc6](https://github.com/Finschia/finschia/releases/tag/v1.0.0-rc6) - 2023-04-19

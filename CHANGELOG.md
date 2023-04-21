@@ -45,6 +45,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Breaking Changes
 
 ### Build, CI
+* (ci) [\#180](https://github.com/Finschia/finschia/pull/180) add a CI to build darwin version when add tag
 
 ### Docs
 

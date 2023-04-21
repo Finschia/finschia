@@ -1,8 +1,13 @@
-# LBM(LINE Blockchain Mainnet)
+# Finschia
 
-[![codecov](https://codecov.io/gh/line/lbm/branch/main/graph/badge.svg?token=JFFuUevpzJ)](https://codecov.io/gh/line/lbm)
+[![codecov](https://codecov.io/gh/Finschia/finschia/branch/main/graph/badge.svg?token=JFFuUevpzJ)](https://codecov.io/gh/Finschia/finschia)
+[![license](https://img.shields.io/github/license/Finschia/finschia.svg)](https://github.com/Finschia/finschia/blob/main/LICENSE)
+[![LoC](https://tokei.rs/b1/github/Finschia/finschia)](https://github.com/Finschia/finschia)
+[![Go Report Card](https://goreportcard.com/badge/github.com/Finschia/finschia)](https://goreportcard.com/report/github.com/Finschia/finschia)
+[![GolangCI](https://golangci.com/badges/github.com/Finschia/finschia.svg)](https://golangci.com/r/github.com/Finschia/finschia)
 
-This repository hosts `LBM(LINE Blockchain Mainnet)`. This repository is forked from [gaia](https://github.com/cosmos/gaia) at 2021-03-15. LBM is a mainnet app implementation using [lbm-sdk](https://github.com/line/lbm-sdk) and [ostracon](https://github.com/line/ostracon).
+
+This repository hosts `Finschia`. This repository is forked from [gaia](https://github.com/cosmos/gaia) at 2021-03-15. Finschia is a mainnet app implementation using [finschia-sdk](https://github.com/Finschia/finschia-sdk), [ostracon](https://github.com/Finschia/ostracon), [wasmd](https://github.com/Finschia/wasmd) and [ibc-go](https://github.com/Finschia/ibc-go).
 
 **Node**: Requires [Go 1.18+](https://golang.org/dl/)
 
@@ -13,11 +18,18 @@ This repository hosts `LBM(LINE Blockchain Mainnet)`. This repository is forked 
 ## Docker
 **Build Docker Image**
 ```
-make build-docker GITHUB_TOKEN=${YOUR_GITHUB_TOKEN}                # build docker image
+make build-docker                # build docker image
 ```
 or
 ```
 make build-docker WITH_CLEVELDB=yes GITHUB_TOKEN=${YOUR_GITHUB_TOKEN}  # build docker image with cleveldb
+```
+
+_Note1_
+
+If you are using M1 mac, you need to specify build args like this:
+```
+make build-docker ARCH=aarch64
 ```
 
 **Configure**
@@ -31,32 +43,10 @@ sh init_single.sh docker testnet  # prepare keys, validators, initial state, etc
 
 **Run**
 ```
-docker run -i -p 26656:26656 -p 26657:26657 -v ${HOME}/.lbm:/root/.lbm line/lbm lbm start
+docker run -i -p 26656:26656 -p 26657:26657 -v ${HOME}/.finschia:/root/.finschia finschia/finschianode fnsad start
 ```
 
 ## Local
-**Set up permissions**
-```
-go env -w GOPRIVATE="github.com/line/*"
-git config --global url."https://${YOUR_GITHUB_TOKEN}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
-```
-
-_Note1_
-
-You have to replace ${YOUR_GITHUB_TOKEN} with your token.
-
-To create a token, 
-see: https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token
-
-_Note2_
-
-Please check `GOPRIVATE` is set by run export and check the result. 
-```
-go env
-```
-if you can see `GOPRIVATE`, then you're good to go. 
-
-Otherwise you need to set `GOPRIVATE` as environment variable.
 
 **Build**
 ```
@@ -75,7 +65,7 @@ sh init_single.sh testnet  # for testnet
 
 **Run**
 ```
-lbm start                # Run a node
+fnsad start                # Run a node
 ```
 
 **visit with your browser**
@@ -92,4 +82,8 @@ make localnet-start
 ```
 make localnet-stop
 ```
+
+
+# How to contribute
+check out [CONTRIBUTING.md](CONTRIBUTING.md) for our guidelines & policies for how we develop Finschia. Thank you to all those who have contributed!
 

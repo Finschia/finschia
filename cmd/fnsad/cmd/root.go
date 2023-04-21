@@ -7,39 +7,39 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/line/lbm-sdk/baseapp"
-	"github.com/line/lbm-sdk/client"
-	"github.com/line/lbm-sdk/client/config"
-	"github.com/line/lbm-sdk/client/debug"
-	"github.com/line/lbm-sdk/client/flags"
-	"github.com/line/lbm-sdk/client/keys"
-	"github.com/line/lbm-sdk/client/pruning"
-	"github.com/line/lbm-sdk/client/rpc"
-	"github.com/line/lbm-sdk/codec"
-	"github.com/line/lbm-sdk/server"
-	serverconfig "github.com/line/lbm-sdk/server/config"
-	servertypes "github.com/line/lbm-sdk/server/types"
-	"github.com/line/lbm-sdk/snapshots"
-	"github.com/line/lbm-sdk/store"
-	sdk "github.com/line/lbm-sdk/types"
-	authcmd "github.com/line/lbm-sdk/x/auth/client/cli"
-	"github.com/line/lbm-sdk/x/auth/types"
-	banktypes "github.com/line/lbm-sdk/x/bank/types"
-	"github.com/line/lbm-sdk/x/crisis"
-	genutilcli "github.com/line/lbm-sdk/x/genutil/client/cli"
-	lbmtypes "github.com/line/lbm/types"
-	ostcli "github.com/line/ostracon/libs/cli"
-	"github.com/line/ostracon/libs/log"
-	"github.com/line/wasmd/x/wasm"
-	wasmkeeper "github.com/line/wasmd/x/wasm/keeper"
+	"github.com/Finschia/finschia-sdk/baseapp"
+	"github.com/Finschia/finschia-sdk/client"
+	"github.com/Finschia/finschia-sdk/client/config"
+	"github.com/Finschia/finschia-sdk/client/debug"
+	"github.com/Finschia/finschia-sdk/client/flags"
+	"github.com/Finschia/finschia-sdk/client/keys"
+	"github.com/Finschia/finschia-sdk/client/pruning"
+	"github.com/Finschia/finschia-sdk/client/rpc"
+	"github.com/Finschia/finschia-sdk/codec"
+	"github.com/Finschia/finschia-sdk/server"
+	serverconfig "github.com/Finschia/finschia-sdk/server/config"
+	servertypes "github.com/Finschia/finschia-sdk/server/types"
+	"github.com/Finschia/finschia-sdk/snapshots"
+	"github.com/Finschia/finschia-sdk/store"
+	sdk "github.com/Finschia/finschia-sdk/types"
+	authcmd "github.com/Finschia/finschia-sdk/x/auth/client/cli"
+	"github.com/Finschia/finschia-sdk/x/auth/types"
+	banktypes "github.com/Finschia/finschia-sdk/x/bank/types"
+	"github.com/Finschia/finschia-sdk/x/crisis"
+	genutilcli "github.com/Finschia/finschia-sdk/x/genutil/client/cli"
+	ostcli "github.com/Finschia/ostracon/libs/cli"
+	"github.com/Finschia/ostracon/libs/log"
+	"github.com/Finschia/wasmd/x/wasm"
+	wasmkeeper "github.com/Finschia/wasmd/x/wasm/keeper"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	dbm "github.com/tendermint/tm-db"
 
-	"github.com/line/lbm/app"
-	"github.com/line/lbm/app/params"
+	"github.com/Finschia/finschia/app"
+	"github.com/Finschia/finschia/app/params"
+	fnsatypes "github.com/Finschia/finschia/types"
 )
 
 const (
@@ -61,8 +61,8 @@ func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 		WithViper("")
 
 	rootCmd := &cobra.Command{
-		Use:   "lbm",
-		Short: "LINE Blockchain Mainnet (LBM) App",
+		Use:   "fnsad",
+		Short: "Finschia Mainnet App",
 		PersistentPreRunE: func(cmd *cobra.Command, _ []string) error {
 			// set the default command outputs
 			cmd.SetOut(cmd.OutOrStdout())
@@ -81,7 +81,7 @@ func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 			if err := client.SetCmdClientContextHandler(initClientCtx, cmd); err != nil {
 				return err
 			}
-			return lbmPreRunE(cmd)
+			return fnsaPreRunE(cmd)
 		},
 	}
 	rootCmd.PersistentFlags().Bool(flagTestnet, false, "Run with testnet mode. The address prefix becomes tlink if this flag is set.")
@@ -322,15 +322,15 @@ func createSimappAndExport(
 
 func initConfig(testnet bool) {
 	config := sdk.GetConfig()
-	config.SetCoinType(lbmtypes.CoinType)
-	config.SetBech32PrefixForAccount(lbmtypes.Bech32PrefixAcc(testnet), lbmtypes.Bech32PrefixAccPub(testnet))
-	config.SetBech32PrefixForConsensusNode(lbmtypes.Bech32PrefixConsAddr(testnet), lbmtypes.Bech32PrefixConsPub(testnet))
-	config.SetBech32PrefixForValidator(lbmtypes.Bech32PrefixValAddr(testnet), lbmtypes.Bech32PrefixValPub(testnet))
+	config.SetCoinType(fnsatypes.CoinType)
+	config.SetBech32PrefixForAccount(fnsatypes.Bech32PrefixAcc(testnet), fnsatypes.Bech32PrefixAccPub(testnet))
+	config.SetBech32PrefixForConsensusNode(fnsatypes.Bech32PrefixConsAddr(testnet), fnsatypes.Bech32PrefixConsPub(testnet))
+	config.SetBech32PrefixForValidator(fnsatypes.Bech32PrefixValAddr(testnet), fnsatypes.Bech32PrefixValPub(testnet))
 	config.GetCoinType()
 	config.Seal()
 }
 
-func lbmPreRunE(cmd *cobra.Command) (err error) {
+func fnsaPreRunE(cmd *cobra.Command) (err error) {
 	customAppTemplate, customAppConfig := initAppConfig()
 	err = server.InterceptConfigsPreRunHandler(cmd, customAppTemplate, customAppConfig)
 

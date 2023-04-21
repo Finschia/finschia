@@ -6,11 +6,8 @@ parent:
 
 # Resources
 
-This folder contains resources on the `lbm` software.
+This folder contains resources on the `fnsad` software.
 
-- [`lbm` documentation](./lbm.md)
-- [`lbm` genesis file](./genesis.md)
-- [HD Wallets for `lbm`](./hd-wallets.md)
-- [Ledger Integration for `lbm`](./ledger.md)
-- [Service Providers Documentation](./service-providers.md)
-- [Reproducible Builds](./reproducible-builds.md)
+- [`fnsad` documentation](./finschia.md)
+- [`fnsad` genesis file](./genesis.md)
+- [HD Wallets for `fnsad`](./hd-wallets.md)

@@ -2,6 +2,7 @@
 
 ## Description
 <!--- Describe your changes in detail -->
+closes: #XXXX
 
 ## Motivation and context
 <!--- Why is this change required? What problem does it solve? -->
@@ -16,7 +17,9 @@
 
 ## Checklist:
 <!--- Go over all the following points, and put an `x` in all the boxes that apply. -->
+<!--- If any of the checklist items are not applicable, leave it `[ ]` and write a little note why. --->
 <!--- If you're unsure about any of these, don't hesitate to ask. We're here to help! -->
-- [ ] I followed the [contributing guidelines](https://github.com/Finschia/finschia/blob/master/CONTRIBUTING.md).
-- [ ] I have updated the documentation accordingly.
+- [ ] I followed the [contributing guidelines](https://github.com/Finschia/finschia/blob/main/CONTRIBUTING.md) and [code of conduct](https://github.com/Finschia/finschia/blob/main/CODE_OF_CONDUCT.md).
+- [ ] I have added a relevant changelog to `CHANGELOG.md`
 - [ ] I have added tests to cover my changes.
+- [ ] I have updated the documentation accordingly.

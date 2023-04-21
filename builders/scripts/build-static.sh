@@ -6,7 +6,7 @@ PROJECT_ROOT=$(realpath "$(dirname "$0")/../..")
 go mod download
 
 # build wasmvm static
-cd "$(go list -f "{{ .Dir }}" -m github.com/line/wasmvm)" || exit 1
+cd "$(go list -f "{{ .Dir }}" -m github.com/Finschia/wasmvm)" || exit 1
 cd ./libwasmvm
 
 echo "Starting aarch64-unknown-linux-musl build"
@@ -24,5 +24,5 @@ rm -rf target
 
 cd "${PROJECT_ROOT}" || exit 1
 
-# build lbm
-BUILD_TAGS=static LINK_STATICALLY=true make build LBM_BUILD_OPTIONS="${LBM_BUILD_OPTIONS}"
+# build Finschia
+BUILD_TAGS=static LINK_STATICALLY=true make build FINSCHIA_BUILD_OPTIONS="${FINSCHIA_BUILD_OPTIONS}"

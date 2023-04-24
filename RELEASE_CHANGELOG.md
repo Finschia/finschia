@@ -36,7 +36,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ## [v0.7.0] - 2022-11-29
 
-This version base on [lbm-sdk v0.46.0](https://github.com/Finschia/finschia-sdk/releases/tag/v0.46.0).
+This version base on [finschia-sdk v0.46.0](https://github.com/Finschia/finschia-sdk/releases/tag/v0.46.0).
 
 ### Features
 * [\#108](https://github.com/Finschia/finschia/pull/108) Bump github.com/line/lbm-sdk from e19f863a8 to a389b6330
@@ -58,7 +58,7 @@ This version base on [lbm-sdk v0.46.0](https://github.com/Finschia/finschia-sdk/
 
 ## [v0.6.0]
 
-This version based on [lbm-sdk v0.46.0-rc8](https://github.com/Finschia/finschia-sdk/releases/tag/v0.46.0-rc8)
+This version based on [finschia-sdk v0.46.0-rc8](https://github.com/Finschia/finschia-sdk/releases/tag/v0.46.0-rc8)
 
 ### Bug Fixes
 * (app) [\#96](https://github.com/Finschia/finschia/pull/96) fix the bug not setting `iavl-cache-size` value of the `app.toml`
@@ -66,7 +66,7 @@ This version based on [lbm-sdk v0.46.0-rc8](https://github.com/Finschia/finschia
 
 ### Breaking Changes
 * (app) [\#87](https://github.com/Finschia/finschia/pull/87) remove unused modules from app
-* (lbm-sdk) [\#95](https://github.com/Finschia/finschia/pull/95) apply the changes of lbm-sdk v0.46.0-rc8
+* (finschia-sdk) [\#95](https://github.com/Finschia/finschia/pull/95) apply the changes of lbm-sdk v0.46.0-rc8
 
 ### Build, CI
 * (ci) [\#80](https://github.com/Finschia/finschia/pull/80) remove stale github action
@@ -76,7 +76,7 @@ This version based on [lbm-sdk v0.46.0-rc8](https://github.com/Finschia/finschia
 
 ## [v0.5.0]
 
-This version based on [lbm-sdk v0.46.0-rc6](https://github.com/Finschia/finschia-sdk/releases/tag/v0.46.0-rc6)
+This version based on [finschia-sdk v0.46.0-rc6](https://github.com/Finschia/finschia-sdk/releases/tag/v0.46.0-rc6)
 
 ### Features
 * (x/collection) [\#72](https://github.com/Finschia/finschia/pull/72) add x/collection
@@ -93,7 +93,7 @@ This version based on [lbm-sdk v0.46.0-rc6](https://github.com/Finschia/finschia
 
 ## [v0.4.0]
 
-This version based on lbm-sdk v0.46.0-rc2
+This version based on finschia-sdk v0.46.0-rc2
 
 ### Features
 * (cosmos-sdk) [\#56](https://github.com/Finschia/finschia/pull/56) bump up cosmos-sdk v0.45.1
@@ -120,7 +120,7 @@ This version based on lbm-sdk v0.46.0-rc2
 ### Features
 * (x/upgrade) [\#33](https://github.com/Finschia/finschia/pull/33) To smoothen the update to the latest stable release, the SDK includes version map for managing migrations between SDK versions.
 * (x/consortium) [\#34](https://github.com/Finschia/finschia/pull/34) add feegrant, consortium and stakingplus module
-* (x/bank) [\#36](https://github.com/Finschia/finschia/pull/36) apply a feature that preventing sending coins to inactive contract (related to [lbm-sdk #400](https://github.com/Finschia/finschia-sdk/pull/400))
+* (x/bank) [\#36](https://github.com/Finschia/finschia/pull/36) apply a feature that preventing sending coins to inactive contract (related to [finschia-sdk #400](https://github.com/Finschia/finschia-sdk/pull/400))
 
 ### Improvements
 * (slashing) [\#31] (https://github.com/Finschia/finschia/pull/31) Apply VoterSetCounter

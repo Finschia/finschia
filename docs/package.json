@@ -1,7 +1,7 @@
 {
-  "name": "lbm-docs",
+  "name": "finschia-docs",
   "version": "1.0.0",
-  "description": "LBM Documentation",
+  "description": "Finschia Documentation",
   "main": "index.js",
   "dependencies": {
     "vuepress-theme-cosmos": "^1.0.180"
@@ -13,8 +13,8 @@
   "author": "",
   "license": "ISC",
   "keywords": [
-    "lbm",
-    "line blockchain mainnet",
-    "link"
+    "finschia",
+    "finschia mainnet",
+    "fnsa"
   ]
 }

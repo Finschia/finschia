@@ -2,9 +2,9 @@
 order: 2
 -->
 
-# Install lbm
+# Install Finschia
 
-This guide will explain how to install the `lbm` entrypoint
+This guide will explain how to install the `fnsad` entrypoint
 onto your system. With these installed on a server, you can participate in the
 mainnet as either a [Full Node](./join-mainnet.md) or a
 [Validator](../validators/validator-setup.md).
@@ -21,23 +21,23 @@ source ~/.bash_profile
 ```
 
 ::: tip
-**Go 1.18+** is required for the LBM SDK.
+**Go 1.18+** is required for the Finschia SDK.
 :::
 
 ## Install the binaries
 
 Next, let's install the latest version of Gaia. Make sure you `git checkout` the
-correct [released version](https://github.com/line/lbm/releases).
+correct [released version](https://github.com/Finschia/finschia/releases).
 
 ```bash
-git clone -b <latest-release-tag> https://github.com/line/lbm
-cd lbm && make install
+git clone -b <latest-release-tag> https://github.com/Finschia/finschia
+cd finschia && make install
 ```
 
 If this command fails due to the following error message, you might have already set `LDFLAGS` prior to running this step.
 
 ```
-# github.com/lbm/lbm/cmd/lbm
+# github.com/Finschia/finschia/cmd/fnsad
 flag provided but not defined: -L
 usage: link [options] main.o
 ...
@@ -52,17 +52,17 @@ LDFLAGS="" make install
 
 > _NOTE_: If you still have issues at this step, please check that you have the latest stable version of GO installed.
 
-That will install the `lbm` binary. Verify that everything is OK:
+That will install the `fnsad` binary. Verify that everything is OK:
 
 ```bash
-lbm version --long
+fnsad version --long
 ```
 
-`lbm` for instance should output something similar to:
+`fnsad` for instance should output something similar to:
 
 ```bash
-name: lbm
-server_name: lbm
+name: finschia
+server_name: finschia
 version: 1.0.0
 commit: 8692310a5361006f8c02d44cd7df2d41f130089b
 build_tags: netgo,goleveldb
@@ -92,6 +92,6 @@ Build tags indicate special features that have been enabled in the binary.
 To test any changes made in the SDK or Ostracon, a `replace` clause needs to be added to `go.mod` providing the correct import path.
 
 - Make appropriate changes
-- Add `replace github.com/line/lbm-sdk => /path/to/clone/lbm-sdk` to `go.mod`
+- Add `replace github.com/Finschia/finschia-sdk => /path/to/clone/finschia-sdk` to `go.mod`
 - Run `make clean install` or `make clean build`
 - Test changes

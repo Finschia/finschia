@@ -15,7 +15,7 @@ If you want to become a validator for the Hub's `mainnet`, you should [research 
 Your `linkvalconspub` can be used to create a new validator by staking tokens. You can find your validator pubkey by running:
 
 ```bash
-lbm ostracon show-validator
+fnsad ostracon show-validator
 ```
 
 To create your validator, just use the following command:
@@ -25,9 +25,9 @@ Don't use more `ulink` than you have!
 :::
 
 ```bash
-lbm tx staking create-validator \
+fnsad tx staking create-validator \
   --amount=1000000ulink \
-  --pubkey=$(lbm ostracon show-validator) \
+  --pubkey=$(fnsad ostracon show-validator) \
   --moniker="choose a moniker" \
   --chain-id=<chain_id> \
   --commission-rate="0.10" \
@@ -57,10 +57,10 @@ you have some stake at genesis, create one (or multiple) transactions to bond th
 Your `linkvalconspub` can be used to create a new validator by staking tokens. You can find your validator pubkey by running:
 
 ```bash
-lbm ostracon show-validator
+fnsad ostracon show-validator
 ```
 
-Next, craft your `lbm gentx` command. 
+Next, craft your `fnsad gentx` command. 
 
 ::: tip
 A `gentx` is a JSON file carrying a self-delegation. All genesis transactions are collected by a `genesis coordinator` and validated against an initial `genesis.json`.
@@ -71,7 +71,7 @@ Don't use more `ulink` than you have!
 :::
 
 ```bash
-lbm gentx \
+fnsad gentx \
   --amount <amount_of_delegation_ulink> \
   --commission-rate <commission_rate> \
   --commission-max-rate <commission_max_rate> \
@@ -95,7 +95,7 @@ The <key_name> specifies which validator you are editing. If you choose to not i
 The `--identity` can be used as to verify identity with systems like Keybase or UPort. When using with Keybase `--identity` should be populated with a 16-digit string that is generated with a [keybase.io](https://keybase.io) account. It's a cryptographically secure method of verifying your identity across multiple online networks. The Keybase API allows us to retrieve your Keybase avatar. This is how you can add a logo to your validator profile.
 
 ```bash
-lbm tx staking edit-validator
+fnsad tx staking edit-validator
   --moniker="choose a moniker" \
   --website="https://your.network" \
   --identity=6A0D65E29A4CBC8E \
@@ -119,7 +119,7 @@ __Note__: The `commission-rate` value must adhere to the following invariants:
 View the validator's information with this command:
 
 ```bash
-lbm query staking validator <account_lbm>
+fnsad query staking validator <account_finschia>
 ```
 
 ## Track Validator Signing Information
@@ -127,7 +127,7 @@ lbm query staking validator <account_lbm>
 In order to keep track of a validator's signatures in the past you can do so by using the `signing-info` command:
 
 ```bash
-lbm query slashing signing-info <validator-pubkey>\
+fnsad query slashing signing-info <validator-pubkey>\
   --chain-id=<chain_id>
 ```
 
@@ -136,7 +136,7 @@ lbm query slashing signing-info <validator-pubkey>\
 When a validator is "jailed" for downtime, you must submit an `Unjail` transaction from the operator account in order to be able to get block proposer rewards again (depends on the zone fee distribution).
 
 ```bash
-lbm tx slashing unjail \
+fnsad tx slashing unjail \
 	--from=<key_name> \
 	--chain-id=<chain_id>
 ```
@@ -146,10 +146,10 @@ lbm tx slashing unjail \
 Your validator is active if the following command returns anything:
 
 ```bash
-lbm query ostracon-validator-set | grep "$(lbm ostracon show-address)"
+fnsad query ostracon-validator-set | grep "$(fnsad ostracon show-address)"
 ```
 
-You should now see your validator in one of a LBM explorers. You are looking for the `bech32` encoded `address` in the `~/.lbm/config/priv_validator.json` file.
+You should now see your validator in one of a Finschia explorers. You are looking for the `bech32` encoded `address` in the `~/.finschia/config/priv_validator.json` file.
 
 ::: warning Note
 To be in the validator set, you need to have more total voting power than the 100th validator.
@@ -160,7 +160,7 @@ To be in the validator set, you need to have more total voting power than the 10
 When attempting to perform routine maintenance or planning for an upcoming coordinated
 upgrade, it can be useful to have your validator systematically and gracefully halt.
 You can achieve this by either setting the `halt-height` to the height at which
-you want your node to shutdown or by passing the `--halt-height` flag to `lbm`.
+you want your node to shutdown or by passing the `--halt-height` flag to `fnsad`.
 The node will shutdown with a zero exit code at that given height after committing
 the block.
 
@@ -170,10 +170,10 @@ the block.
 
 Your validator has become jailed. Validators get jailed, i.e. get removed from the active validator set, if they do not vote on `500` of the last `10000` blocks, or if they double sign. 
 
-If you got jailed for downtime, you can get your voting power back to your validator. First, if `lbm` is not running, start it up again:
+If you got jailed for downtime, you can get your voting power back to your validator. First, if `fnsad` is not running, start it up again:
 
 ```bash
-lbm start
+fnsad start
 ```
 
 Wait for your full node to catch up to the latest block. Then, you can [unjail your validator](#unjail-validator)
@@ -181,26 +181,26 @@ Wait for your full node to catch up to the latest block. Then, you can [unjail y
 Lastly, check your validator again to see if your voting power is back.
 
 ```bash
-lbm status
+fnsad status
 ```
 
 You may notice that your voting power is less than it used to be. That's because you got slashed for downtime!
 
-### Problem #2: My `lbm` crashes because of `too many open files`
+### Problem #2: My `fnsad` crashes because of `too many open files`
 
-The default number of files Linux can open (per-process) is `1024`. `lbm` is known to open more than `1024` files. This causes the process to crash. A quick fix is to run `ulimit -n 4096` (increase the number of open files allowed) and then restart the process with `lbm start`. If you are using `systemd` or another process manager to launch `lbm` this may require some configuration at that level. A sample `systemd` file to fix this issue is below:
+The default number of files Linux can open (per-process) is `1024`. `fnsad` is known to open more than `1024` files. This causes the process to crash. A quick fix is to run `ulimit -n 4096` (increase the number of open files allowed) and then restart the process with `fnsad start`. If you are using `systemd` or another process manager to launch `fnsad` this may require some configuration at that level. A sample `systemd` file to fix this issue is below:
 
 ```toml
-# /etc/systemd/system/lbm.service
+# /etc/systemd/system/finschia.service
 [Unit]
-Description=LBM Node
+Description=Finschia Node
 After=network.target
 
 [Service]
 Type=simple
 User=ubuntu
 WorkingDirectory=/home/ubuntu
-ExecStart=/home/ubuntu/go/bin/lbm start
+ExecStart=/home/ubuntu/go/bin/fnsad start
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=4096

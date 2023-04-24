@@ -8,10 +8,11 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/line/lbm-sdk/client/flags"
-	"github.com/line/lbm-sdk/crypto/keys/ed25519"
-	sdk "github.com/line/lbm-sdk/types"
-	"github.com/line/lbm/app"
+	"github.com/Finschia/finschia-sdk/client/flags"
+	"github.com/Finschia/finschia-sdk/crypto/keys/ed25519"
+	sdk "github.com/Finschia/finschia-sdk/types"
+
+	"github.com/Finschia/finschia/app"
 )
 
 func TestMultiValidatorAndSendTokens(t *testing.T) {
@@ -19,7 +20,7 @@ func TestMultiValidatorAndSendTokens(t *testing.T) {
 
 	fg := InitFixturesGroup(t)
 
-	fg.LBMStartCluster(minGasPrice.String())
+	fg.FinschiaStartCluster(minGasPrice.String())
 	defer fg.Cleanup()
 
 	f := fg.Fixture(0)
@@ -98,7 +99,7 @@ func TestMultiValidatorAddNodeAndPromoteValidator(t *testing.T) {
 	t.Parallel()
 
 	fg := InitFixturesGroup(t)
-	fg.LBMStartCluster(minGasPrice.String())
+	fg.FinschiaStartCluster(minGasPrice.String())
 	defer fg.Cleanup()
 
 	f1 := fg.Fixture(0)

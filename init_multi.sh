@@ -2,7 +2,7 @@
 
 display_usage() {
   echo "\nMissing $1 parameter. Please check if all parameters were specified."
-  echo "\nUsage: ./init_node [CHAIN_ID] [N, default=1]"
+  echo "\nUsage: ./init_multi.sh [CHAIN_ID] [N, default=1]"
   exit 1
 }
 
@@ -21,8 +21,8 @@ redirect() {
   fi
 }
 
-BINARY=lbm
-BASE_DIR=~/.lbm
+BINARY=fnsad
+BASE_DIR=~/.finschia
 CHAIN_DIR_PREFIX="${BASE_DIR}/node"
 GENTXS_DIR="${BASE_DIR}/gentxs"
 CHAIN_ID=$1
@@ -65,7 +65,7 @@ TEST_MNEMONIC="mind flame tobacco sense move hammer drift crime ring globe art g
 # Create genesis account and gentx
 for ((i = 0; i < N; i++))
   do
-    # ~/.lbm/node0, ~/.lbm/node1, ...
+    # ~/.finschia/node0, ~/.finschia/node1, ...
     CHAIN_DIR="${CHAIN_DIR_PREFIX}${i}"
 
     # Add dir for chain, exit if error

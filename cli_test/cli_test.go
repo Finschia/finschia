@@ -15,18 +15,19 @@ import (
 	"testing"
 	"time"
 
-	"github.com/line/lbm-sdk/client/flags"
-	"github.com/line/lbm-sdk/crypto/keys/ed25519"
-	sdk "github.com/line/lbm-sdk/types"
-	"github.com/line/lbm-sdk/types/tx"
-	gov "github.com/line/lbm-sdk/x/gov/types"
-	minttypes "github.com/line/lbm-sdk/x/mint/types"
-	"github.com/line/lbm/app"
-	osttypes "github.com/line/ostracon/types"
+	"github.com/Finschia/finschia-sdk/client/flags"
+	"github.com/Finschia/finschia-sdk/crypto/keys/ed25519"
+	sdk "github.com/Finschia/finschia-sdk/types"
+	"github.com/Finschia/finschia-sdk/types/tx"
+	gov "github.com/Finschia/finschia-sdk/x/gov/types"
+	minttypes "github.com/Finschia/finschia-sdk/x/mint/types"
+	osttypes "github.com/Finschia/ostracon/types"
 	"github.com/stretchr/testify/require"
+
+	"github.com/Finschia/finschia/app"
 )
 
-func TestLBMKeysAddMultisig(t *testing.T) {
+func TestFnsadKeysAddMultisig(t *testing.T) {
 	t.Parallel()
 	f := InitFixtures(t)
 	defer f.Cleanup()
@@ -52,12 +53,12 @@ func TestLBMKeysAddMultisig(t *testing.T) {
 	require.NotEqual(t, f.KeysShow("msig3").Address, f.KeysShow("msig4").Address)
 }
 
-func TestLBMMinimumFees(t *testing.T) {
+func TestFnsadMinimumFees(t *testing.T) {
 	t.Parallel()
 	f := InitFixtures(t)
 	defer f.Cleanup()
 
-	// start lbm server with minimum fees
+	// start fnsad server with minimum fees
 	minGasPrice, err := sdk.NewDecFromStr("0.000006")
 	require.NoError(t, err)
 
@@ -67,7 +68,7 @@ func TestLBMMinimumFees(t *testing.T) {
 		sdk.NewDecCoinFromDec(fee2Denom, minGasPrice),
 	)
 
-	n := f.LBMStart(fees)
+	n := f.FnsadStart(fees)
 	defer n.Cleanup()
 
 	barAddr := f.KeyAddress(keyBar)
@@ -95,16 +96,16 @@ func TestLBMMinimumFees(t *testing.T) {
 	require.Contains(t, out.String(), "insufficient fees")
 }
 
-func TestLBMGasPrices(t *testing.T) {
+func TestFnsadGasPrices(t *testing.T) {
 	t.Parallel()
 	f := InitFixtures(t)
 	defer f.Cleanup()
 
-	// start lbm server with minimum fees
+	// start fnsad server with minimum fees
 	minGasPrice, err := sdk.NewDecFromStr("0.000006")
 	require.NoError(t, err)
 
-	n := f.LBMStart(sdk.NewDecCoinFromDec(feeDenom, minGasPrice).String())
+	n := f.FnsadStart(sdk.NewDecCoinFromDec(feeDenom, minGasPrice).String())
 	defer n.Cleanup()
 
 	barAddr := f.KeyAddress(keyBar)
@@ -132,16 +133,16 @@ func TestLBMGasPrices(t *testing.T) {
 	require.NoError(t, n.WaitForNextBlock())
 }
 
-func TestLBMFeesDeduction(t *testing.T) {
+func TestFnsadFeesDeduction(t *testing.T) {
 	t.Parallel()
 	f := InitFixtures(t)
 	defer f.Cleanup()
 
-	// start lbm server with minimum fees
+	// start fnsad server with minimum fees
 	minGasPrice, err := sdk.NewDecFromStr("0.000006")
 	require.NoError(t, err)
 
-	n := f.LBMStart(sdk.NewDecCoinFromDec(feeDenom, minGasPrice).String())
+	n := f.FnsadStart(sdk.NewDecCoinFromDec(feeDenom, minGasPrice).String())
 	defer n.Cleanup()
 
 	// Save key addresses for later use
@@ -191,13 +192,13 @@ func TestLBMFeesDeduction(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestLBMSend(t *testing.T) {
+func TestFnsadSend(t *testing.T) {
 	t.Parallel()
 	f := InitFixtures(t)
 	defer f.Cleanup()
 
-	// start lbm server
-	n := f.LBMStart(minGasPrice.String())
+	// start fnsad server
+	n := f.FnsadStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	// Save key addresses for later use
@@ -271,13 +272,13 @@ func TestLBMSend(t *testing.T) {
 	require.Equal(t, startTokens.Sub(sendTokens.MulRaw(3)), fooBal.GetBalances().AmountOf(denom))
 }
 
-func TestLBMGasAuto(t *testing.T) {
+func TestFnsadGasAuto(t *testing.T) {
 	t.Parallel()
 	f := InitFixtures(t)
 	defer f.Cleanup()
 
-	// start lbm server
-	n := f.LBMStart(minGasPrice.String())
+	// start fnsad server
+	n := f.FnsadStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	fooAddr := f.KeyAddress(keyFoo)
@@ -331,13 +332,13 @@ func TestLBMGasAuto(t *testing.T) {
 	require.Equal(t, startTokens.Sub(sendTokens), fooBal.GetBalances().AmountOf(denom))
 }
 
-func TestLBMCreateValidator(t *testing.T) {
+func TestFnsadCreateValidator(t *testing.T) {
 	t.Parallel()
 	f := InitFixtures(t)
 	defer f.Cleanup()
 
-	// start lbm server
-	n := f.LBMStart(minGasPrice.String())
+	// start fnsad server
+	n := f.FnsadStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	barAddr := f.KeyAddress(keyBar)
@@ -422,13 +423,13 @@ func TestLBMCreateValidator(t *testing.T) {
 	require.Equal(t, remainingTokens.String(), validatorUbds.GetUnbondingResponses()[0].Entries[0].Balance.String())
 }
 
-func TestLBMQuerySupply(t *testing.T) {
+func TestFnsadQuerySupply(t *testing.T) {
 	t.Parallel()
 	f := InitFixtures(t)
 	defer f.Cleanup()
 
-	// start lbm server
-	n := f.LBMStart(minGasPrice.String())
+	// start fnsad server
+	n := f.FnsadStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	totalSupplyOf := f.QueryTotalSupplyOf(fooDenom)
@@ -436,13 +437,13 @@ func TestLBMQuerySupply(t *testing.T) {
 	require.True(sdk.IntEq(t, TotalCoins.AmountOf(fooDenom), totalSupplyOf.Amount))
 }
 
-func TestLBMSubmitProposal(t *testing.T) {
+func TestFnsadSubmitProposal(t *testing.T) {
 	t.Parallel()
 	f := InitFixtures(t)
 	defer f.Cleanup()
 
-	// start lbm server
-	n := f.LBMStart(minGasPrice.String())
+	// start fnsad server
+	n := f.FnsadStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	f.QueryGovParamDeposit()
@@ -590,12 +591,12 @@ func TestLBMSubmitProposal(t *testing.T) {
 	require.Equal(t, uint64(2), proposalsQuery.GetProposals()[1].ProposalId)
 }
 
-func TestLBMSubmitParamChangeProposal(t *testing.T) {
+func TestFnsadSubmitParamChangeProposal(t *testing.T) {
 	t.Parallel()
 	f := InitFixtures(t)
 	defer f.Cleanup()
 
-	n := f.LBMStart(minGasPrice.String())
+	n := f.FnsadStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	fooAddr := f.KeyAddress(keyFoo)
@@ -645,7 +646,7 @@ func TestLBMSubmitParamChangeProposal(t *testing.T) {
 	require.Equal(t, proposalTokens, deposit.Amount.AmountOf(denom))
 }
 
-func TestLBMSubmitCommunityPoolSpendProposal(t *testing.T) {
+func TestFnsadSubmitCommunityPoolSpendProposal(t *testing.T) {
 	t.Skip("Due to removing mint module")
 	t.Parallel()
 	f := InitFixtures(t)
@@ -673,7 +674,7 @@ func TestLBMSubmitCommunityPoolSpendProposal(t *testing.T) {
 	require.NoError(t, err)
 	require.NoError(t, genDoc.SaveAs(genFile))
 
-	n := f.LBMStart("")
+	n := f.FnsadStart("")
 	defer n.Cleanup()
 
 	fooAddr := f.KeyAddress(keyFoo)
@@ -726,13 +727,13 @@ func TestLBMSubmitCommunityPoolSpendProposal(t *testing.T) {
 	require.Equal(t, proposalTokens, deposit.Amount.AmountOf(denom))
 }
 
-func TestLBMQueryTxPagination(t *testing.T) {
+func TestFnsadQueryTxPagination(t *testing.T) {
 	t.Parallel()
 	f := InitFixtures(t)
 	defer f.Cleanup()
 
-	// start lbm server
-	n := f.LBMStart(minGasPrice.String())
+	// start fnsad server
+	n := f.FnsadStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	fooAddr := f.KeyAddress(keyFoo)
@@ -779,14 +780,14 @@ func TestLBMQueryTxPagination(t *testing.T) {
 	f.QueryTxsInvalid(errors.New("required flag(s) \"events\" not set"), 1, 30)
 }
 
-func TestLBMValidateSignatures(t *testing.T) {
+func TestFnsadValidateSignatures(t *testing.T) {
 	t.Skip("no flag validate-signatures")
 	t.Parallel()
 	f := InitFixtures(t)
 	defer f.Cleanup()
 
-	// start lbm server
-	n := f.LBMStart("")
+	// start fnsad server
+	n := f.FnsadStart("")
 	defer n.Cleanup()
 
 	fooAddr := f.KeyAddress(keyFoo)
@@ -827,13 +828,13 @@ func TestLBMValidateSignatures(t *testing.T) {
 	require.Error(t, err)
 }
 
-func TestLBMSendGenerateSignAndBroadcast(t *testing.T) {
+func TestFnsadSendGenerateSignAndBroadcast(t *testing.T) {
 	t.Parallel()
 	f := InitFixtures(t)
 	defer f.Cleanup()
 
-	// start lbm server
-	n := f.LBMStart(minGasPrice.String())
+	// start fnsad server
+	n := f.FnsadStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	fooAddr := f.KeyAddress(keyFoo)
@@ -898,13 +899,13 @@ func TestLBMSendGenerateSignAndBroadcast(t *testing.T) {
 	require.Equal(t, startTokens.Sub(sendTokens), fooBal.GetBalances().AmountOf(denom))
 }
 
-func TestLBMMultisignInsufficientCosigners(t *testing.T) {
+func TestFnsadMultisignInsufficientCosigners(t *testing.T) {
 	t.Parallel()
 	f := InitFixtures(t)
 	defer f.Cleanup()
 
-	// start lbm server with minimum fees
-	n := f.LBMStart(minGasPrice.String())
+	// start fnsad server with minimum fees
+	n := f.FnsadStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	fooBarBazAddr := f.KeyAddress(keyFooBarBaz)
@@ -952,13 +953,13 @@ func TestLBMMultisignInsufficientCosigners(t *testing.T) {
 	require.Contains(t, out.String(), "signature verification failed")
 }
 
-func TestLBMEncode(t *testing.T) {
+func TestFnsadEncode(t *testing.T) {
 	t.Parallel()
 	f := InitFixtures(t)
 	defer f.Cleanup()
 
-	// start lbm server
-	n := f.LBMStart(minGasPrice.String())
+	// start fnsad server
+	n := f.FnsadStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	cdc, _ := app.MakeCodecs()
@@ -989,13 +990,13 @@ func TestLBMEncode(t *testing.T) {
 	require.Equal(t, "deadbeef", decodedTx.GetBody().GetMemo())
 }
 
-func TestLBMMultisignSortSignatures(t *testing.T) {
+func TestFnsadMultisignSortSignatures(t *testing.T) {
 	t.Parallel()
 	f := InitFixtures(t)
 	defer f.Cleanup()
 
-	// start lbm server with minimum fees
-	n := f.LBMStart(minGasPrice.String())
+	// start fnsad server with minimum fees
+	n := f.FnsadStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	fooBarBazAddr := f.KeyAddress(keyFooBarBaz)
@@ -1050,13 +1051,13 @@ func TestLBMMultisignSortSignatures(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestLBMMultisign(t *testing.T) {
+func TestFnsadMultisign(t *testing.T) {
 	t.Parallel()
 	f := InitFixtures(t)
 	defer f.Cleanup()
 
-	// start lbm server with minimum fees
-	n := f.LBMStart(minGasPrice.String())
+	// start fnsad server with minimum fees
+	n := f.FnsadStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	fooBarBazAddr := f.KeyAddress(keyFooBarBaz)
@@ -1111,7 +1112,7 @@ func TestLBMMultisign(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestLBMCollectGentxs(t *testing.T) {
+func TestFnsadCollectGentxs(t *testing.T) {
 	t.Parallel()
 	var customMaxBytes, customMaxGas int64 = 99999999, 1234567
 	f := NewFixtures(t, getHomeDir(t))
@@ -1127,7 +1128,7 @@ func TestLBMCollectGentxs(t *testing.T) {
 	f.KeysAdd(keyFoo)
 
 	// Run init
-	f.LBMInit(keyFoo)
+	f.FnsadInit(keyFoo)
 
 	// Customize genesis.json
 	genFile := f.GenesisFile()
@@ -1158,20 +1159,20 @@ func TestValidateGenesis(t *testing.T) {
 	f := InitFixtures(t)
 	defer f.Cleanup()
 
-	// start lbm server
-	n := f.LBMStart(minGasPrice.String())
+	// start fnsad server
+	n := f.FnsadStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	f.ValidateGenesis(filepath.Join(f.Home, "config", "genesis.json"))
 }
 
-func TestLBMIncrementSequenceDecorator(t *testing.T) {
+func TestFnsadIncrementSequenceDecorator(t *testing.T) {
 	t.Parallel()
 	f := InitFixtures(t)
 	defer f.Cleanup()
 
-	// start lbm server
-	n := f.LBMStart(minGasPrice.String())
+	// start fnsad server
+	n := f.FnsadStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	fooAddr := f.KeyAddress(keyFoo)
@@ -1228,13 +1229,13 @@ func TestLBMIncrementSequenceDecorator(t *testing.T) {
 	}
 }
 
-func TestLBMWasmContract(t *testing.T) {
+func TestFnsadWasmContract(t *testing.T) {
 	t.Parallel()
 	f := InitFixtures(t)
 	defer f.Cleanup()
 
-	// start lbm server with minimum fees
-	n := f.LBMStart(minGasPrice.String())
+	// start fnsad server with minimum fees
+	n := f.FnsadStart(minGasPrice.String())
 	defer n.Cleanup()
 
 	fooAddr := f.KeyAddress(keyFoo)

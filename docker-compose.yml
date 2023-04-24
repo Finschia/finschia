@@ -1,40 +1,40 @@
 version: '3'
 
 services:
-  lbmnode0:
-    container_name: lbmnode0
-    image: "line/lbmnode"
+  fnsadnode0:
+    container_name: fnsadnode0
+    image: "finschia/finschianode"
     ports:
       - "26656-26657:26656-26657"
     environment:
       - ID=0
-      - LOG=${LOG:-lbm.log}
+      - LOG=${LOG:-finschia.log}
     volumes:
       - ./mytestnet:/data:Z
     networks:
       localnet:
         ipv4_address: 192.168.10.2
 
-  lbmnode1:
-    container_name: lbmnode1
-    image: "line/lbmnode"
+  fnsadnode1:
+    container_name: fnsadnode1
+    image: "finschia/finschianode"
     ports:
       - "26659-26660:26656-26657"
     environment:
       - ID=1
-      - LOG=${LOG:-lbm.log}
+      - LOG=${LOG:-finschia.log}
     volumes:
       - ./mytestnet:/data:Z
     networks:
       localnet:
         ipv4_address: 192.168.10.3
 
-  lbmnode2:
-    container_name: lbmnode2
-    image: "line/lbmnode"
+  fnsadnode2:
+    container_name: fnsadnode2
+    image: "finschia/finschianode"
     environment:
       - ID=2
-      - LOG=${LOG:-lbm.log}
+      - LOG=${LOG:-finschia.log}
     ports:
       - "26661-26662:26656-26657"
     volumes:
@@ -43,12 +43,12 @@ services:
       localnet:
         ipv4_address: 192.168.10.4
 
-  lbmnode3:
-    container_name: lbmnode3
-    image: "line/lbmnode"
+  fnsadnode3:
+    container_name: fnsadnode3
+    image: "finschia/finschianode"
     environment:
       - ID=3
-      - LOG=${LOG:-lbm.log}
+      - LOG=${LOG:-finschia.log}
     ports:
       - "26663-26664:26656-26657"
     volumes:

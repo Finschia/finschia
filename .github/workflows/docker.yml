@@ -1,6 +1,6 @@
 name: Build & Push
-# Build & Push builds the lbm docker image on every tag push,
-# and pushes the image to https://docker-registry.linecorp.com/link-network/v2/lbm
+# Build & Push builds the finschia docker image on every tag push
+
 on:
   pull_request:
     branches:
@@ -12,10 +12,10 @@ on:
 
 env:
   registry: docker.io
-  repository: line/lbm
+  repository: finschia/finschianode
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
@@ -29,7 +29,6 @@ jobs:
           endpoint: buildx
           config-inline: |
             [registry."docker.io"]
-              mirrors = ["docker-hub-mirror.linecorp.com"]
       - name: login to the registry
         uses: docker/login-action@v2
         if: github.event_name != 'pull_request'

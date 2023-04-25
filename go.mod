@@ -3,9 +3,9 @@ module github.com/Finschia/finschia
 go 1.18
 
 require (
-	github.com/Finschia/finschia-sdk v0.47.0-rc7
+	github.com/Finschia/finschia-sdk v0.47.0
 	github.com/Finschia/ibc-go/v3 v3.3.3
-	github.com/Finschia/ostracon v1.0.10-0.20230417090415-bc3f5693b6a1
+	github.com/Finschia/ostracon v1.1.0
 	github.com/Finschia/wasmd v0.1.3
 	github.com/golang/mock v1.6.0
 	github.com/gorilla/mux v1.8.0

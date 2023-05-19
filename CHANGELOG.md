@@ -43,6 +43,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Bug Fixes
 
 ### Breaking Changes
+* (sdk) [\#187](https://github.com/finschia/finschia/pull/187) Bump github.com/Finschia/finschia-sdk from v0.47.0 to v0.47.1-0.20230517010045-e9fe90608161
 
 ### Build, CI
 

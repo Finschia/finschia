@@ -46,6 +46,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ### Build, CI
 * (ci) [\#185](https://github.com/Finschia/finschia/pull/185) update `tag.yml` github action
+* (build) [\#188](https://github.com/Finschia/finschia/pull/188) fix example wrong app name in `--help` description of cli
 
 ### Docs
 

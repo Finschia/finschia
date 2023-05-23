@@ -131,6 +131,7 @@ import (
 )
 
 const appName = "Finschia"
+const upgradeName = "v2-Daisy"
 
 var (
 	// DefaultNodeHome default home directories for the application daemon
@@ -659,6 +660,13 @@ func NewLinkApp(
 
 	app.SetAnteHandler(anteHandler)
 	app.SetEndBlocker(app.EndBlocker)
+
+	// upgrade
+	app.UpgradeKeeper.SetUpgradeHandler(
+		upgradeName,
+		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
+		})
 
 	// must be before loading version
 	// requires the snapshot store to be created and registered as a BaseAppOptions

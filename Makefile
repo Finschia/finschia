@@ -111,7 +111,7 @@ build_tags_comma_sep := $(subst $(whitespace),$(comma),$(build_tags))
 # process linker flags
 
 ldflags = -X github.com/Finschia/finschia-sdk/version.Name=finschia \
-		  -X github.com/Finschia/finschia-sdk/version.AppName=finschia \
+		  -X github.com/Finschia/finschia-sdk/version.AppName=fnsad \
 		  -X github.com/Finschia/finschia-sdk/version.Version=$(VERSION) \
 		  -X github.com/Finschia/finschia-sdk/version.Commit=$(COMMIT) \
 		  -X github.com/Finschia/finschia-sdk/types.DBBackend=$(DB_BACKEND) \

@@ -130,6 +130,7 @@ import (
 )
 
 const appName = "Finschia"
+const upgradeName = "v2-Daisy"
 
 var (
 	// DefaultNodeHome default home directories for the application daemon
@@ -365,7 +366,7 @@ func NewLinkApp(
 	app.FeeGrantKeeper = feegrantkeeper.NewKeeper(appCodec, keys[feegrant.StoreKey], app.AccountKeeper)
 	app.UpgradeKeeper = upgradekeeper.NewKeeper(skipUpgradeHeights, keys[upgradetypes.StoreKey], appCodec, homePath, app.BaseApp)
 	foundationConfig := foundation.DefaultConfig()
-	app.FoundationKeeper = foundationkeeper.NewKeeper(appCodec, keys[foundation.StoreKey], app.BaseApp.MsgServiceRouter(), app.AccountKeeper, app.BankKeeper, authtypes.FeeCollectorName, foundationConfig, foundation.DefaultAuthority().String())
+	app.FoundationKeeper = foundationkeeper.NewKeeper(appCodec, keys[foundation.StoreKey], app.BaseApp.MsgServiceRouter(), app.AccountKeeper, app.BankKeeper, authtypes.FeeCollectorName, foundationConfig, foundation.DefaultAuthority().String(), app.GetSubspace(foundation.ModuleName))
 
 	app.ClassKeeper = classkeeper.NewKeeper(appCodec, keys[class.StoreKey])
 	app.TokenKeeper = tokenkeeper.NewKeeper(appCodec, keys[token.StoreKey], app.ClassKeeper)
@@ -657,6 +658,13 @@ func NewLinkApp(
 	app.SetAnteHandler(anteHandler)
 	app.SetEndBlocker(app.EndBlocker)
 
+	// upgrade
+	app.UpgradeKeeper.SetUpgradeHandler(
+		upgradeName,
+		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
+		})
+
 	// must be before loading version
 	// requires the snapshot store to be created and registered as a BaseAppOptions
 	// see cmd/fnsad/cmd/root.go: 257-265
@@ -870,6 +878,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(icahosttypes.SubModuleName)
 	paramsKeeper.Subspace(wasmplustypes.ModuleName)
+	paramsKeeper.Subspace(foundation.ModuleName)
 
 	return paramsKeeper
 }

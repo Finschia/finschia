@@ -43,6 +43,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Bug Fixes
 
 ### Breaking Changes
+* (sdk) [\#187](https://github.com/finschia/finschia/pull/187) Apply Finschia/finschia-sdk#999
 
 ### Build, CI
 * (ci) [\#185](https://github.com/Finschia/finschia/pull/185) update `tag.yml` github action

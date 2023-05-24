@@ -6,7 +6,7 @@ require (
 	github.com/Finschia/finschia-sdk v0.47.1-0.20230517010045-e9fe90608161
 	github.com/Finschia/ibc-go/v3 v3.3.3
 	github.com/Finschia/ostracon v1.1.0
-	github.com/Finschia/wasmd v0.1.3
+	github.com/Finschia/wasmd v0.1.4
 	github.com/golang/mock v1.6.0
 	github.com/gorilla/mux v1.8.0
 	github.com/prometheus/client_golang v1.15.0

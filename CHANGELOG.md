@@ -37,6 +37,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ## [Unreleased]
 
 ### Features
+* (build) [\#202](https://github.com/Finschia/finschia/pull/202) bump up finschia-sdk from v0.47.1-0.20230517010045-e9fe90608161 to v0.47.1-rc1
 
 ### Improvements
 

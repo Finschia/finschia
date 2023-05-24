@@ -54,7 +54,7 @@ jobs:
           sudo apt upgrade -y
           sudo apt install -y build-essential g++-x86-64-linux-gnu g++-aarch64-linux-gnu wget
       - name: "Install go"
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version: '1.18'
           check-latest: true
@@ -110,7 +110,7 @@ jobs:
           brew update
           brew install md5sha1sum
       - name: "Install go"
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
           go-version: '1.18'
           check-latest: true

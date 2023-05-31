@@ -39,6 +39,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Features
 * (build) [\#202](https://github.com/Finschia/finschia/pull/202) bump up finschia-sdk from v0.47.1-0.20230517010045-e9fe90608161 to v0.47.1-rc1
 * (sdk) [\#204](https://github.com/Finschia/finschia/pull/204) apply Finschia/finschia-sdk#1019(backport Finschia/finschia-sdk#1012)
+* (ibc) [\#209](https://github.com/Finschia/finschia/pull/209) bump up ibc-go from v3.3.3 to v3.3.4-0.20230531095546-59c47ab8e095
 
 ### Improvements
 * (x/wasm) [\#191](https://github.com/Finschia/finschia/pull/191) bump up Finschia/wasmd from v0.1.3 to v0.1.4

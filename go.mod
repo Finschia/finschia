@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/Finschia/finschia-sdk v0.47.1-rc1.0.20230530065504-8a1dac46f778
-	github.com/Finschia/ibc-go/v3 v3.3.3
+	github.com/Finschia/ibc-go/v3 v3.3.4-0.20230531095546-59c47ab8e095
 	github.com/Finschia/ostracon v1.1.0
 	github.com/Finschia/wasmd v0.1.4
 	github.com/golang/mock v1.6.0

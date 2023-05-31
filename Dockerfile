@@ -37,7 +37,7 @@ COPY . .
 RUN BUILD_TAGS=muslc make install CGO_ENABLED=1 FINSCHIA_BUILD_OPTIONS="$FINSCHIA_BUILD_OPTIONS"
 
 # Final image
-FROM alpine:edge
+FROM golang:1.18-alpine
 
 WORKDIR /root
 

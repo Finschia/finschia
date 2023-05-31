@@ -44,6 +44,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (x/wasm) [\#191](https://github.com/Finschia/finschia/pull/191) bump up Finschia/wasmd from v0.1.3 to v0.1.4
 
 ### Bug Fixes
+* (build) [\#205](https://github.com/Finschia/finschia/pull/205) fix wasm error by changing from image to golang:1.18-alpine
 
 ### Breaking Changes
 * (sdk) [\#187](https://github.com/finschia/finschia/pull/187) Apply Finschia/finschia-sdk#999

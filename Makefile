@@ -180,18 +180,18 @@ build-release-bundle: build
 	@if [   -z "${LIBWASMVM_PATH}" ]; then echo "ERROR: $(LIBWASMVM) $(LIBWASMVM_VERSION) not found: $(shell go env GOMODCACHE)"; exit 1; fi
 	@if [ ! -f "${LIBWASMVM_PATH}" ]; then echo "ERROR: Multiple version of $(LIBWASMVM) found: ${LIBWASMVM_PATH}"; exit 1; fi
 	@mkdir -p $(BUILDDIR)/$(RELEASE_BUNDLE)
-	@cp $(BUILDDIR)/fnsad $(BUILDDIR)/$(RELEASE_BUNDLE)/$(RELEASE_BUNDLE)
+	@cp $(BUILDDIR)/fnsad $(BUILDDIR)/$(RELEASE_BUNDLE)/
 	@cp "$(LIBWASMVM_PATH)" $(BUILDDIR)/$(RELEASE_BUNDLE)/
 	@case "$(shell go env GOHOSTOS),$(shell go env GOHOSTARCH),$(shell go env GOARCH)" in \
 	  *,amd64,amd64 | *,arm64,arm64 | darwin,arm64,*) \
-	    LD_LIBRARY_PATH=$(BUILDDIR)/$(RELEASE_BUNDLE) $(BUILDDIR)/$(RELEASE_BUNDLE)/$(RELEASE_BUNDLE) version; \
+	    LD_LIBRARY_PATH=$(BUILDDIR)/$(RELEASE_BUNDLE) $(BUILDDIR)/$(RELEASE_BUNDLE)/fnsad version; \
 	    if [ $$? -ne 0 ]; then echo "ERROR: Test execution failed."; printenv; go env; exit 1; fi; \
 	    echo "OK: Test execution confirmed.";; \
       *) \
         echo "SKIP: Test execution unconfirmed.";; \
     esac
-	@cd $(BUILDDIR) && tar zcvf ./$(RELEASE_BUNDLE).tgz $(RELEASE_BUNDLE)/ > /dev/null 2>&1
-	@rm -rf $(BUILDDIR)/$(RELEASE_BUNDLE)/
+	@cd $(BUILDDIR)/$(RELEASE_BUNDLE) && tar zcvf ../$(RELEASE_BUNDLE).tgz * > /dev/null 2>&1
+	@cd .. && rm -rf $(BUILDDIR)/$(RELEASE_BUNDLE)/
 	@echo "Built: $(BUILDDIR)/$(RELEASE_BUNDLE).tgz"
 
 install: go.sum $(BUILDDIR)/ dbbackend $(LIBSODIUM_TARGET)

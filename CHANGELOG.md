@@ -41,6 +41,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Improvements
 
 ### Bug Fixes
+* (x/wasm) [\#217](https://github.com/Finschia/finschia/pull/217) add wasmplus proposal command in fnsad cli
 
 ### Breaking Changes
 

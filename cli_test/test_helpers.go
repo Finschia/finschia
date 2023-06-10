@@ -21,6 +21,7 @@ import (
 
 	"github.com/Finschia/finschia-sdk/baseapp"
 	"github.com/Finschia/finschia-sdk/client"
+	clientflags "github.com/Finschia/finschia-sdk/client/flags"
 	clientkeys "github.com/Finschia/finschia-sdk/client/keys"
 	"github.com/Finschia/finschia-sdk/client/rpc"
 	"github.com/Finschia/finschia-sdk/codec/legacy"
@@ -53,6 +54,8 @@ import (
 	staking "github.com/Finschia/finschia-sdk/x/staking/types"
 	"github.com/Finschia/finschia-sdk/x/stakingplus"
 	wasmcli "github.com/Finschia/wasmd/x/wasm/client/cli"
+	wasmpluscli "github.com/Finschia/wasmd/x/wasmplus/client/cli"
+	wasmplustypes "github.com/Finschia/wasmd/x/wasmplus/types"
 
 	ostcmd "github.com/Finschia/ostracon/cmd/ostracon/commands"
 	ostcfg "github.com/Finschia/ostracon/config"
@@ -1484,6 +1487,24 @@ func (f *Fixtures) TxExecuteWasm(contractAddress string, msgJSON string, flags .
 	return testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
 }
 
+func (f *Fixtures) TxGovProposalDeactivateContractCmd(from, contractAddr, title, description string, deposit sdk.Coin, flags ...string) (testutil.BufferWriter, error) {
+	args := fmt.Sprintf("%s --keyring-backend=test --from=%s", contractAddr, from)
+	args += fmt.Sprintf(" --title=%s --description=%s --deposit=%s", title, description, deposit)
+	args += fmt.Sprintf(" --node=%s", f.RPCAddr)
+	cmd := wasmpluscli.ProposalDeactivateContractCmd()
+	clientflags.AddTxFlagsToCmd(cmd)
+	return testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
+}
+
+func (f *Fixtures) TxGovProposalActivateContractCmd(from, contractAddr, title, description string, deposit sdk.Coin, flags ...string) (testutil.BufferWriter, error) {
+	args := fmt.Sprintf("%s --keyring-backend=test --from=%s", contractAddr, from)
+	args += fmt.Sprintf(" --title=%s --description=%s --deposit=%s", title, description, deposit)
+	args += fmt.Sprintf(" --node=%s", f.RPCAddr)
+	cmd := wasmpluscli.ProposalActivateContractCmd()
+	clientflags.AddTxFlagsToCmd(cmd)
+	return testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
+}
+
 func (f *Fixtures) QueryListCodeWasm(flags ...string) wasmtypes.QueryCodesResponse {
 	cmd := wasmcli.GetCmdListCode()
 	res, errStr := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags("-o=json", flags...))
@@ -1524,6 +1545,19 @@ func (f *Fixtures) QueryContractStateSmartWasm(contractAddress string, reqJSON s
 	res, errStr := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
 	require.Empty(f.T, errStr)
 	return res.String()
+}
+
+func (f *Fixtures) QueryListInactiveContracts(flags ...string) []string {
+	cmd := wasmpluscli.GetCmdListInactiveContracts()
+	res, errStr := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags("-o=json", flags...))
+	require.Empty(f.T, errStr)
+
+	cdc, _ := app.MakeCodecs()
+	var queryResponse wasmplustypes.QueryInactiveContractsResponse
+	err := cdc.UnmarshalJSON(res.Bytes(), &queryResponse)
+	require.NoError(f.T, err)
+
+	return queryResponse.Addresses
 }
 
 // ___________________________________________________________________________________

@@ -116,9 +116,9 @@ import (
 	ibchost "github.com/Finschia/ibc-go/v3/modules/core/24-host"
 	ibckeeper "github.com/Finschia/ibc-go/v3/modules/core/keeper"
 	"github.com/Finschia/wasmd/x/wasm"
-	wasmclient "github.com/Finschia/wasmd/x/wasm/client"
 	wasmkeeper "github.com/Finschia/wasmd/x/wasm/keeper"
 	"github.com/Finschia/wasmd/x/wasmplus"
+	wasmplusclient "github.com/Finschia/wasmd/x/wasmplus/client"
 	wasmpluskeeper "github.com/Finschia/wasmd/x/wasmplus/keeper"
 	wasmplustypes "github.com/Finschia/wasmd/x/wasmplus/types"
 
@@ -149,7 +149,7 @@ var (
 		foundationmodule.AppModuleBasic{},
 		gov.NewAppModuleBasic(
 			append(
-				wasmclient.ProposalHandlers,
+				wasmplusclient.ProposalHandlers,
 				paramsclient.ProposalHandler,
 				distrclient.ProposalHandler,
 				upgradeclient.ProposalHandler,

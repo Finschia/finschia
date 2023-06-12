@@ -34,7 +34,7 @@ RUN ln -s /lib/libwasmvm_muslc.${ARCH}.a /usr/lib/libwasmvm_muslc.a
 COPY . .
 
 # Make install
-RUN BUILD_TAGS=muslc make install CGO_ENABLED=1 FINSCHIA_BUILD_OPTIONS="$FINSCHIA_BUILD_OPTIONS"
+RUN BUILD_TAGS=muslc LINK_STATICALLY=true make install CGO_ENABLED=1 FINSCHIA_BUILD_OPTIONS="$FINSCHIA_BUILD_OPTIONS"
 
 # Final image
 FROM alpine:edge

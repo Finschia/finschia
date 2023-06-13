@@ -43,6 +43,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ### Bug Fixes
 * (build) [\#216](https://github.com/Finschia/finschia/pull/216) fix the cgo calling error of libwasmvm on docker image
+* (x/wasm) [\#217](https://github.com/Finschia/finschia/pull/217) add wasmplus proposal command in fnsad cli
 
 ### Breaking Changes
 

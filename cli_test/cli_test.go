@@ -1367,4 +1367,55 @@ func TestFnsadWasmContract(t *testing.T) {
 		res = f.QueryContractStateSmartWasm(contractAddress, "{\"sum\":{}}")
 		require.Equal(t, fmt.Sprintf("{\"data\":{\"sum\":%d}}", initValue+enqueueValue), strings.TrimRight(res, "\n"))
 	}
+
+	// proposal deactivate contract
+	{
+		// proposal
+		proposalTokens := sdk.TokensFromConsensusPower(10, sdk.DefaultPowerReduction)
+		out, err := f.TxGovProposalDeactivateContractCmd(keyFoo, contractAddress, "Test", "test", sdk.NewCoin(denom, proposalTokens))
+		require.NoError(t, err)
+		resp := UnmarshalTxResponse(t, out.Bytes())
+		require.Equal(t, uint32(0), resp.Code)
+
+		err = n.WaitForNextBlock()
+		require.NoError(t, err)
+
+		proposal1 := f.QueryGovProposal(1)
+		require.Equal(t, uint64(1), proposal1.ProposalId)
+		require.Equal(t, gov.StatusVotingPeriod, proposal1.Status)
+
+		// Ensure query proposals returns properly
+		proposalsQuery := f.QueryGovProposals()
+		require.Equal(t, uint64(1), proposalsQuery.GetProposals()[0].ProposalId)
+
+		// vote
+		out, err = f.TxGovVote(1, gov.OptionYes, keyFoo, "-y")
+		require.NoError(t, err)
+		resp = UnmarshalTxResponse(t, out.Bytes())
+		require.Equal(t, uint32(0), resp.Code)
+
+		err = n.WaitForNextBlock()
+		require.NoError(t, err)
+
+		vote := f.QueryGovVote(1, fooAddr)
+		require.Equal(t, uint64(1), vote.ProposalId)
+		require.Equal(t, 1, len(vote.Options))
+		require.Equal(t, gov.OptionYes, vote.Options[0].Option)
+
+		votes := f.QueryGovVotes(1)
+		require.Len(t, votes.GetVotes(), 1)
+		require.Equal(t, uint64(1), votes.GetVotes()[0].ProposalId)
+		require.Equal(t, 1, len(votes.GetVotes()[0].Options))
+		require.Equal(t, gov.OptionYes, votes.GetVotes()[0].Options[0].Option)
+	}
+
+	// check enable to proposal activate contract
+	{
+		// proposal, this proposal should be fail because there is not inactivate contract.
+		proposalTokens := sdk.TokensFromConsensusPower(10, sdk.DefaultPowerReduction)
+		out, err := f.TxGovProposalActivateContractCmd(keyFoo, contractAddress, "Test", "test", sdk.NewCoin(denom, proposalTokens))
+		require.NoError(t, err)
+		resp := UnmarshalTxResponse(t, out.Bytes())
+		require.Contains(t, resp.RawLog, "no inactivate contract") // check ActivateContract error message
+	}
 }

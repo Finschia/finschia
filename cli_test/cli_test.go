@@ -1368,3 +1368,116 @@ func TestFnsadWasmContract(t *testing.T) {
 		require.Equal(t, fmt.Sprintf("{\"data\":{\"sum\":%d}}", initValue+enqueueValue), strings.TrimRight(res, "\n"))
 	}
 }
+
+func TestFnsadWasmDynamicLink(t *testing.T) {
+	t.Parallel()
+	f := InitFixtures(t)
+	defer f.Cleanup()
+
+	// start fnsad server with minimum fees
+	n := f.FnsadStart(minGasPrice.String())
+	defer n.Cleanup()
+
+	fooAddr := f.KeyAddress(keyFoo)
+
+	flagFromFoo := fmt.Sprintf("--from=%s", fooAddr)
+	flagGas := "--gas=auto"
+	flagGasAdjustment := "--gas-adjustment=1.2"
+	workDir, err := os.Getwd()
+	require.NoError(t, err)
+
+	// contracts comes from https://github.com/Finschia/cosmwasm/tree/dynamic_link/contracts
+	dirCaller := path.Join(workDir, "contracts", "dynamic-caller-contract")
+	dirCallee := path.Join(workDir, "contracts", "dynamic-callee-contract")
+	wasmCaller := path.Join(dirCaller, "contract.wasm")
+	wasmCallee := path.Join(dirCallee, "contract.wasm")
+
+	var calleeAddress string
+	var callerAddress string
+
+	// make tmpDir
+	tmpDir, err := os.MkdirTemp("", "")
+	require.NoError(t, err)
+	defer func() {
+		require.NoError(t, os.RemoveAll(tmpDir))
+	}()
+	err = os.Chdir(tmpDir)
+	require.NoError(t, err)
+
+	// validate that there are no code in the chain
+	{
+		listCode := f.QueryListCodeWasm()
+		require.Len(t, listCode.CodeInfos, 0)
+	}
+
+	// store the callee contract
+	{
+		// store callee
+		_, err := f.TxStoreWasm(wasmCallee, flagFromFoo, flagGasAdjustment, flagGas, "-y")
+		require.NoError(t, err)
+
+		// Wait for a new block
+		err = n.WaitForNextBlock()
+		require.NoError(t, err)
+	}
+
+	// store the caller contract
+	{
+		// store caller
+		_, err := f.TxStoreWasm(wasmCaller, flagFromFoo, flagGasAdjustment, flagGas, "-y")
+		require.NoError(t, err)
+
+		// Wait for a new block
+		err = n.WaitForNextBlock()
+		require.NoError(t, err)
+	}
+
+	// validate code are stored
+	{
+		queryCodesResponse := f.QueryListCodeWasm()
+		require.Len(t, queryCodesResponse.CodeInfos, 2)
+	}
+
+	// instantiate a contract with the code callee
+	{
+		msgJSON := "{}"
+		flagLabel := "--label=callee"
+		_, err := f.TxInstantiateWasm(1, msgJSON, flagFromFoo, flagGasAdjustment, flagGas, flagLabel, flagFromFoo, "-y", "--no-admin")
+		require.NoError(t, err)
+		// Wait for a new block
+		err = n.WaitForNextBlock()
+		require.NoError(t, err)
+	}
+
+	// validate there is only one contract using codeID=1 and get contractAddress
+	{
+		listContract := f.QueryListContractByCodeWasm(1)
+		require.Len(t, listContract.Contracts, 1)
+		calleeAddress = listContract.Contracts[0]
+	}
+
+	// instantiate a contract with the code caller
+	{
+		msgJSON := fmt.Sprintf("{\"callee_addr\":\"%s\"}", calleeAddress)
+		flagLabel := "--label=caller"
+		_, err := f.TxInstantiateWasm(2, msgJSON, flagFromFoo, flagGasAdjustment, flagGas, flagLabel, flagFromFoo, "-y", "--no-admin")
+		require.NoError(t, err)
+
+		// Wait for a new block
+		err = n.WaitForNextBlock()
+		require.NoError(t, err)
+	}
+
+	// validate there is only one contract using codeID=1 and get contractAddress
+	{
+		listContract := f.QueryListContractByCodeWasm(2)
+		require.Len(t, listContract.Contracts, 1)
+		callerAddress = listContract.Contracts[0]
+	}
+
+	// check dynamic link and get caller address via query
+	{
+		res := f.QueryContractStateSmartWasm(callerAddress, "{\"get_own_address_via_callees_get_caller_address\":{}}")
+		require.Equal(t, fmt.Sprintf("{\"data\":\"%s\"}", callerAddress), strings.TrimRight(res, "\n"))
+	}
+}

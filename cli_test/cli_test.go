@@ -3,6 +3,7 @@
 package clitest
 
 import (
+	_ "embed"
 	"encoding/base64"
 	"encoding/hex"
 	"errors"
@@ -26,6 +27,18 @@ import (
 
 	"github.com/Finschia/finschia/app"
 )
+
+//go:embed contracts/queue/hash.txt
+var queuehash []byte
+
+//go:embed contracts/queue/contract.wasm
+var queueWasm []byte
+
+//go:embed contracts/dynamic-callee-contract/contract.wasm
+var calleeWasm []byte
+
+//go:embed contracts/dynamic-caller-contract/contract.wasm
+var callerWasm []byte
 
 func TestFnsadKeysAddMultisig(t *testing.T) {
 	t.Parallel()
@@ -1243,11 +1256,7 @@ func TestFnsadWasmContract(t *testing.T) {
 	flagFromFoo := fmt.Sprintf("--from=%s", fooAddr)
 	flagGas := "--gas=auto"
 	flagGasAdjustment := "--gas-adjustment=1.2"
-	workDir, err := os.Getwd()
-	require.NoError(t, err)
-	dirContract := path.Join(workDir, "contracts", "queue")
-	hashFile := path.Join(dirContract, "hash.txt")
-	wasmQueue := path.Join(dirContract, "contract.wasm")
+
 	codeID := uint64(1)
 	amountSend := uint64(10)
 	denomSend := fooDenom
@@ -1266,6 +1275,15 @@ func TestFnsadWasmContract(t *testing.T) {
 	err = os.Chdir(tmpDir)
 	require.NoError(t, err)
 
+	// write queue wasm
+	queueWasmPath := path.Join(tmpDir, "queue.wasm")
+	fQueue, err := os.Create(queueWasmPath)
+	require.NoError(t, err)
+	_, err = fQueue.Write(queueWasm)
+	require.NoError(t, err)
+	err = fQueue.Close()
+	require.NoError(t, err)
+
 	// validate that there are no code in the chain
 	{
 		listCode := f.QueryListCodeWasm()
@@ -1274,7 +1292,7 @@ func TestFnsadWasmContract(t *testing.T) {
 
 	// store the contract queue
 	{
-		_, err := f.TxStoreWasm(wasmQueue, flagFromFoo, flagGasAdjustment, flagGas, "-y")
+		_, err := f.TxStoreWasm(queueWasmPath, flagFromFoo, flagGasAdjustment, flagGas, "-y")
 		require.NoError(t, err)
 		// Wait for a new block
 		err = n.WaitForNextBlock()
@@ -1287,9 +1305,7 @@ func TestFnsadWasmContract(t *testing.T) {
 		require.Len(t, queryCodesResponse.CodeInfos, 1)
 
 		// validate the hash is the same
-		expectedRow, err := os.ReadFile(hashFile)
-		require.NoError(t, err)
-		expected, err := hex.DecodeString(string(expectedRow[:64]))
+		expected, err := hex.DecodeString(string(queuehash[:64]))
 		require.NoError(t, err)
 		actual := queryCodesResponse.CodeInfos[0].DataHash.Bytes()
 		require.Equal(t, expected, actual)
@@ -1299,7 +1315,7 @@ func TestFnsadWasmContract(t *testing.T) {
 	{
 		outputPath := fmt.Sprintf("contract-%s.wasm", strconv.FormatUint(codeID, 10))
 		f.QueryCodeWasm(codeID)
-		fLocal, err := os.Open(wasmQueue)
+		fLocal, err := os.Open(queueWasmPath)
 		require.NoError(t, err)
 		fChain, err := os.Open(outputPath)
 		require.NoError(t, err)
@@ -1383,14 +1399,6 @@ func TestFnsadWasmDynamicLink(t *testing.T) {
 	flagFromFoo := fmt.Sprintf("--from=%s", fooAddr)
 	flagGas := "--gas=auto"
 	flagGasAdjustment := "--gas-adjustment=1.2"
-	workDir, err := os.Getwd()
-	require.NoError(t, err)
-
-	// contracts comes from https://github.com/Finschia/cosmwasm/tree/dynamic_link/contracts
-	dirCaller := path.Join(workDir, "contracts", "dynamic-caller-contract")
-	dirCallee := path.Join(workDir, "contracts", "dynamic-callee-contract")
-	wasmCaller := path.Join(dirCaller, "contract.wasm")
-	wasmCallee := path.Join(dirCallee, "contract.wasm")
 
 	var calleeAddress string
 	var callerAddress string
@@ -1404,6 +1412,24 @@ func TestFnsadWasmDynamicLink(t *testing.T) {
 	err = os.Chdir(tmpDir)
 	require.NoError(t, err)
 
+	// write callee wasm
+	calleeWasmPath := path.Join(tmpDir, "callee.wasm")
+	fCallee, err := os.Create(calleeWasmPath)
+	require.NoError(t, err)
+	_, err = fCallee.Write(calleeWasm)
+	require.NoError(t, err)
+	err = fCallee.Close()
+	require.NoError(t, err)
+
+	// write caller wasm
+	callerWasmPath := path.Join(tmpDir, "caller.wasm")
+	fCaller, err := os.Create(callerWasmPath)
+	require.NoError(t, err)
+	_, err = fCaller.Write(callerWasm)
+	require.NoError(t, err)
+	err = fCaller.Close()
+	require.NoError(t, err)
+
 	// validate that there are no code in the chain
 	{
 		listCode := f.QueryListCodeWasm()
@@ -1413,7 +1439,7 @@ func TestFnsadWasmDynamicLink(t *testing.T) {
 	// store the callee contract
 	{
 		// store callee
-		_, err := f.TxStoreWasm(wasmCallee, flagFromFoo, flagGasAdjustment, flagGas, "-y")
+		_, err := f.TxStoreWasm(calleeWasmPath, flagFromFoo, flagGasAdjustment, flagGas, "-y")
 		require.NoError(t, err)
 
 		// Wait for a new block
@@ -1424,7 +1450,7 @@ func TestFnsadWasmDynamicLink(t *testing.T) {
 	// store the caller contract
 	{
 		// store caller
-		_, err := f.TxStoreWasm(wasmCaller, flagFromFoo, flagGasAdjustment, flagGas, "-y")
+		_, err := f.TxStoreWasm(callerWasmPath, flagFromFoo, flagGasAdjustment, flagGas, "-y")
 		require.NoError(t, err)
 
 		// Wait for a new block

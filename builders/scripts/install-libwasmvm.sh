@@ -5,7 +5,7 @@
 
 set -e
 
-WASMVM_VERSION=`go list -m github.com/Finschia/wasmvm | awk '{print $2}' | grep -o 'v\d\+\.\d\+\.\d\+-\d\+\.\d\+\.\d\+'`
+WASMVM_VERSION=`go list -m github.com/Finschia/wasmvm | awk '{print $2}' | grep -o 'v\d\+\.\d\+\.\d\+-\d\+\.\d\+\.\d\+\(-[a-zA-Z0-9]\+\)\?'`
 curl -L -f -o ./checksums.txt https://github.com/Finschia/wasmvm/releases/download/${WASMVM_VERSION}/checksums.txt
 for arch in x86_64 aarch64
 do

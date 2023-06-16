@@ -45,6 +45,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Breaking Changes
 
 ### Build, CI
+- [\#219](https://github.com/Finschia/finschia/pull/219) change depending wasmd to v0.1.4-dynamiclink1
 
 ### Docs
 

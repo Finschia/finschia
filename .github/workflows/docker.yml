@@ -59,8 +59,13 @@ jobs:
       - name: Parse tag
         id: tag
         run: |
-          VERSION=$(echo ${{ github.ref_name }} | sed "s/v//")
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          ref='refs/tags/'
+          if [[ ${{ github.ref }} == *${ref}* ]]; then
+            VERSION=$(echo ${{ github.ref_name }} | sed "s/v//")
+            echo "VERSION=$VERSION" >> $GITHUB_ENV
+          else
+            echo "VERSION=${{ github.sha }}" >> $GITHUB_ENV
+          fi
 
       - name: Extract metadata for docker
         id: meta

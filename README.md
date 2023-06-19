@@ -18,18 +18,18 @@ This repository hosts `Finschia`. This repository is forked from [gaia](https://
 ## Docker
 **Build Docker Image**
 ```
-make build-docker                # build docker image
+make docker-build                # build docker image
 ```
 or
 ```
-make build-docker WITH_CLEVELDB=yes GITHUB_TOKEN=${YOUR_GITHUB_TOKEN}  # build docker image with cleveldb
+make docker-build WITH_CLEVELDB=yes GITHUB_TOKEN=${YOUR_GITHUB_TOKEN}  # build docker image with cleveldb
 ```
 
 _Note1_
 
 If you are using M1 mac, you need to specify build args like this:
 ```
-make build-docker ARCH=aarch64
+make docker build ARCH=aarch64
 ```
 
 **Configure**

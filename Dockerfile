@@ -1,49 +1,66 @@
+# syntax=docker/dockerfile:1
+
 # Simple usage with a mounted data directory:
-# > docker build --platform="linux/amd64" -t finschia/finschianode . --build-arg ARCH=x86_64
+# > make docker-build
 # > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.finschia:/root/.finschia -v finschia/finschianode fnsad init
 # > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.finschia:/root/.finschia -v finschia/finschianode fnsad start --rpc.laddr=tcp://0.0.0.0:26657 --p2p.laddr=tcp://0.0.0.0:26656
-FROM golang:1.18-alpine AS build-env
-ARG ARCH=$ARCH
+
+ARG GO_VERSION="1.18"
+ARG RUNNER_IMAGE="gcr.io/distroless/static-debian11"
+
+FROM golang:${GO_VERSION}-alpine AS build-env
+
 ARG FINSCHIA_BUILD_OPTIONS=""
+ARG GIT_VERSION
+ARG GIT_COMMIT
+ARG OST_VERSION
 
 # Set up OS dependencies
-ENV PACKAGES curl wget make cmake git libc-dev bash gcc g++ linux-headers eudev-dev python3 perl
-RUN apk add --update --no-cache $PACKAGES
+RUN apk add --no-cache ca-certificates build-base linux-headers curl
 
 # Set WORKDIR to finschia
 WORKDIR /finschia-build/finschia
 
-# prepare dbbackend before building; this can be cached
-COPY ./Makefile ./
-COPY ./contrib ./contrib
-COPY ./sims.mk ./
-RUN make dbbackend FINSCHIA_BUILD_OPTIONS="$(FINSCHIA_BUILD_OPTIONS)"
-
 # Install GO dependencies
-COPY ./go.mod /finschia-build/finschia/go.mod
-COPY ./go.sum /finschia-build/finschia/go.sum
-RUN go mod download
+COPY go.mod go.sum ./
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/root/go/pkg/mod \
+    go mod download
 
 # Install libwasmvm.*.a
-COPY ./builders/scripts/install-libwasmvm.sh ./
-RUN sh install-libwasmvm.sh && rm install-libwasmvm.sh
-
-RUN ln -s /lib/libwasmvm_muslc.${ARCH}.a /usr/lib/libwasmvm_muslc.a
+RUN ARCH=$(uname -m) && WASMVM_VERSION=$(go list -m github.com/Finschia/wasmvm | awk '{print $2}' | grep -o 'v\d\+\.\d\+\.\d\+-\d\+\.\d\+\.\d\+') && \
+    curl -L -f -o /lib/libwasmvm_muslc.a  https://github.com/Finschia/wasmvm/releases/download/$WASMVM_VERSION/libwasmvm_muslc.$ARCH.a && ls -al /lib/libwasmvm_muslc.a && \
+    # verify checksum
+    curl -L -f -o /tmp/checksums.txt https://github.com/Finschia/wasmvm/releases/download/$WASMVM_VERSION/checksums.txt && ls -al /tmp/checksums.txt && \
+    sha256sum /lib/libwasmvm_muslc.a | grep $(cat /tmp/checksums.txt | grep libwasmvm_muslc.$ARCH | cut -d ' ' -f 1)
 
 # Add source files
 COPY . .
 
-# Make install
-RUN BUILD_TAGS=muslc make install CGO_ENABLED=1 FINSCHIA_BUILD_OPTIONS="$FINSCHIA_BUILD_OPTIONS"
+# Build fnsad binary
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/root/go/pkg/mod \
+    GOWORK=off go build \
+        -mod=readonly \
+        -tags "netgo,ledger,muslc,goleveldb" \
+        -ldflags \
+            "-X github.com/Finschia/finschia-sdk/version.Name=finschia \
+            -X github.com/Finschia/finschia-sdk/version.AppName=fnsad \
+    		-X github.com/Finschia/finschia-sdk/version.Version=${GIT_VERSION} \
+    		-X github.com/Finschia/finschia-sdk/version.Commit=${GIT_COMMIT} \
+    		-X github.com/Finschia/ostracon/version.TMCoreSemVer=${OST_VERSION} \
+    		-X github.com/Finschia/finschia-sdk/types.DBBackend=goleveldb \
+    		-X github.com/Finschia/finschia-sdk/version.BuildTags=netgo,ledger,muslc,goleveldb \
+            -w -s -linkmode=external -extldflags '-Wl,-z,muldefs -static'" \
+        -trimpath \
+        -o /finschia-build/finschia/build/fnsad \
+        /finschia-build/finschia/cmd/fnsad
+
 
 # Final image
-FROM alpine:edge
+FROM ${RUNNER_IMAGE}
 
 WORKDIR /root
 
-# Set up OS dependencies
-RUN apk add --update --no-cache libstdc++ ca-certificates
-
 # Copy over binaries from the build-env
-COPY --from=build-env /go/bin/fnsad /usr/bin/fnsad
-
+COPY --from=build-env /finschia-build/finschia/build/fnsad /usr/bin/fnsad

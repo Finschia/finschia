@@ -414,7 +414,6 @@ build-docker-finschianode:
 	$(MAKE) -C networks/local
 
 localnet-docker-build:
-	echo "Target_Platform: $(TARGET_PLATFORM)"
 	@DOCKER_BUILDKIT=1 docker build \
     		-t finschia/finschianode:localnet \
     		--build-arg GO_VERSION=$(GO_VERSION) \
@@ -423,7 +422,6 @@ localnet-docker-build:
     		--build-arg GIT_COMMIT=$(COMMIT) \
     		--build-arg OST_VERSION=$(OST_VERSION) \
     		--platform=$(TARGET_PLATFORM) \
-    		--progress=plain \
     		-f builders/Dockerfile.static .
 
 # Run a 4-node testnet locally

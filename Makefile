@@ -400,7 +400,4 @@ libsodium:
 proto-swagger-gen:
 	@echo "Generating Protobuf Swagger"
 	./scripts/generate-docs.sh
-	@echo "gopath: $(GOPATH)"
-	ls -al $(GOPATH)/bin/statik
-	which statik
 	$(GOPATH)/bin/statik -src=client/docs/swagger-ui -dest=client/docs -f -m

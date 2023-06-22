@@ -2,15 +2,13 @@
 
 set -euo pipefail
 
+echo "[install tools]"
 go install github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway@v1.16.0
 go install github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger@v1.16.0
-go get github.com/rakyll/statik
+go install github.com/rakyll/statik@v0.1.7
 
 echo "[go mod tidy]"
 go mod tidy
-
-echo "[check versions]"
-yarn --version
 
 echo "[Run proto-swagger-gen]"
 make proto-swagger-gen

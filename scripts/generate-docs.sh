@@ -3,8 +3,8 @@
 # This script update swagger.yml from proto of finschia-sdk, wasmd and ibc-go. And also update statik file.
 #
 # requirements
-# go install github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway@1.16.0
-# go install github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger@1.16.0
+# go install github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway@v1.16.0
+# go install github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger@v1.16.0
 
 set -eo pipefail
 

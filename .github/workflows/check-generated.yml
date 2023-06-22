@@ -23,5 +23,14 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Install protoc
+        uses: arduino/setup-protoc@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - run: if [ ! -x "$(command -v yarn)" ]; then npm install -g yarn; fi
+
       - name: Check generated swagger docs
         run: scripts/ci/check-generated.sh

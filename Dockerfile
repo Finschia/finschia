@@ -6,7 +6,7 @@
 # > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.finschia:/root/.finschia -v finschia/finschianode fnsad start --rpc.laddr=tcp://0.0.0.0:26657 --p2p.laddr=tcp://0.0.0.0:26656
 
 ARG GO_VERSION="1.18"
-ARG RUNNER_IMAGE="gcr.io/distroless/static-debian11"
+ARG RUNNER_IMAGE="alpine:3.17"
 
 FROM golang:${GO_VERSION}-alpine AS build-env
 

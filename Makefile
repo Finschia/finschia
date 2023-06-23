@@ -14,6 +14,7 @@ endif
 PACKAGES_SIMTEST=$(shell go list ./... | grep '/simulation')
 LEDGER_ENABLED ?= true
 SDK_PACK := $(shell go list -m github.com/Finschia/finschia-sdk | sed  's/ /\@/g')
+GO_VERSION := $(shell cat go.mod | grep -E 'go [0-9].[0-9]+' | cut -d ' ' -f 2)
 OST_VERSION := $(shell go list -m github.com/Finschia/ostracon | sed 's:.* ::') # grab everything after the space in "github.com/Finschia/ostracon v0.34.7"
 DOCKER := $(shell which docker)
 BUILDDIR ?= $(CURDIR)/build
@@ -115,7 +116,7 @@ ldflags = -X github.com/Finschia/finschia-sdk/version.Name=finschia \
 		  -X github.com/Finschia/finschia-sdk/version.Version=$(VERSION) \
 		  -X github.com/Finschia/finschia-sdk/version.Commit=$(COMMIT) \
 		  -X github.com/Finschia/finschia-sdk/types.DBBackend=$(DB_BACKEND) \
-		  -X "github.com/Finschia/finschia-sdk/version.BuildTags=$(build_tags_comma_sep)" \
+		  -X github.com/Finschia/finschia-sdk/version.BuildTags=$(build_tags_comma_sep) \
 		  -X github.com/Finschia/ostracon/version.TMCoreSemVer=$(OST_VERSION)
 
 ifeq ($(LINK_STATICALLY),true)
@@ -163,13 +164,6 @@ build: BUILD_ARGS=-o $(BUILDDIR)/
 
 build: go.sum $(BUILDDIR)/ dbbackend $(LIBSODIUM_TARGET)
 	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go build -mod=readonly $(BUILD_FLAGS) $(BUILD_ARGS) ./...
-
-build-static: go.sum $(BUILDDIR)/
-	docker build -t finschia/finschianode:latest -f builders/Dockerfile.static . --build-arg ARCH=$(ARCH) --platform="$(TARGET_PLATFORM)"
-
-build-static-centos7: go.sum $(BUILDDIR)/
-	docker build -t finschia/finschia-builder:static_centos7 -f builders/Dockerfile.static_centos7 .
-	docker run -it --rm -v $(shell pwd):/code -e FINSCHIA_BUILD_OPTIONS="$(FINSCHIA_BUILD_OPTIONS)" finschia/finschia-builder:static_centos7
 
 # USAGE: go env -w GOARCH={amd64|arm64} && make clean build-release-bundle VERSION=v0.0.0
 RELEASE_BUNDLE=finschia-$(VERSION)-$(shell go env GOOS)-$(shell go env GOARCH)
@@ -236,8 +230,46 @@ else
 dbbackend:
 endif
 
-build-docker:
-	docker build --build-arg FINSCHIA_BUILD_OPTIONS="$(FINSCHIA_BUILD_OPTIONS)" --build-arg ARCH=$(ARCH) -t finschia/finschianode . --platform="$(TARGET_PLATFORM)"
+build-reproducible: build-reproducible-amd64 build-reproducible-arm64
+
+build-reproducible-amd64: go.sum
+	mkdir -p $(BUILDDIR)
+	$(DOCKER) buildx create --name finschiabuilder || true
+	$(DOCKER) buildx use finschiabuilder
+	$(DOCKER) buildx build \
+		--build-arg GO_VERSION=$(GO_VERSION) \
+		--build-arg GIT_VERSION=$(VERSION) \
+		--build-arg GIT_COMMIT=$(COMMIT) \
+		--build-arg OST_VERSION=$(OST_VERSION) \
+		--build-arg RUNNER_IMAGE=alpine:3.17 \
+		--platform linux/amd64 \
+		-t finschia/finschianode:local-amd64 \
+		--load \
+		-f Dockerfile .
+	$(DOCKER) rm -f finschiabinary || true
+	$(DOCKER) create -ti --name finschiabinary finschia/finschianode:local-amd64
+	$(DOCKER) cp finschiabinary:/usr/bin/fnsad $(BUILDDIR)/fnsad-linux-amd64
+	$(DOCKER) rm -f finschiabinary
+
+build-reproducible-arm64: go.sum
+	mkdir -p $(BUILDDIR)
+	$(DOCKER) buildx create --name finschiabuilder || true
+	$(DOCKER) buildx use finschiabuilder
+	$(DOCKER) buildx build \
+		--build-arg GO_VERSION=$(GO_VERSION) \
+		--build-arg GIT_VERSION=$(VERSION) \
+		--build-arg GIT_COMMIT=$(COMMIT) \
+		--build-arg OST_VERSION=$(OST_VERSION) \
+		--build-arg RUNNER_IMAGE=alpine:3.17 \
+		--platform linux/arm64 \
+		-t finschia/finschianode:local-arm64 \
+		--load \
+		-f Dockerfile .
+	$(DOCKER) rm -f finschiabinary || true
+	$(DOCKER) create -ti --name finschiabinary finschia/finschianode:local-arm64
+	$(DOCKER) cp finschiabinary:/usr/bin/fnsad $(BUILDDIR)/fnsad-linux-arm64
+	$(DOCKER) rm -f finschiabinary
+
 
 build-contract-tests-hooks:
 	mkdir -p $(BUILDDIR)
@@ -315,9 +347,27 @@ benchmark:
 test-integration: build
 	@go test -mod=readonly -p 4 `go list ./cli_test/...` $(CLI_TEST_BUILD_FLAGS) -v
 
-test-integration-multi-node: build-docker
+test-integration-multi-node: docker-build
 	@go test -mod=readonly -p 4 `go list ./cli_test/...` $(CLI_MULTI_BUILD_FLAGS) -v
 
+
+###############################################################################
+###                                Docker                                   ###
+###############################################################################
+
+RUNNER_BASE_IMAGE_ALPINE := alpine:3.17
+
+docker-build:
+	@DOCKER_BUILDKIT=1 docker build \
+		-t finschia/finschianode:local \
+		-t finschia/finschianode:local-distroless \
+		--build-arg GO_VERSION=$(GO_VERSION) \
+		--build-arg RUNNER_IMAGE=$(RUNNER_BASE_IMAGE_ALPINE) \
+		--build-arg GIT_VERSION=$(VERSION) \
+		--build-arg GIT_COMMIT=$(COMMIT) \
+		--build-arg OST_VERSION=$(OST_VERSION) \
+		--platform=$(TARGET_PLATFORM) \
+		-f Dockerfile .
 
 ###############################################################################
 ###                                Linting                                  ###
@@ -339,11 +389,22 @@ format:
 build-docker-finschianode:
 	$(MAKE) -C networks/local
 
+localnet-docker-build:
+	@DOCKER_BUILDKIT=1 docker build \
+    		-t finschia/finschianode:localnet \
+    		--build-arg GO_VERSION=$(GO_VERSION) \
+    		--build-arg RUNNER_IMAGE=$(RUNNER_BASE_IMAGE_ALPINE) \
+    		--build-arg GIT_VERSION=$(VERSION) \
+    		--build-arg GIT_COMMIT=$(COMMIT) \
+    		--build-arg OST_VERSION=$(OST_VERSION) \
+    		--platform=$(TARGET_PLATFORM) \
+    		-f builders/Dockerfile.static .
+
 # Run a 4-node testnet locally
-localnet-start: localnet-stop build-static localnet-build-nodes
+localnet-start: localnet-stop localnet-docker-build localnet-build-nodes
 
 localnet-build-nodes:
-	docker run --rm -v $(CURDIR)/mytestnet:/data finschia/finschianode \
+	docker run --rm -v $(CURDIR)/mytestnet:/data finschia/finschianode:localnet \
 			testnet init-files --v 4 -o /data --starting-ip-address 192.168.10.2 --keyring-backend=test
 	docker-compose up -d
 

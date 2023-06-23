@@ -1,0 +1,36 @@
+# Verify that generated code is up-to-date.
+
+name: Check generated code
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - '*'
+
+permissions:
+  contents: read
+
+jobs:
+  check-swagger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Golang
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.18
+
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - name: Install protoc
+        uses: arduino/setup-protoc@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - run: if [ ! -x "$(command -v yarn)" ]; then npm install -g yarn; fi
+
+      - name: Check generated swagger docs
+        run: scripts/ci/check-generated.sh

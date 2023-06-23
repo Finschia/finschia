@@ -50,3 +50,7 @@ dependency-graph.png
 
 # tools
 tools/sodium
+
+# docs
+/client/docs/tmp-swagger-gen/
+/client/docs/node_modules/

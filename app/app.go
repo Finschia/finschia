@@ -126,7 +126,7 @@ import (
 	appparams "github.com/Finschia/finschia/app/params"
 
 	// unnamed import of statik for swagger UI support
-	_ "github.com/Finschia/finschia-sdk/client/docs/statik"
+	_ "github.com/Finschia/finschia/client/docs/statik"
 )
 
 const appName = "Finschia"

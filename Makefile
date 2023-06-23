@@ -453,3 +453,12 @@ libsodium:
 		$(MAKE) install; \
 	fi
 .PHONY: libsodium
+
+###############################################################################
+###                                Proto                                    ###
+###############################################################################
+
+proto-swagger-gen:
+	@echo "Generating Protobuf Swagger"
+	./scripts/generate-docs.sh
+	$(GOPATH)/bin/statik -src=client/docs/swagger-ui -dest=client/docs -f -m

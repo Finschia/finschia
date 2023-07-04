@@ -1486,13 +1486,13 @@ func (f *Fixtures) TxExecuteWasm(contractAddress string, msgJSON string, flags .
 
 func (f *Fixtures) QueryListCodeWasm(flags ...string) wasmtypes.QueryCodesResponse {
 	cmd := wasmcli.GetCmdListCode()
-	res, errStr := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags("-o=json", flags...))
+	res, err := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags("-o=json", flags...))
 
-	require.Empty(f.T, errStr)
+	require.NoError(f.T, err)
 	cdc, _ := app.MakeCodecs()
 	var queryCodesResponse wasmtypes.QueryCodesResponse
 
-	err := cdc.UnmarshalJSON(res.Bytes(), &queryCodesResponse)
+	err = cdc.UnmarshalJSON(res.Bytes(), &queryCodesResponse)
 	require.NoError(f.T, err)
 	return queryCodesResponse
 }
@@ -1500,20 +1500,20 @@ func (f *Fixtures) QueryListCodeWasm(flags ...string) wasmtypes.QueryCodesRespon
 func (f *Fixtures) QueryCodeWasm(codeID uint64, flags ...string) {
 	args := fmt.Sprintf("%d -o=json", codeID)
 	cmd := wasmcli.GetCmdQueryCode()
-	_, errStr := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
-	require.Empty(f.T, errStr)
+	_, err := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
+	require.NoError(f.T, err)
 }
 
 func (f *Fixtures) QueryListContractByCodeWasm(codeID uint64, flags ...string) wasmtypes.QueryContractsByCodeResponse {
 	args := fmt.Sprintf("%d -o=json", codeID)
 	cmd := wasmcli.GetCmdListContractByCode()
-	res, errStr := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
+	res, err := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
 
-	require.Empty(f.T, errStr)
+	require.NoError(f.T, err)
 	cdc, _ := app.MakeCodecs()
 	var queryContractsByCodeResponse wasmtypes.QueryContractsByCodeResponse
 
-	err := cdc.UnmarshalJSON(res.Bytes(), &queryContractsByCodeResponse)
+	err = cdc.UnmarshalJSON(res.Bytes(), &queryContractsByCodeResponse)
 	require.NoError(f.T, err)
 	return queryContractsByCodeResponse
 }
@@ -1521,9 +1521,16 @@ func (f *Fixtures) QueryListContractByCodeWasm(codeID uint64, flags ...string) w
 func (f *Fixtures) QueryContractStateSmartWasm(contractAddress string, reqJSON string, flags ...string) string {
 	args := fmt.Sprintf("%s %s -o=json", contractAddress, reqJSON)
 	cmd := wasmcli.GetCmdGetContractStateSmart()
-	res, errStr := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
-	require.Empty(f.T, errStr)
+	res, err := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
+	require.NoError(f.T, err)
 	return res.String()
+}
+
+func (f *Fixtures) QueryContractStateSmartWasmExpectingErrorContains(contractAddress string, reqJSON string, expectedErr string, flags ...string) {
+	args := fmt.Sprintf("%s %s -o=json", contractAddress, reqJSON)
+	cmd := wasmcli.GetCmdGetContractStateSmart()
+	_, err := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
+	require.ErrorContains(f.T, err, expectedErr)
 }
 
 // ___________________________________________________________________________________

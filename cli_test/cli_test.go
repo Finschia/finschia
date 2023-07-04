@@ -1402,6 +1402,7 @@ func TestFnsadWasmDynamicLink(t *testing.T) {
 
 	var calleeAddress string
 	var callerAddress string
+	var invalidCallerAddress string
 
 	// make tmpDir
 	tmpDir, err := os.MkdirTemp("", "")
@@ -1505,5 +1506,43 @@ func TestFnsadWasmDynamicLink(t *testing.T) {
 	{
 		res := f.QueryContractStateSmartWasm(callerAddress, "{\"get_own_address_via_callees_get_caller_address\":{}}")
 		require.Equal(t, fmt.Sprintf("{\"data\":\"%s\"}", callerAddress), strings.TrimRight(res, "\n"))
+	}
+
+	// check a validating interface succeeds
+	{
+		msgJSON := "{\"validate_interface\":{}}"
+		_, err := f.TxExecuteWasm(callerAddress, msgJSON, flagFromFoo, flagGasAdjustment, flagGas, "-y")
+		require.NoError(t, err)
+	}
+
+	// instantiate a caller specifying invalid callee address
+	{
+		msgJSON := "{\"callee_addr\":\"invalid_address\"}"
+		flagLabel := "--label=caller"
+		_, err := f.TxInstantiateWasm(2, msgJSON, flagFromFoo, flagGasAdjustment, flagGas, flagLabel, flagFromFoo, "-y", "--no-admin")
+		require.NoError(t, err)
+
+		// Wait for a new block
+		err = n.WaitForNextBlock()
+		require.NoError(t, err)
+	}
+
+	// get address of caller with invalid callee address
+	{
+		listContract := f.QueryListContractByCodeWasm(2)
+		require.Len(t, listContract.Contracts, 2)
+		invalidCallerAddress = listContract.Contracts[1]
+	}
+
+	// check a dynamic link call fails
+	{
+		f.QueryContractStateSmartWasmExpectingErrorContains(invalidCallerAddress, "{\"get_own_address_via_callees_get_caller_address\":{}}", "specified callee address is invalid")
+	}
+
+	// check a validating interface fails
+	{
+		msgJSON := "{\"validate_interface\":{}}"
+		_, err := f.TxExecuteWasm(invalidCallerAddress, msgJSON, flagFromFoo, flagGasAdjustment, flagGas, "-y")
+		require.ErrorContains(t, err, "specified contract address is invalid")
 	}
 }

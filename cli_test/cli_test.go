@@ -1508,7 +1508,7 @@ func TestFnsadWasmDynamicLink(t *testing.T) {
 		require.Equal(t, fmt.Sprintf("{\"data\":\"%s\"}", callerAddress), strings.TrimRight(res, "\n"))
 	}
 
-	// check validate interface succeeds
+	// check a validating interface succeeds
 	{
 		msgJSON := "{\"validate_interface\":{}}"
 		_, err := f.TxExecuteWasm(callerAddress, msgJSON, flagFromFoo, flagGasAdjustment, flagGas, "-y")
@@ -1539,7 +1539,7 @@ func TestFnsadWasmDynamicLink(t *testing.T) {
 		f.QueryContractStateSmartWasmExpectingErrorContains(invalidCallerAddress, "{\"get_own_address_via_callees_get_caller_address\":{}}", "specified callee address is invalid")
 	}
 
-	// check a valide interface fails
+	// check a validating interface fails
 	{
 		msgJSON := "{\"validate_interface\":{}}"
 		_, err := f.TxExecuteWasm(invalidCallerAddress, msgJSON, flagFromFoo, flagGasAdjustment, flagGas, "-y")

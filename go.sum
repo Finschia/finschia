@@ -53,8 +53,8 @@ github.com/Finschia/ibc-go/v3 v3.3.3 h1:geNUwG7xU0vve1Rv8qATpAk59BL5thLuUcLvJ7xn
 github.com/Finschia/ibc-go/v3 v3.3.3/go.mod h1:YC5hldLSJQDoii3W2E9J07BVdTF7fesUQcATo5zQ248=
 github.com/Finschia/ostracon v1.1.0 h1:ruiqngsoCz1kJ3fGLJHflcvxbJrbg7QGDTruqxgLZKc=
 github.com/Finschia/ostracon v1.1.0/go.mod h1:nPRoQEOOp8FFp2XQ8b1dvfHgKNxp1Zb7i1p5yrLIgG4=
-github.com/Finschia/wasmd v0.1.4-dynamiclink1 h1:pIlUU7o6H67BmBAx4eLn9bRPGmrc/rNAHt5VRNGF1Ok=
-github.com/Finschia/wasmd v0.1.4-dynamiclink1/go.mod h1:L/z1Muh8cbMpBVl/eskgCuvRugQRDPqr5MXGWIM43uU=
+github.com/Finschia/wasmd v0.1.5-0.20230703080914-8b29b5ee80e1 h1:YmHa4dYG+GcdACCw02+RKMSzO8E0Q54l1FbtZOTWaao=
+github.com/Finschia/wasmd v0.1.5-0.20230703080914-8b29b5ee80e1/go.mod h1:L/z1Muh8cbMpBVl/eskgCuvRugQRDPqr5MXGWIM43uU=
 github.com/Finschia/wasmvm v1.1.1-0.11.2-dynamiclink2 h1:jduOtwkdqPFB54R44j48DUjZfLPk6mx5vM3imcieHSo=
 github.com/Finschia/wasmvm v1.1.1-0.11.2-dynamiclink2/go.mod h1:uCHU7ZRQ/V+WPRXr6Ak9Uu2oe2MVeO8yGZnGKU1B3NY=
 github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible/go.mod h1:r7JcOSlj0wfOMncg0iLm8Leh48TZaKVeNIfJntJ2wa0=

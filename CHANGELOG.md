@@ -39,6 +39,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Features
 
 ### Improvements
+* (build) [\#232](https://github.com/Finschia/finschia/pull/232) update finschia-sdk to hackwasm2023
 * (build) [\#229](https://github.com/Finschia/finschia/pull/229) update wasmd to v0.1.4+dynamiclink2 and go mod tidy
 * (build) [\#221](https://github.com/Finschia/finschia/pull/221) compile static binary as release assets and docker image
 * (swagger) [\#223](https://github.com/Finschia/finschia/pull/223) add integrated swagger for finschia

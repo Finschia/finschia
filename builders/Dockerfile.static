@@ -19,10 +19,6 @@ RUN apk add --no-cache ca-certificates build-base linux-headers curl
 # Set WORKDIR to finschia
 WORKDIR /finschia-build/finschia
 
-#COPY ./Makefile ./
-#COPY ./contrib ./contrib
-#COPY ./sims.mk ./
-
 # Install GO dependencies
 COPY go.mod go.sum ./
 RUN --mount=type=cache,target=/root/.cache/go-build \
@@ -38,9 +34,6 @@ RUN ARCH=$(uname -m) && WASMVM_VERSION=$(go list -m github.com/Finschia/wasmvm |
 
 # Add source files
 COPY . .
-
-# prepare dbbackend before building; this can be cached
-#RUN make dbbackend FINSCHIA_BUILD_OPTIONS="$FINSCHIA_BUILD_OPTIONS"
 
 # Build fnsad binary
 RUN --mount=type=cache,target=/root/.cache/go-build \

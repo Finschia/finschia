@@ -51,7 +51,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (ci) [\#185](https://github.com/Finschia/finschia/pull/185) update `tag.yml` github action
 * (ci) [\#189](https://github.com/Finschia/finschia/pull/189) add dependabot github action
 * (ci) [\#213](https://github.com/Finschia/finschia/pull/213) add mergify ci
-* (build) [\237](https://github.com/Finschia/finschia/pull/237) rearrange Dockerfile and Makefile commands
+* (build) [\#237](https://github.com/Finschia/finschia/pull/237) rearrange Dockerfile and Makefile commands
 
 ### Docs
 

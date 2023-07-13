@@ -43,6 +43,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (swagger) [\#223](https://github.com/Finschia/finschia/pull/223) add integrated swagger for finschia
 
 ### Bug Fixes
+* (build) [\#236](https://github.com/Finschia/finschia/pull/236) fix compile error when the build_tags is multiple.
 
 ### Breaking Changes
 

@@ -150,8 +150,9 @@ endif
 
 #$(info $$BUILD_FLAGS is [$(BUILD_FLAGS)])
 
+# todo: check if this include does need anymore.
 # The below include contains the tools target.
-include contrib/devtools/Makefile
+#include contrib/devtools/Makefile
 
 ###############################################################################
 ###                              Documentation                              ###
@@ -245,11 +246,6 @@ build-reproducible-arm64: go.sum
 	$(DOCKER) create -ti --name finschiabinary finschia/finschianode:local-arm64
 	$(DOCKER) cp finschiabinary:/usr/bin/fnsad $(BUILDDIR)/fnsad-linux-arm64
 	$(DOCKER) rm -f finschiabinary
-
-
-build-contract-tests-hooks:
-	mkdir -p $(BUILDDIR)
-	go build -mod=readonly $(BUILD_FLAGS) -o $(BUILDDIR)/ ./cmd/contract_tests
 
 go-mod-cache: go.sum
 	@echo "--> Download go modules to local cache"
@@ -353,7 +349,6 @@ lint:
 	golangci-lint run
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" | xargs gofmt -d -s
 
-# todo: should update.
 format:
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/lcd/statik/statik.go" | xargs gofmt -w -s
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/lcd/statik/statik.go" | xargs misspell -w

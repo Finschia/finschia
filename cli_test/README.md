@@ -12,7 +12,7 @@ go test -mod=readonly -v -p 4 `go list ./cli_test/...` -tags=cli_test
 
 This integration suite [uses a thin wrapper](https://github.com/Finschia/finschia-sdk/tree/main/tests) over the [`os/exec`](https://golang.org/pkg/os/exec/) package. This allows the integration test to run against built binary (`fnsad` is used) while being written in golang. This allows tests to take advantage of the various golang code we have for operations like marshal/unmarshal, crypto, etc...
 
-> NOTE: The tests will use whatever `fnsad` binary is available in your `$PATH`. You can check which binary will be run by the suite by running `which finschia`. If you have your `$GOPATH` properly setup they should be in `$GOPATH/bin/finschia`. This will ensure that your test uses the latest binary you have built
+> NOTE: The tests will use whatever `fnsad` binary is available in your `$PATH`. You can check which binary will be run by the suite by running `which fnsad`. If you have your `$GOPATH` properly setup they should be in `$GOPATH/bin/finschia`. This will ensure that your test uses the latest binary you have built
 
 Tests generally follow this structure:
 

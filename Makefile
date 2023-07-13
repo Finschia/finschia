@@ -148,11 +148,6 @@ else
   endif
 endif
 
-#$(info $$BUILD_FLAGS is [$(BUILD_FLAGS)])
-
-# todo: check if this include does need anymore.
-# The below include contains the tools target.
-#include contrib/devtools/Makefile
 
 ###############################################################################
 ###                              Documentation                              ###
@@ -340,6 +335,7 @@ docker-build:
 		--build-arg OST_VERSION=$(OST_VERSION) \
 		--platform=$(TARGET_PLATFORM) \
 		-f Dockerfile .
+.PHONY: docker-build
 
 ###############################################################################
 ###                                Linting                                  ###
@@ -419,3 +415,4 @@ proto-swagger-gen:
 	@echo "Generating Protobuf Swagger"
 	./scripts/generate-docs.sh
 	statik -src=client/docs/swagger-ui -dest=client/docs -f -m
+.PHONY: proto-swagger-gen

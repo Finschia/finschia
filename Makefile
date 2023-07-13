@@ -116,7 +116,7 @@ ldflags = -X github.com/Finschia/finschia-sdk/version.Name=finschia \
 		  -X github.com/Finschia/finschia-sdk/version.Version=$(VERSION) \
 		  -X github.com/Finschia/finschia-sdk/version.Commit=$(COMMIT) \
 		  -X github.com/Finschia/finschia-sdk/types.DBBackend=$(DB_BACKEND) \
-		  -X github.com/Finschia/finschia-sdk/version.BuildTags=$(build_tags_comma_sep) \
+		  -X "github.com/Finschia/finschia-sdk/version.BuildTags=$(build_tags_comma_sep)" \
 		  -X github.com/Finschia/ostracon/version.TMCoreSemVer=$(OST_VERSION)
 
 ifeq ($(LINK_STATICALLY),true)

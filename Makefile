@@ -18,7 +18,6 @@ GO_VERSION := $(shell cat go.mod | grep -E 'go [0-9].[0-9]+' | cut -d ' ' -f 2)
 OST_VERSION := $(shell go list -m github.com/Finschia/ostracon | sed 's:.* ::') # grab everything after the space in "github.com/Finschia/ostracon v0.34.7"
 DOCKER := $(shell which docker)
 BUILDDIR ?= $(CURDIR)/build
-TEST_DOCKER_REPO=jackzampolin/linktest
 CGO_ENABLED ?= 1
 ARCH ?= x86_64
 TARGET_PLATFORM ?= linux/amd64
@@ -305,7 +304,7 @@ sync-docs:
 
 include sims.mk
 
-test: test-unit test-build
+test: test-unit
 
 test-all: test-race test-cover
 
@@ -354,6 +353,7 @@ lint:
 	golangci-lint run
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" | xargs gofmt -d -s
 
+# todo: should update.
 format:
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/lcd/statik/statik.go" | xargs gofmt -w -s
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/lcd/statik/statik.go" | xargs misspell -w
@@ -362,9 +362,6 @@ format:
 ###############################################################################
 ###                                Localnet                                 ###
 ###############################################################################
-
-build-docker-finschianode:
-	$(MAKE) -C networks/local
 
 localnet-docker-build:
 	@DOCKER_BUILDKIT=1 docker build \
@@ -375,7 +372,7 @@ localnet-docker-build:
     		--build-arg GIT_COMMIT=$(COMMIT) \
     		--build-arg OST_VERSION=$(OST_VERSION) \
     		--platform=$(TARGET_PLATFORM) \
-    		-f builders/Dockerfile.static .
+    		-f networks/local/finschianode/Dockerfile .
 
 # Run a 4-node testnet locally
 localnet-start: localnet-stop localnet-docker-build localnet-build-nodes
@@ -389,23 +386,11 @@ localnet-build-nodes:
 localnet-stop:
 	docker-compose down
 
-test-docker:
-	@docker build -f contrib/Dockerfile.test -t ${TEST_DOCKER_REPO}:$(shell git rev-parse --short HEAD) .
-	@docker tag ${TEST_DOCKER_REPO}:$(shell git rev-parse --short HEAD) ${TEST_DOCKER_REPO}:$(shell git rev-parse --abbrev-ref HEAD | sed 's#/#_#g')
-	@docker tag ${TEST_DOCKER_REPO}:$(shell git rev-parse --short HEAD) ${TEST_DOCKER_REPO}:latest
-
-test-docker-push: test-docker
-	@docker push ${TEST_DOCKER_REPO}:$(shell git rev-parse --short HEAD)
-	@docker push ${TEST_DOCKER_REPO}:$(shell git rev-parse --abbrev-ref HEAD | sed 's#/#_#g')
-	@docker push ${TEST_DOCKER_REPO}:latest
-
 .PHONY: all install format lint \
 	go-mod-cache draw-deps clean build \
-	setup-transactions setup-contract-tests-data start-link run-lcd-contract-tests contract-tests \
-	test test-all test-build test-cover test-unit test-race \
+	test test-all test-cover test-unit test-race \
 	benchmark \
-	build-docker-finschianode localnet-start localnet-stop \
-	docker-single-node
+	localnet-start localnet-stop
 
 ###############################################################################
 ###                                  tools                                  ###

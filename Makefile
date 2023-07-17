@@ -19,13 +19,15 @@ OST_VERSION := $(shell go list -m github.com/Finschia/ostracon | sed 's:.* ::') 
 DOCKER := $(shell which docker)
 BUILDDIR ?= $(CURDIR)/build
 CGO_ENABLED ?= 1
-ARCH ?= x86_64
+ARCH ?= amd64
 TARGET_PLATFORM ?= linux/amd64
+TARGET_ARCH ?= x86_64
 
 export GO111MODULE = on
 
-ifeq ($(ARCH), aarch64)
+ifeq ($(ARCH), arm64)
 	TARGET_PLATFORM=linux/arm64
+	TARGET_ARCH = aarch64
 endif
 
 # process build tags
@@ -141,7 +143,7 @@ ifeq (darwin, $(shell go env GOOS))
   LIBWASMVM ?= libwasmvm.dylib
 else
   ifeq (linux, $(shell go env GOOS))
-    LIBWASMVM ?= libwasmvm.$(ARCH).so
+    LIBWASMVM ?= libwasmvm.$(TARGET_ARCH).so
   else
     echo "ERROR: unsupported platform: $(shell go env GOOS)"
     exit 1
@@ -202,9 +204,7 @@ else
 dbbackend:
 endif
 
-build-reproducible: build-reproducible-amd64 build-reproducible-arm64
-
-build-reproducible-amd64: go.sum
+build-reproducible: go.sum
 	mkdir -p $(BUILDDIR)
 	$(DOCKER) buildx create --name finschiabuilder || true
 	$(DOCKER) buildx use finschiabuilder
@@ -214,32 +214,13 @@ build-reproducible-amd64: go.sum
 		--build-arg GIT_COMMIT=$(COMMIT) \
 		--build-arg OST_VERSION=$(OST_VERSION) \
 		--build-arg RUNNER_IMAGE=alpine:3.17 \
-		--platform linux/amd64 \
-		-t finschia/finschianode:local-amd64 \
+		--platform $(TARGET_PLATFORM) \
+		-t finschia/finschianode:local-$(ARCH) \
 		--load \
 		-f Dockerfile .
 	$(DOCKER) rm -f finschiabinary || true
-	$(DOCKER) create -ti --name finschiabinary finschia/finschianode:local-amd64
-	$(DOCKER) cp finschiabinary:/usr/bin/fnsad $(BUILDDIR)/fnsad-linux-amd64
-	$(DOCKER) rm -f finschiabinary
-
-build-reproducible-arm64: go.sum
-	mkdir -p $(BUILDDIR)
-	$(DOCKER) buildx create --name finschiabuilder || true
-	$(DOCKER) buildx use finschiabuilder
-	$(DOCKER) buildx build \
-		--build-arg GO_VERSION=$(GO_VERSION) \
-		--build-arg GIT_VERSION=$(VERSION) \
-		--build-arg GIT_COMMIT=$(COMMIT) \
-		--build-arg OST_VERSION=$(OST_VERSION) \
-		--build-arg RUNNER_IMAGE=alpine:3.17 \
-		--platform linux/arm64 \
-		-t finschia/finschianode:local-arm64 \
-		--load \
-		-f Dockerfile .
-	$(DOCKER) rm -f finschiabinary || true
-	$(DOCKER) create -ti --name finschiabinary finschia/finschianode:local-arm64
-	$(DOCKER) cp finschiabinary:/usr/bin/fnsad $(BUILDDIR)/fnsad-linux-arm64
+	$(DOCKER) create -ti --name finschiabinary finschia/finschianode:local-$(ARCH)
+	$(DOCKER) cp finschiabinary:/usr/bin/fnsad $(BUILDDIR)/fnsad-linux-$(ARCH)
 	$(DOCKER) rm -f finschiabinary
 
 go-mod-cache: go.sum

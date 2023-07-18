@@ -39,11 +39,8 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Features
 
 ### Improvements
-* (build) [\#218](https://github.com/Finschia/finschia/pull/218) bump up finschia-sdk from v0.47.0 to v0.47.1-rc2
 
 ### Bug Fixes
-* (build) [\#216](https://github.com/Finschia/finschia/pull/216) fix the cgo calling error of libwasmvm on docker image
-* (x/wasm) [\#217](https://github.com/Finschia/finschia/pull/217) add wasmplus proposal command in fnsad cli
 
 ### Breaking Changes
 
@@ -52,4 +49,4 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Docs
 
 <!-- Release links -->
-[Unreleased]: https://github.com/Finschia/finschia/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/Finschia/finschia/compare/v1.1.0...HEAD

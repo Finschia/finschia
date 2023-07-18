@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"testing"
 
-	ocrand "github.com/Finschia/ostracon/libs/rand"
 	"github.com/stretchr/testify/suite"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
+
+	ocrand "github.com/Finschia/ostracon/libs/rand"
 
 	"github.com/Finschia/finschia-sdk/client"
 	"github.com/Finschia/finschia-sdk/client/tx"

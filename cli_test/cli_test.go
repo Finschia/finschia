@@ -15,8 +15,9 @@ import (
 	"testing"
 	"time"
 
-	osttypes "github.com/Finschia/ostracon/types"
 	"github.com/stretchr/testify/require"
+
+	osttypes "github.com/Finschia/ostracon/types"
 
 	"github.com/Finschia/finschia-sdk/client/flags"
 	"github.com/Finschia/finschia-sdk/crypto/keys/ed25519"

@@ -8,10 +8,11 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 
-	"github.com/Finschia/ostracon/libs/log"
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
+
+	"github.com/Finschia/ostracon/libs/log"
 
 	"github.com/Finschia/wasmd/x/wasmplus"
 

@@ -20,13 +20,13 @@ DOCKER := $(shell which docker)
 BUILDDIR ?= $(CURDIR)/build
 CGO_ENABLED ?= 1
 ARCH ?= amd64
-TARGET_PLATFORM ?= linux/amd64
-TARGET_ARCH ?= x86_64
+TARGET_PLATFORM = linux/amd64
+TARGET_ARCH = x86_64
 
 export GO111MODULE = on
 
 ifeq ($(ARCH), arm64)
-	TARGET_PLATFORM=linux/arm64
+	TARGET_PLATFORM = linux/arm64
 	TARGET_ARCH = aarch64
 endif
 

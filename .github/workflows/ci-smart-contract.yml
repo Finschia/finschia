@@ -1,0 +1,47 @@
+name: Smart Contract CI
+#  Smart Contract CI workflow runs CI test for checking if smart contract works well
+#  This workflow is run on pushes to master & every Pull Requests where a .go, .mod, .sum, ci_test/**.sh have been changed
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  cleanup-runs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rokroskar/workflow-run-cleanup-action@master
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+    if: "!startsWith(github.ref, 'refs/tags/') && github.ref != 'refs/heads/main'"
+
+  check-diffs:
+    runs-on: ubuntu-latest
+    outputs:
+      get_diff: ${{ steps.diff.outputs.diff }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Get diff
+        id: diff
+        uses: technote-space/get-diff-action@v6.1.2
+        with:
+          PATTERNS: |
+            **/**.go
+            go.mod
+            go.sum
+            .github/workflows/ci-smart-contract.yml
+            ci_test/**
+
+  get-cosmwasm-releases:
+    runs-on: ubuntu-latest
+    outputs:
+      cosmwasm_versions: ${{ steps.releases.outputs.versions }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Get cosmwasm releases
+        id: releases
+        run: |
+          response=$(curl -s "https://api.github.com/repos/Finschia/cosmwasm/releases")
+          versions=$(echo "$response" | jq -r '[.[].tag_name]' | jq -c .)
+          echo "versions=${versions}" >> "$GITHUB_OUTPUT"

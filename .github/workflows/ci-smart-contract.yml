@@ -1,6 +1,6 @@
 name: Smart Contract CI
 #  Smart Contract CI workflow runs CI test for checking if smart contract works well
-#  This workflow is run on pushes to master & every Pull Requests where a .go, .mod, .sum, ci_test/**.sh have been changed
+#  This workflow is run on pushes to main & every Pull Requests where a .go, .mod, .sum, ci_test/**.sh, and this file have been changed
 on:
   pull_request:
   push:
@@ -178,3 +178,4 @@ jobs:
       - name: Stop docker container
         if: ${{ always() && steps.docker_start.conclusion == 'success' }}
         run: docker stop ${{ steps.docker_start.outputs.container_id }}
+        

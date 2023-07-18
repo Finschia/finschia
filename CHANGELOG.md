@@ -51,6 +51,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (ci) [\#185](https://github.com/Finschia/finschia/pull/185) update `tag.yml` github action
 * (ci) [\#189](https://github.com/Finschia/finschia/pull/189) add dependabot github action
 * (ci) [\#213](https://github.com/Finschia/finschia/pull/213) add mergify ci
+* (ci) [\#233](https://github.com/Finschia/finschia/pull/233) add smart contract CI test
 
 ### Docs
 

@@ -18,15 +18,16 @@ GO_VERSION := $(shell cat go.mod | grep -E 'go [0-9].[0-9]+' | cut -d ' ' -f 2)
 OST_VERSION := $(shell go list -m github.com/Finschia/ostracon | sed 's:.* ::') # grab everything after the space in "github.com/Finschia/ostracon v0.34.7"
 DOCKER := $(shell which docker)
 BUILDDIR ?= $(CURDIR)/build
-TEST_DOCKER_REPO=jackzampolin/linktest
 CGO_ENABLED ?= 1
-ARCH ?= x86_64
-TARGET_PLATFORM ?= linux/amd64
+ARCH ?= amd64
+TARGET_PLATFORM = linux/amd64
+TARGET_ARCH = x86_64
 
 export GO111MODULE = on
 
-ifeq ($(ARCH), aarch64)
-	TARGET_PLATFORM=linux/arm64
+ifeq ($(ARCH), arm64)
+	TARGET_PLATFORM = linux/arm64
+	TARGET_ARCH = aarch64
 endif
 
 # process build tags
@@ -142,17 +143,13 @@ ifeq (darwin, $(shell go env GOOS))
   LIBWASMVM ?= libwasmvm.dylib
 else
   ifeq (linux, $(shell go env GOOS))
-    LIBWASMVM ?= libwasmvm.$(ARCH).so
+    LIBWASMVM ?= libwasmvm.$(TARGET_ARCH).so
   else
     echo "ERROR: unsupported platform: $(shell go env GOOS)"
     exit 1
   endif
 endif
 
-#$(info $$BUILD_FLAGS is [$(BUILD_FLAGS)])
-
-# The below include contains the tools target.
-include contrib/devtools/Makefile
 
 ###############################################################################
 ###                              Documentation                              ###
@@ -164,29 +161,6 @@ build: BUILD_ARGS=-o $(BUILDDIR)/
 
 build: go.sum $(BUILDDIR)/ dbbackend $(LIBSODIUM_TARGET)
 	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go build -mod=readonly $(BUILD_FLAGS) $(BUILD_ARGS) ./...
-
-# USAGE: go env -w GOARCH={amd64|arm64} && make clean build-release-bundle VERSION=v0.0.0
-RELEASE_BUNDLE=finschia-$(VERSION)-$(shell go env GOOS)-$(shell go env GOARCH)
-LIBWASMVM_VERSION=$(shell go list -m github.com/Finschia/wasmvm | awk '{print $$2}')
-LIBWASMVM_PATH=$(shell find $(shell go env GOMODCACHE) -name $(LIBWASMVM) -type f | grep "$(LIBWASMVM_VERSION)")
-build-release-bundle: build
-	@if [ "$(shell go env GOOS)" != "$(shell go env GOHOSTOS)" ]; then echo "ERROR: OS not match"; exit 1; fi
-	@if [   -z "${LIBWASMVM_PATH}" ]; then echo "ERROR: $(LIBWASMVM) $(LIBWASMVM_VERSION) not found: $(shell go env GOMODCACHE)"; exit 1; fi
-	@if [ ! -f "${LIBWASMVM_PATH}" ]; then echo "ERROR: Multiple version of $(LIBWASMVM) found: ${LIBWASMVM_PATH}"; exit 1; fi
-	@mkdir -p $(BUILDDIR)/$(RELEASE_BUNDLE)
-	@cp $(BUILDDIR)/fnsad $(BUILDDIR)/$(RELEASE_BUNDLE)/$(RELEASE_BUNDLE)
-	@cp "$(LIBWASMVM_PATH)" $(BUILDDIR)/$(RELEASE_BUNDLE)/
-	@case "$(shell go env GOHOSTOS),$(shell go env GOHOSTARCH),$(shell go env GOARCH)" in \
-	  *,amd64,amd64 | *,arm64,arm64 | darwin,arm64,*) \
-	    LD_LIBRARY_PATH=$(BUILDDIR)/$(RELEASE_BUNDLE) $(BUILDDIR)/$(RELEASE_BUNDLE)/$(RELEASE_BUNDLE) version; \
-	    if [ $$? -ne 0 ]; then echo "ERROR: Test execution failed."; printenv; go env; exit 1; fi; \
-	    echo "OK: Test execution confirmed.";; \
-      *) \
-        echo "SKIP: Test execution unconfirmed.";; \
-    esac
-	@cd $(BUILDDIR) && tar zcvf ./$(RELEASE_BUNDLE).tgz $(RELEASE_BUNDLE)/ > /dev/null 2>&1
-	@rm -rf $(BUILDDIR)/$(RELEASE_BUNDLE)/
-	@echo "Built: $(BUILDDIR)/$(RELEASE_BUNDLE).tgz"
 
 install: go.sum $(BUILDDIR)/ dbbackend $(LIBSODIUM_TARGET)
 	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go install $(BUILD_FLAGS) $(BUILD_ARGS) ./cmd/fnsad
@@ -230,9 +204,7 @@ else
 dbbackend:
 endif
 
-build-reproducible: build-reproducible-amd64 build-reproducible-arm64
-
-build-reproducible-amd64: go.sum
+build-reproducible: go.sum
 	mkdir -p $(BUILDDIR)
 	$(DOCKER) buildx create --name finschiabuilder || true
 	$(DOCKER) buildx use finschiabuilder
@@ -242,38 +214,14 @@ build-reproducible-amd64: go.sum
 		--build-arg GIT_COMMIT=$(COMMIT) \
 		--build-arg OST_VERSION=$(OST_VERSION) \
 		--build-arg RUNNER_IMAGE=alpine:3.17 \
-		--platform linux/amd64 \
-		-t finschia/finschianode:local-amd64 \
+		--platform $(TARGET_PLATFORM) \
+		-t finschia/finschianode:local-$(ARCH) \
 		--load \
 		-f Dockerfile .
 	$(DOCKER) rm -f finschiabinary || true
-	$(DOCKER) create -ti --name finschiabinary finschia/finschianode:local-amd64
-	$(DOCKER) cp finschiabinary:/usr/bin/fnsad $(BUILDDIR)/fnsad-linux-amd64
+	$(DOCKER) create -ti --name finschiabinary finschia/finschianode:local-$(ARCH)
+	$(DOCKER) cp finschiabinary:/usr/bin/fnsad $(BUILDDIR)/fnsad-linux-$(ARCH)
 	$(DOCKER) rm -f finschiabinary
-
-build-reproducible-arm64: go.sum
-	mkdir -p $(BUILDDIR)
-	$(DOCKER) buildx create --name finschiabuilder || true
-	$(DOCKER) buildx use finschiabuilder
-	$(DOCKER) buildx build \
-		--build-arg GO_VERSION=$(GO_VERSION) \
-		--build-arg GIT_VERSION=$(VERSION) \
-		--build-arg GIT_COMMIT=$(COMMIT) \
-		--build-arg OST_VERSION=$(OST_VERSION) \
-		--build-arg RUNNER_IMAGE=alpine:3.17 \
-		--platform linux/arm64 \
-		-t finschia/finschianode:local-arm64 \
-		--load \
-		-f Dockerfile .
-	$(DOCKER) rm -f finschiabinary || true
-	$(DOCKER) create -ti --name finschiabinary finschia/finschianode:local-arm64
-	$(DOCKER) cp finschiabinary:/usr/bin/fnsad $(BUILDDIR)/fnsad-linux-arm64
-	$(DOCKER) rm -f finschiabinary
-
-
-build-contract-tests-hooks:
-	mkdir -p $(BUILDDIR)
-	go build -mod=readonly $(BUILD_FLAGS) -o $(BUILDDIR)/ ./cmd/contract_tests
 
 go-mod-cache: go.sum
 	@echo "--> Download go modules to local cache"
@@ -328,7 +276,7 @@ sync-docs:
 
 include sims.mk
 
-test: test-unit test-build
+test: test-unit
 
 test-all: test-race test-cover
 
@@ -368,6 +316,7 @@ docker-build:
 		--build-arg OST_VERSION=$(OST_VERSION) \
 		--platform=$(TARGET_PLATFORM) \
 		-f Dockerfile .
+.PHONY: docker-build
 
 ###############################################################################
 ###                                Linting                                  ###
@@ -386,9 +335,6 @@ format:
 ###                                Localnet                                 ###
 ###############################################################################
 
-build-docker-finschianode:
-	$(MAKE) -C networks/local
-
 localnet-docker-build:
 	@DOCKER_BUILDKIT=1 docker build \
     		-t finschia/finschianode:localnet \
@@ -398,7 +344,7 @@ localnet-docker-build:
     		--build-arg GIT_COMMIT=$(COMMIT) \
     		--build-arg OST_VERSION=$(OST_VERSION) \
     		--platform=$(TARGET_PLATFORM) \
-    		-f builders/Dockerfile.static .
+    		-f networks/local/finschianode/Dockerfile .
 
 # Run a 4-node testnet locally
 localnet-start: localnet-stop localnet-docker-build localnet-build-nodes
@@ -412,23 +358,11 @@ localnet-build-nodes:
 localnet-stop:
 	docker-compose down
 
-test-docker:
-	@docker build -f contrib/Dockerfile.test -t ${TEST_DOCKER_REPO}:$(shell git rev-parse --short HEAD) .
-	@docker tag ${TEST_DOCKER_REPO}:$(shell git rev-parse --short HEAD) ${TEST_DOCKER_REPO}:$(shell git rev-parse --abbrev-ref HEAD | sed 's#/#_#g')
-	@docker tag ${TEST_DOCKER_REPO}:$(shell git rev-parse --short HEAD) ${TEST_DOCKER_REPO}:latest
-
-test-docker-push: test-docker
-	@docker push ${TEST_DOCKER_REPO}:$(shell git rev-parse --short HEAD)
-	@docker push ${TEST_DOCKER_REPO}:$(shell git rev-parse --abbrev-ref HEAD | sed 's#/#_#g')
-	@docker push ${TEST_DOCKER_REPO}:latest
-
 .PHONY: all install format lint \
 	go-mod-cache draw-deps clean build \
-	setup-transactions setup-contract-tests-data start-link run-lcd-contract-tests contract-tests \
-	test test-all test-build test-cover test-unit test-race \
+	test test-all test-cover test-unit test-race \
 	benchmark \
-	build-docker-finschianode localnet-start localnet-stop \
-	docker-single-node
+	localnet-start localnet-stop
 
 ###############################################################################
 ###                                  tools                                  ###
@@ -461,4 +395,5 @@ libsodium:
 proto-swagger-gen:
 	@echo "Generating Protobuf Swagger"
 	./scripts/generate-docs.sh
-	$(GOPATH)/bin/statik -src=client/docs/swagger-ui -dest=client/docs -f -m
+	statik -src=client/docs/swagger-ui -dest=client/docs -f -m
+.PHONY: proto-swagger-gen

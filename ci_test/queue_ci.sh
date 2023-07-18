@@ -24,8 +24,8 @@ checkResult(){
     fi
 }
 
-# This is a function to check queryMsg.
-executeAndCheck() {
+# This is a function to execute and check queryMsg.
+executeAndCheckQueryMsg() {
     local query_msg=$1
     local expected_result=$2
     query_result=$(fnsad query wasm contract-state smart "$CONTRACT_ADDRESS" "$query_msg")
@@ -33,11 +33,11 @@ executeAndCheck() {
     checkResult "$query_result" "$expected_result"
 }
 
-# upload smart contract
+# store `queue.wasm`
 STORE_RES=$(fnsad tx wasm store contracts/queue.wasm --from $FROM_ACCOUNT --keyring-backend test --chain-id finschia --gas 1500000 -b block -o json -y)
 CODE_ID=$(echo "$STORE_RES" | jq '.logs[] | select(.msg_index == 0) | .events[] | select(.type == "store_code") | .attributes[] | select(.key == "code_id") | .value | tonumber')
 
-# initialize smart contract
+# instantiate `queue.wasm`
 init_msg=$(jq -nc '{}')      
 INSTANTIATE_RES=$(fnsad tx wasm instantiate "$CODE_ID" "$init_msg" --label $TOKEN_NAME  --admin "$(fnsad keys show $FROM_ACCOUNT -a --keyring-backend test)" --from $FROM_ACCOUNT --keyring-backend test --chain-id finschia -b block -o json -y)
 CONTRACT_ADDRESS=$(echo "$INSTANTIATE_RES" | jq '.logs[] | select(.msg_index == 0) | .events[] | select(.type == "instantiate") | .attributes[] | select(.key == "_contract_address") | .value' | sed 's/"//g')
@@ -54,7 +54,7 @@ done
 expected_result='data:
   count: 3'
 count_msg=$(jq -nc '{count:{}}')
-executeAndCheck "$count_msg" "$expected_result"
+executeAndCheckQueryMsg "$count_msg" "$expected_result"
 
 # check dequeue
 # now: {200, 300}
@@ -66,7 +66,7 @@ checkRunInfo "$run_info" "$enqueue_msg"
 expected_result='data:
   sum: 500'
 sum_msg=$(jq -nc '{sum:{}}')
-executeAndCheck "$sum_msg" "$expected_result"
+executeAndCheckQueryMsg "$sum_msg" "$expected_result"
 
 # check reducer
 expected_result='data:
@@ -76,7 +76,7 @@ expected_result='data:
   - - 300
     - 0'
 reducer_msg=$(jq -nc '{reducer:{}}')
-executeAndCheck "$reducer_msg" "$expected_result"
+executeAndCheckQueryMsg "$reducer_msg" "$expected_result"
 
 # check list
 expected_result='data:
@@ -86,9 +86,10 @@ expected_result='data:
   empty: []
   late: []'
 list_msg=$(jq -nc '{list:{}}')
-executeAndCheck "$list_msg" "$expected_result"
+executeAndCheckQueryMsg "$list_msg" "$expected_result"
 
 # check open_iterators
 expected_result='data: {}'
 openIterators_msg=$(jq -nc '{open_iterators:{count:3}}')
-executeAndCheck "$openIterators_msg" "$expected_result"
+executeAndCheckQueryMsg "$openIterators_msg" "$expected_result"
+

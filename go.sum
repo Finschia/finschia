@@ -47,8 +47,8 @@ github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym
 github.com/ChainSafe/go-schnorrkel v0.0.0-20200405005733-88cbf1b4c40d h1:nalkkPQcITbvhmL4+C4cKA87NW0tfm3Kl9VXRoPywFg=
 github.com/ChainSafe/go-schnorrkel v0.0.0-20200405005733-88cbf1b4c40d/go.mod h1:URdX5+vg25ts3aCh8H5IFZybJYKWhJHYMTnf+ULtoC4=
 github.com/DataDog/datadog-go v3.2.0+incompatible/go.mod h1:LButxg5PwREeZtORoXG3tL4fMGNddJ+vMq1mwgfaqoQ=
-github.com/Finschia/finschia-sdk v0.47.0 h1:R42GYc9raWKguaMDCvIwYkZcwVIlVzIw1FYIH5IQm3c=
-github.com/Finschia/finschia-sdk v0.47.0/go.mod h1:aPRyqqg+PROtpd8H4ANuiIqEEw/QgajmAUqaoIUwvT4=
+github.com/Finschia/finschia-sdk v0.47.2 h1:oZ2tQ/wgqnhUrsvkCHDzkYa2rsP9Fl7VNMHUByv1nOE=
+github.com/Finschia/finschia-sdk v0.47.2/go.mod h1:aPRyqqg+PROtpd8H4ANuiIqEEw/QgajmAUqaoIUwvT4=
 github.com/Finschia/ibc-go/v3 v3.3.3 h1:geNUwG7xU0vve1Rv8qATpAk59BL5thLuUcLvJ7xnkiM=
 github.com/Finschia/ibc-go/v3 v3.3.3/go.mod h1:YC5hldLSJQDoii3W2E9J07BVdTF7fesUQcATo5zQ248=
 github.com/Finschia/ostracon v1.1.0 h1:ruiqngsoCz1kJ3fGLJHflcvxbJrbg7QGDTruqxgLZKc=

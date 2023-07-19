@@ -34,6 +34,16 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 # Changelog
 
+## [v1.1.0] - 2023-07-18
+
+### Improvements
+* (build) [\#218](https://github.com/Finschia/finschia/pull/218) bump up finschia-sdk from v0.47.0 to v0.47.1-rc2
+
+### Bug Fixes
+* (build) [\#216](https://github.com/Finschia/finschia/pull/216) fix the cgo calling error of libwasmvm on docker image
+* (x/wasm) [\#217](https://github.com/Finschia/finschia/pull/217) add wasmplus proposal command in fnsad cli
+
+
 ## [v1.0.0] - 2023-04-24
 
 This version base on [finschia-sdk v0.47.0](https://github.com/Finschia/finschia-sdk/releases/tag/v0.47.0), [Ostracon v1.1.0](https://github.com/Finschia/ostracon/tree/v1.1.0), [finschia/wasmd v0.1.3](https://github.com/Finschia/wasmd/releases/tag/v0.1.3) and [finschia/ibc-go v3.3.3](https://github.com/Finschia/ibc-go/releases/tag/v3.3.3).
@@ -205,6 +215,7 @@ Please refer [CHANGELOG_OF_GAIA_v4.0.4](https://github.com/cosmos/gaia/blob/v4.0
 
 
 <!-- Release links -->
+[v1.1.0]: https://github.com/Finschia/finschia/releases/tag/v1.1.0
 [v1.0.0]: https://github.com/Finschia/finschia/releases/tag/v1.0.0
 [v0.7.0]: https://github.com/Finschia/finschia/releases/tag/v0.7.0
 [v0.6.0]: https://github.com/Finschia/finschia/releases/tag/v0.6.0

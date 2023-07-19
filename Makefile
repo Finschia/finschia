@@ -87,15 +87,6 @@ else
   endif
 endif
 
-# VRF library selection
-ifeq (libsodium,$(findstring libsodium,$(FINSCHIA_BUILD_OPTIONS)))
-  CGO_ENABLED=1
-  BUILD_TAGS += gcc libsodium
-  LIBSODIUM_TARGET = libsodium
-  CGO_CFLAGS += "-I$(LIBSODIUM_OS)/include"
-  CGO_LDFLAGS += "-L$(LIBSODIUM_OS)/lib -lsodium"
-endif
-
 # secp256k1 implementation selection
 ifeq (libsecp256k1,$(findstring libsecp256k1,$(FINSCHIA_BUILD_OPTIONS)))
   CGO_ENABLED=1
@@ -159,10 +150,10 @@ all: install lint test
 
 build: BUILD_ARGS=-o $(BUILDDIR)/
 
-build: go.sum $(BUILDDIR)/ dbbackend $(LIBSODIUM_TARGET)
+build: go.sum $(BUILDDIR)/ dbbackend
 	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go build -mod=readonly $(BUILD_FLAGS) $(BUILD_ARGS) ./...
 
-install: go.sum $(BUILDDIR)/ dbbackend $(LIBSODIUM_TARGET)
+install: go.sum $(BUILDDIR)/ dbbackend
 	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go install $(BUILD_FLAGS) $(BUILD_ARGS) ./cmd/fnsad
 
 $(BUILDDIR)/:
@@ -363,30 +354,6 @@ localnet-stop:
 	test test-all test-cover test-unit test-race \
 	benchmark \
 	localnet-start localnet-stop
-
-###############################################################################
-###                                  tools                                  ###
-###############################################################################
-
-VRF_ROOT = $(shell pwd)/tools
-LIBSODIUM_ROOT = $(VRF_ROOT)/libsodium
-LIBSODIUM_OS = $(VRF_ROOT)/sodium/$(shell go env GOOS)_$(shell go env GOARCH)
-ifneq ($(TARGET_HOST), "")
-LIBSODIUM_HOST = "--host=$(TARGET_HOST)"
-endif
-
-libsodium:
-	@if [ ! -f $(LIBSODIUM_OS)/lib/libsodium.a ]; then \
-		rm -rf $(LIBSODIUM_ROOT) && \
-		mkdir $(LIBSODIUM_ROOT) && \
-		git submodule update --init --recursive && \
-		cd $(LIBSODIUM_ROOT) && \
-		./autogen.sh && \
-		./configure --disable-shared --prefix="$(LIBSODIUM_OS)" $(LIBSODIUM_HOST) && \
-		$(MAKE) && \
-		$(MAKE) install; \
-	fi
-.PHONY: libsodium
 
 ###############################################################################
 ###                                Proto                                    ###

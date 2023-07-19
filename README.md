@@ -29,7 +29,7 @@ _Note1_
 
 If you are using M1 mac, you need to specify build args like this:
 ```
-make docker-build ARCH=aarch64
+make docker-build ARCH=arm64
 ```
 
 **Configure**

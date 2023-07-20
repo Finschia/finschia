@@ -46,6 +46,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (build) [\#236](https://github.com/Finschia/finschia/pull/236) fix compile error when the build_tags is multiple.
 
 ### Breaking Changes
+* (ostracon) [\#240](https://github.com/Finschia/finschia/pull/240) remove `libsodium` vrf library
 
 ### Build, CI
 * (ci) [\#185](https://github.com/Finschia/finschia/pull/185) update `tag.yml` github action

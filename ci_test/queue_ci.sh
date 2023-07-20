@@ -24,8 +24,8 @@ check_result() {
 	fi
 }
 
-# This is a function to execute and check queryMsg.
-execute_and_check_queryMsg() {
+# This is a function to execute and check a query message.
+execute_and_check_query_msg() {
 	local query_msg="$1"
 	local expected_result="$2"
 	query_result=$(fnsad query wasm contract-state smart "$CONTRACT_ADDRESS" "$query_msg")
@@ -54,7 +54,7 @@ done
 EXPECTED_RESULT='data:
   count: 3'
 COUNT_MSG=$(jq -nc '{count:{}}')
-execute_and_check_queryMsg "$COUNT_MSG" "$EXPECTED_RESULT"
+execute_and_check_query_msg "$COUNT_MSG" "$EXPECTED_RESULT"
 
 # check dequeue
 # now: {200, 300}
@@ -66,7 +66,7 @@ check_run_info "$RUN_INFO" "$ENQUEUE_MSG"
 EXPECTED_RESULT='data:
   sum: 500'
 SUM_MSG=$(jq -nc '{sum:{}}')
-execute_and_check_queryMsg "$SUM_MSG" "$EXPECTED_RESULT"
+execute_and_check_query_msg "$SUM_MSG" "$EXPECTED_RESULT"
 
 # check reducer
 EXPECTED_RESULT='data:
@@ -76,7 +76,7 @@ EXPECTED_RESULT='data:
   - - 300
     - 0'
 REDUCER_MSG=$(jq -nc '{reducer:{}}')
-execute_and_check_queryMsg "$REDUCER_MSG" "$EXPECTED_RESULT"
+execute_and_check_query_msg "$REDUCER_MSG" "$EXPECTED_RESULT"
 
 # check list
 EXPECTED_RESULT='data:
@@ -86,9 +86,9 @@ EXPECTED_RESULT='data:
   empty: []
   late: []'
 LIST_MSG=$(jq -nc '{list:{}}')
-execute_and_check_queryMsg "$LIST_MSG" "$EXPECTED_RESULT"
+execute_and_check_query_msg "$LIST_MSG" "$EXPECTED_RESULT"
 
 # check open_iterators
 EXPECTED_RESULT='data: {}'
 OPENITERATORS_MSG=$(jq -nc '{open_iterators:{count:3}}')
-execute_and_check_queryMsg "$OPENITERATORS_MSG" "$EXPECTED_RESULT"
+execute_and_check_query_msg "$OPENITERATORS_MSG" "$EXPECTED_RESULT"

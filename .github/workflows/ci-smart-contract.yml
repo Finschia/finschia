@@ -178,4 +178,3 @@ jobs:
       - name: Stop docker container
         if: ${{ always() && steps.docker_start.conclusion == 'success' }}
         run: docker stop ${{ steps.docker_start.outputs.container_id }}
-        

@@ -8,7 +8,7 @@ on:
       - main
 
 env:
-  TEST_DOCKER_IMAGE: finschianode:test
+  TEST_DOCKER_IMAGE: finschianode:smartcontractci
 
 jobs:
   cleanup-runs:

@@ -7,6 +7,9 @@ on:
     branches:
       - main
 
+env:
+  TEST_DOCKER_IMAGE: finschianode:test
+
 jobs:
   cleanup-runs:
     runs-on: ubuntu-latest
@@ -121,7 +124,7 @@ jobs:
         with:
           file: Dockerfile
           context: .
-          tags: finschia/finschianode:latest
+          tags: ${{ env.TEST_DOCKER_IMAGE }}
           outputs: type=docker,dest=/tmp/finschia-ci-test.tar
       - name: Upload artifact
         uses: actions/upload-artifact@v3
@@ -157,7 +160,9 @@ jobs:
           docker load --input /tmp/finschia-ci-test.tar
           docker image ls -a
       - name: Set configure file
-        run: ./init_single.sh docker
+        run: |
+          export FNSAD="docker run -i --rm -p 26656:26656 -p 26657:26657 -v ${pwd}/.finschia:/root/.finschia ${{ env.TEST_DOCKER_IMAGE }} fnsad"
+          ./init_single.sh
         shell: bash
       # sleep 5 seconds to wait for finschia to start up
       - name: Start docker container
@@ -165,10 +170,10 @@ jobs:
         run: |
           container_id=$(docker run -d \
             -p 26656:26656 -p 26657:26657 \
-            -v /home/runner/.finschia:/root/.finschia \
+            -v ${pwd}/.finschia:/root/.finschia \
             -v $(pwd)/ci_test:/root/ci_test \
             -v $(pwd)/contracts:/root/contracts \
-            finschia/finschianode fnsad start)
+            ${{ env.TEST_DOCKER_IMAGE }} fnsad start)
           echo "container_id=$container_id" >> "$GITHUB_OUTPUT"
           sleep 5
       - name: CI test

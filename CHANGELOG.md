@@ -54,6 +54,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (ci) [\#213](https://github.com/Finschia/finschia/pull/213) add mergify ci
 * (ci) [\#233](https://github.com/Finschia/finschia/pull/233) add smart contract CI test
 * (build) [\#237](https://github.com/Finschia/finschia/pull/237) rearrange Dockerfile and Makefile commands
+* (build) [\#241](https://github.com/Finschia/finschia/pull/241) Update golang version to 1.20
 
 ### Docs
 

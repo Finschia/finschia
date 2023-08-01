@@ -69,6 +69,7 @@ import (
 	feegrantkeeper "github.com/Finschia/finschia-sdk/x/feegrant/keeper"
 	feegrantmodule "github.com/Finschia/finschia-sdk/x/feegrant/module"
 	"github.com/Finschia/finschia-sdk/x/foundation"
+	foundationclient "github.com/Finschia/finschia-sdk/x/foundation/client"
 	foundationkeeper "github.com/Finschia/finschia-sdk/x/foundation/keeper"
 	foundationmodule "github.com/Finschia/finschia-sdk/x/foundation/module"
 	"github.com/Finschia/finschia-sdk/x/genutil"
@@ -154,6 +155,7 @@ var (
 				distrclient.ProposalHandler,
 				upgradeclient.ProposalHandler,
 				upgradeclient.CancelProposalHandler,
+				foundationclient.ProposalHandler,
 				ibcclientclient.UpdateClientProposalHandler,
 				ibcclientclient.UpgradeProposalHandler,
 			)...,
@@ -465,6 +467,7 @@ func NewLinkApp(
 		AddRoute(paramproposal.RouterKey, params.NewParamChangeProposalHandler(app.ParamsKeeper)).
 		AddRoute(distrtypes.RouterKey, distr.NewCommunityPoolSpendProposalHandler(app.DistrKeeper)).
 		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
+		AddRoute(foundation.RouterKey, foundationkeeper.NewFoundationProposalsHandler(app.FoundationKeeper)).
 		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper)).
 		AddRoute(wasmplustypes.RouterKey, wasmpluskeeper.NewWasmProposalHandler(&app.WasmKeeper, wasmplustypes.EnableAllProposals))
 

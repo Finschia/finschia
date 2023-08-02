@@ -39,6 +39,7 @@ if [ -d "${finschia_sdk_dir}/proto" -a -d "${wasmd_dir}/proto" -a -d "${ibc_dir}
       -I "${wasmd_dir}/proto" \
       -I "${ibc_dir}/proto" \
       -I "${finschia_sdk_dir}/third_party/proto" \
+      -I "${ibc_dir}/third_party/proto" \
         "${query_file}" \
       --swagger_out=./client/docs/tmp-swagger-gen \
       --swagger_opt=logtostderr=true --swagger_opt=fqn_for_swagger_name=true --swagger_opt=simple_operation_ids=true

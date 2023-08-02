@@ -37,6 +37,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ## [Unreleased]
 
 ### Features
+* (feat) [\#243](https://github.com/Finschia/finschia/pull/243) Bump github.com/Finschia/finschia-sdk from v0.47.0 to v0.47.1-rc1
 
 ### Improvements
 * (build) [\#221](https://github.com/Finschia/finschia/pull/221) compile static binary as release assets and docker image

@@ -18,7 +18,7 @@ fi
 # Get the path of the finschia-sdk repo and wasmd and ibc-go from go/pkg/mod
 finschia_sdk_dir=$(go list -f '{{ .Dir }}' -m github.com/Finschia/finschia-sdk) || { echo "Error: Failed to find github.com/Finschia/finschia-sdk"; exit 1; }
 wasmd_dir=$(go list -f '{{ .Dir }}' -m github.com/Finschia/wasmd) || { echo "Error: Failed to find github.com/Finschia/wasmd"; exit 1; }
-ibc_dir=$(go list -f '{{ .Dir }}' -m github.com/Finschia/ibc-go/v3) || { echo "Error: Failed to find github.com/Finschia/ibc-go/v3"; exit 1; }
+ibc_dir=$(go list -f '{{ .Dir }}' -m github.com/cosmos/ibc-go/v4) || { echo "Error: Failed to find github.com/cosmos/ibc-go/v4"; exit 1; }
 
 # move the vendor folder back to ./vendor
 if [ -d "${temp_dir}" ]; then

@@ -1,0 +1,104 @@
+#!/bin/bash -e
+RELAYER_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+HOME_DIR="$(pwd)/data"
+RLY_HOME="$HOME_DIR/relayer"
+
+CHAIN_PATH=$1
+CHAIN0_ID=$2
+CHAIN0_BIN=$3
+CHAIN0_COINID=$4
+CHAIN1_ID=$5
+CHAIN1_BIN=$6
+CHAIN1_COINID=$7
+
+# Ensure user understands what will be deleted
+if ([[ -d $HOME_DIR ]]) && [[ ! "$8" == "skip" ]]; then
+  read -p "$0 will delete \$HOME/.relayer and \$(pwd)/data folder. Do you wish to continue? (y/n): " -n 1 -r
+  echo
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+      exit 1
+  fi
+fi
+
+# spin up two ibc enabled chains and add relevant config info for relaying
+bash scripts/chainz $CHAIN0_ID $CHAIN0_BIN $CHAIN0_COINID $CHAIN1_ID $CHAIN1_BIN $CHAIN1_COINID "$8"
+
+echo "waiting for blocks..."
+sleep 5
+
+# creates clients, connections and channels (all this happens in rly tx command)
+rly --home $RLY_HOME tx link $CHAIN_PATH -d -t 3s
+sleep 2
+
+BAL0=$(rly --home $RLY_HOME q bal $CHAIN0_ID)
+BAL1=$(rly --home $RLY_HOME q bal $CHAIN1_ID)
+
+echo "--  Initial balances --"
+echo "balance 0 $BAL0"
+echo "balance 1 $BAL1"
+
+if [[ "$BAL0" != *"100000000000samoleans"* ]]; then
+  echo "balance 0 is wrong"
+  exit 1
+fi
+if [[ "$BAL1" != *"100000000000beans"* ]]; then
+  echo "balance 1 is wrong"
+  exit 1
+fi
+
+echo "-- Sending IBC transaction... --"
+rly --home $RLY_HOME tx transfer $CHAIN0_ID $CHAIN1_ID 100000samoleans "$(rly --home $RLY_HOME keys show $CHAIN1_ID)" channel-0 -d
+sleep 5
+
+# relay remaining packets -- (could also be accomplished by running: `rly start`)
+rly --home $RLY_HOME tx relay-packets $CHAIN_PATH channel-0 -d
+sleep 5
+
+# relay remaining acknowledgments -- (could also be accomplished by running: `rly start`)
+rly --home $RLY_HOME tx relay-acknowledgements $CHAIN_PATH channel-0 -d
+sleep 5
+
+BAL0=$(rly --home $RLY_HOME q bal $CHAIN0_ID)
+BAL1=$(rly --home $RLY_HOME q bal $CHAIN1_ID)
+
+echo "-- Balances after packets are sent --"
+echo "balance 0 $BAL0"
+echo "balance 1 $BAL1"
+
+if [[ "$BAL0" != *"{99999900000samoleans"* ]]; then
+  echo "balance 0 is wrong"
+  exit 1
+fi
+if [[ "$BAL1" != *"100000000000beans,100000transfer/channel-0/samoleans"* ]]; then
+  echo "balance 1 is wrong"
+  exit 1
+fi
+
+echo "-- Sending tokens back to original wallet... --"
+rly --home $RLY_HOME tx transfer $CHAIN1_ID $CHAIN0_ID 100000transfer/channel-0/samoleans "$(rly --home $RLY_HOME keys show $CHAIN0_ID)" channel-0 -d
+sleep 5
+
+rly --home $RLY_HOME tx relay-packets $CHAIN_PATH channel-0 -d
+sleep 5
+
+rly --home $RLY_HOME tx relay-acknowledgements $CHAIN_PATH channel-0 -d
+sleep 5
+
+BAL0=$(rly --home $RLY_HOME q bal $CHAIN0_ID)
+BAL1=$(rly --home $RLY_HOME q bal $CHAIN1_ID)
+
+echo "-- Balances after sending packets back --"
+echo "balance 0 $BAL0"
+echo "balance 1 $BAL1"
+
+if [[ "$BAL0" != *"100000000000samoleans"* ]]; then
+  echo "balance 0 is wrong"
+  exit 1
+fi
+if [[ "$BAL1" != *"100000000000beans"* ]]; then
+  echo "balance 1 is wrong"
+  exit 1
+fi
+
+killall fnsad &> /dev/null || true
+killall gaiad &> /dev/null || true

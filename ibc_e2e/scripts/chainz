@@ -1,0 +1,73 @@
+#!/bin/bash
+# two-chainz creates two chains and configures the relayer to 
+
+SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+HOME_DIR="$(pwd)/data"
+RLY_HOME="$HOME_DIR/relayer"
+
+CHAIN0_ID=$1
+CHAIN0_BIN=$2
+CHAIN0_COINID=$3
+CHAIN1_ID=$4
+CHAIN1_BIN=$5
+CHAIN1_COINID=$6
+
+# Ensure binary is installed
+if ! [ -x "$(which $CHAIN0_BIN)" ]; then
+  echo "Error: $CHAIN0_BIN is not installed. Try running 'make bin/$CHAIN0_BIN'" >&2
+  exit 1
+fi
+if ! [ -x "$(which $CHAIN1_BIN)" ]; then
+  echo "Error: $CHAIN1_BIN is not installed. Try running 'make bin/$CHAIN1_BIN'" >&2
+  exit 1
+fi
+
+# Display software version for testers
+echo "BINARY VERSION INFO:"
+$CHAIN0_BIN version --long --log_level=info
+$CHAIN1_BIN version --long --log_level=info
+
+# Ensure jq is installed
+if [[ ! -x "$(which jq)" ]]; then
+  echo "jq (a tool for parsing json in the command line) is required..."
+  echo "https://stedolan.github.io/jq/download/"
+  exit 1
+fi
+
+# Ensure user understands what will be deleted
+if [[ -d $HOME_DIR ]] && [[ ! "$7" == "skip" ]]; then
+  read -p "$(basename $0) will delete \$(pwd)/data and \$HOME/.relayer folders. Do you wish to continue? (y/n): " -n 1 -r
+  echo
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+      exit 1
+  fi
+fi
+
+# Delete data from old runs
+rm -rf $HOME_DIR &> /dev/null
+
+# Stop existing binary processes
+killall fnsad &> /dev/null
+killall gaiad &> /dev/null
+
+set -e
+
+echo "Generating binary configurations..."
+mkdir -p $HOME_DIR && cd $HOME_DIR && cd ../
+./scripts/one-chain $CHAIN0_BIN $CHAIN0_ID $HOME_DIR 26657 26656 6060 9090 stake samoleans
+./scripts/one-chain $CHAIN1_BIN $CHAIN1_ID $HOME_DIR 26557 26556 6061 9091 rice beans
+
+[ -f $HOME_DIR/$CHAIN0_ID.log ] && echo "$CHAIN0_ID initialized. Watch file $HOME_DIR/$CHAIN0_ID.log to see its execution."
+[ -f $HOME_DIR/$CHAIN1_ID.log ] && echo "$CHAIN1_ID initialized. Watch file $HOME_DIR/$CHAIN1_ID.log to see its execution."
+
+echo "Generating rly configurations..."
+rly --home $RLY_HOME config init
+rly --home $RLY_HOME chains add-dir configs/chains
+
+SEED0=$(jq -r '.mnemonic' $HOME_DIR/$CHAIN0_ID/key_seed.json)
+SEED1=$(jq -r '.mnemonic' $HOME_DIR/$CHAIN1_ID/key_seed.json)
+
+echo "Key $(rly --home $RLY_HOME keys restore $CHAIN0_ID testkey "$SEED0" --coin-type $CHAIN0_COINID) imported from $CHAIN0_ID to relayer..."
+echo "Key $(rly --home $RLY_HOME keys restore $CHAIN1_ID testkey "$SEED1" --coin-type $CHAIN1_COINID) imported from $CHAIN1_ID to relayer..."
+
+rly --home $RLY_HOME paths add-dir configs/paths

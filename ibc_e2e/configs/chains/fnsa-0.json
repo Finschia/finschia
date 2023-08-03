@@ -1,0 +1,18 @@
+{
+  "type": "cosmos",
+  "value": {
+    "key": "testkey",
+    "chain-id": "fnsa-0",
+    "rpc-addr": "http://localhost:26657",
+    "grpc-addr": "",
+    "account-prefix": "link",
+    "keyring-backend": "test",
+    "gas-adjustment": 1.5,
+    "gas-prices": "0.025stake",
+    "debug": true,
+    "timeout": "10s",
+    "output-format": "json",
+    "sign-mode": "direct"
+  }
+}
+

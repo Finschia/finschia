@@ -1,0 +1,12 @@
+{
+  "src": {
+    "chain-id": "fnsa-0"
+  },
+  "dst": {
+    "chain-id": "fnsa-1"
+  },
+  "src-channel-filter": {
+    "rule": null,
+    "channel-list": []
+  }
+}

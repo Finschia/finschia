@@ -101,27 +101,27 @@ import (
 	upgradeclient "github.com/Finschia/finschia-sdk/x/upgrade/client"
 	upgradekeeper "github.com/Finschia/finschia-sdk/x/upgrade/keeper"
 	upgradetypes "github.com/Finschia/finschia-sdk/x/upgrade/types"
-	ica "github.com/Finschia/ibc-go/v3/modules/apps/27-interchain-accounts"
-	icahost "github.com/Finschia/ibc-go/v3/modules/apps/27-interchain-accounts/host"
-	icahostkeeper "github.com/Finschia/ibc-go/v3/modules/apps/27-interchain-accounts/host/keeper"
-	icahosttypes "github.com/Finschia/ibc-go/v3/modules/apps/27-interchain-accounts/host/types"
-	icatypes "github.com/Finschia/ibc-go/v3/modules/apps/27-interchain-accounts/types"
-	"github.com/Finschia/ibc-go/v3/modules/apps/transfer"
-	ibctransferkeeper "github.com/Finschia/ibc-go/v3/modules/apps/transfer/keeper"
-	ibctransfertypes "github.com/Finschia/ibc-go/v3/modules/apps/transfer/types"
-	ibc "github.com/Finschia/ibc-go/v3/modules/core"
-	ibcclient "github.com/Finschia/ibc-go/v3/modules/core/02-client"
-	ibcclientclient "github.com/Finschia/ibc-go/v3/modules/core/02-client/client"
-	ibcclienttypes "github.com/Finschia/ibc-go/v3/modules/core/02-client/types"
-	porttypes "github.com/Finschia/ibc-go/v3/modules/core/05-port/types"
-	ibchost "github.com/Finschia/ibc-go/v3/modules/core/24-host"
-	ibckeeper "github.com/Finschia/ibc-go/v3/modules/core/keeper"
 	"github.com/Finschia/wasmd/x/wasm"
 	wasmclient "github.com/Finschia/wasmd/x/wasm/client"
 	wasmkeeper "github.com/Finschia/wasmd/x/wasm/keeper"
 	"github.com/Finschia/wasmd/x/wasmplus"
 	wasmpluskeeper "github.com/Finschia/wasmd/x/wasmplus/keeper"
 	wasmplustypes "github.com/Finschia/wasmd/x/wasmplus/types"
+	ica "github.com/cosmos/ibc-go/v4/modules/apps/27-interchain-accounts"
+	icahost "github.com/cosmos/ibc-go/v4/modules/apps/27-interchain-accounts/host"
+	icahostkeeper "github.com/cosmos/ibc-go/v4/modules/apps/27-interchain-accounts/host/keeper"
+	icahosttypes "github.com/cosmos/ibc-go/v4/modules/apps/27-interchain-accounts/host/types"
+	icatypes "github.com/cosmos/ibc-go/v4/modules/apps/27-interchain-accounts/types"
+	"github.com/cosmos/ibc-go/v4/modules/apps/transfer"
+	ibctransferkeeper "github.com/cosmos/ibc-go/v4/modules/apps/transfer/keeper"
+	ibctransfertypes "github.com/cosmos/ibc-go/v4/modules/apps/transfer/types"
+	ibc "github.com/cosmos/ibc-go/v4/modules/core"
+	ibcclient "github.com/cosmos/ibc-go/v4/modules/core/02-client"
+	ibcclientclient "github.com/cosmos/ibc-go/v4/modules/core/02-client/client"
+	ibcclienttypes "github.com/cosmos/ibc-go/v4/modules/core/02-client/types"
+	porttypes "github.com/cosmos/ibc-go/v4/modules/core/05-port/types"
+	ibchost "github.com/cosmos/ibc-go/v4/modules/core/24-host"
+	ibckeeper "github.com/cosmos/ibc-go/v4/modules/core/keeper"
 
 	appante "github.com/Finschia/finschia/ante"
 	appparams "github.com/Finschia/finschia/app/params"
@@ -428,7 +428,7 @@ func NewLinkApp(
 	ibcRouter := porttypes.NewRouter()
 	ibcRouter.AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
 		AddRoute(ibctransfertypes.ModuleName, transferIBCModule).
-		AddRoute(wasmplustypes.ModuleName, wasm.NewIBCHandler(app.WasmKeeper, app.IBCKeeper.ChannelKeeper))
+		AddRoute(wasmplustypes.ModuleName, wasm.NewIBCHandler(app.WasmKeeper, app.IBCKeeper.ChannelKeeper, app.IBCKeeper.ChannelKeeper))
 
 	app.IBCKeeper.SetRouter(ibcRouter)
 

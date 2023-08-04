@@ -24,7 +24,7 @@ import (
 	osttypes "github.com/Finschia/ostracon/types"
 	"github.com/stretchr/testify/require"
 
-	"github.com/Finschia/finschia/app"
+	"github.com/Finschia/finschia/v2/app"
 )
 
 func TestFnsadKeysAddMultisig(t *testing.T) {

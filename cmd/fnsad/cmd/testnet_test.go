@@ -15,7 +15,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/require"
 
-	"github.com/Finschia/finschia/app"
+	"github.com/Finschia/finschia/v2/app"
 )
 
 func Test_TestnetCmd(t *testing.T) {

@@ -123,11 +123,11 @@ import (
 	ibchost "github.com/cosmos/ibc-go/v4/modules/core/24-host"
 	ibckeeper "github.com/cosmos/ibc-go/v4/modules/core/keeper"
 
-	appante "github.com/Finschia/finschia/ante"
-	appparams "github.com/Finschia/finschia/app/params"
+	appante "github.com/Finschia/finschia/v2/ante"
+	appparams "github.com/Finschia/finschia/v2/app/params"
 
 	// unnamed import of statik for swagger UI support
-	_ "github.com/Finschia/finschia/client/docs/statik"
+	_ "github.com/Finschia/finschia/v2/client/docs/statik"
 )
 
 const appName = "Finschia"

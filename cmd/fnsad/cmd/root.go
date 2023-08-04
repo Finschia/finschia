@@ -37,9 +37,9 @@ import (
 	"github.com/spf13/viper"
 	dbm "github.com/tendermint/tm-db"
 
-	"github.com/Finschia/finschia/app"
-	"github.com/Finschia/finschia/app/params"
-	fnsatypes "github.com/Finschia/finschia/types"
+	"github.com/Finschia/finschia/v2/app"
+	"github.com/Finschia/finschia/v2/app/params"
+	fnsatypes "github.com/Finschia/finschia/v2/types"
 )
 
 const (

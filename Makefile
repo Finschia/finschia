@@ -283,6 +283,8 @@ test-integration: build
 test-integration-multi-node: docker-build
 	@go test -mod=readonly -p 4 `go list ./cli_test/...` $(CLI_MULTI_BUILD_FLAGS) -v
 
+test-upgrade-name:
+	@sh contrib/check-upgrade-name.sh
 
 ###############################################################################
 ###                                Docker                                   ###

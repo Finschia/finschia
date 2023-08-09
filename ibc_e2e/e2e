@@ -27,8 +27,9 @@ echo "waiting for blocks..."
 sleep 5
 
 ps
-
+echo "chain 0"
 cat $HOME_DIR/$CHAIN0_ID.log
+echo "chain 1"
 cat $HOME_DIR/$CHAIN1_ID.log
 
 # creates clients, connections and channels (all this happens in rly tx command)

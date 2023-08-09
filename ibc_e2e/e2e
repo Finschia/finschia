@@ -26,6 +26,8 @@ bash scripts/chainz $CHAIN0_ID $CHAIN0_BIN $CHAIN0_COINID $CHAIN1_ID $CHAIN1_BIN
 echo "waiting for blocks..."
 sleep 5
 
+ps
+
 # creates clients, connections and channels (all this happens in rly tx command)
 rly --home $RLY_HOME tx link $CHAIN_PATH -d -t 3s
 sleep 2

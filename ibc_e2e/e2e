@@ -28,6 +28,9 @@ sleep 5
 
 ps
 
+cat $HOME_DIR/$CHAIN0_ID.log
+cat $HOME_DIR/$CHAIN1_ID.log
+
 # creates clients, connections and channels (all this happens in rly tx command)
 rly --home $RLY_HOME tx link $CHAIN_PATH -d -t 3s
 sleep 2

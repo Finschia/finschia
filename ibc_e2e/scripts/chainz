@@ -47,8 +47,8 @@ fi
 rm -rf $HOME_DIR &> /dev/null
 
 # Stop existing binary processes
-killall fnsad &> /dev/null
-killall gaiad &> /dev/null
+pkill fnsad &> /dev/null
+pkill gaiad &> /dev/null
 
 set -e
 

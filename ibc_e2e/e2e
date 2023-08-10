@@ -106,5 +106,5 @@ if [[ "$BAL1" != *"100000000000beans"* ]]; then
   exit 1
 fi
 
-killall fnsad &> /dev/null || true
-killall gaiad &> /dev/null || true
+pkill fnsad &> /dev/null || true
+pkill gaiad &> /dev/null || true

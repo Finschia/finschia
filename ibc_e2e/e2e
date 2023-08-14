@@ -26,9 +26,6 @@ bash scripts/chainz $CHAIN0_ID $CHAIN0_BIN $CHAIN0_COINID $CHAIN1_ID $CHAIN1_BIN
 echo "waiting for blocks..."
 sleep 5
 
-echo "lsof"
-lsof -t -i tcp:26656
-lsof -t -i tcp:26556
 ps
 echo "chain 0"
 cat $HOME_DIR/$CHAIN0_ID.log

@@ -55,6 +55,7 @@ set -e
 echo "Generating binary configurations..."
 mkdir -p $HOME_DIR && cd $HOME_DIR && cd ../
 ./scripts/one-chain $CHAIN0_BIN $CHAIN0_ID $HOME_DIR 26657 26656 6060 9090 stake samoleans
+sleep 5
 ./scripts/one-chain $CHAIN1_BIN $CHAIN1_ID $HOME_DIR 26557 26556 6061 9091 rice beans
 
 [ -f $HOME_DIR/$CHAIN0_ID.log ] && echo "$CHAIN0_ID initialized. Watch file $HOME_DIR/$CHAIN0_ID.log to see its execution."

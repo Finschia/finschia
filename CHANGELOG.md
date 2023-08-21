@@ -39,6 +39,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Features
 
 ### Improvements
+* (build) [\#252](https://github.com/Finschia/finschia/pull/252) Bump up several dependencies relevant to the event refactoring
 
 ### Bug Fixes
 

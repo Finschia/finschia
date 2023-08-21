@@ -42,6 +42,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (build) [\#252](https://github.com/Finschia/finschia/pull/252) Bump up several dependencies relevant to the event refactoring
 
 ### Bug Fixes
+* (x/wasmd) [\#253](https://github.com/Finschia/finschia/pull/253) bump up wasmd from 516eaaec to c581a5f2 for applying the ContractHistory bug fix 
 
 ### Breaking Changes
 

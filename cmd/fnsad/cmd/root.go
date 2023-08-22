@@ -29,9 +29,6 @@ import (
 	genutilcli "github.com/Finschia/finschia-sdk/x/genutil/client/cli"
 	ostcli "github.com/Finschia/ostracon/libs/cli"
 	"github.com/Finschia/ostracon/libs/log"
-	"github.com/Finschia/wasmd/x/wasm"
-	wasmkeeper "github.com/Finschia/wasmd/x/wasm/keeper"
-	"github.com/prometheus/client_golang/prometheus"
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -248,10 +245,6 @@ func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer, appOpts serverty
 	if err != nil {
 		panic(err)
 	}
-	var wasmOpts []wasm.Option
-	if cast.ToBool(appOpts.Get("telemetry.enabled")) {
-		wasmOpts = append(wasmOpts, wasmkeeper.WithVMCacheMetrics(prometheus.DefaultRegisterer))
-	}
 
 	return app.NewLinkApp(
 		logger, db, traceStore, true, skipUpgradeHeights,
@@ -259,7 +252,6 @@ func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer, appOpts serverty
 		cast.ToUint(appOpts.Get(server.FlagInvCheckPeriod)),
 		app.MakeEncodingConfig(), // Ideally, we would reuse the one created by NewRootCmd.
 		appOpts,
-		wasmOpts,
 		baseapp.SetPruning(pruningOpts),
 		baseapp.SetMinGasPrices(cast.ToString(appOpts.Get(server.FlagMinGasPrices))),
 		baseapp.SetHaltHeight(cast.ToUint64(appOpts.Get(server.FlagHaltHeight))),
@@ -287,13 +279,13 @@ func createSimappAndExport(
 		return servertypes.ExportedApp{}, errors.New("application home not set")
 	}
 	if height != -1 {
-		linkApp = app.NewLinkApp(logger, db, traceStore, false, map[int64]bool{}, homePath, cast.ToUint(appOpts.Get(server.FlagInvCheckPeriod)), encCfg, appOpts, nil)
+		linkApp = app.NewLinkApp(logger, db, traceStore, false, map[int64]bool{}, homePath, cast.ToUint(appOpts.Get(server.FlagInvCheckPeriod)), encCfg, appOpts)
 
 		if err := linkApp.LoadHeight(height); err != nil {
 			return servertypes.ExportedApp{}, err
 		}
 	} else {
-		linkApp = app.NewLinkApp(logger, db, traceStore, true, map[int64]bool{}, homePath, cast.ToUint(appOpts.Get(server.FlagInvCheckPeriod)), encCfg, appOpts, nil)
+		linkApp = app.NewLinkApp(logger, db, traceStore, true, map[int64]bool{}, homePath, cast.ToUint(appOpts.Get(server.FlagInvCheckPeriod)), encCfg, appOpts)
 	}
 
 	return linkApp.ExportAppStateAndValidators(forZeroHeight, jailAllowedAddrs)

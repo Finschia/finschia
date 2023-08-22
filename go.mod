@@ -5,11 +5,8 @@ go 1.20
 require (
 	github.com/Finschia/finschia-sdk v0.48.0-rc1
 	github.com/Finschia/ostracon v1.1.2-0.20230810030810-5836604d7dd0
-	github.com/Finschia/wasmd v0.1.4
-	github.com/cosmos/ibc-go/v4 v4.3.1
 	github.com/golang/mock v1.6.0
 	github.com/gorilla/mux v1.8.0
-	github.com/prometheus/client_golang v1.16.0
 	github.com/rakyll/statik v0.1.7
 	github.com/spf13/cast v1.5.1
 	github.com/spf13/cobra v1.7.0
@@ -25,7 +22,6 @@ require (
 	github.com/99designs/keyring v1.2.1 // indirect
 	github.com/ChainSafe/go-schnorrkel v0.0.0-20200405005733-88cbf1b4c40d // indirect
 	github.com/Finschia/r2ishiguro_vrf v0.1.2 // indirect
-	github.com/Finschia/wasmvm v1.1.1-0.11.2.0.20230418093236-ce70a3856778 // indirect
 	github.com/VictoriaMetrics/fastcache v1.12.1 // indirect
 	github.com/Workiva/go-datastructures v1.1.0 // indirect
 	github.com/armon/go-metrics v0.4.1 // indirect
@@ -103,6 +99,7 @@ require (
 	github.com/petermattis/goid v0.0.0-20180202154549-b0b1615b78e5 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/prometheus/client_golang v1.16.0 // indirect
 	github.com/prometheus/client_model v0.4.0 // indirect
 	github.com/prometheus/common v0.44.0 // indirect
 	github.com/prometheus/procfs v0.10.1 // indirect
@@ -142,8 +139,6 @@ require (
 
 replace (
 	github.com/Finschia/finschia-sdk => github.com/Finschia/finschia-sdk v0.47.0-rc7.0.20230815053600-d9f4ad235766
-	github.com/Finschia/wasmd => github.com/Finschia/wasmd v0.1.5-0.20230803051028-dedcd9ec5ba0
-	github.com/cosmos/ibc-go/v4 => github.com/torao/ibc-go/v4 v4.0.0-20230821093359-154a72933979
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 	google.golang.org/grpc => google.golang.org/grpc v1.33.2
 )

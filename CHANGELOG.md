@@ -41,6 +41,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (ibc) [\#246](https://github.com/Finschia/finschia/pull/246) Update ibc-go to v4
 * (build) [\#248](https://github.com/Finschia/finschia/pull/248) Rename namespace to v2
 * (app) [\#250](https://github.com/Finschia/finschia/pull/250) Set upgrade handler for v2-Daisy
+* (feat) [\#255](https://github.com/Finschia/finschia/pull/255) Bump up finschia-sdk from v0.48.0-rc1 to da331c01fa
 
 ### Improvements
 * (build) [\#221](https://github.com/Finschia/finschia/pull/221) compile static binary as release assets and docker image

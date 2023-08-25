@@ -3,7 +3,7 @@
 COMMIT ?= $(shell git log -1 --format='%H')
 
 # ascribe tag only if on a release/ branch, otherwise pick branch name and concatenate commit hash
-ifeq (, $(VERSION))
+ifeq (,$(VERSION))
   BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
   VERSION := $(shell echo $(shell git describe --tags) | sed 's/^v//')
   ifeq (, $(findstring release/,$(BRANCH)))
@@ -12,79 +12,29 @@ ifeq (, $(VERSION))
 endif
 
 PACKAGES_SIMTEST=$(shell go list ./... | grep '/simulation')
-LEDGER_ENABLED ?= true
 SDK_PACK := $(shell go list -m github.com/Finschia/finschia-sdk | sed  's/ /\@/g')
 GO_VERSION := $(shell cat go.mod | grep -E 'go [0-9].[0-9]+' | cut -d ' ' -f 2)
 OST_VERSION := $(shell go list -m github.com/Finschia/ostracon | sed 's:.* ::') # grab everything after the space in "github.com/Finschia/ostracon v0.34.7"
+WASMVM_VERSION=$(shell go list -m github.com/Finschia/wasmvm | awk '{print $$2}')
 DOCKER := $(shell which docker)
+LEDGER_ENABLED ?= true
 BUILDDIR ?= $(CURDIR)/build
-CGO_ENABLED ?= 1
 ARCH ?= amd64
 TARGET_PLATFORM = linux/amd64
-TARGET_ARCH = x86_64
+TEMPDIR ?= $(CURDIR)/temp
 
 export GO111MODULE = on
 
+OS_NAME := $(shell uname -s | tr A-Z a-z)
 ifeq ($(ARCH), arm64)
 	TARGET_PLATFORM = linux/arm64
-	TARGET_ARCH = aarch64
 endif
 
 # process build tags
 
-build_tags = netgo
+build_tags = netgo static_wasm muslc
 ifeq ($(LEDGER_ENABLED),true)
-  ifeq ($(OS),Windows_NT)
-    GCCEXE = $(shell where gcc.exe 2> NUL)
-    ifeq ($(GCCEXE),)
-      $(error gcc.exe not installed for ledger support, please install or set LEDGER_ENABLED=false)
-    else
-      build_tags += ledger
-    endif
-  else
-    UNAME_S = $(shell uname -s)
-    ifeq ($(UNAME_S),OpenBSD)
-      $(warning OpenBSD detected, disabling ledger support (https://github.com/cosmos/cosmos-sdk/issues/1988))
-    else
-      GCC = $(shell command -v gcc 2> /dev/null)
-      ifeq ($(GCC),)
-        $(error gcc not installed for ledger support, please install or set LEDGER_ENABLED=false)
-      else
-        build_tags += ledger
-      endif
-    endif
-  endif
-endif
-
-# DB backend selection; use default for testing; use rocksdb or cleveldb for performance; build automation is not ready for boltdb and badgerdb yet.
-ifeq (,$(filter $(FINSCHIA_BUILD_OPTIONS), cleveldb rocksdb boltdb badgerdb))
-  BUILD_TAGS += goleveldb
-  DB_BACKEND = goleveldb
-else
-  ifeq (cleveldb,$(findstring cleveldb,$(FINSCHIA_BUILD_OPTIONS)))
-    CGO_ENABLED=1
-    BUILD_TAGS += gcc cleveldb
-    DB_BACKEND = cleveldb
-    CLEVELDB_DIR = leveldb
-    CGO_CFLAGS=-I$(shell pwd)/$(CLEVELDB_DIR)/include
-    CGO_LDFLAGS="-L$(shell pwd)/$(CLEVELDB_DIR)/build -L$(shell pwd)/snappy/build -lleveldb -lm -lstdc++ -lsnappy"
-  endif
-  ifeq (badgerdb,$(findstring badgerdb,$(FINSCHIA_BUILD_OPTIONS)))
-    BUILD_TAGS += badgerdb
-    DB_BACKEND = badgerdb
-  endif
-  ifeq (rocksdb,$(findstring rocksdb,$(FINSCHIA_BUILD_OPTIONS)))
-    CGO_ENABLED=1
-    BUILD_TAGS += gcc rocksdb
-    DB_BACKEND = rocksdb
-    ROCKSDB_DIR=$(shell pwd)/rocksdb
-    CGO_CFLAGS=-I$(ROCKSDB_DIR)/include
-    CGO_LDFLAGS="-L$(ROCKSDB_DIR) -lrocksdb -lm -lstdc++ $(shell awk '/PLATFORM_LDFLAGS/ {sub("PLATFORM_LDFLAGS=", ""); print}' < $(ROCKSDB_DIR)/make_config.mk)"
-  endif
-  ifeq (boltdb,$(findstring boltdb,$(FINSCHIA_BUILD_OPTIONS)))
-    BUILD_TAGS += boltdb
-    DB_BACKEND = boltdb
-  endif
+	build_tags += ledger
 endif
 
 build_tags += $(BUILD_TAGS)
@@ -98,41 +48,25 @@ build_tags_comma_sep := $(subst $(whitespace),$(comma),$(build_tags))
 # process linker flags
 
 ldflags = -X github.com/Finschia/finschia-sdk/version.Name=finschia \
-		  -X github.com/Finschia/finschia-sdk/version.AppName=finschia \
+		  -X github.com/Finschia/finschia-sdk/version.AppName=fnsad \
 		  -X github.com/Finschia/finschia-sdk/version.Version=$(VERSION) \
 		  -X github.com/Finschia/finschia-sdk/version.Commit=$(COMMIT) \
-		  -X github.com/Finschia/finschia-sdk/types.DBBackend=$(DB_BACKEND) \
+		  -X github.com/Finschia/finschia-sdk/types.DBBackend=goleveldb \
 		  -X "github.com/Finschia/finschia-sdk/version.BuildTags=$(build_tags_comma_sep)" \
-		  -X github.com/Finschia/ostracon/version.TMCoreSemVer=$(OST_VERSION)
+		  -X github.com/Finschia/ostracon/version.TMCoreSemVer=$(OST_VERSION) \
+		  -linkmode=external \
+		  -w -s
 
-ifeq ($(LINK_STATICALLY),true)
-	ldflags += -linkmode=external -extldflags "-Wl,-z,muldefs -static"
-endif
-
-ifeq (,$(findstring nostrip,$(FINSCHIA_BUILD_OPTIONS)))
-  ldflags += -w -s
-endif
 ldflags += $(LDFLAGS)
 ldflags := $(strip $(ldflags))
 
 BUILD_FLAGS := -tags "$(build_tags)" -ldflags '$(ldflags)'
-CLI_TEST_BUILD_FLAGS := -tags "cli_test $(build_tags)"
-CLI_MULTI_BUILD_FLAGS := -tags "cli_multi_node_test $(build_tags)"
-# check for nostrip option
-ifeq (,$(findstring nostrip,$(FINSCHIA_BUILD_OPTIONS)))
-  BUILD_FLAGS += -trimpath
-endif
-
-# platform depend behavior
-ifeq (darwin, $(shell go env GOOS))
-  LIBWASMVM ?= libwasmvm.dylib
+CGO_CFLAGS  := -I$(TEMPDIR)/include
+CGO_LDFLAGS := -L$(TEMPDIR)/lib
+ifeq ($(OS_NAME),darwin)
+	CGO_LDFLAGS += -lz -lbz2
 else
-  ifeq (linux, $(shell go env GOOS))
-    LIBWASMVM ?= libwasmvm.$(TARGET_ARCH).so
-  else
-    echo "ERROR: unsupported platform: $(shell go env GOOS)"
-    exit 1
-  endif
+	CGO_LDFLAGS += -static -lwasmvm_muslc -lm
 endif
 
 
@@ -142,52 +76,41 @@ endif
 
 all: install lint test
 
-build: BUILD_ARGS=-o $(BUILDDIR)/
+$(TEMPDIR)/:
+	mkdir -p $(TEMPDIR)/
 
-build: go.sum $(BUILDDIR)/ dbbackend
-	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go build -mod=readonly $(BUILD_FLAGS) $(BUILD_ARGS) ./...
+wasmvmlib: $(TEMPDIR)/
+	@mkdir -p $(TEMPDIR)/lib
+    ifeq (",$(wildcard $(TEMPDIR)/lib/libwasmvm*.a)")
+        ifeq ($(OS_NAME),darwin)
+	        wget https://github.com/Finschia/wasmvm/releases/download/$(WASMVM_VERSION)/libwasmvmstatic_darwin.a -O $(TEMPDIR)/lib/libwasmvmstatic_darwin.a
+        else
+            ifeq ($(ARCH),amd64)
+	            wget https://github.com/Finschia/wasmvm/releases/download/$(WASMVM_VERSION)/libwasmvm_muslc.x86_64.a -O $(TEMPDIR)/lib/libwasmvm_muslc.a
+            else
+	            wget https://github.com/Finschia/wasmvm/releases/download/$(WASMVM_VERSION)/libwasmvm_muslc.aarch64.a -O $(TEMPDIR)/lib/libwasmvm_muslc.a
+            endif
+        endif
+    endif
 
-install: go.sum $(BUILDDIR)/ dbbackend
-	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go install $(BUILD_FLAGS) $(BUILD_ARGS) ./cmd/fnsad
+# command for make build and make install
+build: BUILDARGS=-o $(BUILDDIR)/
+build install: go.sum $(BUILDDIR)/ wasmvmlib
+	CGO_ENABLED=1 CGO_CFLAGS="$(CGO_CFLAGS)" CGO_LDFLAGS="$(CGO_LDFLAGS)" go $@ -mod=readonly $(BUILD_FLAGS) $(BUILDARGS) ./...
 
+# ensure build directory exists
 $(BUILDDIR)/:
 	mkdir -p $(BUILDDIR)/
 
-.PHONY: dbbackend
-# for more faster building use -j8; but it will be failed in docker building because of low memory
-ifeq ($(DB_BACKEND), rocksdb)
-dbbackend:
-	@if [ ! -e $(ROCKSDB_DIR) ]; then          \
-		sh ./contrib/get_rocksdb.sh;         \
-	fi
-	@if [ ! -e $(ROCKSDB_DIR)/librocksdb.a ]; then    \
-		cd $(ROCKSDB_DIR) && make -j2 static_lib; \
-	fi
-	@if [ ! -e $(ROCKSDB_DIR)/libsnappy.a ]; then    \
-                cd $(ROCKSDB_DIR) && make libsnappy.a DEBUG_LEVEL=0; \
-        fi
-else ifeq ($(DB_BACKEND), cleveldb)
-dbbackend:
-	@if [ ! -e $(CLEVELDB_DIR) ]; then         \
-		sh contrib/get_cleveldb.sh;        \
-	fi
-	@if [ ! -e $(CLEVELDB_DIR)/libcleveldb.a ]; then   \
-		cd $(CLEVELDB_DIR);                        \
-		mkdir build;                               \
-		cd build;                                  \
-		cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DLEVELDB_BUILD_TESTS=OFF -DLEVELDB_BUILD_BENCHMARKS=OFF ..; \
-		make;                                      \
-	fi
-	@if [ ! -e snappy ]; then \
-		sh contrib/get_snappy.sh; \
-		cd snappy; \
-		mkdir build && cd build; \
-		cmake -DBUILD_SHARED_LIBS=OFF -DSNAPPY_BUILD_TESTS=OFF -DSNAPPY_REQUIRE_AVX2=ON ..;\
-		make; \
-	fi
-else
-dbbackend:
-endif
+go.sum: go.mod
+	@echo "--> Ensure dependencies have not been modified"
+	@go mod verify
+
+clean:
+	rm -rf $(BUILDDIR)/ $(TEMPDIR)/
+
+distclean: clean
+	rm -rf vendor/
 
 build-reproducible: go.sum
 	mkdir -p $(BUILDDIR)
@@ -212,47 +135,7 @@ go-mod-cache: go.sum
 	@echo "--> Download go modules to local cache"
 	@go mod download
 
-go.sum: go.mod
-	@echo "--> Ensure dependencies have not been modified"
-	@go mod verify
-
-draw-deps:
-	@# requires brew install graphviz or apt-get install graphviz
-	go get github.com/RobotsAndPencils/goviz
-	@goviz -i ./cmd/fnsad -d 2 | dot -Tpng -o dependency-graph.png
-
-clean:
-	rm -rf $(BUILDDIR)/ artifacts/
-	@ROCKSDB_DIR=rocksdb;				\
-	if [ -e $${ROCKSDB_DIR}/Makefile ]; then	\
-		cd $${ROCKSDB_DIR};			\
-		make clean;				\
-	fi
-
-distclean: clean
-	rm -rf vendor/
-
-###############################################################################
-###                                 Devdoc                                  ###
-###############################################################################
-
-build-docs:
-	@cd docs && \
-	while read p; do \
-		(git checkout $${p} && npm install && VUEPRESS_BASE="/$${p}/" npm run build) ; \
-		mkdir -p ~/output/$${p} ; \
-		cp -r .vuepress/dist/* ~/output/$${p}/ ; \
-		cp ~/output/$${p}/index.html ~/output ; \
-	done < versions ;
-.PHONY: build-docs
-
-sync-docs:
-	cd ~/output && \
-	echo "role_arn = ${DEPLOYMENT_ROLE_ARN}" >> /root/.aws/config ; \
-	echo "CI job = ${CIRCLE_BUILD_URL}" >> version.html ; \
-	aws s3 sync . s3://${WEBSITE_BUCKET} --profile terraform --delete ; \
-	aws cloudfront create-invalidation --distribution-id ${CF_DISTRIBUTION_ID} --profile terraform --path "/*" ;
-.PHONY: sync-docs
+.PHONY: all build install clean wasmvmlib build-reproducible
 
 
 ###############################################################################
@@ -286,6 +169,9 @@ test-integration-multi-node: docker-build
 test-upgrade-name:
 	@sh contrib/check-upgrade-name.sh
 
+.PHONY: test test-all test-unit test-race test-cover benchmark test-integration test-integration-multi-node
+
+
 ###############################################################################
 ###                                Docker                                   ###
 ###############################################################################
@@ -318,6 +204,9 @@ format:
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/lcd/statik/statik.go" | xargs misspell -w
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/lcd/statik/statik.go" | xargs goimports -w -local github.com/Finschia/finschia-sdk
 
+.PHONY: lint format
+
+
 ###############################################################################
 ###                                Localnet                                 ###
 ###############################################################################
@@ -345,11 +234,8 @@ localnet-build-nodes:
 localnet-stop:
 	docker-compose down
 
-.PHONY: all install format lint \
-	go-mod-cache draw-deps clean build \
-	test test-all test-cover test-unit test-race \
-	benchmark \
-	localnet-start localnet-stop
+.PHONY: localnet-docker-build localnet-start localnet-build-nodes localnet-stop
+
 
 ###############################################################################
 ###                                Proto                                    ###

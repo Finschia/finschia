@@ -78,6 +78,14 @@ import (
 	"github.com/Finschia/finschia-sdk/x/mint"
 	mintkeeper "github.com/Finschia/finschia-sdk/x/mint/keeper"
 	minttypes "github.com/Finschia/finschia-sdk/x/mint/types"
+	ordakeeper "github.com/Finschia/finschia-sdk/x/or/da/keeper"
+	ordatypes "github.com/Finschia/finschia-sdk/x/or/da/types"
+	"github.com/Finschia/finschia-sdk/x/or/rollup"
+	rollupkeeper "github.com/Finschia/finschia-sdk/x/or/rollup/keeper"
+	rolluptypes "github.com/Finschia/finschia-sdk/x/or/rollup/types"
+	"github.com/Finschia/finschia-sdk/x/or/settlement"
+	settlementkeeper "github.com/Finschia/finschia-sdk/x/or/settlement/keeper"
+	settlementtypes "github.com/Finschia/finschia-sdk/x/or/settlement/types"
 	"github.com/Finschia/finschia-sdk/x/params"
 	paramsclient "github.com/Finschia/finschia-sdk/x/params/client"
 	paramskeeper "github.com/Finschia/finschia-sdk/x/params/keeper"
@@ -142,6 +150,9 @@ var (
 		vesting.AppModuleBasic{},
 		tokenmodule.AppModuleBasic{},
 		collectionmodule.AppModuleBasic{},
+		rollup.AppModuleBasic{},
+		//ordamodule.AppModuleBasic{},
+		settlement.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -154,6 +165,7 @@ var (
 		stakingtypes.BondedPoolName:    {authtypes.Burner, authtypes.Staking},
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:            {authtypes.Burner},
+		rolluptypes.ModuleName:         {authtypes.Burner},
 	}
 
 	// module accounts that are allowed to receive tokens
@@ -202,6 +214,9 @@ type LinkApp struct { // nolint: golint
 	ClassKeeper      classkeeper.Keeper
 	TokenKeeper      tokenkeeper.Keeper
 	CollectionKeeper collectionkeeper.Keeper
+	RollupKeeper     rollupkeeper.Keeper
+	Ordakeeper       ordakeeper.Keeper
+	SettlementKeeper settlementkeeper.Keeper
 
 	ScopedICAHostKeeper capabilitykeeper.ScopedKeeper
 
@@ -256,6 +271,9 @@ func NewLinkApp(
 		class.StoreKey,
 		token.StoreKey,
 		collection.StoreKey,
+		rolluptypes.StoreKey,
+		ordatypes.StoreKey,
+		settlementtypes.StoreKey,
 	)
 
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -357,6 +375,10 @@ func NewLinkApp(
 		),
 	)
 
+	app.Ordakeeper = ordakeeper.NewKeeper(appCodec, keys[ordatypes.StoreKey], authtypes.NewModuleAddress(govtypes.ModuleName).String(), app.AccountKeeper, nil)
+	app.SettlementKeeper = settlementkeeper.NewKeeper(appCodec, keys[settlementtypes.StoreKey], keys[settlementtypes.MemStoreKey])
+	app.RollupKeeper = rollupkeeper.NewKeeper(appCodec, app.BankKeeper, app.AccountKeeper, keys[rolluptypes.StoreKey], keys[rolluptypes.MemStoreKey], app.GetSubspace(rolluptypes.ModuleName))
+
 	/****  Module Options ****/
 
 	/****  Module Options ****/
@@ -394,6 +416,9 @@ func NewLinkApp(
 		tokenmodule.NewAppModule(appCodec, app.TokenKeeper),
 		collectionmodule.NewAppModule(appCodec, app.CollectionKeeper),
 		authzmodule.NewAppModule(appCodec, app.AuthzKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
+		rollup.NewAppModule(appCodec, app.RollupKeeper, app.AccountKeeper, app.BankKeeper),
+		//ordamodule.NewAppModule(appCodec, app.Ordakeeper, app.AccountKeeper),
+		settlement.NewAppModule(appCodec, app.SettlementKeeper, app.AccountKeeper, app.BankKeeper),
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -420,6 +445,9 @@ func NewLinkApp(
 		vestingtypes.ModuleName,
 		token.ModuleName,
 		collection.ModuleName,
+		rolluptypes.ModuleName,
+		ordatypes.ModuleName,
+		settlementtypes.ModuleName,
 	)
 	app.mm.SetOrderEndBlockers(
 		crisistypes.ModuleName,
@@ -441,6 +469,9 @@ func NewLinkApp(
 		foundation.ModuleName,
 		token.ModuleName,
 		collection.ModuleName,
+		rolluptypes.ModuleName,
+		ordatypes.ModuleName,
+		settlementtypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -472,6 +503,9 @@ func NewLinkApp(
 		vestingtypes.ModuleName,
 		token.ModuleName,
 		collection.ModuleName,
+		rolluptypes.ModuleName,
+		ordatypes.ModuleName,
+		settlementtypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
@@ -708,6 +742,8 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(govtypes.ModuleName).WithKeyTable(govtypes.ParamKeyTable())
 	paramsKeeper.Subspace(crisistypes.ModuleName)
 	paramsKeeper.Subspace(foundation.ModuleName)
+	paramsKeeper.Subspace(settlementtypes.ModuleName)
+	paramsKeeper.Subspace(rolluptypes.ModuleName)
 
 	return paramsKeeper
 }

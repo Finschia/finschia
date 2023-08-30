@@ -151,7 +151,7 @@ var (
 		tokenmodule.AppModuleBasic{},
 		collectionmodule.AppModuleBasic{},
 		rollup.AppModuleBasic{},
-		//ordamodule.AppModuleBasic{},
+		// ordamodule.AppModuleBasic{},
 		settlement.AppModuleBasic{},
 	)
 
@@ -417,7 +417,7 @@ func NewLinkApp(
 		collectionmodule.NewAppModule(appCodec, app.CollectionKeeper),
 		authzmodule.NewAppModule(appCodec, app.AuthzKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
 		rollup.NewAppModule(appCodec, app.RollupKeeper, app.AccountKeeper, app.BankKeeper),
-		//ordamodule.NewAppModule(appCodec, app.Ordakeeper, app.AccountKeeper),
+		// ordamodule.NewAppModule(appCodec, app.Ordakeeper, app.AccountKeeper),
 		settlement.NewAppModule(appCodec, app.SettlementKeeper, app.AccountKeeper, app.BankKeeper),
 	)
 

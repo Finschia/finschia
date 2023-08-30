@@ -14,18 +14,20 @@ endif
 PACKAGES_SIMTEST=$(shell go list ./... | grep '/simulation')
 LEDGER_ENABLED ?= true
 SDK_PACK := $(shell go list -m github.com/Finschia/finschia-sdk | sed  's/ /\@/g')
+GO_VERSION := $(shell cat go.mod | grep -E 'go [0-9].[0-9]+' | cut -d ' ' -f 2)
 OST_VERSION := $(shell go list -m github.com/Finschia/ostracon | sed 's:.* ::') # grab everything after the space in "github.com/Finschia/ostracon v0.34.7"
 DOCKER := $(shell which docker)
 BUILDDIR ?= $(CURDIR)/build
-TEST_DOCKER_REPO=jackzampolin/linktest
 CGO_ENABLED ?= 1
-ARCH ?= x86_64
-TARGET_PLATFORM ?= linux/amd64
+ARCH ?= amd64
+TARGET_PLATFORM = linux/amd64
+TARGET_ARCH = x86_64
 
 export GO111MODULE = on
 
-ifeq ($(ARCH), aarch64)
-	TARGET_PLATFORM=linux/arm64
+ifeq ($(ARCH), arm64)
+	TARGET_PLATFORM = linux/arm64
+	TARGET_ARCH = aarch64
 endif
 
 # process build tags
@@ -85,21 +87,6 @@ else
   endif
 endif
 
-# VRF library selection
-ifeq (libsodium,$(findstring libsodium,$(FINSCHIA_BUILD_OPTIONS)))
-  CGO_ENABLED=1
-  BUILD_TAGS += gcc libsodium
-  LIBSODIUM_TARGET = libsodium
-  CGO_CFLAGS += "-I$(LIBSODIUM_OS)/include"
-  CGO_LDFLAGS += "-L$(LIBSODIUM_OS)/lib -lsodium"
-endif
-
-# secp256k1 implementation selection
-ifeq (libsecp256k1,$(findstring libsecp256k1,$(FINSCHIA_BUILD_OPTIONS)))
-  CGO_ENABLED=1
-  BUILD_TAGS += libsecp256k1
-endif
-
 build_tags += $(BUILD_TAGS)
 build_tags := $(strip $(build_tags))
 
@@ -141,17 +128,13 @@ ifeq (darwin, $(shell go env GOOS))
   LIBWASMVM ?= libwasmvm.dylib
 else
   ifeq (linux, $(shell go env GOOS))
-    LIBWASMVM ?= libwasmvm.$(ARCH).so
+    LIBWASMVM ?= libwasmvm.$(TARGET_ARCH).so
   else
     echo "ERROR: unsupported platform: $(shell go env GOOS)"
     exit 1
   endif
 endif
 
-#$(info $$BUILD_FLAGS is [$(BUILD_FLAGS)])
-
-# The below include contains the tools target.
-include contrib/devtools/Makefile
 
 ###############################################################################
 ###                              Documentation                              ###
@@ -161,40 +144,10 @@ all: install lint test
 
 build: BUILD_ARGS=-o $(BUILDDIR)/
 
-build: go.sum $(BUILDDIR)/ dbbackend $(LIBSODIUM_TARGET)
+build: go.sum $(BUILDDIR)/ dbbackend
 	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go build -mod=readonly $(BUILD_FLAGS) $(BUILD_ARGS) ./...
 
-build-static: go.sum $(BUILDDIR)/
-	docker build -t finschia/finschianode:latest -f builders/Dockerfile.static . --build-arg ARCH=$(ARCH) --platform="$(TARGET_PLATFORM)"
-
-build-static-centos7: go.sum $(BUILDDIR)/
-	docker build -t finschia/finschia-builder:static_centos7 -f builders/Dockerfile.static_centos7 .
-	docker run -it --rm -v $(shell pwd):/code -e FINSCHIA_BUILD_OPTIONS="$(FINSCHIA_BUILD_OPTIONS)" finschia/finschia-builder:static_centos7
-
-# USAGE: go env -w GOARCH={amd64|arm64} && make clean build-release-bundle VERSION=v0.0.0
-RELEASE_BUNDLE=finschia-$(VERSION)-$(shell go env GOOS)-$(shell go env GOARCH)
-LIBWASMVM_VERSION=$(shell go list -m github.com/Finschia/wasmvm | awk '{print $$2}')
-LIBWASMVM_PATH=$(shell find $(shell go env GOMODCACHE) -name $(LIBWASMVM) -type f | grep "$(LIBWASMVM_VERSION)")
-build-release-bundle: build
-	@if [ "$(shell go env GOOS)" != "$(shell go env GOHOSTOS)" ]; then echo "ERROR: OS not match"; exit 1; fi
-	@if [   -z "${LIBWASMVM_PATH}" ]; then echo "ERROR: $(LIBWASMVM) $(LIBWASMVM_VERSION) not found: $(shell go env GOMODCACHE)"; exit 1; fi
-	@if [ ! -f "${LIBWASMVM_PATH}" ]; then echo "ERROR: Multiple version of $(LIBWASMVM) found: ${LIBWASMVM_PATH}"; exit 1; fi
-	@mkdir -p $(BUILDDIR)/$(RELEASE_BUNDLE)
-	@cp $(BUILDDIR)/fnsad $(BUILDDIR)/$(RELEASE_BUNDLE)/$(RELEASE_BUNDLE)
-	@cp "$(LIBWASMVM_PATH)" $(BUILDDIR)/$(RELEASE_BUNDLE)/
-	@case "$(shell go env GOHOSTOS),$(shell go env GOHOSTARCH),$(shell go env GOARCH)" in \
-	  *,amd64,amd64 | *,arm64,arm64 | darwin,arm64,*) \
-	    LD_LIBRARY_PATH=$(BUILDDIR)/$(RELEASE_BUNDLE) $(BUILDDIR)/$(RELEASE_BUNDLE)/$(RELEASE_BUNDLE) version; \
-	    if [ $$? -ne 0 ]; then echo "ERROR: Test execution failed."; printenv; go env; exit 1; fi; \
-	    echo "OK: Test execution confirmed.";; \
-      *) \
-        echo "SKIP: Test execution unconfirmed.";; \
-    esac
-	@cd $(BUILDDIR) && tar zcvf ./$(RELEASE_BUNDLE).tgz $(RELEASE_BUNDLE)/ > /dev/null 2>&1
-	@rm -rf $(BUILDDIR)/$(RELEASE_BUNDLE)/
-	@echo "Built: $(BUILDDIR)/$(RELEASE_BUNDLE).tgz"
-
-install: go.sum $(BUILDDIR)/ dbbackend $(LIBSODIUM_TARGET)
+install: go.sum $(BUILDDIR)/ dbbackend
 	CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=$(CGO_ENABLED) go install $(BUILD_FLAGS) $(BUILD_ARGS) ./cmd/fnsad
 
 $(BUILDDIR)/:
@@ -236,12 +189,24 @@ else
 dbbackend:
 endif
 
-build-docker:
-	docker build --build-arg FINSCHIA_BUILD_OPTIONS="$(FINSCHIA_BUILD_OPTIONS)" --build-arg ARCH=$(ARCH) -t finschia/finschianode . --platform="$(TARGET_PLATFORM)"
-
-build-contract-tests-hooks:
+build-reproducible: go.sum
 	mkdir -p $(BUILDDIR)
-	go build -mod=readonly $(BUILD_FLAGS) -o $(BUILDDIR)/ ./cmd/contract_tests
+	$(DOCKER) buildx create --name finschiabuilder || true
+	$(DOCKER) buildx use finschiabuilder
+	$(DOCKER) buildx build \
+		--build-arg GO_VERSION=$(GO_VERSION) \
+		--build-arg GIT_VERSION=$(VERSION) \
+		--build-arg GIT_COMMIT=$(COMMIT) \
+		--build-arg OST_VERSION=$(OST_VERSION) \
+		--build-arg RUNNER_IMAGE=alpine:3.17 \
+		--platform $(TARGET_PLATFORM) \
+		-t finschia/finschianode:local-$(ARCH) \
+		--load \
+		-f Dockerfile .
+	$(DOCKER) rm -f finschiabinary || true
+	$(DOCKER) create -ti --name finschiabinary finschia/finschianode:local-$(ARCH)
+	$(DOCKER) cp finschiabinary:/usr/bin/fnsad $(BUILDDIR)/fnsad-linux-$(ARCH)
+	$(DOCKER) rm -f finschiabinary
 
 go-mod-cache: go.sum
 	@echo "--> Download go modules to local cache"
@@ -296,7 +261,7 @@ sync-docs:
 
 include sims.mk
 
-test: test-unit test-build
+test: test-unit
 
 test-all: test-race test-cover
 
@@ -315,9 +280,28 @@ benchmark:
 test-integration: build
 	@go test -mod=readonly -p 4 `go list ./cli_test/...` $(CLI_TEST_BUILD_FLAGS) -v
 
-test-integration-multi-node: build-docker
+test-integration-multi-node: docker-build
 	@go test -mod=readonly -p 4 `go list ./cli_test/...` $(CLI_MULTI_BUILD_FLAGS) -v
 
+
+###############################################################################
+###                                Docker                                   ###
+###############################################################################
+
+RUNNER_BASE_IMAGE_ALPINE := alpine:3.17
+
+docker-build:
+	@DOCKER_BUILDKIT=1 docker build \
+		-t finschia/finschianode:local \
+		-t finschia/finschianode:local-distroless \
+		--build-arg GO_VERSION=$(GO_VERSION) \
+		--build-arg RUNNER_IMAGE=$(RUNNER_BASE_IMAGE_ALPINE) \
+		--build-arg GIT_VERSION=$(VERSION) \
+		--build-arg GIT_COMMIT=$(COMMIT) \
+		--build-arg OST_VERSION=$(OST_VERSION) \
+		--platform=$(TARGET_PLATFORM) \
+		-f Dockerfile .
+.PHONY: docker-build
 
 ###############################################################################
 ###                                Linting                                  ###
@@ -336,14 +320,22 @@ format:
 ###                                Localnet                                 ###
 ###############################################################################
 
-build-docker-finschianode:
-	$(MAKE) -C networks/local
+localnet-docker-build:
+	@DOCKER_BUILDKIT=1 docker build \
+    		-t finschia/finschianode:localnet \
+    		--build-arg GO_VERSION=$(GO_VERSION) \
+    		--build-arg RUNNER_IMAGE=$(RUNNER_BASE_IMAGE_ALPINE) \
+    		--build-arg GIT_VERSION=$(VERSION) \
+    		--build-arg GIT_COMMIT=$(COMMIT) \
+    		--build-arg OST_VERSION=$(OST_VERSION) \
+    		--platform=$(TARGET_PLATFORM) \
+    		-f networks/local/finschianode/Dockerfile .
 
 # Run a 4-node testnet locally
-localnet-start: localnet-stop build-static localnet-build-nodes
+localnet-start: localnet-stop localnet-docker-build localnet-build-nodes
 
 localnet-build-nodes:
-	docker run --rm -v $(CURDIR)/mytestnet:/data finschia/finschianode \
+	docker run --rm -v $(CURDIR)/mytestnet:/data finschia/finschianode:localnet \
 			testnet init-files --v 4 -o /data --starting-ip-address 192.168.10.2 --keyring-backend=test
 	docker-compose up -d
 
@@ -351,44 +343,18 @@ localnet-build-nodes:
 localnet-stop:
 	docker-compose down
 
-test-docker:
-	@docker build -f contrib/Dockerfile.test -t ${TEST_DOCKER_REPO}:$(shell git rev-parse --short HEAD) .
-	@docker tag ${TEST_DOCKER_REPO}:$(shell git rev-parse --short HEAD) ${TEST_DOCKER_REPO}:$(shell git rev-parse --abbrev-ref HEAD | sed 's#/#_#g')
-	@docker tag ${TEST_DOCKER_REPO}:$(shell git rev-parse --short HEAD) ${TEST_DOCKER_REPO}:latest
-
-test-docker-push: test-docker
-	@docker push ${TEST_DOCKER_REPO}:$(shell git rev-parse --short HEAD)
-	@docker push ${TEST_DOCKER_REPO}:$(shell git rev-parse --abbrev-ref HEAD | sed 's#/#_#g')
-	@docker push ${TEST_DOCKER_REPO}:latest
-
 .PHONY: all install format lint \
 	go-mod-cache draw-deps clean build \
-	setup-transactions setup-contract-tests-data start-link run-lcd-contract-tests contract-tests \
-	test test-all test-build test-cover test-unit test-race \
+	test test-all test-cover test-unit test-race \
 	benchmark \
-	build-docker-finschianode localnet-start localnet-stop \
-	docker-single-node
+	localnet-start localnet-stop
 
 ###############################################################################
-###                                  tools                                  ###
+###                                Proto                                    ###
 ###############################################################################
 
-VRF_ROOT = $(shell pwd)/tools
-LIBSODIUM_ROOT = $(VRF_ROOT)/libsodium
-LIBSODIUM_OS = $(VRF_ROOT)/sodium/$(shell go env GOOS)_$(shell go env GOARCH)
-ifneq ($(TARGET_HOST), "")
-LIBSODIUM_HOST = "--host=$(TARGET_HOST)"
-endif
-
-libsodium:
-	@if [ ! -f $(LIBSODIUM_OS)/lib/libsodium.a ]; then \
-		rm -rf $(LIBSODIUM_ROOT) && \
-		mkdir $(LIBSODIUM_ROOT) && \
-		git submodule update --init --recursive && \
-		cd $(LIBSODIUM_ROOT) && \
-		./autogen.sh && \
-		./configure --disable-shared --prefix="$(LIBSODIUM_OS)" $(LIBSODIUM_HOST) && \
-		$(MAKE) && \
-		$(MAKE) install; \
-	fi
-.PHONY: libsodium
+proto-swagger-gen:
+	@echo "Generating Protobuf Swagger"
+	./scripts/generate-docs.sh
+	statik -src=client/docs/swagger-ui -dest=client/docs -f -m
+.PHONY: proto-swagger-gen

@@ -1,24 +1,73 @@
-#FROM alpine:3.10.2
-#
-#RUN apk update && \
-#    apk upgrade && \
-#    apk --no-cache add curl jq file
+# This Dockerfile is used for localnet multinode testing.
+# Simple usage with a mounted data directory:
+# > docker build --platform="linux/amd64" -t finschia/finschianode:localnet -f networks/local/finschianode . --build-arg ARCH=amd64
+# > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.finschia:/root/.finschia -v networks/local/finschianode fnsad init
+# > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.finschia:/root/.finschia -v networks/local/finschianode fnsad start --rpc.laddr=tcp://0.0.0.0:26657 --p2p.laddr=tcp://0.0.0.0:26656
 
-# Changed from Alpine to Ubuntu because the keyring PR is linking to libc
-# Alpine uses muslc instead of libc
+ARG GO_VERSION="1.20"
+ARG RUNNER_IMAGE="alpine:3.17"
 
-FROM ubuntu:18.04
+FROM golang:${GO_VERSION}-alpine AS build-env
 
-RUN apt-get update && \
-    apt-get -y upgrade && \
-    apt-get -y install curl jq file
+ARG FINSCHIA_BUILD_OPTIONS=""
+ARG GIT_VERSION
+ARG GIT_COMMIT
+ARG OST_VERSION
 
-VOLUME [ /finschia ]
+# Set up OS dependencies
+RUN apk add --no-cache ca-certificates build-base linux-headers curl
+
+# Set WORKDIR to finschia
+WORKDIR /finschia-build/finschia
+
+# Install GO dependencies
+COPY go.mod go.sum ./
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/root/go/pkg/mod \
+    go mod download
+
+# Install libwasmvm.*.a
+RUN ARCH=$(uname -m) && WASMVM_VERSION=$(go list -m github.com/Finschia/wasmvm | awk '{print $2}' | grep -o 'v\d\+\.\d\+\.\d\+-\d\+\.\d\+\.\d\+') && \
+    curl -L -f -o /lib/libwasmvm_muslc.a  https://github.com/Finschia/wasmvm/releases/download/$WASMVM_VERSION/libwasmvm_muslc.$ARCH.a && ls -al /lib/libwasmvm_muslc.a && \
+    # verify checksum
+    curl -L -f -o /tmp/checksums.txt https://github.com/Finschia/wasmvm/releases/download/$WASMVM_VERSION/checksums.txt && ls -al /tmp/checksums.txt && \
+    sha256sum /lib/libwasmvm_muslc.a | grep $(cat /tmp/checksums.txt | grep libwasmvm_muslc.$ARCH | cut -d ' ' -f 1)
+
+# Add source files
+COPY . .
+
+# Build fnsad binary
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/root/go/pkg/mod \
+    GOWORK=off go build \
+        -mod=readonly \
+        -tags "netgo,ledger,muslc,goleveldb" \
+        -ldflags \
+            "-X github.com/Finschia/finschia-sdk/version.Name=finschia \
+            -X github.com/Finschia/finschia-sdk/version.AppName=fnsad \
+    		-X github.com/Finschia/finschia-sdk/version.Version=${GIT_VERSION} \
+    		-X github.com/Finschia/finschia-sdk/version.Commit=${GIT_COMMIT} \
+    		-X github.com/Finschia/ostracon/version.TMCoreSemVer=${OST_VERSION} \
+    		-X github.com/Finschia/finschia-sdk/types.DBBackend=goleveldb \
+    		-X github.com/Finschia/finschia-sdk/version.BuildTags=netgo,ledger,muslc,goleveldb \
+            -w -s -linkmode=external -extldflags '-Wl,-z,muldefs -static'" \
+        -trimpath \
+        -o /finschia-build/finschia/build/fnsad \
+        /finschia-build/finschia/cmd/fnsad
+
+# Final image
+FROM ${RUNNER_IMAGE}
+
+# Set up OS dependencies
+#RUN apk add --update --no-cache libstdc++ ca-certificates
+COPY networks/local/finschianode/wrapper.sh /usr/bin/wrapper.sh
+
+VOLUME /finschia
+# Copy over binaries from the build-env
+COPY --from=build-env /finschia-build/finschia/build/fnsad /finschia/
 WORKDIR /finschia
+
 EXPOSE 26656 26657
 ENTRYPOINT ["/usr/bin/wrapper.sh"]
 CMD ["start"]
 STOPSIGNAL SIGTERM
-
-COPY wrapper.sh /usr/bin/wrapper.sh
-

@@ -42,6 +42,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (build) [\#248](https://github.com/Finschia/finschia/pull/248) Rename namespace to v2
 * (app) [\#250](https://github.com/Finschia/finschia/pull/250) Set upgrade handler for v2-Daisy
 * (feat) [\#255](https://github.com/Finschia/finschia/pull/255) Bump up finschia-sdk from v0.48.0-rc1 to da331c01fa
+* (feat) [\#262](https://github.com/Finschia/finschia/pull/262) Bump up finschia-sdk from v0.48.0-rc2 to `c95052c29d4b` and bump up ostracon from `449aa3148b12` to `fc29846c918d`
 
 ### Improvements
 * (build) [\#221](https://github.com/Finschia/finschia/pull/221) compile static binary as release assets and docker image

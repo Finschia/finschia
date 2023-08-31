@@ -47,12 +47,12 @@ github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym
 github.com/ChainSafe/go-schnorrkel v0.0.0-20200405005733-88cbf1b4c40d h1:nalkkPQcITbvhmL4+C4cKA87NW0tfm3Kl9VXRoPywFg=
 github.com/ChainSafe/go-schnorrkel v0.0.0-20200405005733-88cbf1b4c40d/go.mod h1:URdX5+vg25ts3aCh8H5IFZybJYKWhJHYMTnf+ULtoC4=
 github.com/DataDog/datadog-go v3.2.0+incompatible/go.mod h1:LButxg5PwREeZtORoXG3tL4fMGNddJ+vMq1mwgfaqoQ=
-github.com/Finschia/finschia-sdk v0.48.0-rc2 h1:aUGi+3DGhOVl1uoJCvzRD5UO4w8XwXQmjAe97okLjNQ=
-github.com/Finschia/finschia-sdk v0.48.0-rc2/go.mod h1:OyYZoLd/ufrngzIFv9ByNfRotncIJBmQKnWtOMLdK98=
+github.com/Finschia/finschia-sdk v0.48.0-rc2.0.20230830070349-c95052c29d4b h1:Vq+OScZSid0AnGKaR53tcErzhnYRxxQNczLBoS55YHg=
+github.com/Finschia/finschia-sdk v0.48.0-rc2.0.20230830070349-c95052c29d4b/go.mod h1:OyYZoLd/ufrngzIFv9ByNfRotncIJBmQKnWtOMLdK98=
 github.com/Finschia/ibc-go/v4 v4.3.1 h1:pUKry0j+1/ypCC3X1TkEzoLrS1A/low/1PE2HZL+13k=
 github.com/Finschia/ibc-go/v4 v4.3.1/go.mod h1:kFZgmXXT2pt9QL7Ngx/eA7lI9JlOMGRG/oU4RTDXKcg=
-github.com/Finschia/ostracon v1.1.2-0.20230822110903-449aa3148b12 h1:WD4aqEud9ZgzSQ9gm5cnbMhhuuAh0jxg+AK9GsBDBiE=
-github.com/Finschia/ostracon v1.1.2-0.20230822110903-449aa3148b12/go.mod h1:uDFjR8gGrjTwFitRONpTXGUdnl3XRlceSOYh/61yRt0=
+github.com/Finschia/ostracon v1.1.2-0.20230830103000-fc29846c918d h1:xL/K7EUQMRFC5t9sT/jEYxSg1JB2Gc6n02q/nsvngns=
+github.com/Finschia/ostracon v1.1.2-0.20230830103000-fc29846c918d/go.mod h1:gslLq6lbvUqN5K+lHkdlOl12/vzeVKUFdCRZzLEEhSw=
 github.com/Finschia/r2ishiguro_vrf v0.1.2 h1:lDBz6NQMx1pw5I3End6xFmXpM//7KcmTr3Ka983e7v8=
 github.com/Finschia/r2ishiguro_vrf v0.1.2/go.mod h1:OHRtvzcJnfIrcJ0bvPNktJozRFAyZFuv56E9R3/qB+Y=
 github.com/Finschia/wasmd v0.1.5-0.20230825105827-053c7e439e53 h1:LMWUm1G6f12jA/gb25ae3WbVA/Vub2HOoI+9WCLaweY=
@@ -210,8 +210,8 @@ github.com/go-gl/glfw/v3.3/glfw v0.0.0-20200222043503-6f7a984d4dc4/go.mod h1:tQ2
 github.com/go-kit/kit v0.8.0/go.mod h1:xBxKIO96dXMWWy0MnWVtmwkA9/13aqxPnvrjFYMA2as=
 github.com/go-kit/kit v0.9.0/go.mod h1:xBxKIO96dXMWWy0MnWVtmwkA9/13aqxPnvrjFYMA2as=
 github.com/go-kit/kit v0.10.0/go.mod h1:xUsJbQ/Fp4kEt7AFgCuvyX4a71u8h9jB8tj/ORgOZ7o=
-github.com/go-kit/kit v0.12.0 h1:e4o3o3IsBfAKQh5Qbbiqyfu97Ku7jrO/JbohvztANh4=
-github.com/go-kit/kit v0.12.0/go.mod h1:lHd+EkCZPIwYItmGDDRdhinkzX2A1sj+M9biaEaizzs=
+github.com/go-kit/kit v0.13.0 h1:OoneCcHKHQ03LfBpoQCUfCluwd2Vt3ohz+kvbJneZAU=
+github.com/go-kit/kit v0.13.0/go.mod h1:phqEHMMUbyrCFCTgH48JueqrM3md2HcAZ8N3XE4FKDg=
 github.com/go-kit/log v0.1.0/go.mod h1:zbhenjAZHb184qTLMA9ZjW7ThYL0H2mk7Q6pNt4vbaY=
 github.com/go-kit/log v0.2.1 h1:MRVx0/zhvdseW+Gza6N9rVzU/IVzaeE1SFI4raAhmBU=
 github.com/go-kit/log v0.2.1/go.mod h1:NwTd00d/i8cPZ3xOwwiv2PO5MOcx78fFErGNcVmBjv0=
@@ -977,7 +977,7 @@ golang.org/x/xerrors v0.0.0-20190717185122-a985d3407aa7/go.mod h1:I/5z698sn9Ka8T
 golang.org/x/xerrors v0.0.0-20191011141410-1b5146add898/go.mod h1:I/5z698sn9Ka8TeJc9MKroUUfqBBauWjQqLJ2OPfmY0=
 golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543/go.mod h1:I/5z698sn9Ka8TeJc9MKroUUfqBBauWjQqLJ2OPfmY0=
 golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1/go.mod h1:I/5z698sn9Ka8TeJc9MKroUUfqBBauWjQqLJ2OPfmY0=
-gonum.org/v1/gonum v0.13.0 h1:a0T3bh+7fhRyqeNbiC3qVHYmkiQgit3wnNan/2c0HMM=
+gonum.org/v1/gonum v0.14.0 h1:2NiG67LD1tEH0D7kM+ps2V+fXmsAnpUeec7n8tcr4S0=
 google.golang.org/api v0.3.1/go.mod h1:6wY9I6uQWHQ8EM57III9mq/AjF+i8G65rmVagqKMtkk=
 google.golang.org/api v0.4.0/go.mod h1:8k5glujaEP+g9n7WNsDg8QP6cUVNI86fCNMcbazEtwE=
 google.golang.org/api v0.7.0/go.mod h1:WtwebWUNSVBH/HAw79HIFXZNqEvBhG+Ra+ax0hx3E3M=

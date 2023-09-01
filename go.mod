@@ -3,7 +3,7 @@ module github.com/Finschia/finschia/v2
 go 1.20
 
 require (
-	github.com/Finschia/finschia-sdk v0.48.0-rc2.0.20230830070349-c95052c29d4b
+	github.com/Finschia/finschia-sdk v0.48.0-rc2.0.20230901120150-0a27aef22921
 	github.com/Finschia/ostracon v1.1.2-0.20230830103000-fc29846c918d
 	github.com/Finschia/wasmd v0.1.5-0.20230825105827-053c7e439e53
 	github.com/cosmos/ibc-go/v4 v4.3.1

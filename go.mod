@@ -3,8 +3,8 @@ module github.com/Finschia/finschia/v2
 go 1.20
 
 require (
-	github.com/Finschia/finschia-sdk v0.48.0-rc2
-	github.com/Finschia/ostracon v1.1.2-0.20230822110903-449aa3148b12
+	github.com/Finschia/finschia-sdk v0.48.0-rc2.0.20230901120150-0a27aef22921
+	github.com/Finschia/ostracon v1.1.2-0.20230830103000-fc29846c918d
 	github.com/Finschia/wasmd v0.1.5-0.20230825105827-053c7e439e53
 	github.com/cosmos/ibc-go/v4 v4.3.1
 	github.com/golang/mock v1.6.0
@@ -53,7 +53,7 @@ require (
 	github.com/dvsekhvalnov/jose2go v1.5.0 // indirect
 	github.com/felixge/httpsnoop v1.0.1 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
-	github.com/go-kit/kit v0.12.0 // indirect
+	github.com/go-kit/kit v0.13.0 // indirect
 	github.com/go-kit/log v0.2.1 // indirect
 	github.com/go-logfmt/logfmt v0.6.0 // indirect
 	github.com/go-playground/validator/v10 v10.4.1 // indirect

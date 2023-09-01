@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/Finschia/finschia-sdk v0.48.0-rc1
 	github.com/Finschia/ostracon v1.1.1
-	github.com/Finschia/wasmd v0.1.5-0.20230803051028-dedcd9ec5ba0
+	github.com/Finschia/wasmd v0.1.5
 	github.com/cosmos/ibc-go/v4 v4.3.1
 	github.com/golang/mock v1.6.0
 	github.com/gorilla/mux v1.8.0
@@ -24,6 +24,7 @@ require (
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
 	github.com/99designs/keyring v1.2.1 // indirect
 	github.com/ChainSafe/go-schnorrkel v0.0.0-20200405005733-88cbf1b4c40d // indirect
+	github.com/Finschia/ibc-go/v3 v3.3.3 // indirect
 	github.com/Finschia/r2ishiguro_vrf v0.1.2 // indirect
 	github.com/Finschia/wasmvm v1.1.1-0.11.2.0.20230418093236-ce70a3856778 // indirect
 	github.com/VictoriaMetrics/fastcache v1.12.1 // indirect
@@ -56,7 +57,6 @@ require (
 	github.com/go-kit/kit v0.12.0 // indirect
 	github.com/go-kit/log v0.2.1 // indirect
 	github.com/go-logfmt/logfmt v0.6.0 // indirect
-	github.com/go-playground/validator/v10 v10.4.1 // indirect
 	github.com/godbus/dbus v0.0.0-20190726142602-4481cbc300e2 // indirect
 	github.com/gogo/gateway v1.1.0 // indirect
 	github.com/gogo/protobuf v1.3.3 // indirect

@@ -34222,6 +34222,7 @@ paths:
                             type: string
                       description: AccessConfig access control type.
                   title: CodeInfoResponse contains code meta data from CodeInfo
+                title: return in the order of code_id
               pagination:
                 description: pagination defines the pagination in the response.
                 type: object
@@ -34761,7 +34762,11 @@ paths:
                 type: array
                 items:
                   type: string
-                title: contracts are a set of contract addresses
+                title: >-
+                  contracts are a set of contract addresses.
+
+                  return in the order of timestamps according to instantiation
+                  or migration
               pagination:
                 description: pagination defines the pagination in the response.
                 type: object
@@ -35308,6 +35313,7 @@ paths:
                 items:
                   type: string
                   format: uint64
+                title: return in the order of code_id
               pagination:
                 description: pagination defines the pagination in the response.
                 type: object
@@ -36072,6 +36078,9 @@ paths:
                       type: string
                       format: byte
                   description: ContractCodeHistoryEntry metadata to a contract.
+                title: >-
+                  return in the order of timestamps according to when the
+                  contract was updated
               pagination:
                 description: pagination defines the pagination in the response.
                 type: object
@@ -36809,6 +36818,7 @@ paths:
                       format: byte
                       title: base64-encode raw value
                   title: Model is a struct that holds a KV pair
+                title: return in alphabetical order of the state's keys
               pagination:
                 description: pagination defines the pagination in the response.
                 type: object
@@ -71249,6 +71259,7 @@ definitions:
               format: byte
               title: base64-encode raw value
           title: Model is a struct that holds a KV pair
+        title: return in alphabetical order of the state's keys
       pagination:
         description: pagination defines the pagination in the response.
         type: object
@@ -71368,6 +71379,7 @@ definitions:
                     type: string
               description: AccessConfig access control type.
           title: CodeInfoResponse contains code meta data from CodeInfo
+        title: return in the order of code_id
       pagination:
         description: pagination defines the pagination in the response.
         type: object
@@ -71437,6 +71449,9 @@ definitions:
               type: string
               format: byte
           description: ContractCodeHistoryEntry metadata to a contract.
+        title: >-
+          return in the order of timestamps according to when the contract was
+          updated
       pagination:
         description: pagination defines the pagination in the response.
         type: object
@@ -71687,7 +71702,11 @@ definitions:
         type: array
         items:
           type: string
-        title: contracts are a set of contract addresses
+        title: >-
+          contracts are a set of contract addresses.
+
+          return in the order of timestamps according to instantiation or
+          migration
       pagination:
         description: pagination defines the pagination in the response.
         type: object
@@ -71774,6 +71793,7 @@ definitions:
         items:
           type: string
           format: uint64
+        title: return in the order of code_id
       pagination:
         description: pagination defines the pagination in the response.
         type: object

@@ -52,6 +52,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Bug Fixes
 * (build) [\#236](https://github.com/Finschia/finschia/pull/236) fix compile error when the build_tags is multiple.
 * (wasm) [\#249](https://github.com/Finschia/finschia/pull/249) revert removing wasm configs
+* (finschia-sdk) [\#264](https://github.com/Finschia/finschia/pull/264) Bump up finschia-sdk from `0a27aef22921` to `022614f80a0d`
 
 ### Breaking Changes
 * (ostracon) [\#240](https://github.com/Finschia/finschia/pull/240) remove `libsodium` vrf library

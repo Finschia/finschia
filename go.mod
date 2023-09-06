@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/Finschia/finschia-sdk v0.47.0-rc7.0.20230831061831-25043656ed1a
-	github.com/Finschia/ostracon v1.1.2-0.20230810030810-5836604d7dd0
+	github.com/Finschia/ostracon v1.1.2-0.20230825070344-b9cf421a361e
 	github.com/golang/mock v1.6.0
 	github.com/gorilla/mux v1.8.0
 	github.com/rakyll/statik v0.1.7
@@ -138,7 +138,7 @@ require (
 )
 
 replace (
-	github.com/Finschia/finschia-sdk => github.com/Finschia/finschia-sdk v0.47.0-rc7.0.20230815053600-d9f4ad235766
+	github.com/Finschia/finschia-sdk => github.com/Finschia/finschia-sdk v0.47.0-rc7.0.20230831061831-25043656ed1a
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 	google.golang.org/grpc => google.golang.org/grpc v1.33.2
 )

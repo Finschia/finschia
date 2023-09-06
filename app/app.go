@@ -219,8 +219,6 @@ type LinkApp struct { // nolint: golint
 	Ordakeeper       ordakeeper.Keeper
 	SettlementKeeper settlementkeeper.Keeper
 
-	ScopedICAHostKeeper capabilitykeeper.ScopedKeeper
-
 	// the module manager
 	mm *module.Manager
 

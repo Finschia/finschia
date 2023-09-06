@@ -3,7 +3,7 @@ module github.com/Finschia/finschia
 go 1.20
 
 require (
-	github.com/Finschia/finschia-sdk v0.48.0-rc1
+	github.com/Finschia/finschia-sdk v0.47.0-rc7.0.20230831061831-25043656ed1a
 	github.com/Finschia/ostracon v1.1.2-0.20230810030810-5836604d7dd0
 	github.com/golang/mock v1.6.0
 	github.com/gorilla/mux v1.8.0

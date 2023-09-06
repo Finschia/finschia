@@ -9,7 +9,7 @@
 
 This repository hosts `Finschia`. This repository is forked from [gaia](https://github.com/cosmos/gaia) at 2021-03-15. Finschia is a mainnet app implementation using [finschia-sdk](https://github.com/Finschia/finschia-sdk), [ostracon](https://github.com/Finschia/ostracon), [wasmd](https://github.com/Finschia/wasmd) and [ibc-go](https://github.com/Finschia/ibc-go).
 
-**Node**: Requires [Go 1.18+](https://golang.org/dl/)
+**Node**: Requires [Go 1.20+](https://golang.org/dl/)
 
 **Warnings**: Initial development is in progress, but there has not yet been a stable.
 
@@ -18,18 +18,18 @@ This repository hosts `Finschia`. This repository is forked from [gaia](https://
 ## Docker
 **Build Docker Image**
 ```
-make build-docker                # build docker image
+make docker-build                # build docker image
 ```
 or
 ```
-make build-docker WITH_CLEVELDB=yes GITHUB_TOKEN=${YOUR_GITHUB_TOKEN}  # build docker image with cleveldb
+make docker-build WITH_CLEVELDB=yes GITHUB_TOKEN=${YOUR_GITHUB_TOKEN}  # build docker image with cleveldb
 ```
 
 _Note1_
 
 If you are using M1 mac, you need to specify build args like this:
 ```
-make build-docker ARCH=aarch64
+make docker-build ARCH=arm64
 ```
 
 **Configure**

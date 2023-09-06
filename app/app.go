@@ -78,6 +78,7 @@ import (
 	"github.com/Finschia/finschia-sdk/x/mint"
 	mintkeeper "github.com/Finschia/finschia-sdk/x/mint/keeper"
 	minttypes "github.com/Finschia/finschia-sdk/x/mint/types"
+	ordamodule "github.com/Finschia/finschia-sdk/x/or/da"
 	ordakeeper "github.com/Finschia/finschia-sdk/x/or/da/keeper"
 	ordatypes "github.com/Finschia/finschia-sdk/x/or/da/types"
 	"github.com/Finschia/finschia-sdk/x/or/rollup"
@@ -151,7 +152,7 @@ var (
 		tokenmodule.AppModuleBasic{},
 		collectionmodule.AppModuleBasic{},
 		rollup.AppModuleBasic{},
-		// ordamodule.AppModuleBasic{},
+		ordamodule.AppModuleBasic{},
 		settlement.AppModuleBasic{},
 	)
 
@@ -417,7 +418,7 @@ func NewLinkApp(
 		collectionmodule.NewAppModule(appCodec, app.CollectionKeeper),
 		authzmodule.NewAppModule(appCodec, app.AuthzKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
 		rollup.NewAppModule(appCodec, app.RollupKeeper, app.AccountKeeper, app.BankKeeper),
-		// ordamodule.NewAppModule(appCodec, app.Ordakeeper, app.AccountKeeper),
+		ordamodule.NewAppModule(appCodec, app.Ordakeeper, app.AccountKeeper),
 		settlement.NewAppModule(appCodec, app.SettlementKeeper, app.AccountKeeper, app.BankKeeper),
 	)
 
@@ -743,6 +744,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(crisistypes.ModuleName)
 	paramsKeeper.Subspace(foundation.ModuleName)
 	paramsKeeper.Subspace(settlementtypes.ModuleName)
+	paramsKeeper.Subspace(ordatypes.ModuleName)
 	paramsKeeper.Subspace(rolluptypes.ModuleName)
 
 	return paramsKeeper

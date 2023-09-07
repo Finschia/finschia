@@ -52,7 +52,6 @@ import (
 	stakingcli "github.com/Finschia/finschia-sdk/x/staking/client/cli"
 	staking "github.com/Finschia/finschia-sdk/x/staking/types"
 	"github.com/Finschia/finschia-sdk/x/stakingplus"
-	wasmcli "github.com/Finschia/wasmd/x/wasm/client/cli"
 
 	ostcmd "github.com/Finschia/ostracon/cmd/ostracon/commands"
 	ostcfg "github.com/Finschia/ostracon/config"
@@ -60,7 +59,6 @@ import (
 	osthttp "github.com/Finschia/ostracon/rpc/client/http"
 	ostctypes "github.com/Finschia/ostracon/rpc/core/types"
 	osttypes "github.com/Finschia/ostracon/types"
-	wasmtypes "github.com/Finschia/wasmd/x/wasm/types"
 
 	"github.com/Finschia/finschia/app"
 	fnsacmd "github.com/Finschia/finschia/cmd/fnsad/cmd"
@@ -1390,7 +1388,6 @@ func newTestnetConfig(t *testing.T, genesisState map[string]json.RawMessage, cha
 		return app.NewLinkApp(val.Ctx.Logger, db, nil, true, make(map[int64]bool), val.Dir, 0,
 			encodingCfg,
 			val.Ctx.Viper,
-			nil,
 			baseapp.SetPruning(storetypes.NewPruningOptionsFromString(storetypes.PruningOptionNothing)),
 			baseapp.SetMinGasPrices(minGasPrices),
 		)
@@ -1465,65 +1462,6 @@ func newValidator(f *Fixtures, cfg testnet.Config, appCfg *srvconfig.Config, ctx
 		NodeID:     id,
 		PubKey:     pubKey,
 	}
-}
-
-func (f *Fixtures) TxStoreWasm(wasmFilePath string, flags ...string) (testutil.BufferWriter, error) {
-	cmd := wasmcli.StoreCodeCmd()
-	return testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(wasmFilePath, flags...))
-}
-
-func (f *Fixtures) TxInstantiateWasm(codeID uint64, msgJSON string, flags ...string) (testutil.BufferWriter, error) {
-	args := fmt.Sprintf("%d %s", codeID, msgJSON)
-	cmd := wasmcli.InstantiateContractCmd()
-	return testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
-}
-
-func (f *Fixtures) TxExecuteWasm(contractAddress string, msgJSON string, flags ...string) (testutil.BufferWriter, error) {
-	args := fmt.Sprintf("%s %s", contractAddress, msgJSON)
-	cmd := wasmcli.ExecuteContractCmd()
-	return testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
-}
-
-func (f *Fixtures) QueryListCodeWasm(flags ...string) wasmtypes.QueryCodesResponse {
-	cmd := wasmcli.GetCmdListCode()
-	res, errStr := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags("-o=json", flags...))
-
-	require.Empty(f.T, errStr)
-	cdc, _ := app.MakeCodecs()
-	var queryCodesResponse wasmtypes.QueryCodesResponse
-
-	err := cdc.UnmarshalJSON(res.Bytes(), &queryCodesResponse)
-	require.NoError(f.T, err)
-	return queryCodesResponse
-}
-
-func (f *Fixtures) QueryCodeWasm(codeID uint64, flags ...string) {
-	args := fmt.Sprintf("%d -o=json", codeID)
-	cmd := wasmcli.GetCmdQueryCode()
-	_, errStr := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
-	require.Empty(f.T, errStr)
-}
-
-func (f *Fixtures) QueryListContractByCodeWasm(codeID uint64, flags ...string) wasmtypes.QueryContractsByCodeResponse {
-	args := fmt.Sprintf("%d -o=json", codeID)
-	cmd := wasmcli.GetCmdListContractByCode()
-	res, errStr := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
-
-	require.Empty(f.T, errStr)
-	cdc, _ := app.MakeCodecs()
-	var queryContractsByCodeResponse wasmtypes.QueryContractsByCodeResponse
-
-	err := cdc.UnmarshalJSON(res.Bytes(), &queryContractsByCodeResponse)
-	require.NoError(f.T, err)
-	return queryContractsByCodeResponse
-}
-
-func (f *Fixtures) QueryContractStateSmartWasm(contractAddress string, reqJSON string, flags ...string) string {
-	args := fmt.Sprintf("%s %s -o=json", contractAddress, reqJSON)
-	cmd := wasmcli.GetCmdGetContractStateSmart()
-	res, errStr := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
-	require.Empty(f.T, errStr)
-	return res.String()
 }
 
 // ___________________________________________________________________________________

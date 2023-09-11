@@ -7,8 +7,6 @@ import (
 	"github.com/stretchr/testify/suite"
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 
-	ocrand "github.com/Finschia/ostracon/libs/rand"
-
 	"github.com/Finschia/finschia-sdk/client"
 	"github.com/Finschia/finschia-sdk/client/tx"
 	cryptotypes "github.com/Finschia/finschia-sdk/crypto/types"
@@ -17,6 +15,7 @@ import (
 	sdk "github.com/Finschia/finschia-sdk/types"
 	"github.com/Finschia/finschia-sdk/types/tx/signing"
 	xauthsigning "github.com/Finschia/finschia-sdk/x/auth/signing"
+	ocrand "github.com/Finschia/ostracon/libs/rand"
 
 	linkapp "github.com/Finschia/finschia/app"
 	linkhelpers "github.com/Finschia/finschia/app/helpers"

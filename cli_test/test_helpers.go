@@ -19,8 +19,6 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/require"
 
-	wasmcli "github.com/Finschia/wasmd/x/wasm/client/cli"
-
 	"github.com/Finschia/finschia-sdk/baseapp"
 	"github.com/Finschia/finschia-sdk/client"
 	clientkeys "github.com/Finschia/finschia-sdk/client/keys"
@@ -54,13 +52,13 @@ import (
 	stakingcli "github.com/Finschia/finschia-sdk/x/staking/client/cli"
 	staking "github.com/Finschia/finschia-sdk/x/staking/types"
 	"github.com/Finschia/finschia-sdk/x/stakingplus"
-
 	ostcmd "github.com/Finschia/ostracon/cmd/ostracon/commands"
 	ostcfg "github.com/Finschia/ostracon/config"
 	"github.com/Finschia/ostracon/libs/log"
 	osthttp "github.com/Finschia/ostracon/rpc/client/http"
 	ostctypes "github.com/Finschia/ostracon/rpc/core/types"
 	osttypes "github.com/Finschia/ostracon/types"
+	wasmcli "github.com/Finschia/wasmd/x/wasm/client/cli"
 	wasmtypes "github.com/Finschia/wasmd/x/wasm/types"
 
 	"github.com/Finschia/finschia/app"

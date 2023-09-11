@@ -124,7 +124,7 @@ import (
 
 	appante "github.com/Finschia/finschia/ante"
 	appparams "github.com/Finschia/finschia/app/params"
-	_ "github.com/Finschia/finschia/client/docs/statik"
+	_ "github.com/Finschia/finschia/client/docs/statik" // unnamed import of statik for swagger UI support
 )
 
 const appName = "Finschia"

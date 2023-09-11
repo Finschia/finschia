@@ -18,8 +18,6 @@ import (
 	"github.com/Finschia/ostracon/types"
 	osttime "github.com/Finschia/ostracon/types/time"
 
-	"github.com/Finschia/finschia-sdk/testutil"
-
 	"github.com/Finschia/finschia-sdk/client"
 	"github.com/Finschia/finschia-sdk/client/flags"
 	"github.com/Finschia/finschia-sdk/client/tx"
@@ -28,6 +26,7 @@ import (
 	cryptotypes "github.com/Finschia/finschia-sdk/crypto/types"
 	"github.com/Finschia/finschia-sdk/server"
 	srvconfig "github.com/Finschia/finschia-sdk/server/config"
+	"github.com/Finschia/finschia-sdk/testutil"
 	sdk "github.com/Finschia/finschia-sdk/types"
 	"github.com/Finschia/finschia-sdk/types/module"
 	authtypes "github.com/Finschia/finschia-sdk/x/auth/types"

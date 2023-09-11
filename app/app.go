@@ -12,35 +12,12 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/rakyll/statik/fs"
 
-	abci "github.com/tendermint/tendermint/abci/types"
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	dbm "github.com/tendermint/tm-db"
-
 	ocabci "github.com/Finschia/ostracon/abci/types"
 	"github.com/Finschia/ostracon/libs/log"
 	ostos "github.com/Finschia/ostracon/libs/os"
-
-	ica "github.com/Finschia/ibc-go/v3/modules/apps/27-interchain-accounts"
-	icahost "github.com/Finschia/ibc-go/v3/modules/apps/27-interchain-accounts/host"
-	icahostkeeper "github.com/Finschia/ibc-go/v3/modules/apps/27-interchain-accounts/host/keeper"
-	icahosttypes "github.com/Finschia/ibc-go/v3/modules/apps/27-interchain-accounts/host/types"
-	icatypes "github.com/Finschia/ibc-go/v3/modules/apps/27-interchain-accounts/types"
-	"github.com/Finschia/ibc-go/v3/modules/apps/transfer"
-	ibctransferkeeper "github.com/Finschia/ibc-go/v3/modules/apps/transfer/keeper"
-	ibctransfertypes "github.com/Finschia/ibc-go/v3/modules/apps/transfer/types"
-	ibc "github.com/Finschia/ibc-go/v3/modules/core"
-	ibcclient "github.com/Finschia/ibc-go/v3/modules/core/02-client"
-	ibcclientclient "github.com/Finschia/ibc-go/v3/modules/core/02-client/client"
-	ibcclienttypes "github.com/Finschia/ibc-go/v3/modules/core/02-client/types"
-	porttypes "github.com/Finschia/ibc-go/v3/modules/core/05-port/types"
-	ibchost "github.com/Finschia/ibc-go/v3/modules/core/24-host"
-	ibckeeper "github.com/Finschia/ibc-go/v3/modules/core/keeper"
-	"github.com/Finschia/wasmd/x/wasm"
-	wasmclient "github.com/Finschia/wasmd/x/wasm/client"
-	wasmkeeper "github.com/Finschia/wasmd/x/wasm/keeper"
-	"github.com/Finschia/wasmd/x/wasmplus"
-	wasmpluskeeper "github.com/Finschia/wasmd/x/wasmplus/keeper"
-	wasmplustypes "github.com/Finschia/wasmd/x/wasmplus/types"
+	abci "github.com/tendermint/tendermint/abci/types"
+	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
+	dbm "github.com/tendermint/tm-db"
 
 	"github.com/Finschia/finschia-sdk/baseapp"
 	"github.com/Finschia/finschia-sdk/client"
@@ -92,6 +69,7 @@ import (
 	feegrantkeeper "github.com/Finschia/finschia-sdk/x/feegrant/keeper"
 	feegrantmodule "github.com/Finschia/finschia-sdk/x/feegrant/module"
 	"github.com/Finschia/finschia-sdk/x/foundation"
+	foundationclient "github.com/Finschia/finschia-sdk/x/foundation/client"
 	foundationkeeper "github.com/Finschia/finschia-sdk/x/foundation/keeper"
 	foundationmodule "github.com/Finschia/finschia-sdk/x/foundation/module"
 	"github.com/Finschia/finschia-sdk/x/genutil"
@@ -123,6 +101,27 @@ import (
 	upgradeclient "github.com/Finschia/finschia-sdk/x/upgrade/client"
 	upgradekeeper "github.com/Finschia/finschia-sdk/x/upgrade/keeper"
 	upgradetypes "github.com/Finschia/finschia-sdk/x/upgrade/types"
+	"github.com/Finschia/wasmd/x/wasm"
+	wasmclient "github.com/Finschia/wasmd/x/wasm/client"
+	wasmkeeper "github.com/Finschia/wasmd/x/wasm/keeper"
+	"github.com/Finschia/wasmd/x/wasmplus"
+	wasmpluskeeper "github.com/Finschia/wasmd/x/wasmplus/keeper"
+	wasmplustypes "github.com/Finschia/wasmd/x/wasmplus/types"
+	ica "github.com/cosmos/ibc-go/v4/modules/apps/27-interchain-accounts"
+	icahost "github.com/cosmos/ibc-go/v4/modules/apps/27-interchain-accounts/host"
+	icahostkeeper "github.com/cosmos/ibc-go/v4/modules/apps/27-interchain-accounts/host/keeper"
+	icahosttypes "github.com/cosmos/ibc-go/v4/modules/apps/27-interchain-accounts/host/types"
+	icatypes "github.com/cosmos/ibc-go/v4/modules/apps/27-interchain-accounts/types"
+	"github.com/cosmos/ibc-go/v4/modules/apps/transfer"
+	ibctransferkeeper "github.com/cosmos/ibc-go/v4/modules/apps/transfer/keeper"
+	ibctransfertypes "github.com/cosmos/ibc-go/v4/modules/apps/transfer/types"
+	ibc "github.com/cosmos/ibc-go/v4/modules/core"
+	ibcclient "github.com/cosmos/ibc-go/v4/modules/core/02-client"
+	ibcclientclient "github.com/cosmos/ibc-go/v4/modules/core/02-client/client"
+	ibcclienttypes "github.com/cosmos/ibc-go/v4/modules/core/02-client/types"
+	porttypes "github.com/cosmos/ibc-go/v4/modules/core/05-port/types"
+	ibchost "github.com/cosmos/ibc-go/v4/modules/core/24-host"
+	ibckeeper "github.com/cosmos/ibc-go/v4/modules/core/keeper"
 
 	appante "github.com/Finschia/finschia/ante"
 	appparams "github.com/Finschia/finschia/app/params"
@@ -156,6 +155,7 @@ var (
 				distrclient.ProposalHandler,
 				upgradeclient.ProposalHandler,
 				upgradeclient.CancelProposalHandler,
+				foundationclient.ProposalHandler,
 				ibcclientclient.UpdateClientProposalHandler,
 				ibcclientclient.UpgradeProposalHandler,
 			)...,
@@ -367,7 +367,7 @@ func NewLinkApp(
 	app.FeeGrantKeeper = feegrantkeeper.NewKeeper(appCodec, keys[feegrant.StoreKey], app.AccountKeeper)
 	app.UpgradeKeeper = upgradekeeper.NewKeeper(skipUpgradeHeights, keys[upgradetypes.StoreKey], appCodec, homePath, app.BaseApp)
 	foundationConfig := foundation.DefaultConfig()
-	app.FoundationKeeper = foundationkeeper.NewKeeper(appCodec, keys[foundation.StoreKey], app.BaseApp.MsgServiceRouter(), app.AccountKeeper, app.BankKeeper, authtypes.FeeCollectorName, foundationConfig, foundation.DefaultAuthority().String())
+	app.FoundationKeeper = foundationkeeper.NewKeeper(appCodec, keys[foundation.StoreKey], app.BaseApp.MsgServiceRouter(), app.AccountKeeper, app.BankKeeper, authtypes.FeeCollectorName, foundationConfig, foundation.DefaultAuthority().String(), app.GetSubspace(foundation.ModuleName))
 
 	app.ClassKeeper = classkeeper.NewKeeper(appCodec, keys[class.StoreKey])
 	app.TokenKeeper = tokenkeeper.NewKeeper(appCodec, keys[token.StoreKey], app.ClassKeeper)
@@ -428,7 +428,7 @@ func NewLinkApp(
 	ibcRouter := porttypes.NewRouter()
 	ibcRouter.AddRoute(icahosttypes.SubModuleName, icaHostIBCModule).
 		AddRoute(ibctransfertypes.ModuleName, transferIBCModule).
-		AddRoute(wasmplustypes.ModuleName, wasm.NewIBCHandler(app.WasmKeeper, app.IBCKeeper.ChannelKeeper))
+		AddRoute(wasmplustypes.ModuleName, wasm.NewIBCHandler(app.WasmKeeper, app.IBCKeeper.ChannelKeeper, app.IBCKeeper.ChannelKeeper))
 
 	app.IBCKeeper.SetRouter(ibcRouter)
 
@@ -467,6 +467,7 @@ func NewLinkApp(
 		AddRoute(paramproposal.RouterKey, params.NewParamChangeProposalHandler(app.ParamsKeeper)).
 		AddRoute(distrtypes.RouterKey, distr.NewCommunityPoolSpendProposalHandler(app.DistrKeeper)).
 		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
+		AddRoute(foundation.RouterKey, foundationkeeper.NewFoundationProposalsHandler(app.FoundationKeeper)).
 		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper)).
 		AddRoute(wasmplustypes.RouterKey, wasmpluskeeper.NewWasmProposalHandler(&app.WasmKeeper, wasmplustypes.EnableAllProposals))
 
@@ -868,6 +869,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(slashingtypes.ModuleName)
 	paramsKeeper.Subspace(govtypes.ModuleName).WithKeyTable(govtypes.ParamKeyTable())
 	paramsKeeper.Subspace(crisistypes.ModuleName)
+	paramsKeeper.Subspace(foundation.ModuleName)
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(icahosttypes.SubModuleName)

@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/setup-go@v4
         with:
-          go-version: 1.18
+          go-version: '1.20'
       - name: Display go version
         run: go version
       - name: install tparse
@@ -41,7 +41,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
         with:
-          go-version: 1.18
+          go-version: '1.20'
       - uses: technote-space/get-diff-action@v6.1.2
         with:
           PATTERNS: |
@@ -59,7 +59,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
         with:
-          go-version: 1.18
+          go-version: '1.20'
       - name: Create a file with all the pkgs
         run: go list ./... > pkgs.txt
       - name: Split pkgs into 4 files
@@ -93,7 +93,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
         with:
-          go-version: 1.18
+          go-version: '1.20'
       - uses: technote-space/get-diff-action@v6.1.2
         with:
           PATTERNS: |
@@ -108,16 +108,9 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update && sudo apt-get install -y build-essential libtool autoconf automake
-      - name: install libsodium
-        run: |
-          make libsodium
-        if: env.GIT_DIFF
       - name: test & coverage report creation
-        env:
-          CGO_CFLAGS: "-I${{ github.workspace }}/tools/sodium/linux_amd64/include"
-          CGO_LDFLAGS: "-L${{ github.workspace }}/tools/sodium/linux_amd64/lib -lsodium"
         run: |
-          cat pkgs.txt.part.${{ matrix.part }} | xargs go test -mod=readonly -timeout 30m -coverprofile=${{ matrix.part }}profile.out -covermode=atomic -tags='ledger test_ledger_mock goleveldb gcc libsodium'
+          cat pkgs.txt.part.${{ matrix.part }} | xargs go test -mod=readonly -timeout 30m -coverprofile=${{ matrix.part }}profile.out -covermode=atomic -tags='ledger test_ledger_mock goleveldb gcc'
         if: env.GIT_DIFF
       - uses: actions/upload-artifact@v3
         with:
@@ -184,7 +177,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
         with:
-          go-version: 1.18
+          go-version: '1.20'
       - uses: technote-space/get-diff-action@v6.1.2
         with:
           PATTERNS: |
@@ -199,16 +192,9 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update && sudo apt-get install -y build-essential libtool autoconf automake
-      - name: install libsodium
-        run: |
-          make libsodium
-        if: env.GIT_DIFF
       - name: test & coverage report creation
-        env:
-          CGO_CFLAGS: "-I${{ github.workspace }}/tools/sodium/linux_amd64/include"
-          CGO_LDFLAGS: "-L${{ github.workspace }}/tools/sodium/linux_amd64/lib -lsodium"
         run: |
-          xargs --arg-file=pkgs.txt.part.${{ matrix.part }} go test -mod=readonly -json -timeout 30m -tags='cli_test goleveldb gcc libsodium' | tee ${{ matrix.part }}-integration-output.txt
+          xargs --arg-file=pkgs.txt.part.${{ matrix.part }} go test -mod=readonly -json -timeout 30m -tags='cli_test goleveldb gcc' | tee ${{ matrix.part }}-integration-output.txt
         if: env.GIT_DIFF
       - uses: actions/upload-artifact@v3
         with:
@@ -264,7 +250,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
         with:
-          go-version: 1.18
+          go-version: '1.20'
       - uses: technote-space/get-diff-action@v6.1.2
         with:
           PATTERNS: |
@@ -279,15 +265,9 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update && sudo apt-get install -y build-essential libtool autoconf automake
-      - name: install libsodium
-        run: make libsodium
-        if: env.GIT_DIFF
       - name: test report creation
-        env:
-          CGO_CFLAGS: "-I${{ github.workspace }}/tools/sodium/linux_amd64/include"
-          CGO_LDFLAGS: "-L${{ github.workspace }}/tools/sodium/linux_amd64/lib -lsodium"
         run: |
-          xargs --arg-file=pkgs.txt.part.${{ matrix.part }} go test -mod=readonly -json -timeout 30m -tags='cli_multi_node_test goleveldb libsodium' | tee ${{ matrix.part }}-integration-multi-node-output.txt
+          xargs --arg-file=pkgs.txt.part.${{ matrix.part }} go test -mod=readonly -json -timeout 30m -tags='cli_multi_node_test goleveldb' | tee ${{ matrix.part }}-integration-multi-node-output.txt
         if: env.GIT_DIFF
       - uses: actions/upload-artifact@v3
         with:
@@ -339,7 +319,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
         with:
-          go-version: 1.18
+          go-version: '1.20'
       - name: Install docker-compose
         run: sudo apt-get update && sudo apt-get install -y docker-compose
       - name: Start localnet

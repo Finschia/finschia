@@ -47,7 +47,7 @@ jobs:
 
       - name: Compile finschia
         run: |
-          make build-reproducible-${{ matrix.arch }}
+          make build-reproducible ARCH=${{ matrix.arch }}
           cd ./build
           mv fnsad-linux-${{ matrix.arch }} fnsad-${{ env.ID }}
 

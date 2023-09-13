@@ -13,9 +13,10 @@ import (
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
 
-	"github.com/Finschia/finschia-sdk/baseapp"
-	"github.com/Finschia/finschia-sdk/simapp"
-	"github.com/Finschia/finschia-sdk/tests/mocks"
+	"github.com/Finschia/finschia-rdk/baseapp"
+	"github.com/Finschia/finschia-rdk/simapp"
+	"github.com/Finschia/finschia-rdk/tests/mocks"
+	"github.com/Finschia/finschia-rdk/x/genutil"
 	sdk "github.com/Finschia/finschia-sdk/types"
 	"github.com/Finschia/finschia-sdk/types/module"
 	"github.com/Finschia/finschia-sdk/x/auth"
@@ -30,7 +31,6 @@ import (
 	"github.com/Finschia/finschia-sdk/x/evidence"
 	feegrantmodule "github.com/Finschia/finschia-sdk/x/feegrant/module"
 	foundationmodule "github.com/Finschia/finschia-sdk/x/foundation/module"
-	"github.com/Finschia/finschia-sdk/x/genutil"
 	"github.com/Finschia/finschia-sdk/x/gov"
 
 	"github.com/Finschia/finschia-sdk/x/mint"

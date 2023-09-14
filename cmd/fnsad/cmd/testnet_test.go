@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/spf13/viper"
+	"github.com/stretchr/testify/require"
+
 	"github.com/Finschia/finschia-sdk/client"
 	"github.com/Finschia/finschia-sdk/client/flags"
 	"github.com/Finschia/finschia-sdk/server"
@@ -12,8 +15,6 @@ import (
 	genutiltest "github.com/Finschia/finschia-sdk/x/genutil/client/testutil"
 	genutiltypes "github.com/Finschia/finschia-sdk/x/genutil/types"
 	"github.com/Finschia/ostracon/libs/log"
-	"github.com/spf13/viper"
-	"github.com/stretchr/testify/require"
 
 	"github.com/Finschia/finschia/app"
 )

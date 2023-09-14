@@ -17,16 +17,17 @@ jobs:
       - name: Display go version
         run: go version
       - uses: actions/cache@v3
+        id: cache
         with:
           path: ~/go/bin
           key: ${{ runner.os }}-go-v1.20-misspell-v0.3.4-goimports-reviser-v3.4.5
       - name: install misspell
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
-          type misspell ||
           go install github.com/client9/misspell/cmd/misspell@v0.3.4
       - name: install goimports-reviser
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
-          type goimports-reviser ||
           go install github.com/incu6us/goimports-reviser/v3@v3.4.5
       - name: Make Format
         run: make format

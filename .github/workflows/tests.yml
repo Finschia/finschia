@@ -1,6 +1,8 @@
 name: Tests / Code Coverage
 #  Tests / Code Coverage workflow runs unit tests and uploads a code coverage report
 #  This workflow is run on pushes to master & every Pull Requests where a .go, .mod, .sum have been changed
+env:
+  GOPRIVATE: "github.com/Finschia"
 on:
   pull_request:
   push:
@@ -49,6 +51,16 @@ jobs:
             go.mod
             go.sum
             .github/workflows/test.yml
+      - name: Setup ssh config
+        env:
+          SSH_KEY: ${{secrets.PRIVATE_REPO_SSH_KEY}}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+      - name: Setup access for private go modules
+        run: |
+          git config --global url."ssh://git@github.com/".insteadOf https://github.com/
       - name: Build
         run: GOARCH=${{ matrix.go-arch }} LEDGER_ENABLED=false make build
         if: env.GIT_DIFF

@@ -15,7 +15,7 @@ ARG GIT_COMMIT
 ARG OST_VERSION
 
 # Set up OS dependencies
-RUN apk add --no-cache ca-certificates build-base linux-headers curl
+RUN apk add --no-cache ca-certificates build-base linux-headers curl git
 
 # Set WORKDIR to finschia
 WORKDIR /finschia-build/finschia

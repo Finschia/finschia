@@ -15,6 +15,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/stretchr/testify/require"
+
 	"github.com/Finschia/finschia-sdk/client/flags"
 	"github.com/Finschia/finschia-sdk/crypto/keys/ed25519"
 	sdk "github.com/Finschia/finschia-sdk/types"
@@ -22,7 +24,6 @@ import (
 	gov "github.com/Finschia/finschia-sdk/x/gov/types"
 	minttypes "github.com/Finschia/finschia-sdk/x/mint/types"
 	osttypes "github.com/Finschia/ostracon/types"
-	"github.com/stretchr/testify/require"
 
 	"github.com/Finschia/finschia/app"
 )

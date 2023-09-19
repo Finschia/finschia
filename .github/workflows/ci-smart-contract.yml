@@ -62,7 +62,7 @@ jobs:
         with:
           go-version: 1.18
       - name: Build
-        run: GOARCH=${{ matrix.go-arch }} LEDGER_ENABLED=false make build
+        run: GOARCH=${{ matrix.go-arch }} LEDGER_ENABLED=false LINK_STATICALLY=true make build
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:

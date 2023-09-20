@@ -78,7 +78,6 @@ import (
 	"github.com/Finschia/finschia-sdk/x/mint"
 	mintkeeper "github.com/Finschia/finschia-sdk/x/mint/keeper"
 	minttypes "github.com/Finschia/finschia-sdk/x/mint/types"
-	rollupkeeper "github.com/Finschia/finschia-sdk/x/or/rollup/keeper"
 	rolluptypes "github.com/Finschia/finschia-sdk/x/or/rollup/types"
 	"github.com/Finschia/finschia-sdk/x/params"
 	paramsclient "github.com/Finschia/finschia-sdk/x/params/client"
@@ -205,7 +204,6 @@ type LinkApp struct { // nolint: golint
 	ClassKeeper      classkeeper.Keeper
 	TokenKeeper      tokenkeeper.Keeper
 	CollectionKeeper collectionkeeper.Keeper
-	RollupKeeper     rollupkeeper.Keeper
 
 	// the module manager
 	mm *module.Manager
@@ -361,7 +359,6 @@ func NewLinkApp(
 	)
 
 	/****  Rollup ****/
-	app.RollupKeeper = rollupkeeper.NewKeeper(appCodec, app.BankKeeper, app.AccountKeeper, keys[rolluptypes.StoreKey], keys[rolluptypes.MemStoreKey], app.GetSubspace(rolluptypes.ModuleName))
 
 	/****  Module Options ****/
 	var skipGenesisInvariants = false

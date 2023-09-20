@@ -78,7 +78,6 @@ import (
 	"github.com/Finschia/finschia-sdk/x/mint"
 	mintkeeper "github.com/Finschia/finschia-sdk/x/mint/keeper"
 	minttypes "github.com/Finschia/finschia-sdk/x/mint/types"
-	rolluptypes "github.com/Finschia/finschia-sdk/x/or/rollup/types"
 	"github.com/Finschia/finschia-sdk/x/params"
 	paramsclient "github.com/Finschia/finschia-sdk/x/params/client"
 	paramskeeper "github.com/Finschia/finschia-sdk/x/params/keeper"
@@ -155,7 +154,6 @@ var (
 		stakingtypes.BondedPoolName:    {authtypes.Burner, authtypes.Staking},
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:            {authtypes.Burner},
-		rolluptypes.ModuleName:         {authtypes.Burner},
 	}
 
 	// module accounts that are allowed to receive tokens
@@ -256,7 +254,6 @@ func NewLinkApp(
 		class.StoreKey,
 		token.StoreKey,
 		collection.StoreKey,
-		rolluptypes.StoreKey,
 	)
 
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -421,7 +418,6 @@ func NewLinkApp(
 		vestingtypes.ModuleName,
 		token.ModuleName,
 		collection.ModuleName,
-		rolluptypes.ModuleName,
 	)
 	app.mm.SetOrderEndBlockers(
 		crisistypes.ModuleName,
@@ -443,7 +439,6 @@ func NewLinkApp(
 		foundation.ModuleName,
 		token.ModuleName,
 		collection.ModuleName,
-		rolluptypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -475,7 +470,6 @@ func NewLinkApp(
 		vestingtypes.ModuleName,
 		token.ModuleName,
 		collection.ModuleName,
-		rolluptypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
@@ -712,7 +706,6 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(govtypes.ModuleName).WithKeyTable(govtypes.ParamKeyTable())
 	paramsKeeper.Subspace(crisistypes.ModuleName)
 	paramsKeeper.Subspace(foundation.ModuleName)
-	paramsKeeper.Subspace(rolluptypes.ModuleName)
 
 	return paramsKeeper
 }

@@ -4,8 +4,8 @@ import (
 	"os"
 	"testing"
 
+	"github.com/Finschia/finschia-rdk/server"
 	"github.com/Finschia/finschia-sdk/client/flags"
-	"github.com/Finschia/finschia-sdk/server"
 	"github.com/Finschia/finschia-sdk/store/types"
 	"github.com/Finschia/ostracon/libs/log"
 	"github.com/stretchr/testify/require"

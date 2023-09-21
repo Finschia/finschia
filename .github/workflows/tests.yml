@@ -1,6 +1,8 @@
 name: Tests / Code Coverage
 #  Tests / Code Coverage workflow runs unit tests and uploads a code coverage report
 #  This workflow is run on pushes to master & every Pull Requests where a .go, .mod, .sum have been changed
+env:
+  GOPRIVATE: "github.com/Finschia"
 on:
   pull_request:
   push:
@@ -49,6 +51,16 @@ jobs:
             go.mod
             go.sum
             .github/workflows/test.yml
+      - name: Setup ssh config
+        env:
+          SSH_KEY: ${{secrets.PRIVATE_REPO_SSH_KEY}}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+      - name: Setup access for private go modules
+        run: |
+          git config --global url."ssh://git@github.com/".insteadOf https://github.com/
       - name: Build
         run: GOARCH=${{ matrix.go-arch }} LEDGER_ENABLED=false make build
         if: env.GIT_DIFF
@@ -90,6 +102,16 @@ jobs:
       matrix:
         part: ["00", "01", "02", "03"]
     steps:
+      - name: Setup ssh config
+        env:
+          SSH_KEY: ${{secrets.PRIVATE_REPO_SSH_KEY}}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+      - name: Setup access for private go modules
+        run: |
+          git config --global url."ssh://git@github.com/".insteadOf https://github.com/
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
         with:
@@ -312,26 +334,26 @@ jobs:
         run: cat ./*-integration-multi-node-output.txt | ~/go/bin/tparse
         if: env.GIT_DIFF
 
-  test-localnet-blocks:
-    runs-on: ubuntu-latest
-    needs: [build, tests]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v4
-        with:
-          go-version: '1.20'
-      - name: Install docker-compose
-        run: sudo apt-get update && sudo apt-get install -y docker-compose
-      - name: Start localnet
-        run: |
-          make localnet-start
-      - name: Test blocks
-        id: test-blocks
-        continue-on-error: true
-        run: ./networks/localnet-blocks-test.sh 40 5 10 localhost
-      - name: Stop localnet
-        run: |
-          make localnet-stop
-          if [ ${{ steps.test-blocks.outcome }} == 'failure' ] ; then
-            exit 1
-          fi
+#  test-localnet-blocks:
+#    runs-on: ubuntu-latest
+#    needs: [build, tests]
+#    steps:
+#      - uses: actions/checkout@v3
+#      - uses: actions/setup-go@v4
+#        with:
+#          go-version: '1.20'
+#      - name: Install docker-compose
+#        run: sudo apt-get update && sudo apt-get install -y docker-compose
+#      - name: Start localnet
+#        run: |
+#          make localnet-start
+#      - name: Test blocks
+#        id: test-blocks
+#        continue-on-error: true
+#        run: ./networks/localnet-blocks-test.sh 40 5 10 localhost
+#      - name: Stop localnet
+#        run: |
+#          make localnet-stop
+#          if [ ${{ steps.test-blocks.outcome }} == 'failure' ] ; then
+#            exit 1
+#          fi

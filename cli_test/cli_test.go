@@ -4,11 +4,9 @@ package clitest
 
 import (
 	"encoding/base64"
-	"encoding/hex"
 	"errors"
 	"fmt"
 	"os"
-	"path"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -1226,145 +1224,5 @@ func TestFnsadIncrementSequenceDecorator(t *testing.T) {
 	height := f.QueryTx(txHashes[0]).Height
 	for _, txHash := range txHashes {
 		require.Equal(t, height, f.QueryTx(txHash).Height)
-	}
-}
-
-func TestFnsadWasmContract(t *testing.T) {
-	t.Parallel()
-	f := InitFixtures(t)
-	defer f.Cleanup()
-
-	// start fnsad server with minimum fees
-	n := f.FnsadStart(minGasPrice.String())
-	defer n.Cleanup()
-
-	fooAddr := f.KeyAddress(keyFoo)
-
-	flagFromFoo := fmt.Sprintf("--from=%s", fooAddr)
-	flagGas := "--gas=auto"
-	flagGasAdjustment := "--gas-adjustment=1.2"
-	workDir, err := os.Getwd()
-	require.NoError(t, err)
-	dirContract := path.Join(workDir, "contracts", "queue")
-	hashFile := path.Join(dirContract, "hash.txt")
-	wasmQueue := path.Join(dirContract, "contract.wasm")
-	codeID := uint64(1)
-	amountSend := uint64(10)
-	denomSend := fooDenom
-
-	var contractAddress string
-	count := 0
-	initValue := 0
-	enqueueValue := 2
-
-	// make tmpDir
-	tmpDir, err := os.MkdirTemp("", "")
-	require.NoError(t, err)
-	defer func() {
-		require.NoError(t, os.RemoveAll(tmpDir))
-	}()
-	err = os.Chdir(tmpDir)
-	require.NoError(t, err)
-
-	// validate that there are no code in the chain
-	{
-		listCode := f.QueryListCodeWasm()
-		require.Len(t, listCode.CodeInfos, 0)
-	}
-
-	// store the contract queue
-	{
-		_, err := f.TxStoreWasm(wasmQueue, flagFromFoo, flagGasAdjustment, flagGas, "-y")
-		require.NoError(t, err)
-		// Wait for a new block
-		err = n.WaitForNextBlock()
-		require.NoError(t, err)
-	}
-
-	// validate the code is stored
-	{
-		queryCodesResponse := f.QueryListCodeWasm()
-		require.Len(t, queryCodesResponse.CodeInfos, 1)
-
-		// validate the hash is the same
-		expectedRow, err := os.ReadFile(hashFile)
-		require.NoError(t, err)
-		expected, err := hex.DecodeString(string(expectedRow[:64]))
-		require.NoError(t, err)
-		actual := queryCodesResponse.CodeInfos[0].DataHash.Bytes()
-		require.Equal(t, expected, actual)
-	}
-
-	// validate getCode get the exact same wasm
-	{
-		outputPath := fmt.Sprintf("contract-%s.wasm", strconv.FormatUint(codeID, 10))
-		f.QueryCodeWasm(codeID)
-		fLocal, err := os.Open(wasmQueue)
-		require.NoError(t, err)
-		fChain, err := os.Open(outputPath)
-		require.NoError(t, err)
-
-		// 2000000 is enough length
-		dataLocal := make([]byte, 2000000)
-		dataChain := make([]byte, 2000000)
-		_, err = fLocal.Read(dataLocal)
-		require.NoError(t, err)
-		_, err = fChain.Read(dataChain)
-		require.NoError(t, err)
-		require.Equal(t, dataLocal, dataChain)
-	}
-
-	// validate that there are no contract using the code (id=1)
-	{
-		listContract := f.QueryListContractByCodeWasm(codeID)
-		require.Len(t, listContract.Contracts, 0)
-	}
-
-	// instantiate a contract with the code queue
-	{
-		msgJSON := "{}"
-		flagLabel := "--label=queue-test"
-		flagAmount := fmt.Sprintf("--amount=%d%s", amountSend, denomSend)
-		_, err := f.TxInstantiateWasm(codeID, msgJSON, flagFromFoo, flagGasAdjustment, flagGas, flagLabel, flagAmount, flagFromFoo, "-y", "--no-admin")
-		require.NoError(t, err)
-		// Wait for a new block
-		err = n.WaitForNextBlock()
-		require.NoError(t, err)
-	}
-
-	// validate there is only one contract using codeID=1 and get contractAddress
-	{
-		listContract := f.QueryListContractByCodeWasm(codeID)
-		require.Len(t, listContract.Contracts, 1)
-		contractAddress = listContract.Contracts[0]
-	}
-
-	// check queue count and sum
-	{
-		res := f.QueryContractStateSmartWasm(contractAddress, "{\"count\":{}}")
-		require.Equal(t, fmt.Sprintf("{\"data\":{\"count\":%d}}", count), strings.TrimRight(res, "\n"))
-
-		res = f.QueryContractStateSmartWasm(contractAddress, "{\"sum\":{}}")
-		require.Equal(t, fmt.Sprintf("{\"data\":{\"sum\":%d}}", initValue), strings.TrimRight(res, "\n"))
-	}
-
-	// execute contract(enqueue function)
-	{
-		msgJSON := fmt.Sprintf("{\"enqueue\":{\"value\":%d}}", enqueueValue)
-		_, err := f.TxExecuteWasm(contractAddress, msgJSON, flagFromFoo, flagGasAdjustment, flagGas, "-y")
-		require.NoError(t, err)
-		// Wait for a new block
-		err = n.WaitForNextBlock()
-		require.NoError(t, err)
-		count++
-	}
-
-	// check queue count and sum
-	{
-		res := f.QueryContractStateSmartWasm(contractAddress, "{\"count\":{}}")
-		require.Equal(t, fmt.Sprintf("{\"data\":{\"count\":%d}}", count), strings.TrimRight(res, "\n"))
-
-		res = f.QueryContractStateSmartWasm(contractAddress, "{\"sum\":{}}")
-		require.Equal(t, fmt.Sprintf("{\"data\":{\"sum\":%d}}", initValue+enqueueValue), strings.TrimRight(res, "\n"))
 	}
 }

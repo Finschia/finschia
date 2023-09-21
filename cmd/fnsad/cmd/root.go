@@ -7,7 +7,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Finschia/finschia-sdk/baseapp"
+	"github.com/Finschia/finschia-rdk/baseapp"
+	"github.com/Finschia/finschia-rdk/server"
+	"github.com/Finschia/finschia-rdk/store"
+	genutilcli "github.com/Finschia/finschia-rdk/x/genutil/client/cli"
 	"github.com/Finschia/finschia-sdk/client"
 	"github.com/Finschia/finschia-sdk/client/config"
 	"github.com/Finschia/finschia-sdk/client/debug"
@@ -16,22 +19,16 @@ import (
 	"github.com/Finschia/finschia-sdk/client/pruning"
 	"github.com/Finschia/finschia-sdk/client/rpc"
 	"github.com/Finschia/finschia-sdk/codec"
-	"github.com/Finschia/finschia-sdk/server"
 	serverconfig "github.com/Finschia/finschia-sdk/server/config"
 	servertypes "github.com/Finschia/finschia-sdk/server/types"
 	"github.com/Finschia/finschia-sdk/snapshots"
-	"github.com/Finschia/finschia-sdk/store"
 	sdk "github.com/Finschia/finschia-sdk/types"
 	authcmd "github.com/Finschia/finschia-sdk/x/auth/client/cli"
 	"github.com/Finschia/finschia-sdk/x/auth/types"
 	banktypes "github.com/Finschia/finschia-sdk/x/bank/types"
 	"github.com/Finschia/finschia-sdk/x/crisis"
-	genutilcli "github.com/Finschia/finschia-sdk/x/genutil/client/cli"
 	ostcli "github.com/Finschia/ostracon/libs/cli"
 	"github.com/Finschia/ostracon/libs/log"
-	"github.com/Finschia/wasmd/x/wasm"
-	wasmkeeper "github.com/Finschia/wasmd/x/wasm/keeper"
-	"github.com/prometheus/client_golang/prometheus"
 	"github.com/spf13/cast"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -248,10 +245,6 @@ func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer, appOpts serverty
 	if err != nil {
 		panic(err)
 	}
-	var wasmOpts []wasm.Option
-	if cast.ToBool(appOpts.Get("telemetry.enabled")) {
-		wasmOpts = append(wasmOpts, wasmkeeper.WithVMCacheMetrics(prometheus.DefaultRegisterer))
-	}
 
 	return app.NewLinkApp(
 		logger, db, traceStore, true, skipUpgradeHeights,
@@ -259,7 +252,6 @@ func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer, appOpts serverty
 		cast.ToUint(appOpts.Get(server.FlagInvCheckPeriod)),
 		app.MakeEncodingConfig(), // Ideally, we would reuse the one created by NewRootCmd.
 		appOpts,
-		wasmOpts,
 		baseapp.SetPruning(pruningOpts),
 		baseapp.SetMinGasPrices(cast.ToString(appOpts.Get(server.FlagMinGasPrices))),
 		baseapp.SetHaltHeight(cast.ToUint64(appOpts.Get(server.FlagHaltHeight))),
@@ -287,13 +279,13 @@ func createSimappAndExport(
 		return servertypes.ExportedApp{}, errors.New("application home not set")
 	}
 	if height != -1 {
-		linkApp = app.NewLinkApp(logger, db, traceStore, false, map[int64]bool{}, homePath, cast.ToUint(appOpts.Get(server.FlagInvCheckPeriod)), encCfg, appOpts, nil)
+		linkApp = app.NewLinkApp(logger, db, traceStore, false, map[int64]bool{}, homePath, cast.ToUint(appOpts.Get(server.FlagInvCheckPeriod)), encCfg, appOpts)
 
 		if err := linkApp.LoadHeight(height); err != nil {
 			return servertypes.ExportedApp{}, err
 		}
 	} else {
-		linkApp = app.NewLinkApp(logger, db, traceStore, true, map[int64]bool{}, homePath, cast.ToUint(appOpts.Get(server.FlagInvCheckPeriod)), encCfg, appOpts, nil)
+		linkApp = app.NewLinkApp(logger, db, traceStore, true, map[int64]bool{}, homePath, cast.ToUint(appOpts.Get(server.FlagInvCheckPeriod)), encCfg, appOpts)
 	}
 
 	return linkApp.ExportAppStateAndValidators(forZeroHeight, jailAllowedAddrs)

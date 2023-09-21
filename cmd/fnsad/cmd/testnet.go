@@ -10,7 +10,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Finschia/finschia-sdk/testutil"
+	"github.com/Finschia/finschia-rdk/testutil"
 	ostconfig "github.com/Finschia/ostracon/config"
 	ostos "github.com/Finschia/ostracon/libs/os"
 	ostrand "github.com/Finschia/ostracon/libs/rand"
@@ -18,20 +18,20 @@ import (
 	osttime "github.com/Finschia/ostracon/types/time"
 	"github.com/spf13/cobra"
 
+	"github.com/Finschia/finschia-rdk/server"
+	"github.com/Finschia/finschia-rdk/x/genutil"
+	genutiltypes "github.com/Finschia/finschia-rdk/x/genutil/types"
 	"github.com/Finschia/finschia-sdk/client"
 	"github.com/Finschia/finschia-sdk/client/flags"
 	"github.com/Finschia/finschia-sdk/client/tx"
 	"github.com/Finschia/finschia-sdk/crypto/hd"
 	"github.com/Finschia/finschia-sdk/crypto/keyring"
 	cryptotypes "github.com/Finschia/finschia-sdk/crypto/types"
-	"github.com/Finschia/finschia-sdk/server"
 	srvconfig "github.com/Finschia/finschia-sdk/server/config"
 	sdk "github.com/Finschia/finschia-sdk/types"
 	"github.com/Finschia/finschia-sdk/types/module"
 	authtypes "github.com/Finschia/finschia-sdk/x/auth/types"
 	banktypes "github.com/Finschia/finschia-sdk/x/bank/types"
-	"github.com/Finschia/finschia-sdk/x/genutil"
-	genutiltypes "github.com/Finschia/finschia-sdk/x/genutil/types"
 	stakingtypes "github.com/Finschia/finschia-sdk/x/staking/types"
 )
 

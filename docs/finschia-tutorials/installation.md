@@ -24,9 +24,21 @@ source ~/.bash_profile
 **Go 1.20+** is required for the Finschia SDK.
 :::
 
+## Static build(Optional)
+
+### CentOS
+
+```bash
+# May need to install static libraries for linking
+$ sudo yum install glibc-static.x86_64 libstdc++-static -y
+
+# Build statically
+LINK_STATICALLY=true make build
+```
+
 ## Install the binaries
 
-Next, let's install the latest version of Gaia. Make sure you `git checkout` the
+Next, let's install the latest version of Finschia. Make sure you `git checkout` the
 correct [released version](https://github.com/Finschia/finschia/releases).
 
 ```bash

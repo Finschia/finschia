@@ -68,6 +68,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (build) [\#259](https://github.com/Finschia/finschia/pull/259) change default build to be compiled as static binary
 
 ### Docs
+* (docs) [\#281](https://github.com/Finschia/finschia/pull/281) Update guide for static build on CentOS 
 
 <!-- Release links -->
 [Unreleased]: https://github.com/Finschia/finschia/compare/v1.0.0...HEAD

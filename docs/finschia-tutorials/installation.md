@@ -26,12 +26,17 @@ source ~/.bash_profile
 
 ## Static build(Optional)
 
-### CentOS
+* Install static library(Optional)
+  * For CentOS, you may need to install static library
 
 ```bash
-# May need to install static libraries for linking
+# Optional: If you don't have library installed
 $ sudo yum install glibc-static.x86_64 libstdc++-static -y
+```
 
+* Build statically
+
+```bash
 # Build statically
 LINK_STATICALLY=true make build
 ```

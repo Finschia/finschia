@@ -66,6 +66,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (build) [\#237](https://github.com/Finschia/finschia/pull/237) rearrange Dockerfile and Makefile commands
 * (build) [\#241](https://github.com/Finschia/finschia/pull/241) Update golang version to 1.20
 * (build) [\#259](https://github.com/Finschia/finschia/pull/259) change default build to be compiled as static binary
+* (build) [\#284](https://github.com/Finschia/finschia/pull/284) use curl instead of wget on MacOS
 
 ### Docs
 * (docs) [\#281](https://github.com/Finschia/finschia/pull/281) Update guide for static build on CentOS 

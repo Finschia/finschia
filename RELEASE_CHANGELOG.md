@@ -43,6 +43,7 @@ This version base on [finschia-sdk v0.48.0](https://github.com/Finschia/finschia
   * (feat) [\#243](https://github.com/Finschia/finschia/pull/243) Bump github.com/Finschia/finschia-sdk from v0.47.0 to v0.47.1-rc1
   * (feat) [\#255](https://github.com/Finschia/finschia/pull/255) Bump up finschia-sdk from v0.48.0-rc1 to da331c01fa
   * (feat) [\#262](https://github.com/Finschia/finschia/pull/262) Bump up finschia-sdk from v0.48.0-rc2 to `0a27aef22921` and bump up ostracon from `449aa3148b12` to `fc29846c918d`
+  * (finschia-sdk) [\#264](https://github.com/Finschia/finschia/pull/264) Bump up finschia-sdk from `0a27aef22921` to `022614f80a0d`
   * (finschia-sdk, ostracon, wasmd) [\#286](https://github.com/Finschia/finschia/pull/286) bump up fisnchia-sdk to v0.48.0 and Ostracon to v1.1.2 and wasmd to v0.2.0
 * (ostracon) Bump up Ostracon from v1.1.0 to v1.1.2
   * (feat) [\#262](https://github.com/Finschia/finschia/pull/262) Bump up finschia-sdk from v0.48.0-rc2 to `0a27aef22921` and bump up ostracon from `449aa3148b12` to `fc29846c918d`
@@ -61,7 +62,6 @@ This version base on [finschia-sdk v0.48.0](https://github.com/Finschia/finschia
 ### Bug Fixes
 * (build) [\#236](https://github.com/Finschia/finschia/pull/236) fix compile error when the build_tags is multiple.
 * (wasm) [\#249](https://github.com/Finschia/finschia/pull/249) revert removing wasm configs
-* (finschia-sdk) [\#264](https://github.com/Finschia/finschia/pull/264) Bump up finschia-sdk from `0a27aef22921` to `022614f80a0d`
 * (build) [\#277](https://github.com/Finschia/finschia/pull/277) change to the default build method that uses a shared library
 
 ### Breaking Changes

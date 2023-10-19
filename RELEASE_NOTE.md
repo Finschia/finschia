@@ -36,6 +36,14 @@ cd finschia && git checkout v2.0.0
 make install
 ```
 
+## Run with Docker
+If you want to run fnsad in a Docker container, you can use the Docker images.
+* docker image: `finschia/finschianode:2.0.0`
+```shell
+docker run finschia/finschianode:2.0.0 fnsad version
+# 2.0.0
+```
+
 ## Download binaries
 
 Binaries for linux and darwin are available below.

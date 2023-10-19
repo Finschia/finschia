@@ -89,7 +89,7 @@ ifeq ($(LINK_STATICALLY),true)
 	@mkdir -p $(TEMPDIR)/lib
     ifeq (",$(wildcard $(TEMPDIR)/lib/libwasmvm*.a)")
         ifeq ($(OS_NAME),darwin)
-	        wget https://github.com/Finschia/wasmvm/releases/download/$(WASMVM_VERSION)/libwasmvmstatic_darwin.a -O $(TEMPDIR)/lib/libwasmvmstatic_darwin.a
+	        curl -L https://github.com/Finschia/wasmvm/releases/download/$(WASMVM_VERSION)/libwasmvmstatic_darwin.a -o $(TEMPDIR)/lib/libwasmvmstatic_darwin.a
         else
             ifeq ($(ARCH),amd64)
 	            wget https://github.com/Finschia/wasmvm/releases/download/$(WASMVM_VERSION)/libwasmvm_muslc.x86_64.a -O $(TEMPDIR)/lib/libwasmvm_muslc.a

@@ -48,6 +48,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (build) [\#221](https://github.com/Finschia/finschia/pull/221) compile static binary as release assets and docker image
 * (swagger) [\#223](https://github.com/Finschia/finschia/pull/223) add integrated swagger for finschia
 * (wasm) [\#258](https://github.com/Finschia/finschia/pull/258) Bump up wasmd from dedcd9ec to 053c7e43
+* (finschia-sdk, ostracon, wasmd) [\#286](https://github.com/Finschia/finschia/pull/286) bump up fisnchia-sdk to v0.48.0 and Ostracon to v1.1.2 and wasmd to v0.2.0 
 
 ### Bug Fixes
 * (build) [\#236](https://github.com/Finschia/finschia/pull/236) fix compile error when the build_tags is multiple.

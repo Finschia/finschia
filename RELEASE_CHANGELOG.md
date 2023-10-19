@@ -34,6 +34,53 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 # Changelog
 
+## [v2.0.0] - 2023-10-19
+
+This version base on [finschia-sdk v0.48.0](https://github.com/Finschia/finschia-sdk/releases/tag/v0.48.0), [Ostracon v1.1.2](https://github.com/Finschia/ostracon/tree/v1.1.2), [finschia/wasmd v0.2.0](https://github.com/Finschia/wasmd/releases/tag/v0.2.0) and [finschia/ibc-go v4.3.1](https://github.com/Finschia/ibc-go/releases/tag/v4.3.1).
+
+### Features
+* (finschia-sdk) Bump github.com/Finschia/finschia-sdk from v0.47.0 to v0.48.0
+  * (feat) [\#243](https://github.com/Finschia/finschia/pull/243) Bump github.com/Finschia/finschia-sdk from v0.47.0 to v0.47.1-rc1
+  * (feat) [\#255](https://github.com/Finschia/finschia/pull/255) Bump up finschia-sdk from v0.48.0-rc1 to da331c01fa
+  * (feat) [\#262](https://github.com/Finschia/finschia/pull/262) Bump up finschia-sdk from v0.48.0-rc2 to `0a27aef22921` and bump up ostracon from `449aa3148b12` to `fc29846c918d`
+  * (finschia-sdk, ostracon, wasmd) [\#286](https://github.com/Finschia/finschia/pull/286) bump up fisnchia-sdk to v0.48.0 and Ostracon to v1.1.2 and wasmd to v0.2.0
+* (ostracon) Bump up Ostracon from v1.1.0 to v1.1.2
+  * (feat) [\#262](https://github.com/Finschia/finschia/pull/262) Bump up finschia-sdk from v0.48.0-rc2 to `0a27aef22921` and bump up ostracon from `449aa3148b12` to `fc29846c918d`
+  * (finschia-sdk, ostracon, wasmd) [\#286](https://github.com/Finschia/finschia/pull/286) bump up fisnchia-sdk to v0.48.0 and Ostracon to v1.1.2 and wasmd to v0.2.0
+* (wasmd) bump up wasmd from v0.1.3 to v0.2.0
+  * (wasm) [\#258](https://github.com/Finschia/finschia/pull/258) Bump up wasmd from dedcd9ec to 053c7e43
+  * (finschia-sdk, ostracon, wasmd) [\#286](https://github.com/Finschia/finschia/pull/286) bump up fisnchia-sdk to v0.48.0 and Ostracon to v1.1.2 and wasmd to v0.2.0
+* (ibc) [\#246](https://github.com/Finschia/finschia/pull/246) Update ibc-go to v4
+* (build) [\#248](https://github.com/Finschia/finschia/pull/248) Rename namespace to v2
+* (app) [\#250](https://github.com/Finschia/finschia/pull/250) Set upgrade handler for v2-Daisy
+
+### Improvements
+* (build) [\#221](https://github.com/Finschia/finschia/pull/221) compile static binary as release assets and docker image
+* (swagger) [\#223](https://github.com/Finschia/finschia/pull/223) add integrated swagger for finschia
+
+### Bug Fixes
+* (build) [\#236](https://github.com/Finschia/finschia/pull/236) fix compile error when the build_tags is multiple.
+* (wasm) [\#249](https://github.com/Finschia/finschia/pull/249) revert removing wasm configs
+* (finschia-sdk) [\#264](https://github.com/Finschia/finschia/pull/264) Bump up finschia-sdk from `0a27aef22921` to `022614f80a0d`
+* (build) [\#277](https://github.com/Finschia/finschia/pull/277) change to the default build method that uses a shared library
+
+### Breaking Changes
+* (ostracon) [\#240](https://github.com/Finschia/finschia/pull/240) remove `libsodium` vrf library
+
+### Build, CI
+* (ci) [\#185](https://github.com/Finschia/finschia/pull/185) update `tag.yml` github action
+* (ci) [\#189](https://github.com/Finschia/finschia/pull/189) add dependabot github action
+* (ci) [\#213](https://github.com/Finschia/finschia/pull/213) add mergify ci
+* (ci) [\#233](https://github.com/Finschia/finschia/pull/233) add smart contract CI test
+* (build) [\#237](https://github.com/Finschia/finschia/pull/237) rearrange Dockerfile and Makefile commands
+* (build) [\#241](https://github.com/Finschia/finschia/pull/241) Update golang version to 1.20
+* (build) [\#259](https://github.com/Finschia/finschia/pull/259) change default build to be compiled as static binary
+* (build) [\#284](https://github.com/Finschia/finschia/pull/284) use curl instead of wget on MacOS
+
+### Docs
+* (docs) [\#281](https://github.com/Finschia/finschia/pull/281) Update guide for static build on CentOS
+
+
 ## [v1.0.0] - 2023-04-24
 
 This version base on [finschia-sdk v0.47.0](https://github.com/Finschia/finschia-sdk/releases/tag/v0.47.0), [Ostracon v1.1.0](https://github.com/Finschia/ostracon/tree/v1.1.0), [finschia/wasmd v0.1.3](https://github.com/Finschia/wasmd/releases/tag/v0.1.3) and [finschia/ibc-go v3.3.3](https://github.com/Finschia/ibc-go/releases/tag/v3.3.3).
@@ -205,6 +252,7 @@ Please refer [CHANGELOG_OF_GAIA_v4.0.4](https://github.com/cosmos/gaia/blob/v4.0
 
 
 <!-- Release links -->
+[v2.0.0]: https://github.com/Finschia/finschia/releases/tag/v2.0.0
 [v1.0.0]: https://github.com/Finschia/finschia/releases/tag/v1.0.0
 [v0.7.0]: https://github.com/Finschia/finschia/releases/tag/v0.7.0
 [v0.6.0]: https://github.com/Finschia/finschia/releases/tag/v0.6.0

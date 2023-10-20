@@ -4,7 +4,6 @@
 Check out the [changelog](https://github.com/Finschia/finschia/blob/v2.0.0/RELEASE_CHANGELOG.md) for a list of relevant changes or [compare all changes](https://github.com/Finschia/finschia/compare/v1.0.0...v2.0.0) from last release
 
 ## Highlights
-* Upgrade to Golang v1.20
 * Upgrade to Ostracon [v1.1.2](https://github.com/Finschia/ostracon/tree/v1.1.2)
   * Change vrf library from `libsodium` to `curve25519-voi`'s VRF
   * Apply changes up to tendermint v0.34.24
@@ -18,6 +17,7 @@ Check out the [changelog](https://github.com/Finschia/finschia/blob/v2.0.0/RELEA
   * Fix bug where nano S plus ledger could not be connected in Ubuntu
 * Upgrade wasmd to [v0.2.0](https://github.com/Finschia/wasmd/releases/tag/v0.2.0)
 * Upgrade ibc-go to [v4.3.1](https://github.com/Finschia/ibc-go/releases/tag/v4.3.1)
+* Upgrade to Golang v1.20
 * Integrate swagger of all submodules
 * Support static binary compile
 

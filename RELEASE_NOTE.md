@@ -12,8 +12,8 @@ Check out the [changelog](https://github.com/Finschia/finschia/blob/v2.0.0/RELEA
 * Upgrade finschia-sdk to [v0.48.0](https://github.com/Finschia/finschia-sdk/releases/tag/v0.48.0)
   * Migrate x/foundation FoundationTax into x/params
   * Add tendermint query apis for compatibility with cosmos-sdk
-  * Make x/foundation MsgExec propagate events
   * Support custom r/w gRPC options
+  * Make x/foundation MsgExec propagate events
   * Fix `MsgMintFT` bug in x/collection module
   * Fix bug where nano S plus ledger could not be connected in Ubuntu
 * Upgrade wasmd to [v0.2.0](https://github.com/Finschia/wasmd/releases/tag/v0.2.0)

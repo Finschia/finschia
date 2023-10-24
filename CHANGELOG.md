@@ -45,6 +45,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Breaking Changes
 
 ### Build, CI
+* (ci) [\#290](https://github.com/Finschia/finschia/pull/290) remove autopr ci
 
 ### Docs
 

@@ -46,6 +46,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ### Build, CI
 * (ci) [\#290](https://github.com/Finschia/finschia/pull/290) remove autopr ci
+* (ci) [\#291](https://github.com/Finschia/finschia/pull/291) fix goreleaser ci error and replace release-build
 
 ### Docs
 

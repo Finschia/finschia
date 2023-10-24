@@ -3,26 +3,24 @@ package cmd_test
 import (
 	"context"
 	"fmt"
-
 	"testing"
 
-	"github.com/Finschia/finschia-sdk/crypto/hd"
-	"github.com/Finschia/finschia-sdk/crypto/keyring"
-	sdk "github.com/Finschia/finschia-sdk/types"
-
-	"github.com/Finschia/ostracon/libs/log"
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/require"
 
 	"github.com/Finschia/finschia-sdk/client"
 	"github.com/Finschia/finschia-sdk/client/flags"
+	"github.com/Finschia/finschia-sdk/crypto/hd"
+	"github.com/Finschia/finschia-sdk/crypto/keyring"
 	"github.com/Finschia/finschia-sdk/server"
 	"github.com/Finschia/finschia-sdk/simapp"
 	simcmd "github.com/Finschia/finschia-sdk/simapp/simd/cmd"
 	"github.com/Finschia/finschia-sdk/testutil/testdata"
+	sdk "github.com/Finschia/finschia-sdk/types"
 	"github.com/Finschia/finschia-sdk/types/module"
 	"github.com/Finschia/finschia-sdk/x/genutil"
 	genutiltest "github.com/Finschia/finschia-sdk/x/genutil/client/testutil"
+	"github.com/Finschia/ostracon/libs/log"
 )
 
 var testMbm = module.NewBasicManager(genutil.AppModuleBasic{})

@@ -253,3 +253,64 @@ proto-swagger-gen:
 	./scripts/generate-docs.sh
 	statik -src=client/docs/swagger-ui -dest=client/docs -f -m
 .PHONY: proto-swagger-gen
+
+###############################################################################
+###                                Release                                  ###
+###############################################################################
+
+GORELEASER_IMAGE := goreleaser/goreleaser-cross:v$(GO_VERSION)
+PACKAGE_NAME := github.com/Finschia/finschia
+
+ifdef GITHUB_TOKEN
+release:
+	docker run \
+		--rm \
+		--platform linux/amd64 \
+		-e GITHUB_TOKEN=$(GITHUB_TOKEN) \
+		-e WASMVM_VERSION=$(WASMVM_VERSION) \
+		-e OST_VERSION=$(OST_VERSION) \
+		-v /var/run/docker.sock:/var/run/docker.sock \
+		-v `pwd`:/go/src/$(PACKAGE_NAME) \
+		-w /go/src/$(PACKAGE_NAME) \
+		$(GORELEASER_IMAGE) \
+		release \
+		--clean \
+		--release-notes ./RELEASE_NOTE.md
+else
+release:
+	@echo "Error: GITHUB_TOKEN is not defined. Please define it before running 'make release'."
+endif
+
+release-dry-run:
+	docker run \
+		--rm \
+		--platform linux/amd64 \
+		-e WASMVM_VERSION=$(WASMVM_VERSION) \
+		-e OST_VERSION=$(OST_VERSION) \
+		-v /var/run/docker.sock:/var/run/docker.sock \
+		-v `pwd`:/go/src/$(PACKAGE_NAME) \
+		-w /go/src/$(PACKAGE_NAME) \
+		$(GORELEASER_IMAGE) \
+		release \
+		--clean \
+		--release-notes ./RELEASE_NOTE.md \
+		--skip-publish
+
+release-snapshot:
+	docker run \
+		--rm \
+		--platform linux/amd64 \
+		-e WASMVM_VERSION=$(WASMVM_VERSION) \
+		-e OST_VERSION=$(OST_VERSION) \
+		-v /var/run/docker.sock:/var/run/docker.sock \
+		-v `pwd`:/go/src/$(PACKAGE_NAME) \
+		-w /go/src/$(PACKAGE_NAME) \
+		$(GORELEASER_IMAGE) \
+		release \
+		--clean \
+		--release-notes ./RELEASE_NOTE.md \
+		--snapshot \
+		--skip-validate \
+		--skip-publish
+
+.PHONY: release release-dry-run release-snapshot

@@ -119,9 +119,9 @@ jobs:
     if: ${{ needs.check-diffs.outputs.get_diff }}
     steps:
       - uses: actions/checkout@v4
-      - uses: docker/setup-buildx-action@v2
+      - uses: docker/setup-buildx-action@v3
       - name: Build and export
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           file: Dockerfile
           context: .
@@ -142,7 +142,7 @@ jobs:
         versions: ${{ fromJson(needs.get-cosmwasm-releases.outputs.cosmwasm_versions) }}
     steps:
       - uses: actions/checkout@v4
-      - uses: docker/setup-buildx-action@v2
+      - uses: docker/setup-buildx-action@v3
       - name: Download smart contracts
         uses: dsaltares/fetch-gh-release-asset@master
         with:

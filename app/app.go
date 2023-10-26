@@ -33,6 +33,7 @@ import (
 	"github.com/Finschia/finschia-sdk/baseapp"
 	"github.com/Finschia/finschia-sdk/client"
 	nodeservice "github.com/Finschia/finschia-sdk/client/grpc/node"
+	"github.com/Finschia/finschia-sdk/client/grpc/ocservice"
 	"github.com/Finschia/finschia-sdk/client/grpc/tmservice"
 	"github.com/Finschia/finschia-sdk/codec"
 	"github.com/Finschia/finschia-sdk/codec/types"
@@ -122,12 +123,13 @@ import (
 	wasmpluskeeper "github.com/Finschia/wasmd/x/wasmplus/keeper"
 	wasmplustypes "github.com/Finschia/wasmd/x/wasmplus/types"
 
-	appante "github.com/Finschia/finschia/ante"
-	appparams "github.com/Finschia/finschia/app/params"
-	_ "github.com/Finschia/finschia/client/docs/statik" // unnamed import of statik for swagger UI support
+	appante "github.com/Finschia/finschia/v2/ante"
+	appparams "github.com/Finschia/finschia/v2/app/params"
+	_ "github.com/Finschia/finschia/v2/client/docs/statik" // unnamed import of statik for swagger UI support
 )
 
 const appName = "Finschia"
+const upgradeName = "v2-Daisy"
 
 var (
 	// DefaultNodeHome default home directories for the application daemon
@@ -657,6 +659,13 @@ func NewLinkApp(
 	app.SetAnteHandler(anteHandler)
 	app.SetEndBlocker(app.EndBlocker)
 
+	// upgrade
+	app.UpgradeKeeper.SetUpgradeHandler(
+		upgradeName,
+		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
+		})
+
 	// must be before loading version
 	// requires the snapshot store to be created and registered as a BaseAppOptions
 	// see cmd/fnsad/cmd/root.go: 257-265
@@ -806,6 +815,7 @@ func (app *LinkApp) RegisterAPIRoutes(apiSvr *api.Server, apiConfig config.APICo
 	authtx2.RegisterGRPCGatewayRoutes(clientCtx, apiSvr.GRPCGatewayRouter)
 	// Register new tendermint queries routes from grpc-gateway.
 	tmservice.RegisterGRPCGatewayRoutes(clientCtx, apiSvr.GRPCGatewayRouter)
+	ocservice.RegisterGRPCGatewayRoutes(clientCtx, apiSvr.GRPCGatewayRouter)
 
 	// Register node gRPC service for grpc-gateway.
 	nodeservice.RegisterGRPCGatewayRoutes(clientCtx, apiSvr.GRPCGatewayRouter)
@@ -828,6 +838,7 @@ func (app *LinkApp) RegisterTxService(clientCtx client.Context) {
 // RegisterTendermintService implements the Application.RegisterTendermintService method.
 func (app *LinkApp) RegisterTendermintService(clientCtx client.Context) {
 	tmservice.RegisterTendermintService(app.BaseApp.GRPCQueryRouter(), clientCtx, app.interfaceRegistry)
+	ocservice.RegisterTendermintService(app.BaseApp.GRPCQueryRouter(), clientCtx, app.interfaceRegistry)
 }
 
 func (app *LinkApp) RegisterNodeService(clientCtx client.Context) {

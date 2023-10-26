@@ -28,7 +28,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
     go mod download
 
 # Install libwasmvm.*.a
-RUN ARCH=$(uname -m) && WASMVM_VERSION=$(go list -m github.com/Finschia/wasmvm | awk '{print $2}' | grep -o 'v\d\+\.\d\+\.\d\+-\d\+\.\d\+\.\d\+') && \
+RUN ARCH=$(uname -m) && WASMVM_VERSION=$(go list -m github.com/Finschia/wasmvm | awk '{print $2}') && \
     curl -L -f -o /lib/libwasmvm_muslc.a  https://github.com/Finschia/wasmvm/releases/download/$WASMVM_VERSION/libwasmvm_muslc.$ARCH.a && ls -al /lib/libwasmvm_muslc.a && \
     # verify checksum
     curl -L -f -o /tmp/checksums.txt https://github.com/Finschia/wasmvm/releases/download/$WASMVM_VERSION/checksums.txt && ls -al /tmp/checksums.txt && \

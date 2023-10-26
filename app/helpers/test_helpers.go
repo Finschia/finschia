@@ -13,7 +13,7 @@ import (
 	"github.com/Finschia/ostracon/libs/log"
 	octypes "github.com/Finschia/ostracon/types"
 
-	linkapp "github.com/Finschia/finschia/app"
+	linkapp "github.com/Finschia/finschia/v2/app"
 )
 
 // SimAppChainID hardcoded chainID for simulation

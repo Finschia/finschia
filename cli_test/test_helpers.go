@@ -61,9 +61,9 @@ import (
 	wasmcli "github.com/Finschia/wasmd/x/wasm/client/cli"
 	wasmtypes "github.com/Finschia/wasmd/x/wasm/types"
 
-	"github.com/Finschia/finschia/app"
-	fnsacmd "github.com/Finschia/finschia/cmd/fnsad/cmd"
-	fnsatypes "github.com/Finschia/finschia/types"
+	"github.com/Finschia/finschia/v2/app"
+	fnsacmd "github.com/Finschia/finschia/v2/cmd/fnsad/cmd"
+	fnsatypes "github.com/Finschia/finschia/v2/types"
 )
 
 const (

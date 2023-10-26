@@ -16,7 +16,7 @@ import (
 	genutiltypes "github.com/Finschia/finschia-sdk/x/genutil/types"
 	"github.com/Finschia/ostracon/libs/log"
 
-	"github.com/Finschia/finschia/app"
+	"github.com/Finschia/finschia/v2/app"
 )
 
 func Test_TestnetCmd(t *testing.T) {

@@ -335,3 +335,11 @@ jobs:
           if [ ${{ steps.test-blocks.outcome }} == 'failure' ] ; then
             exit 1
           fi
+
+  test-upgrade-name:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Test upgrade name
+        run: |
+          make test-upgrade-name

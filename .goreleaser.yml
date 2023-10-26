@@ -1,44 +1,112 @@
-# This is an example goreleaser.yaml file with some sane defaults.
-# Make sure to check the documentation at http://goreleaser.com
-before:
-  hooks:
-    # you may remove this if you don't need go generate
-    - go generate ./...
+project_name: fnsad
+
+env:
+  - CGO_ENABLED=1
+
 builds:
--
-  id: "finschia"
-  main: ./cmd/fnsad
-  binary: build/fnsad
-  env:
-    - CGO_ENABLED=0
-  flags:
-    - -mod=readonly
-    - -tags=netgo ledger
-  ldflags:
-    - -X github.com/Finschia/finschia-sdk/version.Name=finschia
-    - -X github.com/Finschia/finschia-sdk/version.ServerName=finschia
-    - -X github.com/Finschia/finschia-sdk/version.Version={{ .Version }}
-    - -X github.com/Finschia/finschia-sdk/version.Commit={{ .FullCommit }}
-    - -X "github.com/Finschia/finschia-sdk/version.BuildTags=netgo,ledger"
+  - id: darwin
+    main: ./cmd/fnsad
+    binary: fnsad
+    hooks:
+      pre:
+        - wget https://github.com/Finschia/wasmvm/releases/download/{{ .Env.WASMVM_VERSION }}/libwasmvmstatic_darwin.a -O /lib/libwasmvmstatic_darwin.a
+    goos:
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    env:
+      - CC=o64-clang
+      - CGO_LDFLAGS=-L/lib
+    flags:
+      - -mod=readonly
+      - -trimpath
+    ldflags:
+      - -X github.com/Finschia/finschia-sdk/version.Name=finschia
+      - -X github.com/Finschia/finschia-sdk/version.AppName=fnsad
+      - -X github.com/Finschia/finschia-sdk/version.Version={{ .Version }}
+      - -X github.com/Finschia/finschia-sdk/version.Commit={{ .Commit }}
+      - -X github.com/Finschia/finschia-sdk/types.DBBackend=goleveldb
+      - -X github.com/Finschia/finschia-sdk/version.BuildTags=netgo,ledger,static_wasm
+      - -X github.com/Finschia/ostracon/version.TMCoreSemVer={{ .Env.OST_VERSION }}
+      - -s -w
+      - -linkmode=external
+    tags:
+      - netgo
+      - ledger
+      - static_wasm
+    overrides:
+      - goos: darwin
+        goarch: arm64
+        env:
+          - CC=oa64-clang
+
+  - id: linux
+    main: ./cmd/fnsad
+    binary: fnsad
+    hooks:
+      pre:
+        - wget https://github.com/Finschia/wasmvm/releases/download/{{ .Env.WASMVM_VERSION }}/libwasmvm_muslc.x86_64.a -O /usr/lib/x86_64-linux-gnu/libwasmvm_muslc.a
+        - wget https://github.com/Finschia/wasmvm/releases/download/{{ .Env.WASMVM_VERSION }}/libwasmvm_muslc.aarch64.a -O /usr/lib/aarch64-linux-gnu/libwasmvm_muslc.a
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm64
+    env:
+      - CC=x86_64-linux-gnu-gcc
+    flags:
+      - -mod=readonly
+      - -trimpath
+    ldflags:
+      - -X github.com/Finschia/finschia-sdk/version.Name=finschia
+      - -X github.com/Finschia/finschia-sdk/version.AppName=fnsad
+      - -X github.com/Finschia/finschia-sdk/version.Version={{ .Version }}
+      - -X github.com/Finschia/finschia-sdk/version.Commit={{ .Commit }}
+      - -X github.com/Finschia/finschia-sdk/types.DBBackend=goleveldb
+      - -X "github.com/Finschia/finschia-sdk/version.BuildTags=netgo,osusergo,ledger,muslc"
+      - -X github.com/Finschia/ostracon/version.TMCoreSemVer={{ .Env.OST_VERSION }}
+      - -w -s
+      - -linkmode=external
+      - -extldflags '-Wl,-z,muldefs -static -lm'
+    tags:
+      - netgo
+      - osusergo
+      - ledger
+      - muslc
+    overrides:
+      - goos: linux
+        goarch: arm64
+        env:
+          - CC=aarch64-linux-gnu-gcc
+
+universal_binaries:
+  - id: darwin
+
 archives:
--
-  builds: ['fnsad']
-  replacements:
-    darwin: Darwin
-    linux: Linux
-    windows: Windows
-    386: i386
-    amd64: x86_64
-  files:
-    - LICENSE
-    - docs/getting-started/*
+  # disables archiving; to enable use commented lines below
+  - id: binaries
+    format: binary
+    name_template: "{{ .ProjectName }}-{{ .Version }}-{{ .Os }}-{{ .Arch }}"
+
+#  - id: zip
+#    format: tar.gz
+#    wrap_in_directory: true
+#    name_template: "{{ .ProjectName }}-{{ .Version }}-{{ .Os }}-{{ .Arch }}"
+#    files:
+#      - LICENSE
+#      - RELEASE_CHANGELOG.md
+
+release:
+  name_template: "v{{.Version}}"
+  draft: true
+
 checksum:
-  name_template: 'checksums.txt'
+  name_template: "sha256sum-v{{ .Version }}.txt"
+  algorithm: sha256
+
 snapshot:
-  name_template: "{{ .Tag }}-next"
+  name_template: SNAPSHOT-{{ .Commit }}
+
 changelog:
-  sort: asc
-  filters:
-    exclude:
-    - '^docs:'
-    - '^test:'
+  skip: false

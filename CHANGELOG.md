@@ -40,6 +40,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ### Improvements
 * (improvements) [\#230](https://github.com/Finschia/finschia/pull/230) fix Makefile for format and execute make format #230
+* (repo) [\#295](https://github.com/Finschia/finschia/pull/295) setup CODEOWNERS and backport action
 
 ### Bug Fixes
 

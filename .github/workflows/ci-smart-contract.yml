@@ -9,6 +9,7 @@ on:
 
 env:
   TEST_DOCKER_IMAGE: finschianode:smartcontractci
+  GO_VERSION: "1.20"
 
 jobs:
   cleanup-runs:
@@ -60,9 +61,9 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
         with:
-          go-version: 1.18
+          go-version: ${{ env.GO_VERSION }}
       - name: Build
-        run: GOARCH=${{ matrix.go-arch }} LEDGER_ENABLED=false make build
+        run: GOARCH=${{ matrix.go-arch }} LEDGER_ENABLED=false LINK_STATICALLY=true make build
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
@@ -80,7 +81,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
         with:
-          go-version: 1.18
+          go-version: ${{ env.GO_VERSION }}
       - name: Download smart contracts
         uses: dsaltares/fetch-gh-release-asset@master
         with:
@@ -118,7 +119,7 @@ jobs:
     if: ${{ needs.check-diffs.outputs.get_diff }}
     steps:
       - uses: actions/checkout@v3
-      - uses: docker/setup-buildx-action@v2
+      - uses: docker/setup-buildx-action@v3
       - name: Build and export
         uses: docker/build-push-action@v5
         with:
@@ -141,7 +142,7 @@ jobs:
         versions: ${{ fromJson(needs.get-cosmwasm-releases.outputs.cosmwasm_versions) }}
     steps:
       - uses: actions/checkout@v3
-      - uses: docker/setup-buildx-action@v2
+      - uses: docker/setup-buildx-action@v3
       - name: Download smart contracts
         uses: dsaltares/fetch-gh-release-asset@master
         with:

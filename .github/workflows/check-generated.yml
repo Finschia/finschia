@@ -27,7 +27,7 @@ jobs:
         uses: arduino/setup-protoc@v2
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: "16"
       - run: if [ ! -x "$(command -v yarn)" ]; then npm install -g yarn; fi

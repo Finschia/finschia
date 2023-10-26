@@ -37,28 +37,19 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ## [Unreleased]
 
 ### Features
-* (feat) [\#243](https://github.com/Finschia/finschia/pull/243) Bump github.com/Finschia/finschia-sdk from v0.47.0 to v0.47.1-rc1
-* (ibc) [\#246](https://github.com/Finschia/finschia/pull/246) Update ibc-go to v4
 
 ### Improvements
-* (build) [\#221](https://github.com/Finschia/finschia/pull/221) compile static binary as release assets and docker image
-* (swagger) [\#223](https://github.com/Finschia/finschia/pull/223) add integrated swagger for finschia
+* (improvements) [\#230](https://github.com/Finschia/finschia/pull/230) fix Makefile for format and execute make format #230
 
 ### Bug Fixes
-* (build) [\#236](https://github.com/Finschia/finschia/pull/236) fix compile error when the build_tags is multiple.
 
 ### Breaking Changes
-* (ostracon) [\#240](https://github.com/Finschia/finschia/pull/240) remove `libsodium` vrf library
 
 ### Build, CI
-* (ci) [\#185](https://github.com/Finschia/finschia/pull/185) update `tag.yml` github action
-* (ci) [\#189](https://github.com/Finschia/finschia/pull/189) add dependabot github action
-* (ci) [\#213](https://github.com/Finschia/finschia/pull/213) add mergify ci
-* (ci) [\#233](https://github.com/Finschia/finschia/pull/233) add smart contract CI test
-* (build) [\#237](https://github.com/Finschia/finschia/pull/237) rearrange Dockerfile and Makefile commands
-* (build) [\#241](https://github.com/Finschia/finschia/pull/241) Update golang version to 1.20
+* (ci) [\#290](https://github.com/Finschia/finschia/pull/290) remove autopr ci
+* (ci) [\#291](https://github.com/Finschia/finschia/pull/291) fix goreleaser ci error and replace release-build
 
 ### Docs
 
 <!-- Release links -->
-[Unreleased]: https://github.com/Finschia/finschia/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/Finschia/finschia/compare/v2.0.0...HEAD

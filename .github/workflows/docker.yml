@@ -25,7 +25,7 @@ jobs:
 
       - name: Set up docker buildx
         id: buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
         with:
           endpoint: buildx
           config-inline: |

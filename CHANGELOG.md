@@ -49,6 +49,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (ci) [\#290](https://github.com/Finschia/finschia/pull/290) remove autopr ci
 * (ci) [\#291](https://github.com/Finschia/finschia/pull/291) fix goreleaser ci error and replace release-build
 * (repo) [\#295](https://github.com/Finschia/finschia/pull/295) setup CODEOWNERS and backport action
+* (ci) [\#296](https://github.com/Finschia/finschia/pull/296) bump actions/checkout from 3 to 4
 
 ### Docs
 

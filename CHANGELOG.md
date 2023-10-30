@@ -41,6 +41,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Improvements
 
 ### Bug Fixes
+* (finschia-sdk) [\#297](https://github.com/Finschia/finschia/pull/297) bump up finschia-sdk from v0.48.0 to v0.48.1
 
 ### Breaking Changes
 

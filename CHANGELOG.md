@@ -39,6 +39,11 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Features
 
 ### Improvements
+<<<<<<< HEAD
+=======
+* (improvements) [\#230](https://github.com/Finschia/finschia/pull/230) fix Makefile for format and execute make format #230
+* (chore) [\#299](https://github.com/Finschia/finschia/pull/299) remove x/token and x/collection apis in swagger
+>>>>>>> eeb4ff5 (chore: remove x/token and x/collection apis in swagger (#299))
 
 ### Bug Fixes
 * (finschia-sdk) [\#298](https://github.com/Finschia/finschia/pull/298) bump up finschia-sdk from v0.48.0 to v0.48.1 (backport #297)

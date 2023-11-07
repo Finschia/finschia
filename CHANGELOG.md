@@ -39,19 +39,14 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Features
 
 ### Improvements
-* (improvements) [\#230](https://github.com/Finschia/finschia/pull/230) fix Makefile for format and execute make format #230
-* (chore) [\#300](https://github.com/Finschia/finschia/pull/300) remove x/token and x/collection apis in swagger (backport #299)
 
 ### Bug Fixes
-* (finschia-sdk) [\#298](https://github.com/Finschia/finschia/pull/298) bump up finschia-sdk from v0.48.0 to v0.48.1 (backport #297)
 
 ### Breaking Changes
 
 ### Build, CI
-* (ci) [\#290](https://github.com/Finschia/finschia/pull/290) remove autopr ci
-* (ci) [\#291](https://github.com/Finschia/finschia/pull/291) fix goreleaser ci error and replace release-build
 
 ### Docs
 
 <!-- Release links -->
-[Unreleased]: https://github.com/Finschia/finschia/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/Finschia/finschia/compare/v2.0.1...HEAD

@@ -34,6 +34,22 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 # Changelog
 
+## [v2.0.1] - 2023-11-07
+
+This version base on [finschia-sdk v0.48.1](https://github.com/Finschia/finschia-sdk/releases/tag/v0.48.1), [Ostracon v1.1.2](https://github.com/Finschia/ostracon/tree/v1.1.2), [finschia/wasmd v0.2.0](https://github.com/Finschia/wasmd/releases/tag/v0.2.0) and [finschia/ibc-go v4.3.1](https://github.com/Finschia/ibc-go/releases/tag/v4.3.1).
+
+### Improvements
+* (improvements) [\#230](https://github.com/Finschia/finschia/pull/230) fix Makefile for format and execute make format #230
+* (chore) [\#300](https://github.com/Finschia/finschia/pull/300) remove x/token and x/collection apis in swagger (backport #299)
+
+### Bug Fixes
+* (finschia-sdk) [\#298](https://github.com/Finschia/finschia/pull/298) bump up finschia-sdk from v0.48.0 to v0.48.1 (backport #297)
+
+### Build, CI
+* (ci) [\#290](https://github.com/Finschia/finschia/pull/290) remove autopr ci
+* (ci) [\#291](https://github.com/Finschia/finschia/pull/291) fix goreleaser ci error and replace release-build
+
+
 ## [v2.0.0] - 2023-10-19
 
 This version base on [finschia-sdk v0.48.0](https://github.com/Finschia/finschia-sdk/releases/tag/v0.48.0), [Ostracon v1.1.2](https://github.com/Finschia/ostracon/tree/v1.1.2), [finschia/wasmd v0.2.0](https://github.com/Finschia/wasmd/releases/tag/v0.2.0) and [finschia/ibc-go v4.3.1](https://github.com/Finschia/ibc-go/releases/tag/v4.3.1).
@@ -252,6 +268,7 @@ Please refer [CHANGELOG_OF_GAIA_v4.0.4](https://github.com/cosmos/gaia/blob/v4.0
 
 
 <!-- Release links -->
+[v2.0.1]: https://github.com/Finschia/finschia/releases/tag/v2.0.1
 [v2.0.0]: https://github.com/Finschia/finschia/releases/tag/v2.0.0
 [v1.0.0]: https://github.com/Finschia/finschia/releases/tag/v1.0.0
 [v0.7.0]: https://github.com/Finschia/finschia/releases/tag/v0.7.0

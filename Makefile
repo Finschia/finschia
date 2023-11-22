@@ -176,8 +176,18 @@ test-integration-multi-node: docker-build
 test-upgrade-name:
 	@sh contrib/check-upgrade-name.sh
 
-.PHONY: test test-all test-unit test-race test-cover benchmark test-integration test-integration-multi-node
+get-heighliner:
+	git clone https://github.com/strangelove-ventures/heighliner.git $(TEMPDIR)/heighliner
+	cd $(TEMPDIR)/heighliner && go install
 
+local-image:
+ifeq (,$(shell which heighliner))
+	echo 'heighliner' binary not found. Consider running `make get-heighliner`
+else
+	heighliner build -c finschia --local --dockerfile cosmos --build-target "wget https://github.com/Finschia/wasmvm/releases/download/$(WASMVM_VERSION)/libwasmvm_muslc.aarch64.a -O /lib/libwasmvm.aarch64.a && make install" --binaries "/go/bin/fnsad"
+endif
+
+.PHONY: test test-all test-unit test-race test-cover benchmark test-integration test-integration-multi-node get-heighliner local-image
 
 ###############################################################################
 ###                                Docker                                   ###

@@ -41,7 +41,7 @@ func latestFinschiaChain(numOfValidators, numOfFullNodes int) *interchaintest.Ch
 			ChainID: "finschia-2",
 			Images: []ibc.DockerImage{
 				{
-					Repository: "finschia",
+					Repository: "fnsad",
 					Version:    "local",
 					UidGid:     "1025:1025",
 				},

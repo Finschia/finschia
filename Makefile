@@ -150,7 +150,7 @@ local-image:
 ifeq (,$(shell which heighliner))
 	echo 'heighliner' binary not found. Consider running `make get-heighliner`
 else
-	heighliner build -c finschia --local --dockerfile cosmos --build-target "wget https://github.com/Finschia/wasmvm/releases/download/$(WASMVM_VERSION)/libwasmvm_muslc.aarch64.a -O /lib/libwasmvm.aarch64.a && make install" --binaries "/go/bin/fnsad"
+	heighliner build -c fnsad --local --dockerfile cosmos --build-target "wget https://github.com/Finschia/wasmvm/releases/download/$(WASMVM_VERSION)/libwasmvm_muslc.aarch64.a -O /lib/libwasmvm.aarch64.a && make install" --binaries "/go/bin/fnsad"
 endif
 
 .PHONY: all build install clean wasmvmlib build-reproducible get-heighliner local-image

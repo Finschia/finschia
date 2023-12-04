@@ -35,7 +35,7 @@ func latestFinschiaChain(numOfValidators, numOfFullNodes int) *interchaintest.Ch
 		Version: "local",
 		ChainConfig: ibc.ChainConfig{
 			Type:    "cosmos",
-			Name:    "finschia",
+			Name:    "finschia-2",
 			ChainID: "finschia-2",
 			Images: []ibc.DockerImage{
 				{

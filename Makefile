@@ -16,6 +16,7 @@ SDK_PACK := $(shell go list -m github.com/Finschia/finschia-sdk | sed  's/ /\@/g
 GO_VERSION := $(shell cat go.mod | grep -E 'go [0-9].[0-9]+' | cut -d ' ' -f 2)
 OST_VERSION := $(shell go list -m github.com/Finschia/ostracon | sed 's:.* ::') # grab everything after the space in "github.com/Finschia/ostracon v0.34.7"
 WASMVM_VERSION=$(shell go list -m github.com/Finschia/wasmvm | awk '{print $$2}')
+HEIGHLINER_VERSION=v1.5.3
 DOCKER := $(shell which docker)
 LEDGER_ENABLED ?= true
 BUILDDIR ?= $(CURDIR)/build
@@ -143,14 +144,14 @@ go-mod-cache: go.sum
 	@go mod download
 
 get-heighliner:
-	git clone https://github.com/strangelove-ventures/heighliner.git $(TEMPDIR)/heighliner
+	git clone --branch $(HEIGHLINER_VERSION) https://github.com/strangelove-ventures/heighliner.git $(TEMPDIR)/heighliner
 	cd $(TEMPDIR)/heighliner && go install
 
 local-image:
 ifeq (,$(shell which heighliner))
 	echo 'heighliner' binary not found. Consider running `make get-heighliner`
 else
-	heighliner build -c fnsad --local --dockerfile cosmos --build-target "wget https://github.com/Finschia/wasmvm/releases/download/$(WASMVM_VERSION)/libwasmvm_muslc.aarch64.a -O /lib/libwasmvm.aarch64.a && make install" --binaries "/go/bin/fnsad"
+	heighliner build -c finschia --local --dockerfile cosmos --build-target "wget https://github.com/Finschia/wasmvm/releases/download/$(WASMVM_VERSION)/libwasmvm_muslc.aarch64.a -O /lib/libwasmvm.aarch64.a && make install" --binaries "/go/bin/fnsad"
 endif
 
 .PHONY: all build install clean wasmvmlib build-reproducible get-heighliner local-image

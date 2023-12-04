@@ -32,24 +32,22 @@ func TestConformance(t *testing.T) {
 
 func latestFinschiaChain(numOfValidators, numOfFullNodes int) *interchaintest.ChainSpec {
 	return &interchaintest.ChainSpec{
-		Name:      "finschia",
-		ChainName: "finschia",
-		Version:   "local",
+		Version: "local",
 		ChainConfig: ibc.ChainConfig{
 			Type:    "cosmos",
-			Name:    "fnsad",
+			Name:    "finschia",
 			ChainID: "finschia-2",
 			Images: []ibc.DockerImage{
 				{
-					Repository: "fnsad",
+					Repository: "finschia",
 					Version:    "local",
 					UidGid:     "1025:1025",
 				},
 			},
 			Bin:            "fnsad",
 			Bech32Prefix:   "link",
-			Denom:          "ucony",
-			GasPrices:      "0.0ucony",
+			Denom:          "cony",
+			GasPrices:      "0.15cony",
 			GasAdjustment:  1.3,
 			TrustingPeriod: "336h",
 		},

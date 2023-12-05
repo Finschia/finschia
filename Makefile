@@ -16,6 +16,7 @@ SDK_PACK := $(shell go list -m github.com/Finschia/finschia-sdk | sed  's/ /\@/g
 GO_VERSION := $(shell cat go.mod | grep -E 'go [0-9].[0-9]+' | cut -d ' ' -f 2)
 OST_VERSION := $(shell go list -m github.com/Finschia/ostracon | sed 's:.* ::') # grab everything after the space in "github.com/Finschia/ostracon v0.34.7"
 WASMVM_VERSION=$(shell go list -m github.com/Finschia/wasmvm | awk '{print $$2}')
+HEIGHLINER_VERSION=v1.5.3
 DOCKER := $(shell which docker)
 LEDGER_ENABLED ?= true
 BUILDDIR ?= $(CURDIR)/build
@@ -142,7 +143,18 @@ go-mod-cache: go.sum
 	@echo "--> Download go modules to local cache"
 	@go mod download
 
-.PHONY: all build install clean wasmvmlib build-reproducible
+get-heighliner:
+	git clone --branch $(HEIGHLINER_VERSION) https://github.com/strangelove-ventures/heighliner.git $(TEMPDIR)/heighliner
+	cd $(TEMPDIR)/heighliner && go install
+
+local-image:
+ifeq (,$(shell which heighliner))
+	echo 'heighliner' binary not found. Consider running `make get-heighliner`
+else
+	heighliner build -c finschia --local --dockerfile cosmos --build-target "wget https://github.com/Finschia/wasmvm/releases/download/$(WASMVM_VERSION)/libwasmvm_muslc.aarch64.a -O /lib/libwasmvm.aarch64.a && make install" --binaries "/go/bin/fnsad"
+endif
+
+.PHONY: all build install clean wasmvmlib build-reproducible get-heighliner local-image
 
 
 ###############################################################################
@@ -176,8 +188,10 @@ test-integration-multi-node: docker-build
 test-upgrade-name:
 	@sh contrib/check-upgrade-name.sh
 
-.PHONY: test test-all test-unit test-race test-cover benchmark test-integration test-integration-multi-node
+test-e2e-ibc:
+	cd interchaintest && go test -v ./...
 
+.PHONY: test test-all test-unit test-race test-cover benchmark test-integration test-integration-multi-node test-e2e-ibc
 
 ###############################################################################
 ###                                Docker                                   ###

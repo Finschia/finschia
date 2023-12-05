@@ -47,7 +47,7 @@ func latestFinschiaChain(numOfValidators, numOfFullNodes int) *interchaintest.Ch
 			Bin:            "fnsad",
 			Bech32Prefix:   "link",
 			Denom:          "cony",
-			GasPrices:      "0.15cony",
+			GasPrices:      "0.015cony",
 			GasAdjustment:  1.3,
 			TrustingPeriod: "336h",
 		},

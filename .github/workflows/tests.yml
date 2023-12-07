@@ -19,7 +19,7 @@ jobs:
   install-tparse:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: '1.20'
       - name: Display go version
@@ -39,7 +39,7 @@ jobs:
         go-arch: ["amd64"]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: '1.20'
       - uses: technote-space/get-diff-action@v6.1.2
@@ -57,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: '1.20'
       - name: Create a file with all the pkgs
@@ -91,7 +91,7 @@ jobs:
         part: ["00", "01", "02", "03"]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: '1.20'
       - uses: technote-space/get-diff-action@v6.1.2
@@ -175,7 +175,7 @@ jobs:
         part: ["00", "01", "02", "03"]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: '1.20'
       - uses: technote-space/get-diff-action@v6.1.2
@@ -248,7 +248,7 @@ jobs:
         part: ["00", "01", "02", "03"]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: '1.20'
       - uses: technote-space/get-diff-action@v6.1.2
@@ -317,7 +317,7 @@ jobs:
     needs: [build, tests]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: '1.20'
       - name: Install docker-compose

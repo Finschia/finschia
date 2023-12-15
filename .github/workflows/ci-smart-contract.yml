@@ -65,7 +65,7 @@ jobs:
       - name: Build
         run: GOARCH=${{ matrix.go-arch }} LEDGER_ENABLED=false LINK_STATICALLY=true make build
       - name: Upload build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: fnsad
           path: ./build/fnsad
@@ -128,7 +128,7 @@ jobs:
           tags: ${{ env.TEST_DOCKER_IMAGE }}
           outputs: type=docker,dest=/tmp/finschia-ci-test.tar
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: finschia-ci-test
           path: /tmp/finschia-ci-test.tar

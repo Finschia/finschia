@@ -27,7 +27,7 @@ jobs:
       - name: install tparse
         run: |
           export GO111MODULE="on" && go install github.com/mfridman/tparse@v0.8.3
-      - uses: actions/cache@v3.3.1
+      - uses: actions/cache@v4
         with:
           path: ~/go/bin
           key: ${{ runner.os }}-go-tparse-binary
@@ -230,7 +230,7 @@ jobs:
         with:
           name: "${{ github.sha }}-03-integration-output"
         if: env.GIT_DIFF
-      - uses: actions/cache@v3.3.1
+      - uses: actions/cache@v4
         with:
           path: ~/go/bin
           key: ${{ runner.os }}-go-tparse-binary
@@ -303,7 +303,7 @@ jobs:
         with:
           name: "${{ github.sha }}-03-integration-multi-node-output"
         if: env.GIT_DIFF
-      - uses: actions/cache@v3.3.1
+      - uses: actions/cache@v4
         with:
           path: ~/go/bin
           key: ${{ runner.os }}-go-tparse-binary

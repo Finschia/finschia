@@ -7,7 +7,7 @@
 ARG GO_VERSION="1.20"
 ARG RUNNER_IMAGE="alpine:3.17"
 
-FROM golang:${GO_VERSION}-alpine AS build-env
+FROM golang:${GO_VERSION}-alpine3.17 AS build-env
 
 ARG FINSCHIA_BUILD_OPTIONS=""
 ARG GIT_VERSION

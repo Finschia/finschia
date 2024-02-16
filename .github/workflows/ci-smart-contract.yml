@@ -59,7 +59,7 @@ jobs:
         go-arch: ["amd64"]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: ${{ env.GO_VERSION }}
       - name: Build
@@ -79,7 +79,7 @@ jobs:
         versions: ${{ fromJson(needs.get-cosmwasm-releases.outputs.cosmwasm_versions) }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           go-version: ${{ env.GO_VERSION }}
       - name: Download smart contracts

@@ -37,7 +37,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ## [Unreleased]
 
 ### Features
-* (build) [\#329](https://github.com/Finschia/finschia/pull/329) rename namespace to v2
+* (build) [\#329](https://github.com/Finschia/finschia/pull/329) rename namespace to v3
 
 ### Improvements
 * (improvements) [\#230](https://github.com/Finschia/finschia/pull/230) fix Makefile for format and execute make format #230

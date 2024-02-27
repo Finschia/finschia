@@ -129,7 +129,7 @@ import (
 )
 
 const appName = "Finschia"
-const upgradeName = "v2-Daisy"
+const upgradeName = "v3-Rose"
 
 var (
 	// DefaultNodeHome default home directories for the application daemon

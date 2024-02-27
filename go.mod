@@ -1,4 +1,4 @@
-module github.com/Finschia/finschia/v2
+module github.com/Finschia/finschia/v3
 
 go 1.20
 

@@ -38,9 +38,9 @@ import (
 	"github.com/Finschia/wasmd/x/wasm"
 	wasmkeeper "github.com/Finschia/wasmd/x/wasm/keeper"
 
-	"github.com/Finschia/finschia/v2/app"
-	"github.com/Finschia/finschia/v2/app/params"
-	fnsatypes "github.com/Finschia/finschia/v2/types"
+	"github.com/Finschia/finschia/v3/app"
+	"github.com/Finschia/finschia/v3/app/params"
+	fnsatypes "github.com/Finschia/finschia/v3/types"
 )
 
 const (

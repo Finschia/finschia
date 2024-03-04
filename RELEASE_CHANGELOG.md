@@ -275,6 +275,7 @@ Please refer [CHANGELOG_OF_GAIA_v4.0.4](https://github.com/cosmos/gaia/blob/v4.0
 
 
 <!-- Release links -->
+[v3.0.0]: https://github.com/Finschia/finschia/releases/tag/v3.0.0
 [v2.0.0]: https://github.com/Finschia/finschia/releases/tag/v2.0.0
 [v1.0.0]: https://github.com/Finschia/finschia/releases/tag/v1.0.0
 [v0.7.0]: https://github.com/Finschia/finschia/releases/tag/v0.7.0

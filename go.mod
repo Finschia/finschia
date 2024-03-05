@@ -4,13 +4,8 @@ go 1.20
 
 require (
 	github.com/Finschia/finschia-sdk v0.48.1
-<<<<<<< HEAD
-	github.com/Finschia/ostracon v1.1.2
-	github.com/Finschia/wasmd v0.2.0
-=======
 	github.com/Finschia/ostracon v1.1.3
 	github.com/Finschia/wasmd v0.3.0
->>>>>>> 53ce63f (build(deps): Bump github.com/Finschia/ostracon from 1.1.2 to 1.1.3 (#333))
 	github.com/cosmos/ibc-go/v4 v4.3.1
 	github.com/golang/mock v1.6.0
 	github.com/gorilla/mux v1.8.0
@@ -30,7 +25,7 @@ require (
 	github.com/99designs/keyring v1.2.1 // indirect
 	github.com/ChainSafe/go-schnorrkel v0.0.0-20200405005733-88cbf1b4c40d // indirect
 	github.com/Finschia/r2ishiguro_vrf v0.1.2 // indirect
-	github.com/Finschia/wasmvm v1.1.1-0.11.6 // indirect
+	github.com/Finschia/wasmvm v1.1.1-0.12.0 // indirect
 	github.com/VictoriaMetrics/fastcache v1.12.1 // indirect
 	github.com/Workiva/go-datastructures v1.1.1 // indirect
 	github.com/armon/go-metrics v0.4.1 // indirect

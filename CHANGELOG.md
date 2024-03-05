@@ -37,28 +37,16 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ## [Unreleased]
 
 ### Features
-* (build) [\#329](https://github.com/Finschia/finschia/pull/329) rename namespace to v3
 
 ### Improvements
-* (improvements) [\#230](https://github.com/Finschia/finschia/pull/230) fix Makefile for format and execute make format #230
-* (chore) [\#299](https://github.com/Finschia/finschia/pull/299) remove x/token and x/collection apis in swagger
 
 ### Bug Fixes
-* (finschia-sdk) [\#297](https://github.com/Finschia/finschia/pull/297) bump up finschia-sdk from v0.48.0 to v0.48.1
-* (ostracon) [\#333](https://github.com/Finschia/finschia/pull/333) bump up ostracon from v1.1.2 to v1.1.3
 
 ### Breaking Changes
-* (wasmd) [\#328](https://github.com/Finschia/finschia/pull/328) bump up wasmd from v0.2.0 to v0.3.0
 
 ### Build, CI
-* (ci) [\#290](https://github.com/Finschia/finschia/pull/290) remove autopr ci
-* (ci) [\#291](https://github.com/Finschia/finschia/pull/291) fix goreleaser ci error and replace release-build
-* (repo) [\#295](https://github.com/Finschia/finschia/pull/295) setup CODEOWNERS and backport action
-* (ci) [\#296](https://github.com/Finschia/finschia/pull/296) bump actions/checkout from 3 to 4
-* (ci) [\#305](https://github.com/Finschia/finschia/pull/305) add e2e-ibc ci
-* (build) [\#316](https://github.com/Finschia/finschia/pull/316) change docker image version to fix build error
 
 ### Docs
 
 <!-- Release links -->
-[Unreleased]: https://github.com/Finschia/finschia/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/Finschia/finschia/compare/v3.0.0...HEAD

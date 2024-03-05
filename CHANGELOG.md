@@ -41,6 +41,11 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Improvements
 
 ### Bug Fixes
+<<<<<<< HEAD
+=======
+* (finschia-sdk) [\#297](https://github.com/Finschia/finschia/pull/297) bump up finschia-sdk from v0.48.0 to v0.48.1
+* (ostracon) [\#333](https://github.com/Finschia/finschia/pull/333) bump up ostracon from v1.1.2 to v1.1.3
+>>>>>>> 53ce63f (build(deps): Bump github.com/Finschia/ostracon from 1.1.2 to 1.1.3 (#333))
 
 ### Breaking Changes
 

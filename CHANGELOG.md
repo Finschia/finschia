@@ -41,7 +41,6 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Improvements
 
 ### Bug Fixes
-* (ostracon) [\#333](https://github.com/Finschia/finschia/pull/333) bump up ostracon from v1.1.2 to v1.1.3
 
 ### Breaking Changes
 
@@ -50,4 +49,4 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Docs
 
 <!-- Release links -->
-[Unreleased]: https://github.com/Finschia/finschia/compare/v2.0.1...HEAD
+[Unreleased]: https://github.com/Finschia/finschia/compare/v2.0.2...HEAD

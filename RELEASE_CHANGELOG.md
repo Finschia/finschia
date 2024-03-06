@@ -34,7 +34,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 # Changelog
 
-## [v3.0.0] - 2024-03-04
+## [v3.0.0]
 
 ### Features
 * (build) [\#329](https://github.com/Finschia/finschia/pull/329) rename namespace to v3
@@ -58,7 +58,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (ci) [\#305](https://github.com/Finschia/finschia/pull/305) add e2e-ibc ci
 * (build) [\#316](https://github.com/Finschia/finschia/pull/316) change docker image version to fix build error
 
-## [v2.0.0] - 2023-10-19
+## [v2.0.0]
 
 This version base on [finschia-sdk v0.48.0](https://github.com/Finschia/finschia-sdk/releases/tag/v0.48.0), [Ostracon v1.1.2](https://github.com/Finschia/ostracon/tree/v1.1.2), [finschia/wasmd v0.2.0](https://github.com/Finschia/wasmd/releases/tag/v0.2.0) and [finschia/ibc-go v4.3.1](https://github.com/Finschia/ibc-go/releases/tag/v4.3.1).
 
@@ -105,7 +105,7 @@ This version base on [finschia-sdk v0.48.0](https://github.com/Finschia/finschia
 * (docs) [\#281](https://github.com/Finschia/finschia/pull/281) Update guide for static build on CentOS
 
 
-## [v1.0.0] - 2023-04-24
+## [v1.0.0]
 
 This version base on [finschia-sdk v0.47.0](https://github.com/Finschia/finschia-sdk/releases/tag/v0.47.0), [Ostracon v1.1.0](https://github.com/Finschia/ostracon/tree/v1.1.0), [finschia/wasmd v0.1.3](https://github.com/Finschia/wasmd/releases/tag/v0.1.3) and [finschia/ibc-go v3.3.3](https://github.com/Finschia/ibc-go/releases/tag/v3.3.3).
 
@@ -153,7 +153,7 @@ This version base on [finschia-sdk v0.47.0](https://github.com/Finschia/finschia
 * (license) [\#170](https://github.com/Finschia/finschia/pull/170) fix license copyright holder and typo
 
 
-## [v0.7.0] - 2022-11-29
+## [v0.7.0]
 
 This version base on [finschia-sdk v0.46.0](https://github.com/Finschia/finschia-sdk/releases/tag/v0.46.0).
 
@@ -264,26 +264,3 @@ This version based on finschia-sdk v0.46.0-rc2
 
 ### Build, CI
 * (build) [\#25](https://github.com/Finschia/finschia/pull/25) Fix localnet-start
-
-## [gaia v4.0.4] - 2021-03-15
-Initial lbm is based on the tendermint v0.34.9+, cosmos-sdk v0.42.0+, gaia v4.0.4
-
-* (tendermint) [v0.34.9](https://github.com/tendermint/tendermint/releases/tag/v0.34.9).
-* (cosmos-sdk) [v0.42.0](https://github.com/cosmos/cosmos-sdk/releases/tag/v0.42.0).
-* (gaia) [v4.0.4](https://github.com/cosmos/gaia/releases/tag/v4.0.4).
-
-Please refer [CHANGELOG_OF_GAIA_v4.0.4](https://github.com/cosmos/gaia/blob/v4.0.4/CHANGELOG.md)
-
-
-<!-- Release links -->
-[v3.0.0]: https://github.com/Finschia/finschia/releases/tag/v3.0.0
-[v2.0.0]: https://github.com/Finschia/finschia/releases/tag/v2.0.0
-[v1.0.0]: https://github.com/Finschia/finschia/releases/tag/v1.0.0
-[v0.7.0]: https://github.com/Finschia/finschia/releases/tag/v0.7.0
-[v0.6.0]: https://github.com/Finschia/finschia/releases/tag/v0.6.0
-[v0.5.0]: https://github.com/Finschia/finschia/releases/tag/v0.5.0
-[v0.4.0]: https://github.com/Finschia/finschia/releases/tag/v0.4.0
-[v0.3.0]: https://github.com/Finschia/finschia/releases/tag/v0.3.0
-[v0.2.0]: https://github.com/Finschia/finschia/releases/tag/v0.2.0
-[v0.1.0]: https://github.com/Finschia/finschia/releases/tag/v0.1.0
-[gaia v4.0.4]: https://github.com/cosmos/gaia/releases/tag/v4.0.4

@@ -11,13 +11,13 @@ def get_prev_gittag(target_tag: str) -> str:
     if result.returncode == 0:
         tags = result.stdout.strip().split("\n")
         loc = tags.index(target_tag) - 1
+        if loc < 0:
+            return None
         while True:
             prev_tag = tags[loc] if len(tags) > 1 else ""
             if "rc" not in prev_tag:
                 break
             loc -= 1
-        if int(target_tag[1:].split(".")[0]) != int(prev_tag[1:].split(".")[0]):
-            return None
         return prev_tag
     else:
         raise subprocess.CalledProcessError(
@@ -66,7 +66,9 @@ def extract_changes(cur_tag: str, prev_tag: str) -> str:
     start_marker = f"## [{cur_tag}]"
     start_pos = document.find(start_marker)
     if start_pos != -1:
-        if prev_tag is None:
+        if prev_tag == None or (
+            int(cur_tag[1:].split(".")[0]) != int(prev_tag[1:].split(".")[0])
+        ):
             content = document[start_pos + len(start_marker) :].strip()
         else:
             end_marker = f"## [{prev_tag}]"
@@ -80,7 +82,7 @@ def extract_changes(cur_tag: str, prev_tag: str) -> str:
 release_note = f"""# Finschia {TAG} Release Note
 
 ## What's Changed
-Check out all the changes [here](https://github.com/Finschia/finschia/compare/{PREV_TAG}...{TAG})
+Check out all the changes [here](https://github.com/Finschia/finschia/compare/{PREV_TAG or ""}...{TAG})
 
 {extract_changes(TAG, PREV_TAG)}
 

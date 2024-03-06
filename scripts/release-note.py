@@ -79,8 +79,6 @@ def extract_changes(cur_tag: str, prev_tag: str) -> str:
 
 release_note = f"""# Finschia {TAG} Release Note
 
-## Highlights
-
 ## What's Changed
 Check out all the changes [here](https://github.com/Finschia/finschia/compare/{PREV_TAG}...{TAG})
 

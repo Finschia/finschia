@@ -60,8 +60,8 @@ WASMD_VERSION = extract_package_version(document, "github.com/Finschia/wasmd")
 IBC_VERSION = extract_package_version(document, "github.com/cosmos/ibc-go/v4")
 
 
-def extract_changes(cur_tag: str, prev_tag: str) -> str:
-    with open("RELEASE_CHANGELOG.md", "r") as file:
+def extract_release_contents(target: str, cur_tag: str, prev_tag: str) -> str:
+    with open(target, "r") as file:
         document = file.read()
     start_marker = f"## [{cur_tag}]"
     start_pos = document.find(start_marker)
@@ -81,10 +81,12 @@ def extract_changes(cur_tag: str, prev_tag: str) -> str:
 
 release_note = f"""# Finschia {TAG} Release Note
 
+{extract_release_contents("RELEASE_DESCR.md", TAG, PREV_TAG)}
+
 ## What's Changed
 Check out all the changes [here](https://github.com/Finschia/finschia/compare/{PREV_TAG or ""}...{TAG})
 
-{extract_changes(TAG, PREV_TAG)}
+{extract_release_contents("RELEASE_CHANGELOG.md", TAG, PREV_TAG)}
 
 ## Base sub modules
 * Ostracon: [{OSTRACON_VERSION}](https://github.com/Finschia/ostracon/tree/{OSTRACON_VERSION})

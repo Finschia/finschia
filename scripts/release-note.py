@@ -91,7 +91,7 @@ release_note = f"""# Finschia {TAG} Release Note
 ## What's Changed
 Check out all the changes [here](https://github.com/Finschia/finschia/compare/{PREV_TAG or ""}...{TAG})
 
-{extract_release_contents("RELEASE_CHANGELOG.md", TAG, PREV_TAG)}
+{extract_release_contents("CHANGELOG.md", TAG, PREV_TAG)}
 
 ## Base sub modules
 * Ostracon: [{OSTRACON_VERSION}](https://github.com/Finschia/ostracon/tree/{OSTRACON_VERSION})

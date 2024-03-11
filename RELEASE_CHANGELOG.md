@@ -264,3 +264,15 @@ This version based on finschia-sdk v0.46.0-rc2
 
 ### Build, CI
 * (build) [\#25](https://github.com/Finschia/finschia/pull/25) Fix localnet-start
+
+<!-- Release links -->
+[v3.0.0]: https://github.com/Finschia/finschia/releases/tag/v3.0.0
+[v2.0.0]: https://github.com/Finschia/finschia/releases/tag/v2.0.0
+[v1.0.0]: https://github.com/Finschia/finschia/releases/tag/v1.0.0
+[v0.7.0]: https://github.com/Finschia/finschia/releases/tag/v0.7.0
+[v0.6.0]: https://github.com/Finschia/finschia/releases/tag/v0.6.0
+[v0.5.0]: https://github.com/Finschia/finschia/releases/tag/v0.5.0
+[v0.4.0]: https://github.com/Finschia/finschia/releases/tag/v0.4.0
+[v0.3.0]: https://github.com/Finschia/finschia/releases/tag/v0.3.0
+[v0.2.0]: https://github.com/Finschia/finschia/releases/tag/v0.2.0
+[v0.1.0]: https://github.com/Finschia/finschia/releases/tag/v0.1.0

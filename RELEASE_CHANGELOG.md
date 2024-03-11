@@ -34,7 +34,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 # Changelog
 
-## [v3.0.0]
+## [v3.0.0] - 2024-03-04
 
 ### Features
 * (build) [\#329](https://github.com/Finschia/finschia/pull/329) rename namespace to v3
@@ -58,9 +58,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (ci) [\#305](https://github.com/Finschia/finschia/pull/305) add e2e-ibc ci
 * (build) [\#316](https://github.com/Finschia/finschia/pull/316) change docker image version to fix build error
 
-## [v2.0.0]
-
-This version base on [finschia-sdk v0.48.0](https://github.com/Finschia/finschia-sdk/releases/tag/v0.48.0), [Ostracon v1.1.2](https://github.com/Finschia/ostracon/tree/v1.1.2), [finschia/wasmd v0.2.0](https://github.com/Finschia/wasmd/releases/tag/v0.2.0) and [finschia/ibc-go v4.3.1](https://github.com/Finschia/ibc-go/releases/tag/v4.3.1).
+## [v2.0.0] - 2023-10-19
 
 ### Features
 * (finschia-sdk) Bump github.com/Finschia/finschia-sdk from v0.47.0 to v0.48.0
@@ -105,9 +103,7 @@ This version base on [finschia-sdk v0.48.0](https://github.com/Finschia/finschia
 * (docs) [\#281](https://github.com/Finschia/finschia/pull/281) Update guide for static build on CentOS
 
 
-## [v1.0.0]
-
-This version base on [finschia-sdk v0.47.0](https://github.com/Finschia/finschia-sdk/releases/tag/v0.47.0), [Ostracon v1.1.0](https://github.com/Finschia/ostracon/tree/v1.1.0), [finschia/wasmd v0.1.3](https://github.com/Finschia/wasmd/releases/tag/v0.1.3) and [finschia/ibc-go v3.3.3](https://github.com/Finschia/ibc-go/releases/tag/v3.3.3).
+## [v1.0.0] - 2023-04-24
 
 ### Features
 * (build) [\#126](https://github.com/Finschia/finschia/pull/126) Automatically generates release note and binaries
@@ -153,9 +149,7 @@ This version base on [finschia-sdk v0.47.0](https://github.com/Finschia/finschia
 * (license) [\#170](https://github.com/Finschia/finschia/pull/170) fix license copyright holder and typo
 
 
-## [v0.7.0]
-
-This version base on [finschia-sdk v0.46.0](https://github.com/Finschia/finschia-sdk/releases/tag/v0.46.0).
+## [v0.7.0] - 2022-11-29
 
 ### Features
 * [\#108](https://github.com/Finschia/finschia/pull/108) Bump github.com/line/lbm-sdk from e19f863a8 to a389b6330
@@ -175,9 +169,7 @@ This version base on [finschia-sdk v0.46.0](https://github.com/Finschia/finschia
 * (app) [\#114](https://github.com/Finschia/finschia/pull/114) change the default compile setting to support ledger
 
 
-## [v0.6.0]
-
-This version based on [finschia-sdk v0.46.0-rc8](https://github.com/Finschia/finschia-sdk/releases/tag/v0.46.0-rc8)
+## [v0.6.0] - 2022-10-05
 
 ### Bug Fixes
 * (app) [\#96](https://github.com/Finschia/finschia/pull/96) fix the bug not setting `iavl-cache-size` value of the `app.toml`
@@ -193,9 +185,7 @@ This version based on [finschia-sdk v0.46.0-rc8](https://github.com/Finschia/fin
 * (build) [\#89](https://github.com/Finschia/finschia/pull/89) upgrade golang to 1.18
 
 
-## [v0.5.0]
-
-This version based on [finschia-sdk v0.46.0-rc6](https://github.com/Finschia/finschia-sdk/releases/tag/v0.46.0-rc6)
+## [v0.5.0] - 2022-09-08
 
 ### Features
 * (x/collection) [\#72](https://github.com/Finschia/finschia/pull/72) add x/collection
@@ -210,9 +200,7 @@ This version based on [finschia-sdk v0.46.0-rc6](https://github.com/Finschia/fin
 * (x/collection) [\#90](https://github.com/Finschia/finschia/pull/90) fix bugs in x/collection MsgModify
 
 
-## [v0.4.0]
-
-This version based on finschia-sdk v0.46.0-rc2
+## [v0.4.0] - 2022-06-13
 
 ### Features
 * (cosmos-sdk) [\#56](https://github.com/Finschia/finschia/pull/56) bump up cosmos-sdk v0.45.1
@@ -224,7 +212,7 @@ This version based on finschia-sdk v0.46.0-rc2
 * (app) [\#60](https://github.com/Finschia/finschia/pull/60) register authz module store key
 
 
-## [v0.3.0]
+## [v0.3.0] - 2022-03-31
 
 ### Bug Fixes
 * (build) [\#47](https://github.com/Finschia/finschia/pull/47) fix Docker build error
@@ -234,7 +222,7 @@ This version based on finschia-sdk v0.46.0-rc2
 * (x/upgrade) [\#42](https://github.com/Finschia/finschia/pull/42) add token module and bump cosmos-sdk v0.42.11
 
 
-## [v0.2.0]
+## [v0.2.0] - 2022-02-04
 
 ### Features
 * (x/upgrade) [\#33](https://github.com/Finschia/finschia/pull/33) To smoothen the update to the latest stable release, the SDK includes version map for managing migrations between SDK versions.
@@ -244,7 +232,7 @@ This version based on finschia-sdk v0.46.0-rc2
 ### Improvements
 * (slashing) [\#31] (https://github.com/Finschia/finschia/pull/31) Apply VoterSetCounter
 
-## [v0.1.0]
+## [v0.1.0] - 2021-11-01
 
 ### Features
 * (app) Revise bech32 prefix cosmos to link and tlink
@@ -276,3 +264,4 @@ This version based on finschia-sdk v0.46.0-rc2
 [v0.3.0]: https://github.com/Finschia/finschia/releases/tag/v0.3.0
 [v0.2.0]: https://github.com/Finschia/finschia/releases/tag/v0.2.0
 [v0.1.0]: https://github.com/Finschia/finschia/releases/tag/v0.1.0
+[gaia v4.0.4]: https://github.com/cosmos/gaia/releases/tag/v4.0.4

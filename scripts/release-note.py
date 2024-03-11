@@ -4,7 +4,6 @@ import subprocess
 
 
 def get_prev_gittag(target_tag: str) -> str:
-
     result = subprocess.run(
         ["git", "tag"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
     )
@@ -44,7 +43,7 @@ def extract_go_version(document: str):
 
 
 with open("go.mod", "r") as file:
-    document = file.read()
+    gomod = file.read()
 
 args = sys.argv[1:]
 if len(args) != 1:
@@ -53,30 +52,36 @@ if len(args) != 1:
 # Generate release note
 TAG = args[0]
 PREV_TAG = get_prev_gittag(TAG)
-GO_VERSION = extract_go_version(document)
-OSTRACON_VERSION = extract_package_version(document, "github.com/Finschia/ostracon")
-FNSASDK_VERSION = extract_package_version(document, "github.com/Finschia/finschia-sdk")
-WASMD_VERSION = extract_package_version(document, "github.com/Finschia/wasmd")
-IBC_VERSION = extract_package_version(document, "github.com/cosmos/ibc-go/v4")
+GO_VERSION = extract_go_version(gomod)
+OSTRACON_VERSION = extract_package_version(gomod, "github.com/Finschia/ostracon")
+FNSASDK_VERSION = extract_package_version(gomod, "github.com/Finschia/finschia-sdk")
+WASMD_VERSION = extract_package_version(gomod, "github.com/Finschia/wasmd")
+IBC_VERSION = extract_package_version(gomod, "github.com/cosmos/ibc-go/v4")
 
 
 def extract_release_contents(target: str, cur_tag: str, prev_tag: str) -> str:
     with open(target, "r") as file:
         document = file.read()
     start_marker = f"## [{cur_tag}]"
-    start_pos = document.find(start_marker)
+    start_pos = document.find(start_marker) + len(start_marker) + len(" - YYYY-MM-DD")
     if start_pos != -1:
-        if prev_tag == None or (
-            int(cur_tag[1:].split(".")[0]) != int(prev_tag[1:].split(".")[0])
-        ):
-            content = document[start_pos + len(start_marker) :].strip()
+        if prev_tag is None:
+            end_pos = document.find("<!-- Release links -->")
+            if end_pos == -1:
+                match = re.search(r"## \[v\d+\.\d+\.\d+] - \d{4}-\d{2}-\d{2}", document[start_pos:])
+                if match is None:
+                    end_pos = -1
+                else:
+                    end_pos = start_pos + match.start() - 1
         else:
             end_marker = f"## [{prev_tag}]"
             end_pos = document.find(end_marker)
-            content = document[start_pos + len(start_marker) : end_pos].strip()
+            if end_pos == -1:
+                match = re.search(r"## \[v\d+\.\d+\.\d+] - \d{4}-\d{2}-\d{2}", document[start_pos:])
+                end_pos = start_pos + match.start() - 1
     else:
         raise ValueError("Content not found between the specified markers.")
-    return content
+    return document[start_pos:end_pos].strip()
 
 
 release_note = f"""# Finschia {TAG} Release Note
@@ -93,7 +98,6 @@ Check out all the changes [here](https://github.com/Finschia/finschia/compare/{P
 * Finschia-sdk: [{FNSASDK_VERSION}](https://github.com/Finschia/finschia-sdk/tree/{FNSASDK_VERSION})
 * Finschia/wasmd: [{WASMD_VERSION}](https://github.com/Finschia/wasmd/tree/{WASMD_VERSION})
 * Finschia/ibc-go: [{IBC_VERSION}](https://github.com/Finschia/ibc-go/tree/{IBC_VERSION})
-
 
 ## Build from source
 You must use Go {GO_VERSION} if building from source
@@ -114,7 +118,6 @@ docker run finschia/finschianode:{TAG[1:]} fnsad version
 ## Download binaries
 
 Binaries for linux and darwin are available below.\n"""
-
 
 with open("RELEASE_NOTE.md", "w") as file:
     file.write(release_note)

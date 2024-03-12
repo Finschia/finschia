@@ -39,4 +39,4 @@ This version based on finschia-sdk v0.46.0-rc2
 ## [v0.2.0] - 2022-02-04
 
 ## [v0.1.0] - 2021-11-01
-This is the first release of the Finschia blockchain. It is based on [gaia v4.0.4].
+This is the first release of the Finschia blockchain. It is based on [gaia v4.0.4](https://github.com/cosmos/gaia/releases/tag/v4.0.4).

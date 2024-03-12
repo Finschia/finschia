@@ -12,11 +12,15 @@ def get_prev_gittag(target_tag: str) -> str:
         loc = tags.index(target_tag) - 1
         if loc < 0:
             return None
-        while True:
-            prev_tag = tags[loc] if len(tags) > 1 else ""
-            if "rc" not in prev_tag:
-                break
-            loc -= 1
+
+        if "rc" in target_tag:
+            prev_tag = tags[loc]
+        else:
+            while True:
+                prev_tag = tags[loc] if len(tags) > 1 else ""
+                if "rc" not in prev_tag:
+                    break
+                loc -= 1
         return prev_tag
     else:
         raise subprocess.CalledProcessError(
@@ -42,26 +46,12 @@ def extract_go_version(document: str):
         return None
 
 
-with open("go.mod", "r") as file:
-    gomod = file.read()
-
-args = sys.argv[1:]
-if len(args) != 1:
-    raise ValueError("Invalid number of arguments. Please provide the release version.")
-
-# Generate release note
-TAG = args[0]
-PREV_TAG = get_prev_gittag(TAG)
-GO_VERSION = extract_go_version(gomod)
-OSTRACON_VERSION = extract_package_version(gomod, "github.com/Finschia/ostracon")
-FNSASDK_VERSION = extract_package_version(gomod, "github.com/Finschia/finschia-sdk")
-WASMD_VERSION = extract_package_version(gomod, "github.com/Finschia/wasmd")
-IBC_VERSION = extract_package_version(gomod, "github.com/cosmos/ibc-go/v4")
-
-
 def extract_release_contents(target: str, cur_tag: str, prev_tag: str) -> str:
-    with open(target, "r") as file:
-        document = file.read()
+    if "rc" in cur_tag:
+        return ""
+
+    with open(target, "r") as f:
+        document = f.read()
     start_marker = f"## [{cur_tag}]"
     start_pos = document.find(start_marker) + len(start_marker) + len(" - YYYY-MM-DD")
     if start_pos != -1:
@@ -83,6 +73,22 @@ def extract_release_contents(target: str, cur_tag: str, prev_tag: str) -> str:
         raise ValueError("Content not found between the specified markers.")
     return document[start_pos:end_pos].strip()
 
+
+with open("go.mod", "r") as file:
+    gomod = file.read()
+
+args = sys.argv[1:]
+if len(args) != 1:
+    raise ValueError("Invalid number of arguments. Please provide the release version.")
+
+# Generate release note
+TAG = args[0]
+PREV_TAG = get_prev_gittag(TAG)
+GO_VERSION = extract_go_version(gomod)
+OSTRACON_VERSION = extract_package_version(gomod, "github.com/Finschia/ostracon")
+FNSASDK_VERSION = extract_package_version(gomod, "github.com/Finschia/finschia-sdk")
+WASMD_VERSION = extract_package_version(gomod, "github.com/Finschia/wasmd")
+IBC_VERSION = extract_package_version(gomod, "github.com/cosmos/ibc-go/v4")
 
 release_note = f"""# Finschia {TAG} Release Note
 

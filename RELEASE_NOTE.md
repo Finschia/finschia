@@ -9,7 +9,7 @@ Check out the [changelog](https://github.com/Finschia/finschia/blob/v2.0.2/RELEA
 ## Base sub modules
 * Ostracon: [v1.1.3](https://github.com/Finschia/ostracon/tree/v1.1.3)
 * Finschia-sdk: [v0.48.1](https://github.com/Finschia/finschia-sdk/tree/v0.48.1)
-* Finschia/wasmd: [v0.3.0](https://github.com/Finschia/wasmd/tree/v0.3.0)
+* Finschia/wasmd: [v0.2.0](https://github.com/Finschia/wasmd/tree/v0.2.0)
 * Finschia/ibc-go: [v4.3.1](https://github.com/Finschia/ibc-go/tree/v4.3.1)
 
 

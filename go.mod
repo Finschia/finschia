@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/Finschia/finschia-sdk v0.48.1
 	github.com/Finschia/ostracon v1.1.3
-	github.com/Finschia/wasmd v0.3.0
+	github.com/Finschia/wasmd v0.2.0
 	github.com/cosmos/ibc-go/v4 v4.3.1
 	github.com/golang/mock v1.6.0
 	github.com/gorilla/mux v1.8.0

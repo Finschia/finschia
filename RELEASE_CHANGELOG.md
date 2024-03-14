@@ -34,6 +34,13 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 # Changelog
 
+## [v2.0.2] - 2024-03-05
+
+This version base on [finschia-sdk v0.48.1](https://github.com/Finschia/finschia-sdk/releases/tag/v0.48.1), [Ostracon v1.1.3](https://github.com/Finschia/ostracon/tree/v1.1.3), [finschia/wasmd v0.2.0](https://github.com/Finschia/wasmd/releases/tag/v0.2.0) and [finschia/ibc-go v4.3.1](https://github.com/Finschia/ibc-go/releases/tag/v4.3.1).
+
+### Bug Fixes
+* (ostracon) [\#333](https://github.com/Finschia/finschia/pull/334) bump up ostracon from v1.1.2 to v1.1.3 (backport #334)
+
 ## [v2.0.1] - 2023-11-07
 
 This version base on [finschia-sdk v0.48.1](https://github.com/Finschia/finschia-sdk/releases/tag/v0.48.1), [Ostracon v1.1.2](https://github.com/Finschia/ostracon/tree/v1.1.2), [finschia/wasmd v0.2.0](https://github.com/Finschia/wasmd/releases/tag/v0.2.0) and [finschia/ibc-go v4.3.1](https://github.com/Finschia/ibc-go/releases/tag/v4.3.1).

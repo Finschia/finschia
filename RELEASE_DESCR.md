@@ -11,12 +11,6 @@ Feel free to add any highlights or other information you'd like to share with th
 <!-- <Desription of This Release> -->
 <!-- <Add Highlights or any sections if you need> -->
 
-## [v3.0.0] - 2024-03-04
-## Highlights
-* patch [CWA-2023-004 issue](https://forum.cosmos.network/t/high-severity-security-patch-upcoming-on-wed-10th-cwa-2023-004-brought-to-you-by-certik-and-confio/12840)
-* Ensure smart contracts compiled with Rust v1.70 run without errors.
-* disable custom querier in wasm
-
 ## [v2.0.0] - 2023-10-19
 
 ## [v1.0.0] - 2023-04-24

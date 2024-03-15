@@ -101,7 +101,7 @@ jobs:
             go.mod
             go.sum
             .github/workflows/test.yml
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-${{ matrix.part }}"
         if: env.GIT_DIFF
@@ -129,19 +129,19 @@ jobs:
             go.mod
             go.sum
             .github/workflows/test.yml
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-00-coverage"
         if: env.GIT_DIFF
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-01-coverage"
         if: env.GIT_DIFF
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-02-coverage"
         if: env.GIT_DIFF
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-03-coverage"
         if: env.GIT_DIFF
@@ -185,7 +185,7 @@ jobs:
             go.mod
             go.sum
             .github/workflows/test.yml
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-${{ matrix.part }}"
         if: env.GIT_DIFF
@@ -214,19 +214,19 @@ jobs:
             go.mod
             go.sum
             .github/workflows/test.yml
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-00-integration-output"
         if: env.GIT_DIFF
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-01-integration-output"
         if: env.GIT_DIFF
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-02-integration-output"
         if: env.GIT_DIFF
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-03-integration-output"
         if: env.GIT_DIFF
@@ -258,7 +258,7 @@ jobs:
             go.mod
             go.sum
             .github/workflows/test.yml
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-${{ matrix.part }}"
         if: env.GIT_DIFF
@@ -287,19 +287,19 @@ jobs:
             go.mod
             go.sum
             .github/workflows/test.yml
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-00-integration-multi-node-output"
         if: env.GIT_DIFF
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-01-integration-multi-node-output"
         if: env.GIT_DIFF
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-02-integration-multi-node-output"
         if: env.GIT_DIFF
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-03-integration-multi-node-output"
         if: env.GIT_DIFF

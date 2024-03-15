@@ -91,7 +91,7 @@ jobs:
           file: '.*'
           target: 'contracts/'
       - name: Download build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: fnsad
           path: ./build
@@ -152,7 +152,7 @@ jobs:
           file: '.*'
           target: 'contracts/'
       - name: Download docker image
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: finschia-ci-test
           path: /tmp

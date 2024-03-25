@@ -1,7 +1,18 @@
 #!/usr/bin/make -f
 
-COMMIT ?= $(shell git log -1 --format='%H')
+PACKAGES_NOSIMULATION=$(shell go list ./... | grep -v '/simulation')
+PACKAGES_SIMTEST=$(shell go list ./... | grep '/simulation')
+export CMTVERSION := $(shell go list -m github.com/cometbft/cometbft | sed 's:.* ::')
+export COMMIT := $(shell git log -1 --format='%H')
+LEDGER_ENABLED ?= true
+BINDIR ?= $(GOPATH)/bin
+BUILDDIR ?= $(CURDIR)/build
+SIMAPP = ./simapp
+MOCKS_DIR = $(CURDIR)/tests/mocks
+DOCKER := $(shell which docker)
+PROJECT_NAME = $(shell git remote get-url origin | xargs basename -s .git)
 
+HTTPS_GIT := https://github.com/Finschia/finschia.git
 # ascribe tag only if on a release/ branch, otherwise pick branch name and concatenate commit hash
 ifeq (,$(VERSION))
   BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
@@ -11,15 +22,9 @@ ifeq (,$(VERSION))
   endif
 endif
 
-PACKAGES_SIMTEST=$(shell go list ./... | grep '/simulation')
-SDK_PACK := $(shell go list -m github.com/Finschia/finschia-sdk | sed  's/ /\@/g')
 GO_VERSION := $(shell cat go.mod | grep -E 'go [0-9].[0-9]+' | cut -d ' ' -f 2)
-OST_VERSION := $(shell go list -m github.com/Finschia/ostracon | sed 's:.* ::') # grab everything after the space in "github.com/Finschia/ostracon v0.34.7"
 WASMVM_VERSION=$(shell go list -m github.com/Finschia/wasmvm | awk '{print $$2}')
 HEIGHLINER_VERSION=v1.5.3
-DOCKER := $(shell which docker)
-LEDGER_ENABLED ?= true
-BUILDDIR ?= $(CURDIR)/build
 ARCH ?= amd64
 TARGET_PLATFORM = linux/amd64
 TEMPDIR ?= $(CURDIR)/temp
@@ -35,12 +40,31 @@ endif
 
 build_tags = netgo
 ifeq ($(LEDGER_ENABLED),true)
-	build_tags += ledger
-endif
-ifeq ($(LINK_STATICALLY),true)
-	build_tags += static_wasm muslc
+  ifeq ($(OS),Windows_NT)
+    GCCEXE = $(shell where gcc.exe 2> NUL)
+    ifeq ($(GCCEXE),)
+      $(error gcc.exe not installed for ledger support, please install or set LEDGER_ENABLED=false)
+    else
+      build_tags += ledger
+    endif
+  else
+    UNAME_S = $(shell uname -s)
+    ifeq ($(UNAME_S),OpenBSD)
+      $(warning OpenBSD detected, disabling ledger support (https://github.com/cosmos/cosmos-sdk/issues/1988))
+    else
+      GCC = $(shell command -v gcc 2> /dev/null)
+      ifeq ($(GCC),)
+        $(error gcc not installed for ledger support, please install or set LEDGER_ENABLED=false)
+      else
+        build_tags += ledger
+      endif
+    endif
+  endif
 endif
 
+ifeq ($(WITH_CLEVELDB),yes)
+  build_tags += gcc
+endif
 build_tags += $(BUILD_TAGS)
 build_tags := $(strip $(build_tags))
 
@@ -51,15 +75,20 @@ build_tags_comma_sep := $(subst $(whitespace),$(comma),$(build_tags))
 
 # process linker flags
 
-ldflags = -X github.com/Finschia/finschia-sdk/version.Name=finschia \
-		  -X github.com/Finschia/finschia-sdk/version.AppName=fnsad \
-		  -X github.com/Finschia/finschia-sdk/version.Version=$(VERSION) \
-		  -X github.com/Finschia/finschia-sdk/version.Commit=$(COMMIT) \
-		  -X github.com/Finschia/finschia-sdk/types.DBBackend=goleveldb \
-		  -X "github.com/Finschia/finschia-sdk/version.BuildTags=$(build_tags_comma_sep)" \
-		  -X github.com/Finschia/ostracon/version.TMCoreSemVer=$(OST_VERSION) \
-		  -linkmode=external \
+ldflags = -X github.com/cosmos/cosmos-sdk/version.Name=finschia \
+		  -X github.com/cosmos/cosmos-sdk/version.AppName=fnsad \
+		  -X github.com/cosmos/cosmos-sdk/version.Version=$(VERSION) \
+		  -X github.com/cosmos/cosmos-sdk/version.Commit=$(COMMIT) \
+		  -X "github.com/cosmos/cosmos-sdk/version.BuildTags=$(build_tags_comma_sep)" \
+		  -X github.com/cometbft/cometbft/version.TMCoreSemVer=$(CMTVERSION) \
 		  -w -s
+
+ifeq ($(WITH_CLEVELDB),yes)
+  ldflags += -X github.com/cosmos/cosmos-sdk/types.DBBackend=cleveldb
+endif
+ifeq ($(LINK_STATICALLY),true)
+	ldflags += -linkmode=external -extldflags "-Wl,-z,muldefs -static"
+endif
 
 ldflags += $(LDFLAGS)
 ldflags := $(strip $(ldflags))
@@ -128,7 +157,7 @@ build-reproducible: go.sum
 		--build-arg GO_VERSION=$(GO_VERSION) \
 		--build-arg GIT_VERSION=$(VERSION) \
 		--build-arg GIT_COMMIT=$(COMMIT) \
-		--build-arg OST_VERSION=$(OST_VERSION) \
+		--build-arg CMTVERSION=$(CMTVERSION) \
 		--build-arg RUNNER_IMAGE=alpine:3.17 \
 		--platform $(TARGET_PLATFORM) \
 		-t finschia/finschianode:local-$(ARCH) \
@@ -207,7 +236,7 @@ docker-build:
 		--build-arg RUNNER_IMAGE=$(RUNNER_BASE_IMAGE_ALPINE) \
 		--build-arg GIT_VERSION=$(VERSION) \
 		--build-arg GIT_COMMIT=$(COMMIT) \
-		--build-arg OST_VERSION=$(OST_VERSION) \
+		--build-arg CMTVERSION=$(CMTVERSION) \
 		--platform=$(TARGET_PLATFORM) \
 		-f Dockerfile .
 .PHONY: docker-build
@@ -239,7 +268,7 @@ localnet-docker-build:
     		--build-arg RUNNER_IMAGE=$(RUNNER_BASE_IMAGE_ALPINE) \
     		--build-arg GIT_VERSION=$(VERSION) \
     		--build-arg GIT_COMMIT=$(COMMIT) \
-    		--build-arg OST_VERSION=$(OST_VERSION) \
+    		--build-arg CMTVERSION=$(CMTVERSION) \
     		--platform=$(TARGET_PLATFORM) \
     		-f networks/local/finschianode/Dockerfile .
 
@@ -282,7 +311,7 @@ release:
 		--platform linux/amd64 \
 		-e GITHUB_TOKEN=$(GITHUB_TOKEN) \
 		-e WASMVM_VERSION=$(WASMVM_VERSION) \
-		-e OST_VERSION=$(OST_VERSION) \
+		-e CMTVERSION=$(CMTVERSION) \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v `pwd`:/go/src/$(PACKAGE_NAME) \
 		-w /go/src/$(PACKAGE_NAME) \
@@ -300,7 +329,7 @@ release-dry-run:
 		--rm \
 		--platform linux/amd64 \
 		-e WASMVM_VERSION=$(WASMVM_VERSION) \
-		-e OST_VERSION=$(OST_VERSION) \
+		-e CMTVERSION=$(CMTVERSION) \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v `pwd`:/go/src/$(PACKAGE_NAME) \
 		-w /go/src/$(PACKAGE_NAME) \
@@ -315,7 +344,7 @@ release-snapshot:
 		--rm \
 		--platform linux/amd64 \
 		-e WASMVM_VERSION=$(WASMVM_VERSION) \
-		-e OST_VERSION=$(OST_VERSION) \
+		-e CMTVERSION=$(CMTVERSION) \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v `pwd`:/go/src/$(PACKAGE_NAME) \
 		-w /go/src/$(PACKAGE_NAME) \

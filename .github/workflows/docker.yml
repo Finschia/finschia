@@ -47,8 +47,8 @@ jobs:
       - name: Find Ostracon version
         id: find_ostracon_version
         run: |
-          OST_VERSION=$(go list -m github.com/Finschia/ostracon | sed 's:.* ::')
-          echo "OST_VERSION=$OST_VERSION" >> $GITHUB_ENV
+          CMTVERSION=$(go list -m github.com/cometbft/cometbft | sed 's:.* ::')
+          echo "CMTVERSION=$CMTVERSION" >> $GITHUB_ENV
 
       - name: Parse tag
         id: tag
@@ -82,7 +82,7 @@ jobs:
             RUNNER_IMAGE=${{ env.RUNNER_BASE_IMAGE_ALPINE }}
             GIT_VERSION=${{ env.VERSION }}
             GIT_COMMIT=${{ github.sha }}
-            OST_VERSION=${{ env.OST_VERSION }}
+            CMTVERSION=${{ env.CMTVERSION }}
           tags: |
             ${{ env.DOCKER_REPOSITORY }}:${{ env.VERSION }}
           labels: ${{steps.meta.outputs.labels}}

@@ -22,13 +22,13 @@ builds:
       - -mod=readonly
       - -trimpath
     ldflags:
-      - -X github.com/Finschia/finschia-sdk/version.Name=finschia
-      - -X github.com/Finschia/finschia-sdk/version.AppName=fnsad
-      - -X github.com/Finschia/finschia-sdk/version.Version={{ .Version }}
-      - -X github.com/Finschia/finschia-sdk/version.Commit={{ .Commit }}
-      - -X github.com/Finschia/finschia-sdk/types.DBBackend=goleveldb
-      - -X github.com/Finschia/finschia-sdk/version.BuildTags=netgo,ledger,static_wasm
-      - -X github.com/Finschia/ostracon/version.TMCoreSemVer={{ .Env.OST_VERSION }}
+      - -X github.com/cosmos/cosmos-sdk/version.Name=finschia
+      - -X github.com/cosmos/cosmos-sdk/version.AppName=fnsad
+      - -X github.com/cosmos/cosmos-sdk/version.Version={{ .Version }}
+      - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
+      - -X github.com/cosmos/cosmos-sdk/types.DBBackend=goleveldb
+      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,static_wasm
+      - -X github.com/cometbft/cometbft/version.TMCoreSemVer={{ .Env.CMTVERSION }}
       - -s -w
       - -linkmode=external
     tags:
@@ -59,13 +59,15 @@ builds:
       - -mod=readonly
       - -trimpath
     ldflags:
-      - -X github.com/Finschia/finschia-sdk/version.Name=finschia
-      - -X github.com/Finschia/finschia-sdk/version.AppName=fnsad
-      - -X github.com/Finschia/finschia-sdk/version.Version={{ .Version }}
-      - -X github.com/Finschia/finschia-sdk/version.Commit={{ .Commit }}
-      - -X github.com/Finschia/finschia-sdk/types.DBBackend=goleveldb
-      - -X "github.com/Finschia/finschia-sdk/version.BuildTags=netgo,osusergo,ledger,muslc"
-      - -X github.com/Finschia/ostracon/version.TMCoreSemVer={{ .Env.OST_VERSION }}
+      - -X github.com/cosmos/cosmos-sdk/version.Name=finschia
+      - -X github.com/cosmos/cosmos-sdk/version.AppName=fnsad
+      - -X github.com/cosmos/cosmos-sdk/version.Version={{ .Version }}
+      - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
+      - -X github.com/cosmos/cosmos-sdk/types.DBBackend=goleveldb
+      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,static_wasm
+      - -X github.com/cometbft/cometbft/version.TMCoreSemVer={{ .Env.CMTVERSION }}
+      - -s -w
+      - -linkmode=external
       - -w -s
       - -linkmode=external
       - -extldflags '-Wl,-z,muldefs -static -lm'

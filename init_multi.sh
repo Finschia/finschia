@@ -84,12 +84,12 @@ for ((i = 0; i < N; i++))
       do
         VALIDATOR="${VALIDATOR_PREFIX}${j}"
         ${BINARY} keys add ${VALIDATOR} ${KEYRING} --home ${CHAIN_DIR} --recover --account ${j} --output json <<< ${TEST_MNEMONIC} >> ${CHAIN_DIR}/validator_seed.json 2> /dev/null
-        redirect ${BINARY} add-genesis-account $(${BINARY} --home ${CHAIN_DIR} keys ${KEYRING} show ${VALIDATOR} -a) ${COINS} --home ${CHAIN_DIR}
+        redirect ${BINARY} genesis add-genesis-account $(${BINARY} --home ${CHAIN_DIR} keys ${KEYRING} show ${VALIDATOR} -a) ${COINS} --home ${CHAIN_DIR}
       done
 
     # Make gentx file and move it to GENTXS folder
     VALIDATOR="${VALIDATOR_PREFIX}${i}"
-    redirect ${BINARY} gentx ${VALIDATOR} ${DELEGATE} ${KEYRING} --home ${CHAIN_DIR} --chain-id ${CHAIN_ID}
+    redirect ${BINARY} genesis gentx ${VALIDATOR} ${DELEGATE} ${KEYRING} --home ${CHAIN_DIR} --chain-id ${CHAIN_ID}
     mv "${CHAIN_DIR}/config/gentx/$(ls ${CHAIN_DIR}/config/gentx | grep .json)" "${GENTXS_DIR}/${MONIKER}.json"
     rm -r "${CHAIN_DIR}/config/gentx"
   done
@@ -110,7 +110,7 @@ for ((i = 0; i < N; i++))
     # Set genesis file of 0-th chain dir and copy to other chains
     # If we call collect-gentxs at each chains, genesis_time values can be different.
     if [ ${i} -eq 0 ]; then
-      redirect ${BINARY} collect-gentxs --home ${CHAIN_DIR} --gentx-dir ${GENTXS_DIR}
+      redirect ${BINARY} genesis collect-gentxs --home ${CHAIN_DIR} --gentx-dir ${GENTXS_DIR}
     else
       cp ${SRC_GENESIS_FIlE} "${CHAIN_DIR}/config"
     fi

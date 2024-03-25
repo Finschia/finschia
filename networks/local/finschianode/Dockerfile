@@ -12,7 +12,7 @@ FROM golang:${GO_VERSION}-alpine3.17 AS build-env
 ARG FINSCHIA_BUILD_OPTIONS=""
 ARG GIT_VERSION
 ARG GIT_COMMIT
-ARG OST_VERSION
+ARG CMTVERSION
 
 # Set up OS dependencies
 RUN apk add --no-cache ca-certificates build-base linux-headers curl
@@ -47,7 +47,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
             -X github.com/Finschia/finschia-sdk/version.AppName=fnsad \
     		-X github.com/Finschia/finschia-sdk/version.Version=${GIT_VERSION} \
     		-X github.com/Finschia/finschia-sdk/version.Commit=${GIT_COMMIT} \
-    		-X github.com/Finschia/ostracon/version.TMCoreSemVer=${OST_VERSION} \
+    		-X github.com/cometbft/cometbft/version.TMCoreSemVer=$(CMTVERSION) \
     		-X github.com/Finschia/finschia-sdk/types.DBBackend=goleveldb \
     		-X github.com/Finschia/finschia-sdk/version.BuildTags=netgo,ledger,muslc,goleveldb \
             -w -s -linkmode=external -extldflags '-Wl,-z,muldefs -static'" \

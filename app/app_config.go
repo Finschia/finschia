@@ -3,6 +3,7 @@ package app
 import (
 	"time"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"google.golang.org/protobuf/types/known/durationpb"
 
 	runtimev1alpha1 "cosmossdk.io/api/cosmos/app/runtime/v1alpha1"
@@ -73,6 +74,11 @@ import (
 	_ "github.com/cosmos/cosmos-sdk/x/staking" // import for side-effects
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
+	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
+
+	icatypes "github.com/cosmos/ibc-go/v8/modules/apps/27-interchain-accounts/types"
+	ibctransfertypes "github.com/cosmos/ibc-go/v8/modules/apps/transfer/types"
+
 	collectionmodulev1 "github.com/Finschia/finschia-sdk/api/lbm/collection/module/v1"
 	foundationmodulev1 "github.com/Finschia/finschia-sdk/api/lbm/foundation/module/v1"
 	"github.com/Finschia/finschia-sdk/x/collection"
@@ -81,16 +87,25 @@ import (
 	_ "github.com/Finschia/finschia-sdk/x/foundation/module" // import for side-effects
 )
 
+const (
+	Bech32MainPrefix = "link"
+	Bech32ValPrefix  = Bech32MainPrefix + sdk.PrefixValidator + sdk.PrefixOperator
+	Bech32ConsPrefix = Bech32MainPrefix + sdk.PrefixValidator + sdk.PrefixConsensus
+)
+
 var (
 	// module account permissions
 	moduleAccPerms = []*authmodulev1.ModuleAccountPermission{
 		{Account: authtypes.FeeCollectorName},
 		{Account: distrtypes.ModuleName},
+		{Account: nft.ModuleName},
 		{Account: minttypes.ModuleName, Permissions: []string{authtypes.Minter}},
 		{Account: stakingtypes.BondedPoolName, Permissions: []string{authtypes.Burner, stakingtypes.ModuleName}},
 		{Account: stakingtypes.NotBondedPoolName, Permissions: []string{authtypes.Burner, stakingtypes.ModuleName}},
 		{Account: govtypes.ModuleName, Permissions: []string{authtypes.Burner}},
-		{Account: nft.ModuleName},
+		{Account: wasmtypes.ModuleName, Permissions: []string{authtypes.Burner}},
+		{Account: ibctransfertypes.ModuleName, Permissions: []string{authtypes.Minter, authtypes.Burner}},
+		{Account: icatypes.ModuleName},
 		{Account: collection.ModuleName},
 		{Account: foundation.ModuleName},
 		{Account: foundation.TreasuryName},
@@ -107,8 +122,8 @@ var (
 		collection.ModuleName,
 		foundation.ModuleName,
 		foundation.TreasuryName,
+		govtypes.ModuleName,
 		// We allow the following module accounts to receive funds:
-		// govtypes.ModuleName
 	}
 
 	// application configuration (used by depinject)
@@ -117,7 +132,7 @@ var (
 			{
 				Name: runtime.ModuleName,
 				Config: appconfig.WrapAny(&runtimev1alpha1.Module{
-					AppName: "SimApp",
+					AppName: "FnsaApp",
 					// NOTE: upgrade module is required to be prioritized
 					PreBlockers: []string{
 						upgradetypes.ModuleName,
@@ -184,7 +199,7 @@ var (
 			{
 				Name: authtypes.ModuleName,
 				Config: appconfig.WrapAny(&authmodulev1.Module{
-					Bech32Prefix:             "link",
+					Bech32Prefix:             Bech32MainPrefix,
 					ModuleAccountPermissions: moduleAccPerms,
 					// By default modules authority is the governance module. This is configurable with the following:
 					// Authority: "group", // A custom module authority can be set using a module name
@@ -206,8 +221,8 @@ var (
 				Config: appconfig.WrapAny(&stakingmodulev1.Module{
 					// NOTE: specifying a prefix is only necessary when using bech32 addresses
 					// If not specfied, the auth Bech32Prefix appended with "valoper" and "valcons" is used by default
-					Bech32PrefixValidator: "linkvaloper",
-					Bech32PrefixConsensus: "linkvalcons",
+					Bech32PrefixValidator: Bech32ValPrefix,
+					Bech32PrefixConsensus: Bech32ConsPrefix,
 				}),
 			},
 			{

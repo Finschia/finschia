@@ -135,6 +135,9 @@ import (
 	"github.com/CosmWasm/wasmd/x/wasm"
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
+
+	collectionkeeper "github.com/Finschia/finschia-sdk/x/collection/keeper"
+	foundationkeeper "github.com/Finschia/finschia-sdk/x/foundation/keeper"
 )
 
 const appName = "Finschia"
@@ -233,6 +236,9 @@ type FnsaApp struct {
 	ScopedTransferKeeper      capabilitykeeper.ScopedKeeper
 	ScopedIBCFeeKeeper        capabilitykeeper.ScopedKeeper
 	ScopedWasmKeeper          capabilitykeeper.ScopedKeeper
+
+	CollectionKeeper collectionkeeper.Keeper
+	FoundationKeeper foundationkeeper.Keeper
 
 	// the module manager
 	ModuleManager      *module.Manager
@@ -1182,7 +1188,8 @@ func BlockedAddresses() map[string]bool {
 	}
 
 	// allow the following addresses to receive funds
-	delete(modAccAddrs, authtypes.NewModuleAddress(govtypes.ModuleName).String())
+	// TODO: uncomment it when authority is ready
+	//delete(modAccAddrs, authtypes.NewModuleAddress(govtypes.ModuleName).String())
 
 	return modAccAddrs
 }

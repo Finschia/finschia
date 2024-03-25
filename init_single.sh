@@ -61,18 +61,18 @@ ${FNSAD} keys add evelyn --keyring-backend=test --recover --account=5 <<< ${TEST
 #   ${FNSAD} add-genesis-account link15la35q37j2dcg427kfy4el2l0r227xwhuaapxd 9223372036854775807link,1stake
 #fi
 # Add both accounts, with coins to the genesis file
-${FNSAD} add-genesis-account $(${FNSAD} keys show jack -a --keyring-backend=test) 1000link,1000000000000stake
-${FNSAD} add-genesis-account $(${FNSAD} keys show alice -a --keyring-backend=test) 1000link,1000000000000stake
-${FNSAD} add-genesis-account $(${FNSAD} keys show bob -a --keyring-backend=test) 1000link,1000000000000stake
-${FNSAD} add-genesis-account $(${FNSAD} keys show rinah -a --keyring-backend=test) 1000link,1000000000000stake
-${FNSAD} add-genesis-account $(${FNSAD} keys show sam -a --keyring-backend=test) 1000link,1000000000000stake
-${FNSAD} add-genesis-account $(${FNSAD} keys show evelyn -a --keyring-backend=test) 1000link,1000000000000stake
+${FNSAD} genesis add-genesis-account $(${FNSAD} keys show jack -a --keyring-backend=test) 1000link,1000000000000stake
+${FNSAD} genesis add-genesis-account $(${FNSAD} keys show alice -a --keyring-backend=test) 1000link,1000000000000stake
+${FNSAD} genesis add-genesis-account $(${FNSAD} keys show bob -a --keyring-backend=test) 1000link,1000000000000stake
+${FNSAD} genesis add-genesis-account $(${FNSAD} keys show rinah -a --keyring-backend=test) 1000link,1000000000000stake
+${FNSAD} genesis add-genesis-account $(${FNSAD} keys show sam -a --keyring-backend=test) 1000link,1000000000000stake
+${FNSAD} genesis add-genesis-account $(${FNSAD} keys show evelyn -a --keyring-backend=test) 1000link,1000000000000stake
 
-${FNSAD} gentx jack 100000000stake --keyring-backend=test --chain-id=finschia
+${FNSAD} genesis gentx jack 100000000stake --keyring-backend=test --chain-id=finschia
 
-${FNSAD} collect-gentxs
+${FNSAD} genesis collect-gentxs
 
-${FNSAD} validate-genesis
+${FNSAD} genesis validate
 
 # ${FNSAD} start --log_level *:debug --rpc.laddr=tcp://0.0.0.0:26657 --p2p.laddr=tcp://0.0.0.0:26656
 

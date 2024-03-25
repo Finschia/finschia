@@ -12,9 +12,8 @@ ifeq (,$(VERSION))
 endif
 
 PACKAGES_SIMTEST=$(shell go list ./... | grep '/simulation')
-SDK_PACK := $(shell go list -m github.com/Finschia/finschia-sdk | sed  's/ /\@/g')
 GO_VERSION := $(shell cat go.mod | grep -E 'go [0-9].[0-9]+' | cut -d ' ' -f 2)
-OST_VERSION := $(shell go list -m github.com/Finschia/ostracon | sed 's:.* ::') # grab everything after the space in "github.com/Finschia/ostracon v0.34.7"
+export CMTVERSION := $(shell go list -m github.com/cometbft/cometbft | sed 's:.* ::')
 WASMVM_VERSION=$(shell go list -m github.com/Finschia/wasmvm | awk '{print $$2}')
 HEIGHLINER_VERSION=v1.5.3
 DOCKER := $(shell which docker)
@@ -50,16 +49,14 @@ comma := ,
 build_tags_comma_sep := $(subst $(whitespace),$(comma),$(build_tags))
 
 # process linker flags
-
-ldflags = -X github.com/Finschia/finschia-sdk/version.Name=finschia \
-		  -X github.com/Finschia/finschia-sdk/version.AppName=fnsad \
-		  -X github.com/Finschia/finschia-sdk/version.Version=$(VERSION) \
-		  -X github.com/Finschia/finschia-sdk/version.Commit=$(COMMIT) \
-		  -X github.com/Finschia/finschia-sdk/types.DBBackend=goleveldb \
-		  -X "github.com/Finschia/finschia-sdk/version.BuildTags=$(build_tags_comma_sep)" \
-		  -X github.com/Finschia/ostracon/version.TMCoreSemVer=$(OST_VERSION) \
-		  -linkmode=external \
-		  -w -s
+ldflags = -X github.com/cosmos/cosmos-sdk/version.Name=finschia \
+		-X github.com/cosmos/cosmos-sdk/version.AppName=fnsad \
+		-X github.com/cosmos/cosmos-sdk/version.Version=$(VERSION) \
+		-X github.com/cosmos/cosmos-sdk/version.Commit=$(COMMIT) \
+		-X "github.com/cosmos/cosmos-sdk/version.BuildTags=$(build_tags_comma_sep)" \
+		-X github.com/cometbft/cometbft/version.TMCoreSemVer=$(CMTVERSION) \
+		-linkmode=external \
+        -w -s
 
 ldflags += $(LDFLAGS)
 ldflags := $(strip $(ldflags))

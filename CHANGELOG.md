@@ -48,6 +48,24 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ### Docs
 
+## [v2.0.2] - 2024-03-05
+
+### Bug Fixes
+* (ostracon) [\#333](https://github.com/Finschia/finschia/pull/334) bump up ostracon from v1.1.2 to v1.1.3 (backport #334)
+
+## [v2.0.1] - 2023-11-07
+
+### Improvements
+* (improvements) [\#230](https://github.com/Finschia/finschia/pull/230) fix Makefile for format and execute make format #230
+* (chore) [\#300](https://github.com/Finschia/finschia/pull/300) remove x/token and x/collection apis in swagger (backport #299)
+
+### Bug Fixes
+* (finschia-sdk) [\#298](https://github.com/Finschia/finschia/pull/298) bump up finschia-sdk from v0.48.0 to v0.48.1 (backport #297)
+
+### Build, CI
+* (ci) [\#290](https://github.com/Finschia/finschia/pull/290) remove autopr ci
+* (ci) [\#291](https://github.com/Finschia/finschia/pull/291) fix goreleaser ci error and replace release-build
+
 ## [v2.0.0] - 2023-10-19
 
 ### Features

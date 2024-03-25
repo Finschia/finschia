@@ -7,9 +7,15 @@ Feel free to add any highlights or other information you'd like to share with th
 
 # DESCRIPTION OF RELEASE
 
-## [vX.Y.Z] - YYYY-MM-DD
-<!-- <Desription of This Release> -->
-<!-- <Add Highlights or any sections if you need> -->
+## [v2.0.2] - 2024-03-05
+
+## Highlights
+* fix compatibility issues with `IBC relayer`
+
+## [v2.0.1] - 2023-11-07
+
+## Highlights
+* fix compatible with ledger in MacOS 0.13+
 
 ## [v2.0.0] - 2023-10-19
 

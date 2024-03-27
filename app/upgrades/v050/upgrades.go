@@ -5,9 +5,12 @@ import (
 
 	storetypes "cosmossdk.io/store/types"
 	circuittypes "cosmossdk.io/x/circuit/types"
+	"cosmossdk.io/x/nft"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 
 	"github.com/cosmos/cosmos-sdk/types/module"
+	consensustypes "github.com/cosmos/cosmos-sdk/x/consensus/types"
+	"github.com/cosmos/cosmos-sdk/x/group"
 
 	"github.com/Finschia/finschia/v3/app/upgrades"
 )
@@ -21,6 +24,9 @@ var Upgrade = upgrades.Upgrade{
 	StoreUpgrades: storetypes.StoreUpgrades{
 		Added: []string{
 			circuittypes.ModuleName,
+			consensustypes.ModuleName,
+			group.ModuleName,
+			nft.ModuleName,
 		},
 		Deleted: []string{},
 	},

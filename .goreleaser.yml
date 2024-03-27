@@ -28,7 +28,6 @@ builds:
       - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
       - -X github.com/cosmos/cosmos-sdk/types.DBBackend=goleveldb
       - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,static_wasm
-      - -X github.com/cometbft/cometbft/version.TMCoreSemVer={{ .Env.CMTVERSION }}
       - -s -w
       - -linkmode=external
     tags:

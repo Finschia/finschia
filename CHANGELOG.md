@@ -45,6 +45,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Breaking Changes
 
 ### Build, CI
+* (build) [\#346](https://github.com/Finschia/finschia/pull/346) stop injecting cometbft version
 
 ### Docs
 

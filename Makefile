@@ -2,7 +2,6 @@
 
 PACKAGES_NOSIMULATION=$(shell go list ./... | grep -v '/simulation')
 PACKAGES_SIMTEST=$(shell go list ./... | grep '/simulation')
-export CMTVERSION := $(shell go list -m github.com/cometbft/cometbft | sed 's:.* ::')
 export COMMIT := $(shell git log -1 --format='%H')
 LEDGER_ENABLED ?= true
 BINDIR ?= $(GOPATH)/bin
@@ -80,7 +79,6 @@ ldflags = -X github.com/cosmos/cosmos-sdk/version.Name=finschia \
 		  -X github.com/cosmos/cosmos-sdk/version.Version=$(VERSION) \
 		  -X github.com/cosmos/cosmos-sdk/version.Commit=$(COMMIT) \
 		  -X "github.com/cosmos/cosmos-sdk/version.BuildTags=$(build_tags_comma_sep)" \
-		  -X github.com/cometbft/cometbft/version.TMCoreSemVer=$(CMTVERSION) \
 		  -w -s
 
 ifeq ($(WITH_CLEVELDB),yes)
@@ -157,7 +155,6 @@ build-reproducible: go.sum
 		--build-arg GO_VERSION=$(GO_VERSION) \
 		--build-arg GIT_VERSION=$(VERSION) \
 		--build-arg GIT_COMMIT=$(COMMIT) \
-		--build-arg CMTVERSION=$(CMTVERSION) \
 		--build-arg RUNNER_IMAGE=alpine:3.17 \
 		--platform $(TARGET_PLATFORM) \
 		-t finschia/finschianode:local-$(ARCH) \
@@ -236,7 +233,6 @@ docker-build:
 		--build-arg RUNNER_IMAGE=$(RUNNER_BASE_IMAGE_ALPINE) \
 		--build-arg GIT_VERSION=$(VERSION) \
 		--build-arg GIT_COMMIT=$(COMMIT) \
-		--build-arg CMTVERSION=$(CMTVERSION) \
 		--platform=$(TARGET_PLATFORM) \
 		-f Dockerfile .
 .PHONY: docker-build
@@ -268,7 +264,6 @@ localnet-docker-build:
     		--build-arg RUNNER_IMAGE=$(RUNNER_BASE_IMAGE_ALPINE) \
     		--build-arg GIT_VERSION=$(VERSION) \
     		--build-arg GIT_COMMIT=$(COMMIT) \
-    		--build-arg CMTVERSION=$(CMTVERSION) \
     		--platform=$(TARGET_PLATFORM) \
     		-f networks/local/finschianode/Dockerfile .
 
@@ -311,7 +306,6 @@ release:
 		--platform linux/amd64 \
 		-e GITHUB_TOKEN=$(GITHUB_TOKEN) \
 		-e WASMVM_VERSION=$(WASMVM_VERSION) \
-		-e CMTVERSION=$(CMTVERSION) \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v `pwd`:/go/src/$(PACKAGE_NAME) \
 		-w /go/src/$(PACKAGE_NAME) \
@@ -329,7 +323,6 @@ release-dry-run:
 		--rm \
 		--platform linux/amd64 \
 		-e WASMVM_VERSION=$(WASMVM_VERSION) \
-		-e CMTVERSION=$(CMTVERSION) \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v `pwd`:/go/src/$(PACKAGE_NAME) \
 		-w /go/src/$(PACKAGE_NAME) \
@@ -344,7 +337,6 @@ release-snapshot:
 		--rm \
 		--platform linux/amd64 \
 		-e WASMVM_VERSION=$(WASMVM_VERSION) \
-		-e CMTVERSION=$(CMTVERSION) \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v `pwd`:/go/src/$(PACKAGE_NAME) \
 		-w /go/src/$(PACKAGE_NAME) \

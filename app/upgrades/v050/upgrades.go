@@ -3,13 +3,13 @@ package v050
 import (
 	"context"
 
-	"github.com/Finschia/finschia/v3/app/upgrades"
-
 	storetypes "cosmossdk.io/store/types"
 	circuittypes "cosmossdk.io/x/circuit/types"
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 
 	"github.com/cosmos/cosmos-sdk/types/module"
+
+	"github.com/Finschia/finschia/v3/app/upgrades"
 )
 
 // UpgradeName defines the on-chain upgrade name

@@ -3,8 +3,6 @@ package main
 import (
 	"os"
 
-	"github.com/Finschia/finschia/v3/app"
-	"github.com/Finschia/finschia/v3/app/params"
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/spf13/cobra"
 
@@ -24,6 +22,9 @@ import (
 
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
+
+	"github.com/Finschia/finschia/v3/app"
+	"github.com/Finschia/finschia/v3/app/params"
 )
 
 // NewRootCmd creates a new root command for wasmd. It is called once in the

@@ -3,10 +3,6 @@ package app
 import (
 	"fmt"
 
-	"github.com/Finschia/finschia/v3/app/upgrades"
-	"github.com/Finschia/finschia/v3/app/upgrades/noop"
-	v050 "github.com/Finschia/finschia/v3/app/upgrades/v050"
-
 	upgradetypes "cosmossdk.io/x/upgrade/types"
 
 	"github.com/cosmos/cosmos-sdk/baseapp"
@@ -24,6 +20,10 @@ import (
 
 	v2 "github.com/CosmWasm/wasmd/x/wasm/migrations/v2"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
+
+	"github.com/Finschia/finschia/v3/app/upgrades"
+	"github.com/Finschia/finschia/v3/app/upgrades/noop"
+	v050 "github.com/Finschia/finschia/v3/app/upgrades/v050"
 )
 
 // Upgrades list of chain upgrades

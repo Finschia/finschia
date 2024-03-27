@@ -3,11 +3,11 @@ package main
 import (
 	"os"
 
+	"github.com/Finschia/finschia/v3/app"
+
 	"cosmossdk.io/log"
 
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
-
-	"github.com/Finschia/finschia/v3/app"
 )
 
 func main() {

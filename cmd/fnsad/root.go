@@ -3,6 +3,8 @@ package main
 import (
 	"os"
 
+	"github.com/Finschia/finschia/v3/app"
+	"github.com/Finschia/finschia/v3/app/params"
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/spf13/cobra"
 
@@ -22,9 +24,6 @@ import (
 
 	wasmkeeper "github.com/CosmWasm/wasmd/x/wasm/keeper"
 	wasmtypes "github.com/CosmWasm/wasmd/x/wasm/types"
-
-	"github.com/Finschia/finschia/v3/app"
-	"github.com/Finschia/finschia/v3/app/params"
 )
 
 // NewRootCmd creates a new root command for wasmd. It is called once in the
@@ -81,7 +80,7 @@ func NewRootCmd() *cobra.Command {
 			// sets the RPC client needed for SIGN_MODE_TEXTUAL. This sign mode
 			// is only available if the client is online.
 			if !initClientCtx.Offline {
-				enabledSignModes := append(tx.DefaultSignModes, signing.SignMode_SIGN_MODE_TEXTUAL)
+				enabledSignModes := append(append([]signing.SignMode{}, tx.DefaultSignModes...), signing.SignMode_SIGN_MODE_TEXTUAL)
 				txConfigOpts := tx.ConfigOptions{
 					EnabledSignModes:           enabledSignModes,
 					TextualCoinMetadataQueryFn: txmodule.NewGRPCCoinMetadataQueryFn(initClientCtx),
@@ -112,8 +111,14 @@ func NewRootCmd() *cobra.Command {
 
 	// add keyring to autocli opts
 	autoCliOpts := tempApp.AutoCliOpts()
-	initClientCtx, _ = config.ReadFromClientConfig(initClientCtx)
-	autoCliOpts.Keyring, _ = keyring.NewAutoCLIKeyring(initClientCtx.Keyring)
+	initClientCtx, err := config.ReadFromClientConfig(initClientCtx)
+	if err != nil {
+		panic(err)
+	}
+	autoCliOpts.Keyring, err = keyring.NewAutoCLIKeyring(initClientCtx.Keyring)
+	if err != nil {
+		panic(err)
+	}
 	autoCliOpts.ClientCtx = initClientCtx
 
 	if err := autoCliOpts.EnhanceRootCommand(rootCmd); err != nil {

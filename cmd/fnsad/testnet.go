@@ -11,11 +11,11 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/spf13/cobra"
-	"github.com/spf13/pflag"
-
+	"github.com/Finschia/finschia/v3/app"
 	cmtconfig "github.com/cometbft/cometbft/config"
 	cmttime "github.com/cometbft/cometbft/types/time"
+	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 
 	"cosmossdk.io/math"
 	"cosmossdk.io/math/unsafe"
@@ -39,8 +39,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-
-	"github.com/Finschia/finschia/v3/app"
 )
 
 var (
@@ -146,17 +144,47 @@ Example:
 			config := serverCtx.Config
 
 			args := initArgs{}
-			args.outputDir, _ = cmd.Flags().GetString(flagOutputDir)
-			args.keyringBackend, _ = cmd.Flags().GetString(flags.FlagKeyringBackend)
-			args.chainID, _ = cmd.Flags().GetString(flags.FlagChainID)
-			args.minGasPrices, _ = cmd.Flags().GetString(server.FlagMinGasPrices)
-			args.nodeDirPrefix, _ = cmd.Flags().GetString(flagNodeDirPrefix)
-			args.nodeDaemonHome, _ = cmd.Flags().GetString(flagNodeDaemonHome)
-			args.startingIPAddress, _ = cmd.Flags().GetString(flagStartingIPAddress)
-			args.numValidators, _ = cmd.Flags().GetInt(flagNumValidators)
-			args.algo, _ = cmd.Flags().GetString(flags.FlagKeyType)
+			args.outputDir, err = cmd.Flags().GetString(flagOutputDir)
+			if err != nil {
+				return err
+			}
+			args.keyringBackend, err = cmd.Flags().GetString(flags.FlagKeyringBackend)
+			if err != nil {
+				return err
+			}
+			args.chainID, err = cmd.Flags().GetString(flags.FlagChainID)
+			if err != nil {
+				return err
+			}
+			args.minGasPrices, err = cmd.Flags().GetString(server.FlagMinGasPrices)
+			if err != nil {
+				return err
+			}
+			args.nodeDirPrefix, err = cmd.Flags().GetString(flagNodeDirPrefix)
+			if err != nil {
+				return err
+			}
+			args.nodeDaemonHome, err = cmd.Flags().GetString(flagNodeDaemonHome)
+			if err != nil {
+				return err
+			}
+			args.startingIPAddress, err = cmd.Flags().GetString(flagStartingIPAddress)
+			if err != nil {
+				return err
+			}
+			args.numValidators, err = cmd.Flags().GetInt(flagNumValidators)
+			if err != nil {
+				return err
+			}
+			args.algo, err = cmd.Flags().GetString(flags.FlagKeyType)
+			if err != nil {
+				return err
+			}
 
-			args.singleMachine, _ = cmd.Flags().GetBool(flagSingleHost)
+			args.singleMachine, err = cmd.Flags().GetBool(flagSingleHost)
+			if err != nil {
+				return err
+			}
 			config.Consensus.TimeoutCommit, err = cmd.Flags().GetDuration(flagCommitTimeout)
 			if err != nil {
 				return err
@@ -190,16 +218,47 @@ Example:
 	`, version.AppName),
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			args := startArgs{}
-			args.outputDir, _ = cmd.Flags().GetString(flagOutputDir)
-			args.chainID, _ = cmd.Flags().GetString(flags.FlagChainID)
-			args.minGasPrices, _ = cmd.Flags().GetString(server.FlagMinGasPrices)
-			args.numValidators, _ = cmd.Flags().GetInt(flagNumValidators)
-			args.algo, _ = cmd.Flags().GetString(flags.FlagKeyType)
-			args.enableLogging, _ = cmd.Flags().GetBool(flagEnableLogging)
-			args.rpcAddress, _ = cmd.Flags().GetString(flagRPCAddress)
-			args.apiAddress, _ = cmd.Flags().GetString(flagAPIAddress)
-			args.grpcAddress, _ = cmd.Flags().GetString(flagGRPCAddress)
-			args.printMnemonic, _ = cmd.Flags().GetBool(flagPrintMnemonic)
+			var err error
+			args.outputDir, err = cmd.Flags().GetString(flagOutputDir)
+			if err != nil {
+				return err
+			}
+			args.chainID, err = cmd.Flags().GetString(flags.FlagChainID)
+			if err != nil {
+				return err
+			}
+			args.minGasPrices, err = cmd.Flags().GetString(server.FlagMinGasPrices)
+			if err != nil {
+				return err
+			}
+			args.numValidators, err = cmd.Flags().GetInt(flagNumValidators)
+			if err != nil {
+				return err
+			}
+			args.algo, err = cmd.Flags().GetString(flags.FlagKeyType)
+			if err != nil {
+				return err
+			}
+			args.enableLogging, err = cmd.Flags().GetBool(flagEnableLogging)
+			if err != nil {
+				return err
+			}
+			args.rpcAddress, err = cmd.Flags().GetString(flagRPCAddress)
+			if err != nil {
+				return err
+			}
+			args.apiAddress, err = cmd.Flags().GetString(flagAPIAddress)
+			if err != nil {
+				return err
+			}
+			args.grpcAddress, err = cmd.Flags().GetString(flagGRPCAddress)
+			if err != nil {
+				return err
+			}
+			args.printMnemonic, err = cmd.Flags().GetBool(flagPrintMnemonic)
+			if err != nil {
+				return err
+			}
 
 			return startTestnet(cmd, args)
 		},

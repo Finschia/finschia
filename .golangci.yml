@@ -2,9 +2,9 @@ linters:
   enable:
     - bodyclose
     - deadcode
-    - depguard
     - dogsled
     - errcheck
+    - gci
     - goconst
     - gocritic
     - gofmt
@@ -68,6 +68,17 @@ linters-settings:
     # Default is to use a neutral variety of English.
     # Setting locale to US will correct the British spelling of 'colour' to 'color'.
     locale: US
+  gci:
+    custom-order: true
+    sections:
+      - standard # Standard section: captures all standard packages.
+      - default # Default section: contains all imports that could not be matched to another section type.
+      - prefix(cosmossdk.io)
+      - prefix(github.com/cosmos/cosmos-sdk)
+      - prefix(github.com/cosmos/ibc-go)
+      - prefix(github.com/CosmWasm/wasmd)
+      - prefix(github.com/Finschia/finschia-sdk)
+
 run:
   # default concurrency is a available CPU number
   concurrency: 4

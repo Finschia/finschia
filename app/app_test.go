@@ -48,6 +48,8 @@ func TestBlockedAddrs(t *testing.T) {
 	gapp := Setup(t)
 
 	for acc := range BlockedAddresses() {
+		acc := acc
+
 		t.Run(acc, func(t *testing.T) {
 			var addr sdk.AccAddress
 			if modAddr, err := sdk.AccAddressFromBech32(acc); err == nil {

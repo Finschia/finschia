@@ -82,7 +82,9 @@ func (app *FnsaApp) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAddrs [
 		if err != nil {
 			panic(err)
 		}
-		_, _ = app.DistrKeeper.WithdrawValidatorCommission(ctx, valBz)
+		if _, err := app.DistrKeeper.WithdrawValidatorCommission(ctx, valBz); err != nil {
+			panic(err)
+		}
 		return false
 	})
 	if err != nil {

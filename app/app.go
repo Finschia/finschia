@@ -146,6 +146,7 @@ const (
 	appName      = "Finschia"
 	NodeDir      = ".finschia"
 	Bech32Prefix = "link"
+	CoinType     = 438
 )
 
 // These constants are derived from the above variables.

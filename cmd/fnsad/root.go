@@ -35,6 +35,7 @@ func NewRootCmd() *cobra.Command {
 	cfg.SetBech32PrefixForValidator(app.Bech32PrefixValAddr, app.Bech32PrefixValPub)
 	cfg.SetBech32PrefixForConsensusNode(app.Bech32PrefixConsAddr, app.Bech32PrefixConsPub)
 	cfg.SetAddressVerifier(wasmtypes.VerifyAddressLen())
+	cfg.SetCoinType(app.CoinType)
 	cfg.Seal()
 	// we "pre"-instantiate the application for getting the injected/configured encoding configuration
 	// note, this is not necessary when using app wiring, as depinject can be directly used (see root_v2.go)

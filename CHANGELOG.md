@@ -37,6 +37,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ## [Unreleased]
 
 ### Features
+* (upgrade) [\#347](https://github.com/Finschia/finschia/pull/347) add new native modules
 
 ### Improvements
 

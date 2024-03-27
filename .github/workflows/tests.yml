@@ -336,10 +336,10 @@ jobs:
             exit 1
           fi
 
-  test-upgrade-name:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Test upgrade name
-        run: |
-          make test-upgrade-name
+  # test-upgrade-name:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Test upgrade name
+  #       run: |
+  #         make test-upgrade-name

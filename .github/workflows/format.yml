@@ -20,15 +20,11 @@ jobs:
         id: cache
         with:
           path: ~/go/bin
-          key: ${{ runner.os }}-go-v1.21-misspell-v0.3.4-goimports-reviser-v3.4.5
+          key: ${{ runner.os }}-go-v1.21-misspell-v0.3.4
       - name: install misspell
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
           go install github.com/client9/misspell/cmd/misspell@v0.3.4
-      - name: install goimports-reviser
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: |
-          go install github.com/incu6us/goimports-reviser/v3@v3.4.5
       - name: Make Format
         run: make format
       - name: Check Diff

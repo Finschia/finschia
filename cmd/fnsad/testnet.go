@@ -75,14 +75,14 @@ type startArgs struct {
 	algo          string
 	apiAddress    string
 	chainID       string
-	enableLogging bool
 	grpcAddress   string
 	minGasPrices  string
-	numValidators int
 	outputDir     string
-	printMnemonic bool
 	rpcAddress    string
 	timeoutCommit time.Duration
+	numValidators int
+	enableLogging bool
+	printMnemonic bool
 }
 
 func addTestnetFlagsToCmd(cmd *cobra.Command) {

@@ -14,7 +14,7 @@ endif
 PACKAGES_SIMTEST=$(shell go list ./... | grep '/simulation')
 SDK_PACK := $(shell go list -m github.com/Finschia/finschia-sdk | sed  's/ /\@/g')
 GO_VERSION := $(shell cat go.mod | grep -E 'go [0-9].[0-9]+' | cut -d ' ' -f 2)
-OST_VERSION := $(shell go list -m github.com/Finschia/ostracon | sed 's:.* ::') # grab everything after the space in "github.com/Finschia/ostracon v0.34.7"
+OCVERSION := $(shell go list -m github.com/Finschia/ostracon | sed 's:.* v::')
 WASMVM_VERSION=$(shell go list -m github.com/Finschia/wasmvm | awk '{print $$2}')
 DOCKER := $(shell which docker)
 LEDGER_ENABLED ?= true
@@ -56,7 +56,7 @@ ldflags = -X github.com/Finschia/finschia-sdk/version.Name=finschia \
 		  -X github.com/Finschia/finschia-sdk/version.Commit=$(COMMIT) \
 		  -X github.com/Finschia/finschia-sdk/types.DBBackend=goleveldb \
 		  -X "github.com/Finschia/finschia-sdk/version.BuildTags=$(build_tags_comma_sep)" \
-		  -X github.com/Finschia/ostracon/version.TMCoreSemVer=$(OST_VERSION) \
+		  -X github.com/Finschia/ostracon/version.OCCoreSemVer=$(OCVERSION) \
 		  -linkmode=external \
 		  -w -s
 

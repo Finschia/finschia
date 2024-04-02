@@ -37,6 +37,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ## [Unreleased]
 
 ### Features
+* (config) [\#345](https://github.com/Finschia/finschia/pull/345) set cointype
 
 ### Improvements
 

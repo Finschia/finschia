@@ -21,7 +21,7 @@ source ~/.bash_profile
 ```
 
 ::: tip
-**Go 1.20+** is required for the Finschia SDK.
+**Go 1.21+** is required for the Finschia SDK.
 :::
 
 ## Static build(Optional)

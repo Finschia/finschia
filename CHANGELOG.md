@@ -272,4 +272,3 @@ Ref: https://keepachangelog.com/en/1.0.0/
 [v0.3.0]: https://github.com/Finschia/finschia/releases/tag/v0.3.0
 [v0.2.0]: https://github.com/Finschia/finschia/releases/tag/v0.2.0
 [v0.1.0]: https://github.com/Finschia/finschia/releases/tag/v0.1.0
->>>>>>> c759d95 (add RELEASE_NOTE generation script (#336))

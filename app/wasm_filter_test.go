@@ -3,6 +3,9 @@ package app
 import (
 	"testing"
 
+	ibctransfertypes "github.com/cosmos/ibc-go/v4/modules/apps/transfer/types"
+	clienttypes "github.com/cosmos/ibc-go/v4/modules/core/02-client/types"
+	channeltypes "github.com/cosmos/ibc-go/v4/modules/core/04-channel/types"
 	"github.com/golang/protobuf/proto" // nolint: staticcheck
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -17,9 +20,6 @@ import (
 	"github.com/Finschia/wasmd/x/wasm/keeper/wasmtesting"
 	wasmtypes "github.com/Finschia/wasmd/x/wasm/types"
 	wasmvmtypes "github.com/Finschia/wasmvm/types"
-	ibctransfertypes "github.com/cosmos/ibc-go/v4/modules/apps/transfer/types"
-	clienttypes "github.com/cosmos/ibc-go/v4/modules/core/02-client/types"
-	channeltypes "github.com/cosmos/ibc-go/v4/modules/core/04-channel/types"
 )
 
 func TestFilteredStargateMsgEncoders(t *testing.T) {

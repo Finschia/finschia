@@ -43,6 +43,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Bug Fixes
 
 ### Breaking Changes
+* (app) [\#352](https://github.com/Finschia/finschia/pull/352) Add filtering function in StargateMsg of wasm
 
 ### Build, CI
 * (build) [\#340](https://github.com/Finschia/finschia/pull/340) Set Finschia/ostracon version

@@ -3,7 +3,7 @@ package app
 import (
 	"testing"
 
-	"github.com/golang/protobuf/proto"
+	"github.com/golang/protobuf/proto" // nolint: staticcheck
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -587,6 +587,7 @@ func TestFilteredStargateMsgEncoders(t *testing.T) {
 	}
 	encodingConfig := MakeEncodingConfig()
 	for name, tc := range cases {
+		tc := tc
 		t.Run(name, func(t *testing.T) {
 			var ctx sdk.Context
 			encoder := wasmkeeper.DefaultEncoders(encodingConfig.Marshaler, tc.transferPortSource)

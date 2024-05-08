@@ -37,6 +37,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ## [Unreleased]
 
 ### Features
+* (fswap, fbridge) [\#354](https://github.com/Finschia/finschia/pull/354) Bump finschia-sdk v0.48.1 to v0.49.0-rc1
 
 ### Improvements
 

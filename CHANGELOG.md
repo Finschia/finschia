@@ -37,12 +37,17 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ## [Unreleased]
 
 ### Features
+* (fswap, fbridge) [\#354](https://github.com/Finschia/finschia/pull/354) Bump finschia-sdk v0.48.1 to v0.49.0-rc1
+* (fbridge) [\#355](https://github.com/Finschia/finschia/pull/355) Bump finschia-sdk v0.49.0-rc1 to v0.49.0-rc2
+* (build) [\#357](https://github.com/Finschia/finschia/pull/357) Upgrade to v4
+* (fswap, fbridge) [\#359](https://github.com/Finschia/finschia/pull/359) Bump finschia-sdk v0.49.0-rc2 to v0.49.0-rc3
 
 ### Improvements
 
 ### Bug Fixes
 
 ### Breaking Changes
+* (app) [\#352](https://github.com/Finschia/finschia/pull/352) Add filtering function in StargateMsg of wasm
 
 ### Build, CI
 * (build) [\#340](https://github.com/Finschia/finschia/pull/340) Set Finschia/ostracon version

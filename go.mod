@@ -1,9 +1,9 @@
-module github.com/Finschia/finschia/v3
+module github.com/Finschia/finschia/v4
 
 go 1.20
 
 require (
-	github.com/Finschia/finschia-sdk v0.48.1
+	github.com/Finschia/finschia-sdk v0.49.0-rc3
 	github.com/Finschia/ostracon v1.1.3
 	github.com/Finschia/wasmd v0.3.0
 	github.com/cosmos/ibc-go/v4 v4.3.1
@@ -14,7 +14,7 @@ require (
 	github.com/spf13/cast v1.6.0
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.17.0
-	github.com/stretchr/testify v1.8.4
+	github.com/stretchr/testify v1.9.0
 	github.com/tendermint/tendermint v0.34.24
 	github.com/tendermint/tm-db v0.6.7
 )

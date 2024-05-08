@@ -437,6 +437,9 @@ func NewLinkApp(
 		panic("error while reading wasm config: " + err.Error())
 	}
 
+	// change wasm's StargateMsgEncoder to filtered encoder
+	wasmOpts = append(wasmOpts, wasmkeeper.WithMessageEncoders(filteredStargateMsgEncoders(appCodec)))
+
 	// The last arguments can contain custom message handlers, and custom query handlers,
 	// if we want to allow any custom callbacks
 	availableCapabilities := "iterator,staking,stargate,cosmwasm_1_1"

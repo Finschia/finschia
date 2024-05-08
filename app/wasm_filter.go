@@ -12,9 +12,6 @@ import (
 	wasmvmtypes "github.com/Finschia/wasmvm/types"
 )
 
-// deniedModulesInStargateMsg is deny list in StargateMsg of wasm
-var deniedModulesInStargateMsg = []string{"/lbm.fswap.v1", "/lbm.fbridge.v1"}
-
 func filteredStargateMsgEncoders(cdc codec.Codec) *wasmkeeper.MessageEncoders {
 	return &wasmkeeper.MessageEncoders{
 		Stargate: wasmFilteredEncodeStargateMsg(cdc),
@@ -22,6 +19,8 @@ func filteredStargateMsgEncoders(cdc codec.Codec) *wasmkeeper.MessageEncoders {
 }
 
 func wasmFilteredEncodeStargateMsg(unpakcer codectypes.AnyUnpacker) wasmkeeper.StargateEncoder {
+	// deny list in StargateMsg of wasm
+	deniedModulesInStargateMsg := []string{"/lbm.fswap.v1", "/lbm.fbridge.v1"}
 	stargateMsgEncoder := wasmkeeper.EncodeStargateMsg(unpakcer)
 	return func(sender sdk.AccAddress, msg *wasmvmtypes.StargateMsg) ([]sdk.Msg, error) {
 		for _, moduleName := range deniedModulesInStargateMsg {

@@ -6,8 +6,8 @@ import (
 	"github.com/Finschia/finschia-sdk/server"
 	svrcmd "github.com/Finschia/finschia-sdk/server/cmd"
 
-	"github.com/Finschia/finschia/v3/app"
-	"github.com/Finschia/finschia/v3/cmd/fnsad/cmd"
+	"github.com/Finschia/finschia/v4/app"
+	"github.com/Finschia/finschia/v4/cmd/fnsad/cmd"
 )
 
 func main() {

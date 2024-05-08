@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 1
 
       - name: Install protoc
-        uses: arduino/setup-protoc@v2
+        uses: arduino/setup-protoc@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v4

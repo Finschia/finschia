@@ -112,6 +112,14 @@ func TestFilteredStargateMsgEncoders(t *testing.T) {
 			isError: true,
 			errMsg:  "/lbm.fbridge.v1.MsgTransfer is not supported by Stargate: unsupported for this contract",
 		},
+		"custom encoded msg": {
+			sender: addr1,
+			srcMsg: wasmvmtypes.CosmosMsg{
+				Custom: []byte(`{}`),
+			},
+			isError: true,
+			errMsg:  "custom variant not supported: unknown message from the contract",
+		},
 	}
 	encodingConfig := MakeEncodingConfig()
 	for name, tc := range cases {

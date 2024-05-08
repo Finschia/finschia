@@ -25,7 +25,7 @@ func wasmFilteredEncodeStargateMsg(unpakcer codectypes.AnyUnpacker) wasmkeeper.S
 	return func(sender sdk.AccAddress, msg *wasmvmtypes.StargateMsg) ([]sdk.Msg, error) {
 		for _, msgName := range deniedMsgInStargateMsg {
 			if strings.HasPrefix(msg.TypeURL, msgName) {
-				return nil, sdkerrors.Wrapf(wasmtypes.ErrUnsupportedForContract, "messages of the type in %s are not supported by Stargate", msgName)
+				return nil, sdkerrors.Wrapf(wasmtypes.ErrUnsupportedForContract, "%s is not supported by Stargate", msg.TypeURL)
 			}
 		}
 

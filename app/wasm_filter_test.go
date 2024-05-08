@@ -57,6 +57,7 @@ func TestFilteredStargateMsgEncoders(t *testing.T) {
 		output []sdk.Msg
 		// set if invalid
 		isError bool
+		errMsg  string
 	}{
 		"stargate encoded bank msg": {
 			sender: addr2,
@@ -87,6 +88,7 @@ func TestFilteredStargateMsgEncoders(t *testing.T) {
 				},
 			},
 			isError: true,
+			errMsg:  "Cannot unpack proto message with type URL: /cosmos.bank.v2.MsgSend: invalid CosmosMsg from the contract",
 		},
 		"stargate encoded filtered (fswap)": {
 			sender: addr1,
@@ -97,6 +99,7 @@ func TestFilteredStargateMsgEncoders(t *testing.T) {
 				},
 			},
 			isError: true,
+			errMsg:  "/lbm.fswap.v1.MsgSwap is not supported by Stargate: unsupported for this contract",
 		},
 		"stargate encoded filtered (fbridge)": {
 			sender: addr1,
@@ -107,6 +110,7 @@ func TestFilteredStargateMsgEncoders(t *testing.T) {
 				},
 			},
 			isError: true,
+			errMsg:  "/lbm.fbridge.v1.MsgTransfer is not supported by Stargate: unsupported for this contract",
 		},
 	}
 	encodingConfig := MakeEncodingConfig()
@@ -115,10 +119,11 @@ func TestFilteredStargateMsgEncoders(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			var ctx sdk.Context
 			encoder := wasmkeeper.DefaultEncoders(encodingConfig.Marshaler, tc.transferPortSource)
-			encoder.Merge(filteredStargateMsgEncoders(encodingConfig.Marshaler))
+			encoder = encoder.Merge(filteredStargateMsgEncoders(encodingConfig.Marshaler))
 			res, err := encoder.Encode(ctx, tc.sender, tc.srcContractIBCPort, tc.srcMsg)
 			if tc.isError {
 				require.Error(t, err)
+				require.Equal(t, err.Error(), tc.errMsg)
 			} else {
 				require.NoError(t, err)
 				assert.Equal(t, tc.output, res)

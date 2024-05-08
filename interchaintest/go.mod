@@ -1,4 +1,4 @@
-module github.com/Finschia/finschia/v3/interchaintest
+module github.com/Finschia/finschia/v4/interchaintest
 
 go 1.20
 

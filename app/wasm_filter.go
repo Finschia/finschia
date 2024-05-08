@@ -20,12 +20,12 @@ func filteredStargateMsgEncoders(cdc codec.Codec) *wasmkeeper.MessageEncoders {
 
 func wasmFilteredEncodeStargateMsg(unpakcer codectypes.AnyUnpacker) wasmkeeper.StargateEncoder {
 	// deny list in StargateMsg of wasm
-	deniedModulesInStargateMsg := []string{"/lbm.fswap.v1", "/lbm.fbridge.v1"}
+	deniedMsgInStargateMsg := []string{"/lbm.fswap.v1", "/lbm.fbridge.v1"}
 	stargateMsgEncoder := wasmkeeper.EncodeStargateMsg(unpakcer)
 	return func(sender sdk.AccAddress, msg *wasmvmtypes.StargateMsg) ([]sdk.Msg, error) {
-		for _, moduleName := range deniedModulesInStargateMsg {
-			if strings.HasPrefix(msg.TypeURL, moduleName) {
-				return nil, sdkerrors.Wrap(wasmtypes.ErrUnsupportedForContract, moduleName+" not supported by Stargate")
+		for _, msgName := range deniedMsgInStargateMsg {
+			if strings.HasPrefix(msg.TypeURL, msgName) {
+				return nil, sdkerrors.Wrapf(wasmtypes.ErrUnsupportedForContract, "messages of the type in %s are not supported by Stargate", msgName)
 			}
 		}
 

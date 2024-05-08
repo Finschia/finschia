@@ -321,9 +321,7 @@ func NewLinkApp(
 	)
 
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
-	// NOTE: The testingkey is just mounted for testing purposes. Actual applications should
-	// not include this key.
-	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey, fbridgetypes.MemStoreKey, "testingkey")
+	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey, fbridgetypes.MemStoreKey)
 
 	// configure state listening capabilities using AppOptions
 	// we are doing nothing with the returned streamingServices and waitGroup in this case
@@ -480,7 +478,7 @@ func NewLinkApp(
 	fswapConfig := fswaptypes.DefaultConfig()
 	app.FswapKeeper = fswapkeeper.NewKeeper(appCodec, keys[fswaptypes.StoreKey], fswapConfig, app.BankKeeper)
 	const FinschiaV4BaseDenom = "cony"
-	app.FbridgeKeeper = fbridgekeeper.NewKeeper(appCodec, keys[fbridgetypes.StoreKey], memKeys[fbridgetypes.MemStoreKey], app.AccountKeeper, app.BankKeeper, FinschiaV4BaseDenom, fbridgetypes.DefaultAuthority().String())
+	app.FbridgeKeeper = fbridgekeeper.NewKeeper(appCodec, keys[fbridgetypes.StoreKey], memKeys[fbridgetypes.MemStoreKey], app.AccountKeeper, app.BankKeeper, FinschiaV4BaseDenom, foundation.DefaultAuthority().String())
 
 	// register the proposal types
 	govRouter := govtypes.NewRouter()

@@ -130,13 +130,13 @@ import (
 	wasmpluskeeper "github.com/Finschia/wasmd/x/wasmplus/keeper"
 	wasmplustypes "github.com/Finschia/wasmd/x/wasmplus/types"
 
-	appante "github.com/Finschia/finschia/v3/ante"
-	appparams "github.com/Finschia/finschia/v3/app/params"
-	_ "github.com/Finschia/finschia/v3/client/docs/statik" // unnamed import of statik for swagger UI support
+	appante "github.com/Finschia/finschia/v4/ante"
+	appparams "github.com/Finschia/finschia/v4/app/params"
+	_ "github.com/Finschia/finschia/v4/client/docs/statik" // unnamed import of statik for swagger UI support
 )
 
 const appName = "Finschia"
-const upgradeName = "v3-Rose"
+const upgradeName = "v4-Marigold"
 
 var (
 	// DefaultNodeHome default home directories for the application daemon

@@ -25,6 +25,8 @@ jobs:
 
       - name: Install protoc
         uses: arduino/setup-protoc@v3
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4

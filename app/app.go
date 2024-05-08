@@ -77,6 +77,9 @@ import (
 	"github.com/Finschia/finschia-sdk/x/evidence"
 	evidencekeeper "github.com/Finschia/finschia-sdk/x/evidence/keeper"
 	evidencetypes "github.com/Finschia/finschia-sdk/x/evidence/types"
+	fbridgekeeper "github.com/Finschia/finschia-sdk/x/fbridge/keeper"
+	fbridgemodule "github.com/Finschia/finschia-sdk/x/fbridge/module"
+	fbridgetypes "github.com/Finschia/finschia-sdk/x/fbridge/types"
 	"github.com/Finschia/finschia-sdk/x/feegrant"
 	feegrantkeeper "github.com/Finschia/finschia-sdk/x/feegrant/keeper"
 	feegrantmodule "github.com/Finschia/finschia-sdk/x/feegrant/module"
@@ -84,6 +87,10 @@ import (
 	foundationclient "github.com/Finschia/finschia-sdk/x/foundation/client"
 	foundationkeeper "github.com/Finschia/finschia-sdk/x/foundation/keeper"
 	foundationmodule "github.com/Finschia/finschia-sdk/x/foundation/module"
+	"github.com/Finschia/finschia-sdk/x/fswap"
+	fswapclient "github.com/Finschia/finschia-sdk/x/fswap/client"
+	fswapkeeper "github.com/Finschia/finschia-sdk/x/fswap/keeper"
+	fswaptypes "github.com/Finschia/finschia-sdk/x/fswap/types"
 	"github.com/Finschia/finschia-sdk/x/genutil"
 	genutiltypes "github.com/Finschia/finschia-sdk/x/genutil/types"
 	"github.com/Finschia/finschia-sdk/x/gov"
@@ -157,6 +164,7 @@ var (
 				foundationclient.ProposalHandler,
 				ibcclientclient.UpdateClientProposalHandler,
 				ibcclientclient.UpgradeProposalHandler,
+				fswapclient.ProposalHandler,
 			)...,
 		),
 		params.AppModuleBasic{},
@@ -173,6 +181,8 @@ var (
 		transfer.AppModuleBasic{},
 		ica.AppModuleBasic{},
 		wasmplus.AppModuleBasic{},
+		fswap.AppModuleBasic{},
+		fbridgemodule.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -188,11 +198,14 @@ var (
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
 		wasmplustypes.ModuleName:       {authtypes.Burner},
+		fbridgetypes.ModuleName:        {authtypes.Burner},
+		fswaptypes.ModuleName:          {authtypes.Burner, authtypes.Minter},
 	}
 
 	// module accounts that are allowed to receive tokens
 	allowedReceivingModAcc = map[string]bool{
 		// govtypes.ModuleName: true, // TODO: uncomment it when authority is ready
+		fbridgetypes.ModuleName: true,
 	}
 )
 
@@ -240,6 +253,8 @@ type LinkApp struct { // nolint: golint
 	TokenKeeper      tokenkeeper.Keeper
 	CollectionKeeper collectionkeeper.Keeper
 	WasmKeeper       wasmpluskeeper.Keeper
+	FswapKeeper      fswapkeeper.Keeper
+	FbridgeKeeper    fbridgekeeper.Keeper
 
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
@@ -301,12 +316,12 @@ func NewLinkApp(
 		ibctransfertypes.StoreKey,
 		icahosttypes.StoreKey,
 		wasmplustypes.StoreKey,
+		fswaptypes.StoreKey,
+		fbridgetypes.StoreKey,
 	)
 
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
-	// NOTE: The testingkey is just mounted for testing purposes. Actual applications should
-	// not include this key.
-	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey)
+	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey, fbridgetypes.MemStoreKey)
 
 	// configure state listening capabilities using AppOptions
 	// we are doing nothing with the returned streamingServices and waitGroup in this case
@@ -463,6 +478,11 @@ func NewLinkApp(
 		wasmOpts...,
 	)
 
+	fswapConfig := fswaptypes.DefaultConfig()
+	app.FswapKeeper = fswapkeeper.NewKeeper(appCodec, keys[fswaptypes.StoreKey], fswapConfig, app.BankKeeper)
+	const FinschiaV4BaseDenom = "cony"
+	app.FbridgeKeeper = fbridgekeeper.NewKeeper(appCodec, keys[fbridgetypes.StoreKey], memKeys[fbridgetypes.MemStoreKey], app.AccountKeeper, app.BankKeeper, FinschiaV4BaseDenom, foundation.DefaultAuthority().String())
+
 	// register the proposal types
 	govRouter := govtypes.NewRouter()
 	govRouter.AddRoute(govtypes.RouterKey, govtypes.ProposalHandler).
@@ -471,7 +491,8 @@ func NewLinkApp(
 		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
 		AddRoute(foundation.RouterKey, foundationkeeper.NewFoundationProposalsHandler(app.FoundationKeeper)).
 		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper)).
-		AddRoute(wasmplustypes.RouterKey, wasmpluskeeper.NewWasmProposalHandler(&app.WasmKeeper, wasmplustypes.EnableAllProposals))
+		AddRoute(wasmplustypes.RouterKey, wasmpluskeeper.NewWasmProposalHandler(&app.WasmKeeper, wasmplustypes.EnableAllProposals)).
+		AddRoute(fswaptypes.RouterKey, fswap.NewSwapHandler(app.FswapKeeper))
 
 	govKeeper := govkeeper.NewKeeper(
 		appCodec, keys[govtypes.StoreKey], app.GetSubspace(govtypes.ModuleName), app.AccountKeeper, app.BankKeeper,
@@ -524,6 +545,8 @@ func NewLinkApp(
 		ibc.NewAppModule(app.IBCKeeper),
 		transferModule,
 		icaModule,
+		fswap.NewAppModule(appCodec, app.FswapKeeper, app.BankKeeper),
+		fbridgemodule.NewAppModule(appCodec, app.FbridgeKeeper),
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -554,6 +577,8 @@ func NewLinkApp(
 		ibchost.ModuleName,
 		icatypes.ModuleName,
 		wasmplustypes.ModuleName,
+		fswaptypes.ModuleName,
+		fbridgetypes.ModuleName,
 	)
 	app.mm.SetOrderEndBlockers(
 		crisistypes.ModuleName,
@@ -579,6 +604,8 @@ func NewLinkApp(
 		ibchost.ModuleName,
 		icatypes.ModuleName,
 		wasmplustypes.ModuleName,
+		fswaptypes.ModuleName,
+		fbridgetypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -594,6 +621,7 @@ func NewLinkApp(
 		capabilitytypes.ModuleName,
 		authtypes.ModuleName,
 		banktypes.ModuleName,
+		fbridgetypes.ModuleName,
 		distrtypes.ModuleName,
 		stakingtypes.ModuleName,
 		slashingtypes.ModuleName,
@@ -615,6 +643,7 @@ func NewLinkApp(
 		icatypes.ModuleName,
 		// wasm after ibc transfer
 		wasmplustypes.ModuleName,
+		fswaptypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)

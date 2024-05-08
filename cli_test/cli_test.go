@@ -25,7 +25,7 @@ import (
 	minttypes "github.com/Finschia/finschia-sdk/x/mint/types"
 	osttypes "github.com/Finschia/ostracon/types"
 
-	"github.com/Finschia/finschia/v3/app"
+	"github.com/Finschia/finschia/v4/app"
 )
 
 func TestFnsadKeysAddMultisig(t *testing.T) {

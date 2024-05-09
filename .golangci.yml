@@ -24,6 +24,7 @@ linters:
     - whitespace
     - dupl
     - revive
+    - exportloopref
 
 issues:
   exclude-rules:

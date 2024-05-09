@@ -51,6 +51,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ### Build, CI
 * (build) [\#340](https://github.com/Finschia/finschia/pull/340) Set Finschia/ostracon version
+* (ci) [\#361](https://github.com/Finschia/finschia/pull/361) Replace deprecated linters with new ones
 
 ### Docs
 

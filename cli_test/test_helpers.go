@@ -444,14 +444,14 @@ func (f *Fixtures) KeysAdd(name string, flags ...string) {
 }
 
 // KeysAddRecover prepares fnsad keys add --recover
-func (f *Fixtures) KeysAddRecover(name, mnemonic string, flags ...string) (testutil.BufferWriter, error) {
+func (f *Fixtures) KeysAddRecover(name, _ string, flags ...string) (testutil.BufferWriter, error) {
 	args := fmt.Sprintf("add --keyring-backend=test --recover %s", name)
 	cmd := clientkeys.Commands(f.Home)
 	return testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
 }
 
 // KeysAddRecoverHDPath prepares fnsad keys add --recover --account --index
-func (f *Fixtures) KeysAddRecoverHDPath(name, mnemonic string, account uint32, index uint32, flags ...string) {
+func (f *Fixtures) KeysAddRecoverHDPath(name, _ string, account uint32, index uint32, flags ...string) {
 	args := fmt.Sprintf("add --keyring-backend=test --recover %s --account=%d --index=%d", name, account, index)
 	cmd := clientkeys.Commands(f.Home)
 	_, err := testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
@@ -588,7 +588,7 @@ func (f *Fixtures) TxGovSubmitParamChangeProposal(
 // TxGovSubmitCommunityPoolSpendProposal executes a CLI community pool spend proposal
 // submission.
 func (f *Fixtures) TxGovSubmitCommunityPoolSpendProposal(
-	from, proposalPath string, deposit sdk.Coin, flags ...string,
+	from, proposalPath string, _ sdk.Coin, flags ...string,
 ) (testutil.BufferWriter, error) {
 	args := fmt.Sprintf("%s --keyring-backend=test --from=%s --node=%s", proposalPath, from, f.RPCAddr)
 	cmd := govcli.NewCmdSubmitProposal()
@@ -1048,7 +1048,7 @@ func (f *Fixtures) QueryTotalSupplyOf(denom string, flags ...string) sdk.Coin {
 
 // ___________________________________________________________________________________
 // tendermint rpc
-func (f *Fixtures) NetInfo(flags ...string) *ostctypes.ResultNetInfo {
+func (f *Fixtures) NetInfo(_ ...string) *ostctypes.ResultNetInfo {
 	ostc, err := osthttp.New(fmt.Sprintf("tcp://0.0.0.0:%s", f.Port), "/websocket")
 	if err != nil {
 		panic(fmt.Sprintf("failed to create Tendermint HTTP client: %s", err))
@@ -1088,7 +1088,7 @@ func (f *Fixtures) Status() *ostctypes.ResultStatus {
 // linkcli mempool
 
 // MempoolNumUnconfirmedTxs is linkcli mempool num-unconfirmed-txs
-func (f *Fixtures) MempoolNumUnconfirmedTxs(flags ...string) *ostctypes.ResultUnconfirmedTxs {
+func (f *Fixtures) MempoolNumUnconfirmedTxs(_ ...string) *ostctypes.ResultUnconfirmedTxs {
 	ostc, err := osthttp.New(fmt.Sprintf("tcp://0.0.0.0:%s", f.Port), "/websocket")
 	if err != nil {
 		panic(fmt.Sprintf("failed to create Tendermint HTTP client: %s", err))
@@ -1186,7 +1186,7 @@ func (fg *FixtureGroup) initNodes(numberOfNodes int) {
 		require.NoError(t, err)
 	}
 }
-func (fg *FixtureGroup) FinschiaStartCluster(minGasPrices string, flags ...string) {
+func (fg *FixtureGroup) FinschiaStartCluster(minGasPrices string, _ ...string) {
 	genDoc, err := osttypes.GenesisDocFromJSON(fg.genesisFileContent)
 	require.NoError(fg.T, err)
 

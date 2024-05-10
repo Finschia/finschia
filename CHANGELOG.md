@@ -41,6 +41,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (fbridge) [\#355](https://github.com/Finschia/finschia/pull/355) Bump finschia-sdk v0.49.0-rc1 to v0.49.0-rc2
 * (build) [\#357](https://github.com/Finschia/finschia/pull/357) Upgrade to v4
 * (fswap, fbridge) [\#359](https://github.com/Finschia/finschia/pull/359) Bump finschia-sdk v0.49.0-rc2 to v0.49.0-rc3
+* (fswap) [\#366](https://github.com/Finschia/finschia/pull/366) Bump github.com/Finschia/finschia-sdk from v0.49.0-rc3 to v0.49.0-rc4
 
 ### Improvements
 

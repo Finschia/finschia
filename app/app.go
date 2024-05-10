@@ -42,6 +42,7 @@ import (
 	servertypes "github.com/Finschia/finschia-sdk/server/types"
 	"github.com/Finschia/finschia-sdk/simapp"
 	"github.com/Finschia/finschia-sdk/store/streaming"
+	storetypes "github.com/Finschia/finschia-sdk/store/types"
 	sdk "github.com/Finschia/finschia-sdk/types"
 	"github.com/Finschia/finschia-sdk/types/module"
 	"github.com/Finschia/finschia-sdk/version"
@@ -687,12 +688,8 @@ func NewLinkApp(
 	app.SetAnteHandler(anteHandler)
 	app.SetEndBlocker(app.EndBlocker)
 
-	// upgrade
-	app.UpgradeKeeper.SetUpgradeHandler(
-		upgradeName,
-		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
-			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
-		})
+	app.setupUpgradeHandlers()
+	app.setupUpgradeStoreLoaders()
 
 	// must be before loading version
 	// requires the snapshot store to be created and registered as a BaseAppOptions
@@ -871,6 +868,31 @@ func (app *LinkApp) RegisterTendermintService(clientCtx client.Context) {
 
 func (app *LinkApp) RegisterNodeService(clientCtx client.Context) {
 	nodeservice.RegisterNodeService(clientCtx, app.GRPCQueryRouter())
+}
+
+func (app *LinkApp) setupUpgradeStoreLoaders() {
+	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
+	if err != nil {
+		panic(err)
+	}
+
+	if upgradeInfo.Name == upgradeName && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
+		storeUpgrades := storetypes.StoreUpgrades{
+			Added: []string{
+				fbridgetypes.ModuleName,
+				fswaptypes.ModuleName,
+			},
+		}
+		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storeUpgrades))
+	}
+}
+
+func (app *LinkApp) setupUpgradeHandlers() {
+	app.UpgradeKeeper.SetUpgradeHandler(
+		upgradeName,
+		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
+		})
 }
 
 // RegisterSwaggerAPI registers swagger route with API Server

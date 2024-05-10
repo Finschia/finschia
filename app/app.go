@@ -88,7 +88,6 @@ import (
 	foundationkeeper "github.com/Finschia/finschia-sdk/x/foundation/keeper"
 	foundationmodule "github.com/Finschia/finschia-sdk/x/foundation/module"
 	"github.com/Finschia/finschia-sdk/x/fswap"
-	fswapclient "github.com/Finschia/finschia-sdk/x/fswap/client"
 	fswapkeeper "github.com/Finschia/finschia-sdk/x/fswap/keeper"
 	fswaptypes "github.com/Finschia/finschia-sdk/x/fswap/types"
 	"github.com/Finschia/finschia-sdk/x/genutil"
@@ -164,7 +163,6 @@ var (
 				foundationclient.ProposalHandler,
 				ibcclientclient.UpdateClientProposalHandler,
 				ibcclientclient.UpgradeProposalHandler,
-				fswapclient.ProposalHandler,
 			)...,
 		),
 		params.AppModuleBasic{},
@@ -479,7 +477,7 @@ func NewLinkApp(
 	)
 
 	fswapConfig := fswaptypes.DefaultConfig()
-	app.FswapKeeper = fswapkeeper.NewKeeper(appCodec, keys[fswaptypes.StoreKey], fswapConfig, app.BankKeeper)
+	app.FswapKeeper = fswapkeeper.NewKeeper(appCodec, keys[fswaptypes.StoreKey], fswapConfig, fswaptypes.DefaultAuthority().String(), app.BankKeeper)
 	app.FbridgeKeeper = fbridgekeeper.NewKeeper(appCodec, keys[fbridgetypes.StoreKey], memKeys[fbridgetypes.MemStoreKey], app.AccountKeeper, app.BankKeeper, foundation.DefaultAuthority().String())
 
 	// register the proposal types
@@ -490,8 +488,7 @@ func NewLinkApp(
 		AddRoute(upgradetypes.RouterKey, upgrade.NewSoftwareUpgradeProposalHandler(app.UpgradeKeeper)).
 		AddRoute(foundation.RouterKey, foundationkeeper.NewFoundationProposalsHandler(app.FoundationKeeper)).
 		AddRoute(ibcclienttypes.RouterKey, ibcclient.NewClientProposalHandler(app.IBCKeeper.ClientKeeper)).
-		AddRoute(wasmplustypes.RouterKey, wasmpluskeeper.NewWasmProposalHandler(&app.WasmKeeper, wasmplustypes.EnableAllProposals)).
-		AddRoute(fswaptypes.RouterKey, fswap.NewSwapHandler(app.FswapKeeper))
+		AddRoute(wasmplustypes.RouterKey, wasmpluskeeper.NewWasmProposalHandler(&app.WasmKeeper, wasmplustypes.EnableAllProposals))
 
 	govKeeper := govkeeper.NewKeeper(
 		appCodec, keys[govtypes.StoreKey], app.GetSubspace(govtypes.ModuleName), app.AccountKeeper, app.BankKeeper,

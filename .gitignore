@@ -52,3 +52,6 @@ dependency-graph.png
 # docs
 /client/docs/tmp-swagger-gen/
 /client/docs/node_modules/
+
+# goreleaser
+RELEASE_NOTE.md

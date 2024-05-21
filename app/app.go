@@ -478,7 +478,7 @@ func NewLinkApp(
 	)
 
 	fswapConfig := fswaptypes.DefaultConfig()
-	app.FswapKeeper = fswapkeeper.NewKeeper(appCodec, keys[fswaptypes.StoreKey], fswapConfig, fswaptypes.DefaultAuthority().String(), app.BankKeeper)
+	app.FswapKeeper = fswapkeeper.NewKeeper(appCodec, keys[fswaptypes.StoreKey], fswapConfig, fswaptypes.DefaultAuthority().String(), app.AccountKeeper, app.BankKeeper)
 	app.FbridgeKeeper = fbridgekeeper.NewKeeper(appCodec, keys[fbridgetypes.StoreKey], memKeys[fbridgetypes.MemStoreKey], app.AccountKeeper, app.BankKeeper, foundation.DefaultAuthority().String())
 
 	// register the proposal types

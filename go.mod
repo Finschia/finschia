@@ -3,7 +3,7 @@ module github.com/Finschia/finschia/v4
 go 1.20
 
 require (
-	github.com/Finschia/finschia-sdk v0.49.0-rc5
+	github.com/Finschia/finschia-sdk v0.49.0-rc6
 	github.com/Finschia/ostracon v1.1.3
 	github.com/Finschia/wasmd v0.3.0
 	github.com/Finschia/wasmvm v1.1.1-0.12.0

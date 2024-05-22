@@ -29259,6 +29259,60 @@ paths:
                       format: byte
       tags:
         - Service
+  /lbm/fswap/v1/swap:
+    get:
+      summary: Swap queries a swap
+      operationId: Swap
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              swap:
+                type: object
+                properties:
+                  from_denom:
+                    type: string
+                  to_denom:
+                    type: string
+                  amount_cap_for_to_denom:
+                    type: string
+                  swap_rate:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type_url:
+                      type: string
+                    value:
+                      type: string
+                      format: byte
+      parameters:
+        - name: fromDenom
+          in: query
+          required: false
+          type: string
+        - name: toDenom
+          in: query
+          required: false
+          type: string
+      tags:
+        - Query
   /lbm/fswap/v1/swapped:
     get:
       summary: >-
@@ -66071,6 +66125,20 @@ definitions:
       minimum_gas_price:
         type: string
     description: ConfigResponse defines the response structure for the Config gRPC query.
+  lbm.fswap.v1.QuerySwapResponse:
+    type: object
+    properties:
+      swap:
+        type: object
+        properties:
+          from_denom:
+            type: string
+          to_denom:
+            type: string
+          amount_cap_for_to_denom:
+            type: string
+          swap_rate:
+            type: string
   lbm.fswap.v1.QuerySwappedResponse:
     type: object
     properties:

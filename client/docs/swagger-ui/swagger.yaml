@@ -29303,11 +29303,11 @@ paths:
                       type: string
                       format: byte
       parameters:
-        - name: fromDenom
+        - name: from_denom
           in: query
           required: false
           type: string
-        - name: toDenom
+        - name: to_denom
           in: query
           required: false
           type: string
@@ -29380,11 +29380,11 @@ paths:
                       type: string
                       format: byte
       parameters:
-        - name: fromDenom
+        - name: from_denom
           in: query
           required: false
           type: string
-        - name: toDenom
+        - name: to_denom
           in: query
           required: false
           type: string
@@ -29571,11 +29571,11 @@ paths:
                       type: string
                       format: byte
       parameters:
-        - name: fromDenom
+        - name: from_denom
           in: query
           required: false
           type: string
-        - name: toDenom
+        - name: to_denom
           in: query
           required: false
           type: string

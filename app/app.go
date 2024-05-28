@@ -42,6 +42,7 @@ import (
 	servertypes "github.com/Finschia/finschia-sdk/server/types"
 	"github.com/Finschia/finschia-sdk/simapp"
 	"github.com/Finschia/finschia-sdk/store/streaming"
+	storetypes "github.com/Finschia/finschia-sdk/store/types"
 	sdk "github.com/Finschia/finschia-sdk/types"
 	"github.com/Finschia/finschia-sdk/types/module"
 	"github.com/Finschia/finschia-sdk/version"
@@ -77,6 +78,9 @@ import (
 	"github.com/Finschia/finschia-sdk/x/evidence"
 	evidencekeeper "github.com/Finschia/finschia-sdk/x/evidence/keeper"
 	evidencetypes "github.com/Finschia/finschia-sdk/x/evidence/types"
+	fbridgekeeper "github.com/Finschia/finschia-sdk/x/fbridge/keeper"
+	fbridgemodule "github.com/Finschia/finschia-sdk/x/fbridge/module"
+	fbridgetypes "github.com/Finschia/finschia-sdk/x/fbridge/types"
 	"github.com/Finschia/finschia-sdk/x/feegrant"
 	feegrantkeeper "github.com/Finschia/finschia-sdk/x/feegrant/keeper"
 	feegrantmodule "github.com/Finschia/finschia-sdk/x/feegrant/module"
@@ -84,6 +88,9 @@ import (
 	foundationclient "github.com/Finschia/finschia-sdk/x/foundation/client"
 	foundationkeeper "github.com/Finschia/finschia-sdk/x/foundation/keeper"
 	foundationmodule "github.com/Finschia/finschia-sdk/x/foundation/module"
+	"github.com/Finschia/finschia-sdk/x/fswap"
+	fswapkeeper "github.com/Finschia/finschia-sdk/x/fswap/keeper"
+	fswaptypes "github.com/Finschia/finschia-sdk/x/fswap/types"
 	"github.com/Finschia/finschia-sdk/x/genutil"
 	genutiltypes "github.com/Finschia/finschia-sdk/x/genutil/types"
 	"github.com/Finschia/finschia-sdk/x/gov"
@@ -123,13 +130,13 @@ import (
 	wasmpluskeeper "github.com/Finschia/wasmd/x/wasmplus/keeper"
 	wasmplustypes "github.com/Finschia/wasmd/x/wasmplus/types"
 
-	appante "github.com/Finschia/finschia/v2/ante"
-	appparams "github.com/Finschia/finschia/v2/app/params"
-	_ "github.com/Finschia/finschia/v2/client/docs/statik" // unnamed import of statik for swagger UI support
+	appante "github.com/Finschia/finschia/v4/ante"
+	appparams "github.com/Finschia/finschia/v4/app/params"
+	_ "github.com/Finschia/finschia/v4/client/docs/statik" // unnamed import of statik for swagger UI support
 )
 
 const appName = "Finschia"
-const upgradeName = "v2-Daisy"
+const upgradeName = "v4-Marigold"
 
 var (
 	// DefaultNodeHome default home directories for the application daemon
@@ -173,6 +180,8 @@ var (
 		transfer.AppModuleBasic{},
 		ica.AppModuleBasic{},
 		wasmplus.AppModuleBasic{},
+		fswap.AppModuleBasic{},
+		fbridgemodule.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -188,11 +197,14 @@ var (
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
 		wasmplustypes.ModuleName:       {authtypes.Burner},
+		fbridgetypes.ModuleName:        {authtypes.Burner},
+		fswaptypes.ModuleName:          {authtypes.Burner, authtypes.Minter},
 	}
 
 	// module accounts that are allowed to receive tokens
 	allowedReceivingModAcc = map[string]bool{
 		// govtypes.ModuleName: true, // TODO: uncomment it when authority is ready
+		fbridgetypes.ModuleName: true,
 	}
 )
 
@@ -240,6 +252,8 @@ type LinkApp struct { // nolint: golint
 	TokenKeeper      tokenkeeper.Keeper
 	CollectionKeeper collectionkeeper.Keeper
 	WasmKeeper       wasmpluskeeper.Keeper
+	FswapKeeper      fswapkeeper.Keeper
+	FbridgeKeeper    fbridgekeeper.Keeper
 
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
@@ -301,12 +315,12 @@ func NewLinkApp(
 		ibctransfertypes.StoreKey,
 		icahosttypes.StoreKey,
 		wasmplustypes.StoreKey,
+		fswaptypes.StoreKey,
+		fbridgetypes.StoreKey,
 	)
 
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
-	// NOTE: The testingkey is just mounted for testing purposes. Actual applications should
-	// not include this key.
-	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey)
+	memKeys := sdk.NewMemoryStoreKeys(capabilitytypes.MemStoreKey, fbridgetypes.MemStoreKey)
 
 	// configure state listening capabilities using AppOptions
 	// we are doing nothing with the returned streamingServices and waitGroup in this case
@@ -437,6 +451,9 @@ func NewLinkApp(
 		panic("error while reading wasm config: " + err.Error())
 	}
 
+	// change wasm's StargateMsgEncoder to filtered encoder
+	wasmOpts = append(wasmOpts, wasmkeeper.WithMessageEncoders(filteredStargateMsgEncoders(appCodec)))
+
 	// The last arguments can contain custom message handlers, and custom query handlers,
 	// if we want to allow any custom callbacks
 	availableCapabilities := "iterator,staking,stargate,cosmwasm_1_1"
@@ -459,6 +476,10 @@ func NewLinkApp(
 		availableCapabilities,
 		wasmOpts...,
 	)
+
+	fswapConfig := fswaptypes.DefaultConfig()
+	app.FswapKeeper = fswapkeeper.NewKeeper(appCodec, keys[fswaptypes.StoreKey], fswapConfig, fswaptypes.DefaultAuthority().String(), app.AccountKeeper, app.BankKeeper)
+	app.FbridgeKeeper = fbridgekeeper.NewKeeper(appCodec, keys[fbridgetypes.StoreKey], memKeys[fbridgetypes.MemStoreKey], app.AccountKeeper, app.BankKeeper, foundation.DefaultAuthority().String())
 
 	// register the proposal types
 	govRouter := govtypes.NewRouter()
@@ -521,6 +542,8 @@ func NewLinkApp(
 		ibc.NewAppModule(app.IBCKeeper),
 		transferModule,
 		icaModule,
+		fswap.NewAppModule(appCodec, app.FswapKeeper, app.BankKeeper),
+		fbridgemodule.NewAppModule(appCodec, app.FbridgeKeeper),
 	)
 
 	// During begin block slashing happens after distr.BeginBlocker so that
@@ -551,6 +574,8 @@ func NewLinkApp(
 		ibchost.ModuleName,
 		icatypes.ModuleName,
 		wasmplustypes.ModuleName,
+		fswaptypes.ModuleName,
+		fbridgetypes.ModuleName,
 	)
 	app.mm.SetOrderEndBlockers(
 		crisistypes.ModuleName,
@@ -576,6 +601,8 @@ func NewLinkApp(
 		ibchost.ModuleName,
 		icatypes.ModuleName,
 		wasmplustypes.ModuleName,
+		fswaptypes.ModuleName,
+		fbridgetypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -591,6 +618,7 @@ func NewLinkApp(
 		capabilitytypes.ModuleName,
 		authtypes.ModuleName,
 		banktypes.ModuleName,
+		fbridgetypes.ModuleName,
 		distrtypes.ModuleName,
 		stakingtypes.ModuleName,
 		slashingtypes.ModuleName,
@@ -612,6 +640,7 @@ func NewLinkApp(
 		icatypes.ModuleName,
 		// wasm after ibc transfer
 		wasmplustypes.ModuleName,
+		fswaptypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
@@ -659,12 +688,8 @@ func NewLinkApp(
 	app.SetAnteHandler(anteHandler)
 	app.SetEndBlocker(app.EndBlocker)
 
-	// upgrade
-	app.UpgradeKeeper.SetUpgradeHandler(
-		upgradeName,
-		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
-			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
-		})
+	app.setupUpgradeHandlers()
+	app.setupUpgradeStoreLoaders()
 
 	// must be before loading version
 	// requires the snapshot store to be created and registered as a BaseAppOptions
@@ -843,6 +868,31 @@ func (app *LinkApp) RegisterTendermintService(clientCtx client.Context) {
 
 func (app *LinkApp) RegisterNodeService(clientCtx client.Context) {
 	nodeservice.RegisterNodeService(clientCtx, app.GRPCQueryRouter())
+}
+
+func (app *LinkApp) setupUpgradeStoreLoaders() {
+	upgradeInfo, err := app.UpgradeKeeper.ReadUpgradeInfoFromDisk()
+	if err != nil {
+		panic(err)
+	}
+
+	if upgradeInfo.Name == upgradeName && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
+		storeUpgrades := storetypes.StoreUpgrades{
+			Added: []string{
+				fbridgetypes.ModuleName,
+				fswaptypes.ModuleName,
+			},
+		}
+		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storeUpgrades))
+	}
+}
+
+func (app *LinkApp) setupUpgradeHandlers() {
+	app.UpgradeKeeper.SetUpgradeHandler(
+		upgradeName,
+		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
+		})
 }
 
 // RegisterSwaggerAPI registers swagger route with API Server

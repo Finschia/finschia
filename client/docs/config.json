@@ -3,7 +3,7 @@
   "info": {
     "title": "Finschia - gRPC Gateway docs",
     "description": "A REST interface for state queries, legacy transactions",
-    "version": "2.0.0"
+    "version": "3.0.0"
   },
   "apis": [
     {
@@ -148,6 +148,24 @@
     },
     {
       "url": "./tmp-swagger-gen/cosmos/base/node/v1beta1/query.swagger.json"
+    },
+    {
+      "url": "./tmp-swagger-gen/lbm/fswap/v1/query.swagger.json"
+    },
+    {
+      "url": "./tmp-swagger-gen/lbm/fbridge/v1/query.swagger.json",
+      "operationIds": {
+        "rename": {
+          "Params": "FBridgeParams",
+          "Commitments": "FBridgeCommitments",
+          "Members": "FBridgeMembers",
+          "Member": "FBridgeMember",
+          "Proposals": "FBridgeProposals",
+          "Proposal": "FBridgeProposal",
+          "Votes": "FBridgeVotes",
+          "Vote": "FBridgeVote"
+        }
+      }
     },
     {
       "url": "./tmp-swagger-gen/lbm/tx/v1beta1/service.swagger.json",

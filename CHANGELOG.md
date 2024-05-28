@@ -48,6 +48,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (fswap, fbridge) [\#380](https://github.com/Finschia/finschia/pull/380) Bump github.com/Finschia/finschia-sdk from v0.49.0-rc6 to v0.49.0-rc7
 
 ### Improvements
+* (ci) [\#385](https://github.com/Finschia/finschia/pull/385) Force user to follow the rule of release note generation
 
 ### Bug Fixes
 

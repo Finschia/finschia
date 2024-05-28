@@ -37,15 +37,6 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ## [Unreleased]
 
 ### Features
-* (fswap, fbridge) [\#354](https://github.com/Finschia/finschia/pull/354) Bump finschia-sdk v0.48.1 to v0.49.0-rc1
-* (fbridge) [\#355](https://github.com/Finschia/finschia/pull/355) Bump finschia-sdk v0.49.0-rc1 to v0.49.0-rc2
-* (build) [\#357](https://github.com/Finschia/finschia/pull/357) Upgrade to v4
-* (fswap, fbridge) [\#359](https://github.com/Finschia/finschia/pull/359) Bump finschia-sdk v0.49.0-rc2 to v0.49.0-rc3
-* (fswap, fbridge) [\#365](https://github.com/Finschia/finschia/pull/365) Load fbridge & fswap stores
-* (fswap) [\#366](https://github.com/Finschia/finschia/pull/366) Bump github.com/Finschia/finschia-sdk from v0.49.0-rc3 to v0.49.0-rc4
-* (fswap, fbridge) [\#373](https://github.com/Finschia/finschia/pull/373) Bump github.com/Finschia/finschia-sdk from v0.49.0-rc4 to v0.49.0-rc5
-* (fswap) [\#378](https://github.com/Finschia/finschia/pull/378) Bump github.com/Finschia/finschia-sdk from v0.49.0-rc5 to v0.49.0-rc6
-* (fswap, fbridge) [\#380](https://github.com/Finschia/finschia/pull/380) Bump github.com/Finschia/finschia-sdk from v0.49.0-rc6 to v0.49.0-rc7
 
 ### Improvements
 * (ci) [\#385](https://github.com/Finschia/finschia/pull/385) Force user to follow the rule of release note generation
@@ -53,16 +44,34 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Bug Fixes
 
 ### Breaking Changes
+
+### Build, CI
+
+### Docs
+
+## [v4.0.0] - 2024-05-27
+
+### Features
+* (fswap, fbridge) [\#354](https://github.com/Finschia/finschia/pull/354) Bump finschia-sdk v0.48.1 to v0.49.0-rc1
+* (fbridge) [\#356](https://github.com/Finschia/finschia/pull/356) Bump finschia-sdk v0.49.0-rc1 to v0.49.0-rc2 (backport #355)
+* (build) [\#358](https://github.com/Finschia/finschia/pull/358) Upgrade to v4 (backport #357)
+* (fswap, fbridge) [\#360](https://github.com/Finschia/finschia/pull/360) Bump finschia-sdk v0.49.0-rc2 to v0.49.0-rc3 (backport #359)
+* (fswap, fbridge) [\#367](https://github.com/Finschia/finschia/pull/367) Load fbridge & fswap stores (backport #365)
+* (fswap) [\#368](https://github.com/Finschia/finschia/pull/368) Bump github.com/Finschia/finschia-sdk from v0.49.0-rc3 to v0.49.0-rc4 (backport #266)
+* (fswap, fbridge) [\#374](https://github.com/Finschia/finschia/pull/374) Bump github.com/Finschia/finschia-sdk from v0.49.0-rc4 to v0.49.0-rc5 (backport #373)
+* (fswap) [\#379](https://github.com/Finschia/finschia/pull/379) Bump github.com/Finschia/finschia-sdk from v0.49.0-rc5 to v0.49.0-rc6 (backport #378)
+* (fswap, fbridge) [\#381](https://github.com/Finschia/finschia/pull/381) Bump github.com/Finschia/finschia-sdk from v0.49.0-rc6 to v0.49.0-rc7 (backport #380)
+
+### Breaking Changes
 * (app) [\#352](https://github.com/Finschia/finschia/pull/352) Add filtering function in StargateMsg of wasm
 
 ### Build, CI
 * (build) [\#340](https://github.com/Finschia/finschia/pull/340) Set Finschia/ostracon version
-* (ci) [\#361](https://github.com/Finschia/finschia/pull/361) Replace deprecated linters with new ones
-* (ci) [\#362](https://github.com/Finschia/finschia/pull/362) Add RELEASE_NOTE.md to .gitignore
-* (swagger) [\#371](https://github.com/Finschia/finschia/pull/371) Add fswap and fbridge swagger settings in swagger config
+* (ci) [\#363](https://github.com/Finschia/finschia/pull/363) Replace deprecated linters with new ones (backport #361)
+* (ci) [\#364](https://github.com/Finschia/finschia/pull/364) Add RELEASE_NOTE.md to .gitignore (backport #362)
+* (swagger) [\#372](https://github.com/Finschia/finschia/pull/372) Add fswap and fbridge swagger settings in swagger config (backport #371)
 * (build) [\#388](https://github.com/Finschia/finschia/pull/388) Modify the way the binary version is set when compiling
 
-### Docs
 
 ## [v3.0.0] - 2024-03-04
 
@@ -284,7 +293,8 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (build) [\#25](https://github.com/Finschia/finschia/pull/25) Fix localnet-start
 
 <!-- Release links -->
-[Unreleased]: https://github.com/Finschia/finschia/compare/v3.0.0...HEAD
+[Unreleased]: https://github.com/Finschia/finschia/compare/v4.0.0...HEAD
+[v4.0.0]: https://github.com/Finschia/finschia/releases/tag/v4.0.0
 [v3.0.0]: https://github.com/Finschia/finschia/releases/tag/v3.0.0
 [v2.0.0]: https://github.com/Finschia/finschia/releases/tag/v2.0.0
 [v1.0.0]: https://github.com/Finschia/finschia/releases/tag/v1.0.0

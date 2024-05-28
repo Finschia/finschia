@@ -11,6 +11,16 @@ Feel free to add any highlights or other information you'd like to share with th
 <!-- <Desription of This Release> -->
 <!-- <Add Highlights or any sections if you need> -->
 
+## [v4.0.0] - 2024-05-27
+## Highlights
+* Introduced fswap and fbridge modules for converting `cony` to kaia coin and managing cross-chain transfers.
+* Addressed several crucial bug fixes to enhance stability and performance, including improvements in configuration, error handling, and system integrity checks.
+  * [finschia-sdk #1302](https://github.com/Finschia/finschia-sdk/pull/1302) remove map iteration non-determinism with keys + sorting (backport cosmos/cosmos-sdk#13377)
+  * [finschia-sdk #1274](https://github.com/Finschia/finschia-sdk/pull/1274) ModuleAccount.Validate now reports a nil .BaseAccount instead of panicking. (backport cosmos/cosmos-sdk#16554)
+  * [finschia-sdk #1301](https://github.com/Finschia/finschia-sdk/pull/1301) Use bytes instead of string comparison in delete validator queue (backport cosmos/cosmos-sdk#12303)
+  * [finschia-sdk #1310](https://github.com/Finschia/finschia-sdk/pull/1310) fix app-hash mismatch if upgrade migration commit is interrupted (backport cosmos/cosmos-sdk#13530)
+  * More detailed changes can be found [here](https://github.com/Finschia/finschia-sdk/releases/tag/v0.49.0).
+
 ## [v3.0.0] - 2024-03-04
 ## Highlights
 * patch [CWA-2023-004 issue](https://forum.cosmos.network/t/high-severity-security-patch-upcoming-on-wed-10th-cwa-2023-004-brought-to-you-by-certik-and-confio/12840)

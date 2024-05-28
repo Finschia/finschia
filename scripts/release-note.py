@@ -61,23 +61,21 @@ def extract_release_contents(target: str, cur_tag: str, prev_tag: str) -> str:
     start_pos = document.find(start_marker)
 
     if start_pos == -1:
-        raise ValueError(f"Start marker for tag '{cur_tag}' not found in the document.")
+        raise ValueError(f"Start marker for tag '{cur_tag}' not found in {target}.")
 
     start_pos += len(start_marker) + len("YYYY-MM-DD")
+    end_marker = f"## [{prev_tag}]" if prev_tag else "<!-- Release links -->"
 
     if prev_tag:
-        end_marker = f"## [{prev_tag}]"
         end_pos = document.find(end_marker, start_pos)
         if end_pos == -1:
             raise ValueError(
-                f"End marker for previous tag '{prev_tag}' not found in the document."
+                f"End marker for previous tag '{prev_tag}' not found in {target}."
             )
     else:
-        end_pos = document.find("<!-- Release links -->", start_pos)
+        end_pos = document.find(end_marker, start_pos)
         if end_pos == -1:
-            raise ValueError(
-                "End marker '<!-- Release links -->' not found in the document."
-            )
+            raise ValueError(f"End marker '{end_marker}' not found in {target}.")
 
     return document[start_pos:end_pos].strip()
 

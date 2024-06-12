@@ -58,7 +58,8 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (build) [\#340](https://github.com/Finschia/finschia/pull/340) Set Finschia/ostracon version
 * (ci) [\#361](https://github.com/Finschia/finschia/pull/361) Replace deprecated linters with new ones
 * (ci) [\#362](https://github.com/Finschia/finschia/pull/362) Add RELEASE_NOTE.md to .gitignore
-* (swagger) [\#371](https://github.com/Finschia/finschia/pull/371) Add fswap and fbridge swagger settings in swagger config 
+* (swagger) [\#371](https://github.com/Finschia/finschia/pull/371) Add fswap and fbridge swagger settings in swagger config
+* (build) [\#388](https://github.com/Finschia/finschia/pull/388) Modify the way the binary version is set when compiling
 
 ### Docs
 

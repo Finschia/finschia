@@ -45,6 +45,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Breaking Changes
 
 ### Build, CI
+* (build) [\#390](https://github.com/Finschia/finschia/pull/390) Modify the way the binary version is set when compiling (backport #388)
 
 ### Docs
 

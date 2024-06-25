@@ -22,11 +22,16 @@ jobs:
             go.sum
       - uses: actions/setup-go@v5
         with:
+<<<<<<< HEAD
           go-version: '1.20'
       - uses: golangci/golangci-lint-action@v4
+=======
+          go-version: '1.22'
+      - uses: golangci/golangci-lint-action@v6
+>>>>>>> a628fb2 (feat: Apply finschia-sdk 0.49.1 (#395))
         with:
           # Required: the version of golangci-lint is required and must be specified without patch version: we always use the latest patch version.
-          version: v1.51
+          version: v1.59
           args: --timeout 10m
           github-token: ${{ secrets.GITHUB_TOKEN }}
         if: env.GIT_DIFF

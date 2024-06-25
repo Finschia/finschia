@@ -130,7 +130,7 @@ build-reproducible: go.sum
 		--build-arg GIT_VERSION=$(VERSION) \
 		--build-arg GIT_COMMIT=$(COMMIT) \
 		--build-arg OST_VERSION=$(OST_VERSION) \
-		--build-arg RUNNER_IMAGE=alpine:3.17 \
+		--build-arg RUNNER_IMAGE=alpine:3.18 \
 		--platform $(TARGET_PLATFORM) \
 		-t finschia/finschianode:local-$(ARCH) \
 		--load \
@@ -198,7 +198,7 @@ test-e2e-ibc:
 ###                                Docker                                   ###
 ###############################################################################
 
-RUNNER_BASE_IMAGE_ALPINE := alpine:3.17
+RUNNER_BASE_IMAGE_ALPINE := alpine:3.18
 
 docker-build:
 	@DOCKER_BUILDKIT=1 docker build \
@@ -217,14 +217,15 @@ docker-build:
 ###                                Linting                                  ###
 ###############################################################################
 
-lint:
-	golangci-lint run
+lint: golangci-lint
+	golangci-lint run --out-format=tab
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" | xargs gofmt -d -s
 
-format:
-	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/docs/statik/statik.go" | xargs gofmt -w -s
-	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/docs/statik/statik.go" | xargs misspell -w
-	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/docs/statik/statik.go" | xargs -n1 goimports-reviser -rm-unused -set-alias -project-name "github.com/Finschia/finschia/" -company-prefixes "github.com/Finschia/"
+golangci-lint:
+	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.59
+
+format: golangci-lint
+	golangci-lint run ./... --fix
 
 .PHONY: lint format
 
@@ -309,7 +310,7 @@ release-dry-run:
 		release \
 		--clean \
 		--release-notes ./RELEASE_NOTE.md \
-		--skip-publish
+		--skip=publish
 
 release-snapshot:
 	docker run \
@@ -325,7 +326,7 @@ release-snapshot:
 		--clean \
 		--release-notes ./RELEASE_NOTE.md \
 		--snapshot \
-		--skip-validate \
-		--skip-publish
+		--skip=validate \
+		--skip=publish
 
 .PHONY: release release-dry-run release-snapshot

@@ -73,7 +73,7 @@ func (app *LinkApp) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAddrs [
 
 	// withdraw all validator commission
 	app.StakingKeeper.IterateValidators(ctx, func(_ int64, val stakingtypes.ValidatorI) (stop bool) {
-		_, _ = app.DistrKeeper.WithdrawValidatorCommission(ctx, val.GetOperator()) // nolint: errcheck
+		_, _ = app.DistrKeeper.WithdrawValidatorCommission(ctx, val.GetOperator()) //nolint: errcheck
 		return false
 	})
 
@@ -86,7 +86,7 @@ func (app *LinkApp) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAddrs [
 		}
 		delAddr := sdk.MustAccAddressFromBech32(delegation.DelegatorAddress)
 
-		_, _ = app.DistrKeeper.WithdrawDelegationRewards(ctx, delAddr, valAddr) // nolint: errcheck
+		_, _ = app.DistrKeeper.WithdrawDelegationRewards(ctx, delAddr, valAddr) //nolint: errcheck
 	}
 
 	// clear validator slash events

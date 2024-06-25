@@ -130,7 +130,7 @@ build-reproducible: go.sum
 		--build-arg GIT_VERSION=$(VERSION) \
 		--build-arg GIT_COMMIT=$(COMMIT) \
 		--build-arg OST_VERSION=$(OST_VERSION) \
-		--build-arg RUNNER_IMAGE=alpine:3.17 \
+		--build-arg RUNNER_IMAGE=alpine:3.18 \
 		--platform $(TARGET_PLATFORM) \
 		-t finschia/finschianode:local-$(ARCH) \
 		--load \
@@ -198,7 +198,7 @@ test-e2e-ibc:
 ###                                Docker                                   ###
 ###############################################################################
 
-RUNNER_BASE_IMAGE_ALPINE := alpine:3.17
+RUNNER_BASE_IMAGE_ALPINE := alpine:3.18
 
 docker-build:
 	@DOCKER_BUILDKIT=1 docker build \

@@ -17,13 +17,14 @@ import (
 
 	"github.com/stretchr/testify/require"
 
+	osttypes "github.com/Finschia/ostracon/types"
+
 	"github.com/Finschia/finschia-sdk/client/flags"
 	"github.com/Finschia/finschia-sdk/crypto/keys/ed25519"
 	sdk "github.com/Finschia/finschia-sdk/types"
 	"github.com/Finschia/finschia-sdk/types/tx"
 	gov "github.com/Finschia/finschia-sdk/x/gov/types"
 	minttypes "github.com/Finschia/finschia-sdk/x/mint/types"
-	osttypes "github.com/Finschia/ostracon/types"
 
 	"github.com/Finschia/finschia/v4/app"
 )
@@ -654,7 +655,7 @@ func TestFnsadSubmitCommunityPoolSpendProposal(t *testing.T) {
 	defer f.Cleanup()
 
 	// create some inflation
-	var cdc, amino = app.MakeCodecs()
+	cdc, amino := app.MakeCodecs()
 	genesisState := f.GenesisState()
 	inflationMin := sdk.MustNewDecFromStr("10000.0")
 	var mintData minttypes.GenesisState
@@ -1040,7 +1041,8 @@ func TestFnsadMultisignSortSignatures(t *testing.T) {
 
 	// Multisign, keys in different order
 	out, err = f.TxMultisign(unsignedTxFile.Name(), keyFooBarBaz, []string{
-		bazSignatureFile.Name(), fooSignatureFile.Name()})
+		bazSignatureFile.Name(), fooSignatureFile.Name(),
+	})
 	require.NoError(t, err)
 
 	// Write the output to disk
@@ -1101,7 +1103,8 @@ func TestFnsadMultisign(t *testing.T) {
 
 	// Multisign
 	out, err = f.TxMultisign(unsignedTxFile.Name(), keyFooBarBaz, []string{
-		fooSignatureFile.Name(), barSignatureFile.Name()})
+		fooSignatureFile.Name(), barSignatureFile.Name(),
+	})
 	require.NoError(t, err)
 
 	// Write the output to disk

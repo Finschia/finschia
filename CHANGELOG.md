@@ -46,6 +46,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ### Build, CI
 * (build) [\#390](https://github.com/Finschia/finschia/pull/390) Modify the way the binary version is set when compiling (backport #388)
+* (build) [\#398](https://github.com/Finschia/finschia/pull/398) Apply Go 1.22, finschia-sdk 0.49.1 and update outdated dependencies (backport #395)
 
 ### Docs
 

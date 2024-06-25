@@ -3,13 +3,15 @@ package app
 import (
 	"strings"
 
+	wasmvmtypes "github.com/Finschia/wasmvm/types"
+
+	wasmkeeper "github.com/Finschia/wasmd/x/wasm/keeper"
+	wasmtypes "github.com/Finschia/wasmd/x/wasm/types"
+
 	"github.com/Finschia/finschia-sdk/codec"
 	codectypes "github.com/Finschia/finschia-sdk/codec/types"
 	sdk "github.com/Finschia/finschia-sdk/types"
 	sdkerrors "github.com/Finschia/finschia-sdk/types/errors"
-	wasmkeeper "github.com/Finschia/wasmd/x/wasm/keeper"
-	wasmtypes "github.com/Finschia/wasmd/x/wasm/types"
-	wasmvmtypes "github.com/Finschia/wasmvm/types"
 )
 
 func filteredStargateMsgEncoders(cdc codec.Codec) *wasmkeeper.MessageEncoders {

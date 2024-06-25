@@ -13,6 +13,10 @@ import (
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
 
+	"github.com/Finschia/ostracon/libs/log"
+
+	"github.com/Finschia/wasmd/x/wasmplus"
+
 	"github.com/Finschia/finschia-sdk/baseapp"
 	"github.com/Finschia/finschia-sdk/simapp"
 	"github.com/Finschia/finschia-sdk/tests/mocks"
@@ -38,8 +42,6 @@ import (
 	"github.com/Finschia/finschia-sdk/x/staking"
 	tokenmodule "github.com/Finschia/finschia-sdk/x/token/module"
 	"github.com/Finschia/finschia-sdk/x/upgrade"
-	"github.com/Finschia/ostracon/libs/log"
-	"github.com/Finschia/wasmd/x/wasmplus"
 )
 
 func TestSimAppExportAndBlockedAddrs(t *testing.T) {
@@ -125,7 +127,6 @@ func TestRunMigrations(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			var err error
 

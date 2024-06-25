@@ -19,6 +19,15 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/require"
 
+	ostcmd "github.com/Finschia/ostracon/cmd/ostracon/commands"
+	ostcfg "github.com/Finschia/ostracon/config"
+	"github.com/Finschia/ostracon/libs/log"
+	osthttp "github.com/Finschia/ostracon/rpc/client/http"
+	ostctypes "github.com/Finschia/ostracon/rpc/core/types"
+	osttypes "github.com/Finschia/ostracon/types"
+	wasmcli "github.com/Finschia/wasmd/x/wasm/client/cli"
+	wasmtypes "github.com/Finschia/wasmd/x/wasm/types"
+
 	"github.com/Finschia/finschia-sdk/baseapp"
 	"github.com/Finschia/finschia-sdk/client"
 	clientkeys "github.com/Finschia/finschia-sdk/client/keys"
@@ -52,15 +61,6 @@ import (
 	stakingcli "github.com/Finschia/finschia-sdk/x/staking/client/cli"
 	staking "github.com/Finschia/finschia-sdk/x/staking/types"
 	"github.com/Finschia/finschia-sdk/x/stakingplus"
-	ostcmd "github.com/Finschia/ostracon/cmd/ostracon/commands"
-	ostcfg "github.com/Finschia/ostracon/config"
-	"github.com/Finschia/ostracon/libs/log"
-	osthttp "github.com/Finschia/ostracon/rpc/client/http"
-	ostctypes "github.com/Finschia/ostracon/rpc/core/types"
-	osttypes "github.com/Finschia/ostracon/types"
-	wasmcli "github.com/Finschia/wasmd/x/wasm/client/cli"
-	wasmtypes "github.com/Finschia/wasmd/x/wasm/types"
-
 	"github.com/Finschia/finschia/v4/app"
 	fnsacmd "github.com/Finschia/finschia/v4/cmd/fnsad/cmd"
 	fnsatypes "github.com/Finschia/finschia/v4/types"
@@ -128,9 +128,7 @@ var (
 	}
 )
 
-var (
-	minGasPrice = sdk.NewCoin(feeDenom, sdk.ZeroInt())
-)
+var minGasPrice = sdk.NewCoin(feeDenom, sdk.ZeroInt())
 
 func init() {
 	testnet := false
@@ -522,7 +520,8 @@ func (f *Fixtures) TxEncode(fileName string, flags ...string) (testutil.BufferWr
 
 // TxMultisign is fnsad tx multisign
 func (f *Fixtures) TxMultisign(fileName, name string, signaturesFiles []string,
-	flags ...string) (testutil.BufferWriter, error) {
+	flags ...string,
+) (testutil.BufferWriter, error) {
 	args := fmt.Sprintf("--keyring-backend=test %s %s %s --node=%s", fileName, name, strings.Join(signaturesFiles, " "), f.RPCAddr)
 	cmd := authcli.GetMultiSignCommand()
 	return testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
@@ -1186,6 +1185,7 @@ func (fg *FixtureGroup) initNodes(numberOfNodes int) {
 		require.NoError(t, err)
 	}
 }
+
 func (fg *FixtureGroup) FinschiaStartCluster(minGasPrices string, _ ...string) {
 	genDoc, err := osttypes.GenesisDocFromJSON(fg.genesisFileContent)
 	require.NoError(fg.T, err)
@@ -1413,7 +1413,6 @@ func newValidator(f *Fixtures, cfg testnet.Config, appCfg *srvconfig.Config, ctx
 	appCfg.API.Address = f.P2PAddr
 	tmCfg.P2P.ListenAddress = f.P2PAddr
 	tmCfg.RPC.ListenAddress = f.RPCAddr
-	appCfg.GRPCWeb.Enable = false
 	appCfg.GRPC.Address = f.GRPCAddr
 	appCfg.GRPC.Enable = true
 

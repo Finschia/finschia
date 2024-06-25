@@ -46,6 +46,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ### Build, CI
 * (build) [\#390](https://github.com/Finschia/finschia/pull/390) Modify the way the binary version is set when compiling (backport #388)
+* (build) [\#398](https://github.com/Finschia/finschia/pull/398) Apply Go 1.22, finschia-sdk 0.49.1 and update outdated dependencies (backport #395)
 
 ### Docs
 
@@ -67,17 +68,9 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ### Build, CI
 * (build) [\#340](https://github.com/Finschia/finschia/pull/340) Set Finschia/ostracon version
-<<<<<<< HEAD
 * (ci) [\#363](https://github.com/Finschia/finschia/pull/363) Replace deprecated linters with new ones (backport #361)
 * (ci) [\#364](https://github.com/Finschia/finschia/pull/364) Add RELEASE_NOTE.md to .gitignore (backport #362)
 * (swagger) [\#372](https://github.com/Finschia/finschia/pull/372) Add fswap and fbridge swagger settings in swagger config (backport #371)
-=======
-* (ci) [\#361](https://github.com/Finschia/finschia/pull/361) Replace deprecated linters with new ones
-* (ci) [\#362](https://github.com/Finschia/finschia/pull/362) Add RELEASE_NOTE.md to .gitignore
-* (swagger) [\#371](https://github.com/Finschia/finschia/pull/371) Add fswap and fbridge swagger settings in swagger config
-* (build) [\#388](https://github.com/Finschia/finschia/pull/388) Modify the way the binary version is set when compiling
-* (build) [\#395](https://github.com/Finschia/finschia/pull/395) Apply Go 1.22, finschia-sdk 0.49.1 and update outdated dependencies
->>>>>>> a628fb2 (feat: Apply finschia-sdk 0.49.1 (#395))
 
 
 ## [v3.0.0] - 2024-03-04

@@ -224,10 +224,8 @@ lint: golangci-lint
 golangci-lint:
 	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.59
 
-format:
-	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/docs/statik/statik.go" | xargs gofmt -w -s
-	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/docs/statik/statik.go" | xargs misspell -w
-	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/docs/statik/statik.go" | xargs -n1 goimports-reviser -rm-unused -set-alias -project-name "github.com/Finschia/finschia/" -company-prefixes "github.com/Finschia/"
+format: golangci-lint
+	golangci-lint run ./... --fix
 
 .PHONY: lint format
 

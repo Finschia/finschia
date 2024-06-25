@@ -61,6 +61,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (ci) [\#362](https://github.com/Finschia/finschia/pull/362) Add RELEASE_NOTE.md to .gitignore
 * (swagger) [\#371](https://github.com/Finschia/finschia/pull/371) Add fswap and fbridge swagger settings in swagger config
 * (build) [\#388](https://github.com/Finschia/finschia/pull/388) Modify the way the binary version is set when compiling
+* (build) [\#395](https://github.com/Finschia/finschia/pull/395) Apply Go 1.22, finschia-sdk 0.49.1 and update outdated dependencies
 
 ### Docs
 

@@ -2,11 +2,12 @@
 
 COMMIT ?= $(shell git log -1 --format='%H')
 
-# ascribe tag only if on a release/ branch, otherwise pick branch name and concatenate commit hash
+# Specify a tag only if it has a specific tag, otherwise choose a branch name and concatenate the commit hash.
 ifeq (,$(VERSION))
   BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
   VERSION := $(shell echo $(shell git describe --tags) | sed 's/^v//')
-  ifeq (, $(findstring release/,$(BRANCH)))
+  SHORT_COMMIT := $(shell git log -1 --format='%h')
+  ifneq (, $(findstring $(SHORT_COMMIT),$(VERSION)))
     VERSION = $(subst /,_,$(BRANCH))-$(COMMIT)
   endif
 endif

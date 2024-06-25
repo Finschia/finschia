@@ -28,8 +28,12 @@ def get_prev_gittag(target_tag: str) -> str:
         )
 
 
-def extract_package_version(document: str, package_name: str):
-    pattern = rf"{re.escape(package_name)} (v[^\s]+)"
+def extract_package_version(
+    document: str, package_name: str, version_suffix: bool
+) -> str:
+    suffix_pattern = r"\/v\d+" if version_suffix else ""
+    pattern = rf"{re.escape(package_name)}{suffix_pattern} (v[^\s]+)"
+
     match = re.search(pattern, document)
     if match:
         return match.group(1)
@@ -37,7 +41,7 @@ def extract_package_version(document: str, package_name: str):
         raise ValueError(f"Package {package_name} not found in the document.")
 
 
-def extract_go_version(document: str):
+def extract_go_version(document: str) -> str:
     pattern = r"go ([^\s]+)"
     match = re.search(pattern, document)
     if match:
@@ -52,25 +56,24 @@ def extract_release_contents(target: str, cur_tag: str, prev_tag: str) -> str:
 
     with open(target, "r") as f:
         document = f.read()
-    start_marker = f"## [{cur_tag}]"
-    start_pos = document.find(start_marker) + len(start_marker) + len(" - YYYY-MM-DD")
-    if start_pos != -1:
-        if prev_tag is None:
-            end_pos = document.find("<!-- Release links -->")
-            if end_pos == -1:
-                match = re.search(r"## \[v\d+\.\d+\.\d+] - \d{4}-\d{2}-\d{2}", document[start_pos:])
-                if match is None:
-                    end_pos = -1
-                else:
-                    end_pos = start_pos + match.start() - 1
-        else:
-            end_marker = f"## [{prev_tag}]"
-            end_pos = document.find(end_marker)
-            if end_pos == -1:
-                match = re.search(r"## \[v\d+\.\d+\.\d+] - \d{4}-\d{2}-\d{2}", document[start_pos:])
-                end_pos = start_pos + match.start() - 1
-    else:
-        raise ValueError("Content not found between the specified markers.")
+
+    start_marker = f"## [{cur_tag}] - "
+    start_pos = document.find(start_marker)
+
+    if start_pos == -1:
+        raise ValueError(f"Start marker for tag '{cur_tag}' not found in {target}")
+
+    start_pos += len(start_marker) + len("YYYY-MM-DD")
+    end_marker = f"## [{prev_tag}]" if prev_tag else "<!-- Release links -->"
+    end_pos = document.find(end_marker, start_pos)
+
+    if end_pos == -1:
+        raise ValueError(
+            f"End marker for previous tag '{prev_tag}' not found in {target}"
+            if prev_tag
+            else f"End marker '{end_marker}' not found in {target}"
+        )
+
     return document[start_pos:end_pos].strip()
 
 
@@ -85,10 +88,12 @@ if len(args) != 1:
 TAG = args[0]
 PREV_TAG = get_prev_gittag(TAG)
 GO_VERSION = extract_go_version(gomod)
-OSTRACON_VERSION = extract_package_version(gomod, "github.com/Finschia/ostracon")
-FNSASDK_VERSION = extract_package_version(gomod, "github.com/Finschia/finschia-sdk")
-WASMD_VERSION = extract_package_version(gomod, "github.com/Finschia/wasmd")
-IBC_VERSION = extract_package_version(gomod, "github.com/cosmos/ibc-go/v4")
+OSTRACON_VERSION = extract_package_version(gomod, "github.com/Finschia/ostracon", False)
+FNSASDK_VERSION = extract_package_version(
+    gomod, "github.com/Finschia/finschia-sdk", False
+)
+WASMD_VERSION = extract_package_version(gomod, "github.com/Finschia/wasmd", False)
+IBC_VERSION = extract_package_version(gomod, "github.com/cosmos/ibc-go", True)
 
 release_note = f"""# Finschia {TAG} Release Note
 

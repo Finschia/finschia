@@ -45,10 +45,16 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Breaking Changes
 
 ### Build, CI
+
+### Docs
+
+
+## [v4.0.1] - 2024-06-25
+
+### Build, CI
 * (build) [\#390](https://github.com/Finschia/finschia/pull/390) Modify the way the binary version is set when compiling (backport #388)
 * (build) [\#398](https://github.com/Finschia/finschia/pull/398) Apply Go 1.22, finschia-sdk 0.49.1 and update outdated dependencies (backport #395)
 
-### Docs
 
 ## [v4.0.0] - 2024-05-27
 
@@ -293,7 +299,8 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (build) [\#25](https://github.com/Finschia/finschia/pull/25) Fix localnet-start
 
 <!-- Release links -->
-[Unreleased]: https://github.com/Finschia/finschia/compare/v4.0.0...HEAD
+[Unreleased]: https://github.com/Finschia/finschia/compare/v4.0.1...HEAD
+[v4.0.1]: https://github.com/Finschia/finschia/releases/tag/v4.0.1
 [v4.0.0]: https://github.com/Finschia/finschia/releases/tag/v4.0.0
 [v3.0.0]: https://github.com/Finschia/finschia/releases/tag/v3.0.0
 [v2.0.0]: https://github.com/Finschia/finschia/releases/tag/v2.0.0

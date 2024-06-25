@@ -27,7 +27,7 @@ jobs:
       - name: install tparse
         run: |
           export GO111MODULE="on" && go install github.com/mfridman/tparse@v0.8.3
-      - uses: actions/cache@v3.3.1
+      - uses: actions/cache@v4
         with:
           path: ~/go/bin
           key: ${{ runner.os }}-go-tparse-binary
@@ -65,19 +65,19 @@ jobs:
       - name: Split pkgs into 4 files
         run: split -d -n l/4 pkgs.txt pkgs.txt.part.
       # cache multiple
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: "${{ github.sha }}-00"
           path: ./pkgs.txt.part.00
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: "${{ github.sha }}-01"
           path: ./pkgs.txt.part.01
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: "${{ github.sha }}-02"
           path: ./pkgs.txt.part.02
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: "${{ github.sha }}-03"
           path: ./pkgs.txt.part.03
@@ -101,7 +101,7 @@ jobs:
             go.mod
             go.sum
             .github/workflows/test.yml
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-${{ matrix.part }}"
         if: env.GIT_DIFF
@@ -112,7 +112,7 @@ jobs:
         run: |
           cat pkgs.txt.part.${{ matrix.part }} | xargs go test -mod=readonly -timeout 30m -coverprofile=${{ matrix.part }}profile.out -covermode=atomic -tags='ledger test_ledger_mock goleveldb gcc'
         if: env.GIT_DIFF
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: "${{ github.sha }}-${{ matrix.part }}-coverage"
           path: ./${{ matrix.part }}profile.out
@@ -129,19 +129,19 @@ jobs:
             go.mod
             go.sum
             .github/workflows/test.yml
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-00-coverage"
         if: env.GIT_DIFF
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-01-coverage"
         if: env.GIT_DIFF
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-02-coverage"
         if: env.GIT_DIFF
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-03-coverage"
         if: env.GIT_DIFF
@@ -160,7 +160,7 @@ jobs:
             sed -i.bak "/$(echo $filename | sed 's/\//\\\//g')/d" coverage.txt
           done
         if: env.GIT_DIFF
-      - uses: codecov/codecov-action@v4.4.1
+      - uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.txt
@@ -185,7 +185,7 @@ jobs:
             go.mod
             go.sum
             .github/workflows/test.yml
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-${{ matrix.part }}"
         if: env.GIT_DIFF
@@ -196,7 +196,7 @@ jobs:
         run: |
           xargs --arg-file=pkgs.txt.part.${{ matrix.part }} go test -mod=readonly -json -timeout 30m -tags='cli_test goleveldb gcc' | tee ${{ matrix.part }}-integration-output.txt
         if: env.GIT_DIFF
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: "${{ github.sha }}-${{ matrix.part }}-integration-output"
           path: ./${{ matrix.part }}-integration-output.txt
@@ -214,23 +214,23 @@ jobs:
             go.mod
             go.sum
             .github/workflows/test.yml
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-00-integration-output"
         if: env.GIT_DIFF
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-01-integration-output"
         if: env.GIT_DIFF
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-02-integration-output"
         if: env.GIT_DIFF
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-03-integration-output"
         if: env.GIT_DIFF
-      - uses: actions/cache@v3.3.1
+      - uses: actions/cache@v4
         with:
           path: ~/go/bin
           key: ${{ runner.os }}-go-tparse-binary
@@ -258,7 +258,7 @@ jobs:
             go.mod
             go.sum
             .github/workflows/test.yml
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-${{ matrix.part }}"
         if: env.GIT_DIFF
@@ -269,7 +269,7 @@ jobs:
         run: |
           xargs --arg-file=pkgs.txt.part.${{ matrix.part }} go test -mod=readonly -json -timeout 30m -tags='cli_multi_node_test goleveldb' | tee ${{ matrix.part }}-integration-multi-node-output.txt
         if: env.GIT_DIFF
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: "${{ github.sha }}-${{ matrix.part }}-integration-multi-node-output"
           path: ./${{ matrix.part }}-integration-multi-node-output.txt
@@ -287,23 +287,23 @@ jobs:
             go.mod
             go.sum
             .github/workflows/test.yml
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-00-integration-multi-node-output"
         if: env.GIT_DIFF
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-01-integration-multi-node-output"
         if: env.GIT_DIFF
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-02-integration-multi-node-output"
         if: env.GIT_DIFF
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: "${{ github.sha }}-03-integration-multi-node-output"
         if: env.GIT_DIFF
-      - uses: actions/cache@v3.3.1
+      - uses: actions/cache@v4
         with:
           path: ~/go/bin
           key: ${{ runner.os }}-go-tparse-binary

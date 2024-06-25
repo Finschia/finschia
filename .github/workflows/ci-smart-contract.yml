@@ -9,7 +9,7 @@ on:
 
 env:
   TEST_DOCKER_IMAGE: finschianode:smartcontractci
-  GO_VERSION: "1.20"
+  GO_VERSION: "1.22"
 
 jobs:
   cleanup-runs:

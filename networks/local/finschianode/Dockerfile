@@ -4,7 +4,7 @@
 # > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.finschia:/root/.finschia -v networks/local/finschianode fnsad init
 # > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.finschia:/root/.finschia -v networks/local/finschianode fnsad start --rpc.laddr=tcp://0.0.0.0:26657 --p2p.laddr=tcp://0.0.0.0:26656
 
-ARG GO_VERSION="1.20"
+ARG GO_VERSION="1.22"
 ARG RUNNER_IMAGE="alpine:3.17"
 
 FROM golang:${GO_VERSION}-alpine3.17 AS build-env

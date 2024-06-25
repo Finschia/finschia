@@ -1,6 +1,6 @@
 module github.com/Finschia/finschia/v4
 
-go 1.20
+go 1.22
 
 require (
 	github.com/Finschia/finschia-sdk v0.49.0

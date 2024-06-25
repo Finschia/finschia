@@ -30,6 +30,17 @@ import (
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 	dbm "github.com/tendermint/tm-db"
 
+	ocabci "github.com/Finschia/ostracon/abci/types"
+	"github.com/Finschia/ostracon/libs/log"
+	ostos "github.com/Finschia/ostracon/libs/os"
+
+	"github.com/Finschia/wasmd/x/wasm"
+	wasmclient "github.com/Finschia/wasmd/x/wasm/client"
+	wasmkeeper "github.com/Finschia/wasmd/x/wasm/keeper"
+	"github.com/Finschia/wasmd/x/wasmplus"
+	wasmpluskeeper "github.com/Finschia/wasmd/x/wasmplus/keeper"
+	wasmplustypes "github.com/Finschia/wasmd/x/wasmplus/types"
+
 	"github.com/Finschia/finschia-sdk/baseapp"
 	"github.com/Finschia/finschia-sdk/client"
 	nodeservice "github.com/Finschia/finschia-sdk/client/grpc/node"
@@ -120,23 +131,16 @@ import (
 	upgradeclient "github.com/Finschia/finschia-sdk/x/upgrade/client"
 	upgradekeeper "github.com/Finschia/finschia-sdk/x/upgrade/keeper"
 	upgradetypes "github.com/Finschia/finschia-sdk/x/upgrade/types"
-	ocabci "github.com/Finschia/ostracon/abci/types"
-	"github.com/Finschia/ostracon/libs/log"
-	ostos "github.com/Finschia/ostracon/libs/os"
-	"github.com/Finschia/wasmd/x/wasm"
-	wasmclient "github.com/Finschia/wasmd/x/wasm/client"
-	wasmkeeper "github.com/Finschia/wasmd/x/wasm/keeper"
-	"github.com/Finschia/wasmd/x/wasmplus"
-	wasmpluskeeper "github.com/Finschia/wasmd/x/wasmplus/keeper"
-	wasmplustypes "github.com/Finschia/wasmd/x/wasmplus/types"
 
 	appante "github.com/Finschia/finschia/v4/ante"
 	appparams "github.com/Finschia/finschia/v4/app/params"
 	_ "github.com/Finschia/finschia/v4/client/docs/statik" // unnamed import of statik for swagger UI support
 )
 
-const appName = "Finschia"
-const upgradeName = "v4-Marigold"
+const (
+	appName     = "Finschia"
+	upgradeName = "v4-Marigold"
+)
 
 var (
 	// DefaultNodeHome default home directories for the application daemon
@@ -216,7 +220,7 @@ var (
 // LinkApp extends an ABCI application, but with most of its parameters exported.
 // They are exported for convenience in creating helper functions, as object
 // capabilities aren't needed for testing.
-type LinkApp struct { // nolint: golint
+type LinkApp struct { //nolint: golint
 	*baseapp.BaseApp
 	legacyAmino       *codec.LegacyAmino
 	appCodec          codec.Codec
@@ -504,7 +508,7 @@ func NewLinkApp(
 	/****  Module Options ****/
 
 	/****  Module Options ****/
-	var skipGenesisInvariants = false
+	skipGenesisInvariants := false
 	opt := appOpts.Get(crisis.FlagSkipGenesisInvariants)
 	if opt, ok := opt.(bool); ok {
 		skipGenesisInvariants = opt
@@ -699,7 +703,7 @@ func NewLinkApp(
 			wasmkeeper.NewWasmSnapshotter(app.CommitMultiStore(), &app.WasmKeeper.Keeper),
 		)
 		if err != nil {
-			panic(fmt.Errorf("failed to register snapshot extension: %s", err))
+			panic(fmt.Errorf("failed to register snapshot extension: %w", err))
 		}
 	}
 
@@ -890,7 +894,7 @@ func (app *LinkApp) setupUpgradeStoreLoaders() {
 func (app *LinkApp) setupUpgradeHandlers() {
 	app.UpgradeKeeper.SetUpgradeHandler(
 		upgradeName,
-		func(ctx sdk.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+		func(ctx sdk.Context, _ upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
 			return app.mm.RunMigrations(ctx, app.configurator, fromVM)
 		})
 }

@@ -9,7 +9,7 @@ on:
 
 env:
   TEST_DOCKER_IMAGE: finschianode:smartcontractci
-  GO_VERSION: "1.20"
+  GO_VERSION: "1.22"
 
 jobs:
   cleanup-runs:
@@ -65,7 +65,7 @@ jobs:
       - name: Build
         run: GOARCH=${{ matrix.go-arch }} LEDGER_ENABLED=false LINK_STATICALLY=true make build
       - name: Upload build
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: fnsad
           path: ./build/fnsad
@@ -91,7 +91,7 @@ jobs:
           file: '.*'
           target: 'contracts/'
       - name: Download build
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: fnsad
           path: ./build
@@ -121,14 +121,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: docker/setup-buildx-action@v3
       - name: Build and export
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           file: Dockerfile
           context: .
           tags: ${{ env.TEST_DOCKER_IMAGE }}
           outputs: type=docker,dest=/tmp/finschia-ci-test.tar
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: finschia-ci-test
           path: /tmp/finschia-ci-test.tar
@@ -152,7 +152,7 @@ jobs:
           file: '.*'
           target: 'contracts/'
       - name: Download docker image
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: finschia-ci-test
           path: /tmp

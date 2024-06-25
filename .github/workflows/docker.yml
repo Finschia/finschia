@@ -10,7 +10,7 @@ on:
 env:
   registry: docker.io
   DOCKER_REPOSITORY: finschia/finschianode
-  RUNNER_BASE_IMAGE_ALPINE: alpine:3.17
+  RUNNER_BASE_IMAGE_ALPINE: alpine:3.18
 jobs:
   docker_build_and_push:
     runs-on: ubuntu-latest
@@ -71,7 +71,7 @@ jobs:
 
       # Build Docker image
       - name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           file: Dockerfile
           context: .

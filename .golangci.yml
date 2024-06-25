@@ -1,30 +1,40 @@
 linters:
+  disable-all: true
   enable:
-    - bodyclose
-    - dogsled
     - errcheck
-    - goconst
-    - gocritic
-    - gofmt
-    - goimports
-    - gosec
     - gosimple
     - govet
     - ineffassign
-    - misspell
-    - nakedret
-    - prealloc
     - staticcheck
+    - unused
+    - dogsled
+    - gosec
+    - gci
+    - gofumpt
+    - goconst
+    - gocritic
+    - nakedret
+    - nolintlint
+    - revive
+    - misspell
     - stylecheck
     - typecheck
+    - thelper
     - unconvert
-    - unparam
-    - unused
-    - gocyclo
-    - whitespace
+    - asasalint
+    - asciicheck
+    - bidichk
+    - bodyclose
+    - copyloopvar
+    - errchkjson
+    - errorlint
+    - tenv
+    - wastedassign
+    - fatcontext
     - dupl
-    - revive
-    - exportloopref
+    - unparam
+    - gocyclo
+    - prealloc
 
 issues:
   exclude-rules:
@@ -57,6 +67,12 @@ linters-settings:
     # Default is to use a neutral variety of English.
     # Setting locale to US will correct the British spelling of 'colour' to 'color'.
     locale: US
+  gci:
+    custom-order: true
+    sections:
+      - standard # Standard section: captures all standard packages.
+      - default # Default section: contains all imports that could not be matched to another section type.
+      - prefix(github.com/Finschia/finschia-sdk)
 run:
   # default concurrency is a available CPU number
   concurrency: 4

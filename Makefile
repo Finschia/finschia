@@ -217,9 +217,12 @@ docker-build:
 ###                                Linting                                  ###
 ###############################################################################
 
-lint:
-	golangci-lint run
+lint: golangci-lint
+	golangci-lint run --out-format=tab
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" | xargs gofmt -d -s
+
+golangci-lint:
+	@go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.59
 
 format:
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/docs/statik/statik.go" | xargs gofmt -w -s

@@ -310,7 +310,7 @@ release-dry-run:
 		release \
 		--clean \
 		--release-notes ./RELEASE_NOTE.md \
-		--skip-publish
+		--skip=publish
 
 release-snapshot:
 	docker run \
@@ -326,7 +326,7 @@ release-snapshot:
 		--clean \
 		--release-notes ./RELEASE_NOTE.md \
 		--snapshot \
-		--skip-validate \
-		--skip-publish
+		--skip=validate \
+		--skip=publish
 
 .PHONY: release release-dry-run release-snapshot

@@ -72,7 +72,11 @@ linters-settings:
     sections:
       - standard # Standard section: captures all standard packages.
       - default # Default section: contains all imports that could not be matched to another section type.
+      - prefix(github.com/Finschia/ostracon)
+      - prefix(github.com/Finschia/ibc-go)
+      - prefix(github.com/Finschia/wasmd)
       - prefix(github.com/Finschia/finschia-sdk)
+      - prefix(github.com/Finschia/finschia)
 run:
   # default concurrency is a available CPU number
   concurrency: 4

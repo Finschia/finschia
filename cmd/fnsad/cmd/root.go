@@ -13,6 +13,12 @@ import (
 	"github.com/spf13/viper"
 	dbm "github.com/tendermint/tm-db"
 
+	ostcli "github.com/Finschia/ostracon/libs/cli"
+	"github.com/Finschia/ostracon/libs/log"
+
+	"github.com/Finschia/wasmd/x/wasm"
+	wasmkeeper "github.com/Finschia/wasmd/x/wasm/keeper"
+
 	"github.com/Finschia/finschia-sdk/baseapp"
 	"github.com/Finschia/finschia-sdk/client"
 	"github.com/Finschia/finschia-sdk/client/config"
@@ -33,10 +39,6 @@ import (
 	banktypes "github.com/Finschia/finschia-sdk/x/bank/types"
 	"github.com/Finschia/finschia-sdk/x/crisis"
 	genutilcli "github.com/Finschia/finschia-sdk/x/genutil/client/cli"
-	ostcli "github.com/Finschia/ostracon/libs/cli"
-	"github.com/Finschia/ostracon/libs/log"
-	"github.com/Finschia/wasmd/x/wasm"
-	wasmkeeper "github.com/Finschia/wasmd/x/wasm/keeper"
 
 	"github.com/Finschia/finschia/v4/app"
 	"github.com/Finschia/finschia/v4/app/params"
@@ -178,6 +180,7 @@ func initRootCmd(rootCmd *cobra.Command, encodingConfig params.EncodingConfig) {
 		keys.Commands(app.DefaultNodeHome),
 	)
 }
+
 func addModuleInitFlags(startCmd *cobra.Command) {
 	crisis.AddModuleInitFlags(startCmd)
 }
@@ -297,7 +300,8 @@ func newApp(logger log.Logger, db dbm.DB, traceStore io.Writer, appOpts serverty
 
 func createSimappAndExport(
 	logger log.Logger, db dbm.DB, traceStore io.Writer, height int64, forZeroHeight bool, jailAllowedAddrs []string,
-	appOpts servertypes.AppOptions) (servertypes.ExportedApp, error) {
+	appOpts servertypes.AppOptions,
+) (servertypes.ExportedApp, error) {
 	encCfg := app.MakeEncodingConfig() // Ideally, we would reuse the one created by NewRootCmd.
 	encCfg.Marshaler = codec.NewProtoCodec(encCfg.InterfaceRegistry)
 	var linkApp *app.LinkApp

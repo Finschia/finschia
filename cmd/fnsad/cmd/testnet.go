@@ -12,6 +12,12 @@ import (
 
 	"github.com/spf13/cobra"
 
+	ostconfig "github.com/Finschia/ostracon/config"
+	ostos "github.com/Finschia/ostracon/libs/os"
+	ostrand "github.com/Finschia/ostracon/libs/rand"
+	"github.com/Finschia/ostracon/types"
+	osttime "github.com/Finschia/ostracon/types/time"
+
 	"github.com/Finschia/finschia-sdk/client"
 	"github.com/Finschia/finschia-sdk/client/flags"
 	"github.com/Finschia/finschia-sdk/client/tx"
@@ -28,11 +34,6 @@ import (
 	"github.com/Finschia/finschia-sdk/x/genutil"
 	genutiltypes "github.com/Finschia/finschia-sdk/x/genutil/types"
 	stakingtypes "github.com/Finschia/finschia-sdk/x/staking/types"
-	ostconfig "github.com/Finschia/ostracon/config"
-	ostos "github.com/Finschia/ostracon/libs/os"
-	ostrand "github.com/Finschia/ostracon/libs/rand"
-	"github.com/Finschia/ostracon/types"
-	osttime "github.com/Finschia/ostracon/types/time"
 )
 
 var (
@@ -64,15 +65,15 @@ Example:
 			serverCtx := server.GetServerContextFromCmd(cmd)
 			config := serverCtx.Config
 
-			outputDir, _ := cmd.Flags().GetString(flagOutputDir)                 // nolint: errcheck
-			keyringBackend, _ := cmd.Flags().GetString(flags.FlagKeyringBackend) // nolint: errcheck
-			chainID, _ := cmd.Flags().GetString(flags.FlagChainID)               // nolint: errcheck
-			minGasPrices, _ := cmd.Flags().GetString(server.FlagMinGasPrices)    // nolint: errcheck
-			nodeDirPrefix, _ := cmd.Flags().GetString(flagNodeDirPrefix)         // nolint: errcheck
-			nodeDaemonHome, _ := cmd.Flags().GetString(flagNodeDaemonHome)       // nolint: errcheck
-			startingIPAddress, _ := cmd.Flags().GetString(flagStartingIPAddress) // nolint: errcheck
-			numValidators, _ := cmd.Flags().GetInt(flagNumValidators)            // nolint: errcheck
-			algo, _ := cmd.Flags().GetString(flags.FlagKeyAlgorithm)             // nolint: errcheck
+			outputDir, _ := cmd.Flags().GetString(flagOutputDir)                 //nolint: errcheck
+			keyringBackend, _ := cmd.Flags().GetString(flags.FlagKeyringBackend) //nolint: errcheck
+			chainID, _ := cmd.Flags().GetString(flags.FlagChainID)               //nolint: errcheck
+			minGasPrices, _ := cmd.Flags().GetString(server.FlagMinGasPrices)    //nolint: errcheck
+			nodeDirPrefix, _ := cmd.Flags().GetString(flagNodeDirPrefix)         //nolint: errcheck
+			nodeDaemonHome, _ := cmd.Flags().GetString(flagNodeDaemonHome)       //nolint: errcheck
+			startingIPAddress, _ := cmd.Flags().GetString(flagStartingIPAddress) //nolint: errcheck
+			numValidators, _ := cmd.Flags().GetInt(flagNumValidators)            //nolint: errcheck
+			algo, _ := cmd.Flags().GetString(flags.FlagKeyAlgorithm)             //nolint: errcheck
 
 			return InitTestnet(
 				clientCtx, cmd, config, mbm, genBalIterator, outputDir, chainID, minGasPrices,
@@ -128,7 +129,7 @@ func InitTestnet(
 	appConfig.Telemetry.EnableHostnameLabel = false
 	appConfig.Telemetry.GlobalLabels = [][]string{{"chain_id", chainID}}
 
-	// nolint: prealloc
+	//nolint: prealloc
 	var (
 		genAccounts []authtypes.GenesisAccount
 		genBalances []banktypes.Balance
@@ -387,12 +388,12 @@ func writeFile(name string, dir string, contents []byte) error {
 	writePath := dir
 	file := filepath.Join(writePath, name)
 
-	err := ostos.EnsureDir(writePath, 0755)
+	err := ostos.EnsureDir(writePath, 0o755)
 	if err != nil {
 		return err
 	}
 
-	err = ostos.WriteFile(file, contents, 0644)
+	err = ostos.WriteFile(file, contents, 0o644)
 	if err != nil {
 		return err
 	}

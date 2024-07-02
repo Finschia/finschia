@@ -87,3 +87,4 @@ make localnet-stop
 # How to contribute
 check out [CONTRIBUTING.md](CONTRIBUTING.md) for our guidelines & policies for how we develop Finschia. Thank you to all those who have contributed!
 
+# [Finschia Mainnet/Testnet](./docs/FINSCHIA_README.md)

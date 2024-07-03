@@ -94,25 +94,24 @@ make localnet-stop
 
 * Genesis file
     * Finschia mainnet
-        * TBD(link)
+        * [finschia-genesis.tgz](https://vos.line-scdn.net/finschia-2-fileshare/datafile/finschia-prod-2/finschia-2-genesis.tgz)
     * Ebony testnet
-        * TBD(link)
+        * [ebony-genesis.tgz](https://vos.line-scdn.net/finschia-2-fileshare/ebony-prod-2/genesis-file.tgz)
 * Snapshot file
     * Finschia mainnet (pruned)
-        * TBD(link)
+        * [finschia-2-pruned.tgz](https://finschia-quicksync.line-scdn.net/finschia-2/pruned/finschia-2-pruned.tgz)
     * Ebony testnet (pruned)
-        * TBD(link)
+        * [ebony-2-pruned.tgz](https://finschia-quicksync.line-scdn.net/ebony-2/pruned/ebony-2-pruned.tgz)
 
 ## Current Finschia mainnet/testent environment
 
-* Required software
-    * Go v1.22+
-    * Docker (Required only when using Docker)
 * Required binary versions
     * Finschia mainnet (finschia-2)
-        * TBD(finschia v4.0.x)
+        * [finschia@v4.0.1](https://github.com/Finschia/finschia/releases/tag/v4.0.1)
     * Ebony testnet (ebony-2)
-        * TBD(finschia v4.0.x)
+        * [finschia@v4.0.1](https://github.com/Finschia/finschia/releases/tag/v4.0.1)
+    * Docker container image
+      * [finschia/finschianode:4.0.1](https://hub.docker.com/layers/finschia/finschianode/4.0.1/images/sha256-73a25e3e1f4343d5a048c8709977335caa1d3b32234b7d5b39217ef237a61649?context=explore)
 
 ## Testnet Faucet
 

@@ -184,7 +184,5 @@ curl \
     http://localhost:1317/cosmos/bank/v1beta1/balances/<address>
 ```
 
-
 # How to contribute
 check out [CONTRIBUTING.md](CONTRIBUTING.md) for our guidelines & policies for how we develop Finschia. Thank you to all those who have contributed!
-

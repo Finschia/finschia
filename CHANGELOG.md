@@ -64,7 +64,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (build) [\#395](https://github.com/Finschia/finschia/pull/395) Apply Go 1.22, finschia-sdk 0.49.1 and update outdated dependencies
 
 ### Docs
-* (doc) [\#400](https://github.com/Finschia/finschia/pull/400) Add  latest finschia mainnet, ebony testnet information
+* (docs) [\#400](https://github.com/Finschia/finschia/pull/400) Add  latest finschia mainnet, ebony testnet information
 
 ## [v3.0.0] - 2024-03-04
 

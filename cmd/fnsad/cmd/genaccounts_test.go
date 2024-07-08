@@ -8,6 +8,8 @@ import (
 	"github.com/spf13/viper"
 	"github.com/stretchr/testify/require"
 
+	"github.com/Finschia/ostracon/libs/log"
+
 	"github.com/Finschia/finschia-sdk/client"
 	"github.com/Finschia/finschia-sdk/client/flags"
 	"github.com/Finschia/finschia-sdk/crypto/hd"
@@ -20,7 +22,6 @@ import (
 	"github.com/Finschia/finschia-sdk/types/module"
 	"github.com/Finschia/finschia-sdk/x/genutil"
 	genutiltest "github.com/Finschia/finschia-sdk/x/genutil/client/testutil"
-	"github.com/Finschia/ostracon/libs/log"
 )
 
 var testMbm = module.NewBasicManager(genutil.AppModuleBasic{})
@@ -65,7 +66,6 @@ func TestAddGenesisAccountCmd(t *testing.T) {
 	}
 
 	for _, tc := range tests {
-		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			home := t.TempDir()
 			logger := log.NewNopLogger()
@@ -96,7 +96,8 @@ func TestAddGenesisAccountCmd(t *testing.T) {
 			cmd.SetArgs([]string{
 				tc.addr,
 				tc.denom,
-				fmt.Sprintf("--%s=home", flags.FlagHome)})
+				fmt.Sprintf("--%s=home", flags.FlagHome),
+			})
 
 			if tc.expectErr {
 				require.Error(t, cmd.ExecuteContext(ctx))

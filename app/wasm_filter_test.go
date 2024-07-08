@@ -3,17 +3,18 @@ package app
 import (
 	"testing"
 
-	"github.com/golang/protobuf/proto" // nolint: staticcheck
+	wasmvmtypes "github.com/Finschia/wasmvm/types"
+	"github.com/golang/protobuf/proto" //nolint: staticcheck
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	wasmkeeper "github.com/Finschia/wasmd/x/wasm/keeper"
+	wasmtypes "github.com/Finschia/wasmd/x/wasm/types"
 
 	codectypes "github.com/Finschia/finschia-sdk/codec/types"
 	sdk "github.com/Finschia/finschia-sdk/types"
 	banktypes "github.com/Finschia/finschia-sdk/x/bank/types"
 	govtypes "github.com/Finschia/finschia-sdk/x/gov/types"
-	wasmkeeper "github.com/Finschia/wasmd/x/wasm/keeper"
-	wasmtypes "github.com/Finschia/wasmd/x/wasm/types"
-	wasmvmtypes "github.com/Finschia/wasmvm/types"
 )
 
 func TestFilteredStargateMsgEncoders(t *testing.T) {
@@ -123,7 +124,6 @@ func TestFilteredStargateMsgEncoders(t *testing.T) {
 	}
 	encodingConfig := MakeEncodingConfig()
 	for name, tc := range cases {
-		tc := tc
 		t.Run(name, func(t *testing.T) {
 			var ctx sdk.Context
 			encoder := wasmkeeper.DefaultEncoders(encodingConfig.Marshaler, tc.transferPortSource)

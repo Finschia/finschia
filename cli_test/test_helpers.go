@@ -19,6 +19,16 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/require"
 
+	ostcmd "github.com/Finschia/ostracon/cmd/ostracon/commands"
+	ostcfg "github.com/Finschia/ostracon/config"
+	"github.com/Finschia/ostracon/libs/log"
+	osthttp "github.com/Finschia/ostracon/rpc/client/http"
+	ostctypes "github.com/Finschia/ostracon/rpc/core/types"
+	osttypes "github.com/Finschia/ostracon/types"
+
+	wasmcli "github.com/Finschia/wasmd/x/wasm/client/cli"
+	wasmtypes "github.com/Finschia/wasmd/x/wasm/types"
+
 	"github.com/Finschia/finschia-sdk/baseapp"
 	"github.com/Finschia/finschia-sdk/client"
 	clientkeys "github.com/Finschia/finschia-sdk/client/keys"
@@ -52,14 +62,6 @@ import (
 	stakingcli "github.com/Finschia/finschia-sdk/x/staking/client/cli"
 	staking "github.com/Finschia/finschia-sdk/x/staking/types"
 	"github.com/Finschia/finschia-sdk/x/stakingplus"
-	ostcmd "github.com/Finschia/ostracon/cmd/ostracon/commands"
-	ostcfg "github.com/Finschia/ostracon/config"
-	"github.com/Finschia/ostracon/libs/log"
-	osthttp "github.com/Finschia/ostracon/rpc/client/http"
-	ostctypes "github.com/Finschia/ostracon/rpc/core/types"
-	osttypes "github.com/Finschia/ostracon/types"
-	wasmcli "github.com/Finschia/wasmd/x/wasm/client/cli"
-	wasmtypes "github.com/Finschia/wasmd/x/wasm/types"
 
 	"github.com/Finschia/finschia/v4/app"
 	fnsacmd "github.com/Finschia/finschia/v4/cmd/fnsad/cmd"
@@ -128,9 +130,7 @@ var (
 	}
 )
 
-var (
-	minGasPrice = sdk.NewCoin(feeDenom, sdk.ZeroInt())
-)
+var minGasPrice = sdk.NewCoin(feeDenom, sdk.ZeroInt())
 
 func init() {
 	testnet := false
@@ -171,6 +171,7 @@ type Fixtures struct {
 }
 
 func getHomeDir(t *testing.T) string {
+	t.Helper()
 	tmpDir := path.Join(os.ExpandEnv("$HOME"), ".fnsatest")
 	err := os.MkdirAll(tmpDir, os.ModePerm)
 	require.NoError(t, err)
@@ -181,6 +182,7 @@ func getHomeDir(t *testing.T) string {
 
 // NewFixtures creates a new instance of Fixtures with many vars set
 func NewFixtures(t *testing.T, homeDir string) *Fixtures {
+	t.Helper()
 	if err := os.MkdirAll(filepath.Join(homeDir, "config/"), os.ModePerm); err != nil {
 		panic(err)
 	}
@@ -203,6 +205,7 @@ func NewFixtures(t *testing.T, homeDir string) *Fixtures {
 }
 
 func newTCPAddr(t *testing.T) (addr, port string) {
+	t.Helper()
 	portI := atomic.AddInt32(&curPort, 1)
 	require.Less(t, portI, int32(32768), "A new port should be less than ip_local_port_range.min")
 
@@ -212,6 +215,7 @@ func newTCPAddr(t *testing.T) (addr, port string) {
 }
 
 func newGRPCAddr(t *testing.T) (addr, port string) {
+	t.Helper()
 	portI := atomic.AddInt32(&curPort, 1)
 	require.Less(t, portI, int32(32768), "A new port should be less than ip_local_port_range.min")
 
@@ -267,6 +271,7 @@ func (f Fixtures) GenesisState() app.GenesisState {
 // InitFixtures is called at the beginning of a test  and initializes a chain
 // with 1 validator.
 func InitFixtures(t *testing.T) (f *Fixtures) {
+	t.Helper()
 	f = NewFixtures(t, getHomeDir(t))
 
 	// add foo and bar keys to the keystore
@@ -522,7 +527,8 @@ func (f *Fixtures) TxEncode(fileName string, flags ...string) (testutil.BufferWr
 
 // TxMultisign is fnsad tx multisign
 func (f *Fixtures) TxMultisign(fileName, name string, signaturesFiles []string,
-	flags ...string) (testutil.BufferWriter, error) {
+	flags ...string,
+) (testutil.BufferWriter, error) {
 	args := fmt.Sprintf("--keyring-backend=test %s %s %s --node=%s", fileName, name, strings.Join(signaturesFiles, " "), f.RPCAddr)
 	cmd := authcli.GetMultiSignCommand()
 	return testcli.ExecTestCLICmd(getCliCtx(f), cmd, addFlags(args, flags...))
@@ -1119,6 +1125,7 @@ type FixtureGroup struct {
 }
 
 func NewFixtureGroup(t *testing.T) *FixtureGroup {
+	t.Helper()
 	fg := &FixtureGroup{
 		T:           t,
 		fixturesMap: make(map[string]*Fixtures),
@@ -1131,6 +1138,7 @@ func NewFixtureGroup(t *testing.T) *FixtureGroup {
 }
 
 func InitFixturesGroup(t *testing.T, numOfNodes ...int) *FixtureGroup {
+	t.Helper()
 	nodeNumber := 4
 	if len(numOfNodes) == 1 {
 		nodeNumber = numOfNodes[0]
@@ -1182,10 +1190,11 @@ func (fg *FixtureGroup) initNodes(numberOfNodes int) {
 	}
 
 	for _, f := range fg.fixturesMap {
-		err := os.WriteFile(f.GenesisFile(), fg.genesisFileContent, os.ModePerm)
+		err := os.WriteFile(f.GenesisFile(), fg.genesisFileContent, 0o600)
 		require.NoError(t, err)
 	}
 }
+
 func (fg *FixtureGroup) FinschiaStartCluster(minGasPrices string, _ ...string) {
 	genDoc, err := osttypes.GenesisDocFromJSON(fg.genesisFileContent)
 	require.NoError(fg.T, err)
@@ -1228,7 +1237,7 @@ func (fg *FixtureGroup) AddFullNode(flags ...string) *Fixtures {
 		if len(fg.genesisFileContent) == 0 {
 			panic("genesis file is not loaded")
 		}
-		err := os.WriteFile(f.GenesisFile(), fg.genesisFileContent, os.ModePerm)
+		err := os.WriteFile(f.GenesisFile(), fg.genesisFileContent, 0o600)
 		require.NoError(t, err)
 	}
 
@@ -1333,6 +1342,7 @@ func addFlags(args string, flags ...string) []string {
 
 // Write the given string to a new temporary file
 func WriteToNewTempFile(t *testing.T, s string) *os.File {
+	t.Helper()
 	fp, err := os.CreateTemp(os.TempDir(), "cosmos_cli_test_")
 	require.Nil(t, err)
 	_, err = fp.WriteString(s)
@@ -1341,6 +1351,7 @@ func WriteToNewTempFile(t *testing.T, s string) *os.File {
 }
 
 func MarshalTx(t *testing.T, stdTx tx.Tx) []byte {
+	t.Helper()
 	cdc, _ := app.MakeCodecs()
 	bz, err := cdc.MarshalJSON(&stdTx)
 	require.NoError(t, err)
@@ -1348,18 +1359,21 @@ func MarshalTx(t *testing.T, stdTx tx.Tx) []byte {
 }
 
 func UnmarshalTx(t *testing.T, s []byte) (stdTx tx.Tx) {
+	t.Helper()
 	cdc, _ := app.MakeCodecs()
 	require.Nil(t, cdc.UnmarshalJSON(s, &stdTx))
 	return
 }
 
 func UnmarshalTxResponse(t *testing.T, s []byte) (txResp sdk.TxResponse) {
+	t.Helper()
 	cdc, _ := app.MakeCodecs()
 	require.Nil(t, cdc.UnmarshalJSON(s, &txResp))
 	return
 }
 
 func newTestnetConfig(t *testing.T, genesisState map[string]json.RawMessage, chainID, minGasPrices string) testnet.Config {
+	t.Helper()
 	encodingCfg := app.MakeEncodingConfig()
 	cfg := testnet.Config{
 		Codec:             encodingCfg.Marshaler,
@@ -1413,7 +1427,6 @@ func newValidator(f *Fixtures, cfg testnet.Config, appCfg *srvconfig.Config, ctx
 	appCfg.API.Address = f.P2PAddr
 	tmCfg.P2P.ListenAddress = f.P2PAddr
 	tmCfg.RPC.ListenAddress = f.RPCAddr
-	appCfg.GRPCWeb.Enable = false
 	appCfg.GRPC.Address = f.GRPCAddr
 	appCfg.GRPC.Enable = true
 

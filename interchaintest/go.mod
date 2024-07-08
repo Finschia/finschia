@@ -1,6 +1,6 @@
 module github.com/Finschia/finschia/v4/interchaintest
 
-go 1.20
+go 1.22
 
 replace (
 	github.com/ChainSafe/go-schnorrkel => github.com/ChainSafe/go-schnorrkel v0.0.0-20200405005733-88cbf1b4c40d

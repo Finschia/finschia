@@ -48,6 +48,8 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Build, CI
 
 ### Docs
+* (docs) [\#400](https://github.com/Finschia/finschia/pull/400) Add  latest finschia mainnet, ebony testnet information
+
 
 ## [v4.0.0] - 2024-05-27
 
@@ -71,6 +73,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 * (ci) [\#364](https://github.com/Finschia/finschia/pull/364) Add RELEASE_NOTE.md to .gitignore (backport #362)
 * (swagger) [\#372](https://github.com/Finschia/finschia/pull/372) Add fswap and fbridge swagger settings in swagger config (backport #371)
 * (build) [\#388](https://github.com/Finschia/finschia/pull/388) Modify the way the binary version is set when compiling
+* (build) [\#395](https://github.com/Finschia/finschia/pull/395) Apply Go 1.22, finschia-sdk 0.49.1 and update outdated dependencies
 
 
 ## [v3.0.0] - 2024-03-04

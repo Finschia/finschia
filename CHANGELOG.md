@@ -47,7 +47,7 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Build, CI
 
 ### Docs
-
+* (docs) [\#400](https://github.com/Finschia/finschia/pull/400) Add  latest finschia mainnet, ebony testnet information
 
 ## [v4.0.1] - 2024-06-25
 
